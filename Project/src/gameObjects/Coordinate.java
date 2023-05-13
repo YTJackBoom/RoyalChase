@@ -24,4 +24,24 @@ public class Coordinate {
 	public void setY(int y) {
 		this.y = y;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        final Coordinate other = (Coordinate) obj;
+        if(x!=other.getX()) {
+        	return false;
+        }
+        
+        if(y!=other.getY()) {
+        	return false;
+        }
+        return true;
+    }
 }

@@ -21,44 +21,46 @@ public class ImageToPath {
 	}
 	
 	public ArrayList<Coordinate> imgToPath(String imagePath) {
-	    try {
-	        image = ImageIO.read(new File(imagePath));
-	    } catch (IOException e) {
-	        System.out.println("Error when reading Path");
-	    }
-	    Coordinate start = new  Coordinate(110,62);
-	    
-	    ArrayList<Coordinate> visited = new ArrayList<>();
-	    visited.add(start);
-	    ArrayList<Coordinate> blacks = new ArrayList<>();
-	    blacks.add(start);
-	    int width = image.getWidth();
-	    int height = image.getHeight();
-	    int[] dx = {-1, -1, 0, 1, 1, 1, 0, -1};
-	    int[] dy = {0, -1, -1, -1, 0, 1, 1, 1};
-	    int i = 0;
-	    while (!visited.isEmpty()) {
-	        Coordinate currentCoordinate = visited.remove(0);
-	        int currentX = currentCoordinate.getX();
-	        int currentY = currentCoordinate.getY();
-	        for (int j = 0; j < 8; j++) {
-	            int nextX = currentX + dx[j];
-	            int nextY = currentY + dy[j];
-	            if (nextX >= 0 && nextX < width && nextY >= 0 && nextY < height) {
-	                int rgb = image.getRGB(nextX, nextY);
-	                if (rgb == 0xFF000000 && !blacks.contains(new Coordinate(nextX, nextY))) {
-	                    Coordinate nextCoordinate = new Coordinate(nextX, nextY);
-	                    visited.add(nextCoordinate);
-	                    blacks.add(nextCoordinate);
-	                    System.out.println(nextX+" "+nextY);
-	                }
-	            }
-	        }
-	    }
-	    return blacks;
-	}
+		try {
+		    image = ImageIO.read(new File(imagePath));
+		} catch (IOException e) {
+		    System.out.println("Error when reading Path");
+		}
+		Coordinate start = new Coordinate(110, 61);
 
-	
+		ArrayList<Coordinate> visited = new ArrayList<>();
+		visited.add(start);
+		ArrayList<Coordinate> blacks = new ArrayList<>();
+		blacks.add(start);
+
+		int width = image.getWidth();
+		int height = image.getHeight();
+
+		int[] dx = {-1, -1, 0, 1, 1, 1, 0, -1, -1};
+		int[] dy = {0, -1, -1, -1, 0, 1, 1, 1, 0};
+		
+		while (!visited.isEmpty()) {
+		    Coordinate currentCoordinate = visited.remove(0);
+		    int currentX = currentCoordinate.getX();
+		    int currentY = currentCoordinate.getY();
+		    for (int j = 0; j < 9; j++) {
+		        int nextX = currentX + dx[j];
+		        int nextY = currentY + dy[j];
+		        if (nextX >= 0 && nextX < width && nextY >= 0 && nextY < height) {
+		            int rgb = image.getRGB(nextX, nextY);
+		            if (rgb == 0xFF000000) {
+		                Coordinate nextCoordinate = new Coordinate(nextX, nextY);
+		                if (!blacks.contains(nextCoordinate)) {
+		                    visited.add(nextCoordinate);
+		                    blacks.add(nextCoordinate);
+		                    System.out.println(nextX + " " + nextY);
+		                }
+		            }
+		        }
+		    }
+		}
+		return blacks;
+	}
        
         
         
