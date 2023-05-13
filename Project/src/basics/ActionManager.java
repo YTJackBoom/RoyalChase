@@ -31,7 +31,7 @@ public class ActionManager {
 		this.gS  = gS;
 		this.pMap = new boolean[5][5];
 		iTP = new ImageToPath();
-		pC = iTP.imgToPath("res/images/Path.jpeg");
+		pC = iTP.imgToPath("res/images/spath.jpg");
 		
 		t = new Timer(1, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -40,8 +40,9 @@ public class ActionManager {
 		});
 		
 		t.start();
-	}
 	
+	
+	}
 	public void doOnTick() {
 		updateEnemyMovement();
 		moveEnemy();
