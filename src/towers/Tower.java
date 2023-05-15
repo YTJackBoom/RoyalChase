@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import basics.GameScreen;
 import gameObjects.Coordinate;
@@ -19,7 +20,7 @@ public abstract class Tower extends GameObject  {
 	protected ImageIcon towerPassive;
 	private JLabel tLabel;
 	private  boolean menuOpen;
-	private GameScreen gS;
+	private JPanel gS;
 	private Coordinate pos;
 	private PlacementMenu[] pMenu;
 	private ArrayList tEL;
@@ -33,7 +34,7 @@ public abstract class Tower extends GameObject  {
 	protected final static String imgP4 = "res/images/yellow square.png";
 	protected final static String imgP5 = "res/images/green square.png";
 			
-	public Tower(GameScreen  gS, Coordinate pos, int width, int height, int type, ArrayList towerEntityList, int ArrayPos,ImageIcon towerPassive) {
+	public Tower(JPanel  gS, Coordinate pos, int width, int height, int type, ArrayList towerEntityList, int ArrayPos,ImageIcon towerPassive) {
 		super(gS, pos, width, height, type,0);
 		this.tEL = towerEntityList;
 		this.gS = gS;

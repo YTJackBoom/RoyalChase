@@ -1,5 +1,7 @@
 package gameObjects;
 
+import javax.swing.JPanel;
+
 import basics.GameScreen;
 
 public abstract class GameObject {
@@ -10,8 +12,8 @@ public abstract class GameObject {
  private boolean agro; 
  private int movingDirection; //0=nicht,1=rechts,2=unten,3=links
  private int type;
- private GameScreen gS;
-public GameObject(GameScreen GameScreen, Coordinate pos, int width, int height, int type, int range) {
+ private JPanel gS;
+public GameObject(JPanel GameScreen, Coordinate pos, int width, int height, int type, int range) {
 	 
 	 this.setPos(pos);
 	 this.setWidth(width);

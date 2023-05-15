@@ -6,6 +6,7 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import basics.GameScreen;
@@ -21,13 +22,13 @@ public class ArrowTower extends Tower {
 	private boolean isLoaded;
 	private boolean isFiring;
 	private Enemy target;
-	private GameScreen gS;
+	private JPanel gS;
 	private ArrayList<Arrow> pL = new ArrayList<Arrow>(); // ArrayList für projectile hier: arrows
 
-	public ArrowTower(GameScreen gS, Coordinate pos, int type, ArrayList towerEntityList, int ArrayPos) {
-		super(gS, pos, 35, 35, type, towerEntityList, ArrayPos, new ImageIcon(imgP2));
+	public ArrowTower(JPanel sPanel, Coordinate pos, int type, ArrayList towerEntityList, int ArrayPos) {
+		super(sPanel, pos, 35, 35, type, towerEntityList, ArrayPos, new ImageIcon(imgP2));
 		super.range = 500;
-		this.gS = gS;
+		this.gS = sPanel;
 		/*
 		 * towerLabel = new JLabel(towerPassive);
 		 * towerLabel.setBounds(pos.getX(),pos.getY(),60,60);

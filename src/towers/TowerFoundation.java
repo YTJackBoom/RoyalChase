@@ -25,7 +25,7 @@ public class TowerFoundation extends Tower {
 	private JLabel towerFoundLabel;
 	private Status status;
 	private Coordinate pos;
-	private GameScreen gS;
+	private JPanel gS;
 	private int arrayPos;
 	private  int range=900;
 	
@@ -35,7 +35,7 @@ public class TowerFoundation extends Tower {
 	
 	private boolean menuOpen;
 	
-	public TowerFoundation(GameScreen gS,Coordinate pos, int width, int height, ArrayList towerEntityList,int arrayPos) {
+	public TowerFoundation(JPanel gS,Coordinate pos, int width, int height, ArrayList towerEntityList,int arrayPos) {
 		super(gS ,pos, width, height, 0, towerEntityList, arrayPos, new ImageIcon("res/images/black square.png"));
 		status = Status.OK;
 		this.pos = pos;

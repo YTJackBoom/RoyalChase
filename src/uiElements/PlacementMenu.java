@@ -1,7 +1,10 @@
 package uiElements;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,21 +22,21 @@ import gameObjects.Coordinate;
 import gameObjects.GameObject;
 import towers.*;
 
-public class PlacementMenu {
+public class PlacementMenu extends JPanel {
 	private Coordinate pos;
-	private ImageIcon pMenuImg;
+	private BufferedImage pMenuImg;
 	private JLabel pMenuLabel;
 	private Status status;
-	private GameScreen sPanel;
+	private JPanel sPanel;
 	private ArrayList tEL;
 	private int aPos;
 	private int type;
 	private Coordinate towerFoundPos;
 	private GameObject sObject;
 
-	public PlacementMenu(GameScreen superPanel,int type, File imgFile, Coordinate pos, ArrayList towerEntityList, int arrayPos, GameObject sObject) {
+	public PlacementMenu(JPanel superPanel,int type, File imgFile, Coordinate pos, ArrayList towerEntityList, int arrayPos, GameObject sObject) {
 		//switch type: (änderung von größe und newFile()
-		this.pos = pos;
+		this.pos = pos; 
 		this.sPanel=superPanel;
 		status=Status.OK;
 		this.tEL = towerEntityList;
@@ -43,33 +46,28 @@ public class PlacementMenu {
 		this.sObject = sObject;
 		
 		try {
-			pMenuImg = new ImageIcon(ImageIO.read(imgFile));
+			pMenuImg = ImageIO.read(imgFile);
 		} catch (IOException e) {
 			System.out.println(e);
 			System.out.print(" Error in PlacementMenu");
-			status = Status.ERR;
-		}
-		if(status==Status.OK) {
-			pMenuLabel = new JLabel(pMenuImg);
-			//System.out.println("h");
 		}
 		
-		pMenuLabel.setLayout(null);
-		pMenuLabel.setBounds(this.pos.getX(),this.pos.getY(),35,35); //35 height,width
-		sPanel.add(pMenuLabel);
-		pMenuLabel.setVisible(false);
-		pMenuLabel.addMouseListener(new MouseAdapter() {
+		setLayout(null);
+		setBounds(this.pos.getX(),this.pos.getY(),35,35); //35 height,width
+		sPanel.add(this);
+		setVisible(false);
+		addMouseListener(new MouseAdapter() {
 	    public void mouseClicked(MouseEvent e) {
-	       	if(pMenuLabel.isVisible()) {
+	       	if(isVisible()) {
 	           System.out.println("Image clicked!");
 	           generateTower();
 	        }
 	        }
 	    });
 		}
-	public void setVisible(boolean visbility) {
-		pMenuLabel.setVisible(visbility);
-	}
+	/*public void setVisible(boolean visbility) {
+		setVisible(visbility);
+	}*/
 	public void generateTower() {
 		switch(type) {
 		case  1:
@@ -91,9 +89,14 @@ public class PlacementMenu {
 	}
 	public void vanish() {
 	//	pMenuLabel.setVisible(false);
-		sPanel.remove(pMenuLabel);
-		pMenuLabel = null;
+		sPanel.remove(this);
+		setVisible(false);
 	}
 		
+	 @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        g.drawImage(pMenuImg, pos.getX(), pos.getY(), null);
+	    }
 		
 }

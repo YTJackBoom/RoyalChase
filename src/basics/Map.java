@@ -27,13 +27,13 @@ import towers.Tower;
 import towers.TowerFoundation;
 
 
-public class Map {
+public class Map extends JPanel {
 	private BufferedImage mapImage;
 	private Status mapIoStatus;
 	private int mapNum;
 	private ImageIcon clickableImg;
 	
-	private GameScreen gS;
+	private JPanel gS;
 	private ImageAnalyser iA;
 	
 	private ActionManager mMan;
@@ -47,7 +47,7 @@ public class Map {
 	public Map(Status status,int mapNum,GameScreen gS) { //number für nummer der map
 		mapIoStatus = status;
 		this.mapNum=mapNum;
-		this.gS = gS;
+		this.gS = this;
 		iA = new ImageAnalyser(getPMapFile());
 		pathCoordinates = iA.imgToPath();
 		towerFoundationsList = iA.imgToFoundList();
