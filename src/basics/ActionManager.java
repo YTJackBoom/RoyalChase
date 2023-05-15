@@ -27,7 +27,7 @@ public class ActionManager {
 		pC = pathCoordinates;
 		this.gS  = gS;
 		
-		t = new Timer(1, new ActionListener() {
+		t = new Timer(10, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				doOnTick();
 			}
@@ -74,13 +74,16 @@ public class ActionManager {
 }
 	public void updateEnemyMovement() {
 		for(int a = 0; a < eL.size(); a++) {
+			if(!eL.get(a).getPos().equals(pC.get(pC.size()-1))) {
 				eL.get(a).setPathIndex(eL.get(a).getPathIndex()+eL.get(a).getSpeed());
 				eL.get(a).setPos(pC.get(eL.get(a).getPathIndex()));	
 				//System.out.println(eL.get(a).getPathIndex()+"  "+ pC.get(eL.get(a).getPathIndex()).getX()+" "+pC.get(eL.get(a).getPathIndex()).getY());
 				//System.out.println(eL.get(a).getPos().getX());
+			}else { 
+				
 			}
 		}
-	
+	}
 	public void refreshTEL() {
 		for(int a=0;a < tEL.size(); a++) {
 			tEL.get(a).refresh();
