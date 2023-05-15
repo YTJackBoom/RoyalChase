@@ -10,6 +10,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -27,90 +28,64 @@ import towers.TowerFoundation;
 
 
 public class Map {
-	private BufferedImage map_image;
+	private BufferedImage mapImage;
 	private Status mapIoStatus;
 	private int mapNum;
 	private ImageIcon clickableImg;
 	
 	private GameScreen gS;
-	private int towerFoundationsNum;
-	private Coordinate[] towerFoundationsPos1;
-	private Coordinate[] towerFoundationsPos2;
-	private Coordinate[] towerFoundationsPos3;
+	private ImageAnalyser iA;
 	
 	private ActionManager mMan;
 	
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	private ArrayList<Projectile> projectileList = new ArrayList<Projectile>();
 	private ArrayList<Tower> towerEntityList = new ArrayList<Tower>();
+	private ArrayList<Coordinate> pathCoordinates;
+	private ArrayList<Coordinate> towerFoundationsList;
 	
-	public Map(BufferedImage mapImage, Status status,int mapNum,GameScreen gS) { //number für nummer der map
-		map_image=mapImage;
+	public Map(Status status,int mapNum,GameScreen gS) { //number für nummer der map
 		mapIoStatus = status;
 		this.mapNum=mapNum;
 		this.gS = gS;
+		iA = new ImageAnalyser(getPMapFile());
+		pathCoordinates = iA.imgToPath();
+		towerFoundationsList = iA.imgToFoundList();
 		initTowerFoundations();
 		
 		
 		enemyList.add(new Enemy(gS, new Coordinate(500,500), 480,350));
 		
-		mMan = new ActionManager(gS,towerEntityList, enemyList, projectileList,null);
+		mMan = new ActionManager(gS,towerEntityList, enemyList, projectileList,pathCoordinates);
 		}
 	
-	
+
 	protected void paintMe(Graphics g) {
 
-		Graphics2D g2d = (Graphics2D) g;
-		
-		switch (mapNum) {
-		
-		case 1:
-			switch (mapIoStatus) {
-			case OK:
-				g2d.drawImage(map_image,0,0, null);
-				break;
-			case ERR:
-				g2d.setColor(Color.RED);
-				Ellipse2D.Double ball = new Ellipse2D.Double(1000,1000,10,10);	
-				g2d.draw(ball);
-				g2d.fill(ball);
-				break;
-			}
-		case 2:
+		Graphics2D g2d = (Graphics2D) g;	
+		try {
+			mapImage = ImageIO.read(getMapFile());
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+		g2d.drawImage(mapImage,0,0, null);
 		
 		
-	}
-	
+		
 	}
 	
 	public void initTowerFoundations() {
-		
-		
-		towerFoundationsPos2 = new Coordinate[5];
-		towerFoundationsPos3 = new Coordinate[5];
-		switch (mapNum) {
-		
-		case 1:
-			towerFoundationsPos1 = new Coordinate[5];
-			towerFoundationsPos1[0] = new Coordinate(1000,400);
-			towerFoundationsPos1[1] = new Coordinate(1499,108);
-			towerFoundationsPos1[2] = new Coordinate(1486,461);
-			towerFoundationsPos1[3] = new Coordinate(1508,728);
-			towerFoundationsPos1[4] = new Coordinate(1550,126);
-			
-			for (int i= 0;i<towerFoundationsPos1.length;i++) {
-				towerEntityList.add(new TowerFoundation(gS,towerFoundationsPos1[i],51,50,towerEntityList,i));
+			for (int i= 0;i<towerFoundationsList.size();i++) {
+				towerEntityList.add(new TowerFoundation(gS,towerFoundationsList.get(i),51,50,towerEntityList,i));
 			}
-			break;
-		case 2:
-		System.out.println(mapNum);
-		
-
-		
-		
-		
-		
-		
 	}
+	
+	public File getPMapFile() { 
+		return new File("res/Map/PathMaps/Path"+mapNum+".bmp");
+		}
+	
+	public File getMapFile() {
+		return new File("res/Map/BackgroundMaps/Map"+mapNum+".jpg");
 	}
+		
 }

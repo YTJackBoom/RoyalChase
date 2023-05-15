@@ -58,23 +58,23 @@ public class GameScreen extends JPanel implements MouseListener, KeyListener { /
 
 	//Erstellen des Spielers und festlegen der Spielervariablen	
 	
-	private void initMap(File mapImgFile, int mapNum) {
-			mapIoStatus = Status.OK;
+	private void initMap(int mapNum) {
+/*			mapIoStatus = Status.OK;
 		try {
 			mapImage = ImageIO.read(mapImgFile);
 		} catch (IOException e) {
 			mapIoStatus = Status.ERR; // enum "edit"
 			System.out.println(e);
 		}
-		
-		map = new Map(mapImage, mapIoStatus, mapNum, this);
+		*/
+		map = new Map(mapIoStatus, mapNum, this);
 	}			
 	
 	private void initGame() {
 
 		
 		
-		initMap(new File("res/images/black border.png"),1);
+		initMap(1);
 		addMouseListener(this);
 		
 		//Registrieren des KeyListeners

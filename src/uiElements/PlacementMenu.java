@@ -51,7 +51,7 @@ public class PlacementMenu {
 		}
 		if(status==Status.OK) {
 			pMenuLabel = new JLabel(pMenuImg);
-			System.out.println("h");
+			//System.out.println("h");
 		}
 		
 		pMenuLabel.setLayout(null);
@@ -87,7 +87,7 @@ public class PlacementMenu {
 		}
 			
 		sObject.vanish();
-		System.out.println("hi");
+		//System.out.println("hi");
 	}
 	public void vanish() {
 	//	pMenuLabel.setVisible(false);

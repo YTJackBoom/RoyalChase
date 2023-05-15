@@ -18,20 +18,14 @@ public class ActionManager {
 	private Timer t;
 	private ArrayList<Tower> tEL;
 	private ArrayList<Enemy> eL;
-	private ArrayList<Projectile> pL;
 	private ArrayList<Coordinate> pC;//pathCoordinates
-	private ImageToPath iTP;
 	private GameScreen gS;
-	private  boolean[][] pMap; //pathMap , map  geteilt in array für gegenr pfad 
 	
-	public ActionManager(GameScreen gS, ArrayList<Tower> towerEntityList, ArrayList<Enemy> enemyList, ArrayList<Projectile> projectileList, boolean[][] pMap) {
+	public ActionManager(GameScreen gS, ArrayList<Tower> towerEntityList, ArrayList<Enemy> enemyList, ArrayList<Projectile> projectileList, ArrayList<Coordinate> pathCoordinates) {
 		tEL = towerEntityList;
 		eL = enemyList;
-		pL = projectileList;
+		pC = pathCoordinates;
 		this.gS  = gS;
-		this.pMap = new boolean[5][5];
-		iTP = new ImageToPath();
-		pC = iTP.imgToPath("res/images/spath.jpg");
 		
 		t = new Timer(1, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,7 +77,7 @@ public class ActionManager {
 				eL.get(a).setPathIndex(eL.get(a).getPathIndex()+eL.get(a).getSpeed());
 				eL.get(a).setPos(pC.get(eL.get(a).getPathIndex()));	
 				//System.out.println(eL.get(a).getPathIndex()+"  "+ pC.get(eL.get(a).getPathIndex()).getX()+" "+pC.get(eL.get(a).getPathIndex()).getY());
-				System.out.println(eL.get(a).getPos().getX());
+				//System.out.println(eL.get(a).getPos().getX());
 			}
 		}
 	
