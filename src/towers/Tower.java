@@ -1,7 +1,9 @@
 package towers;
 
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,8 +18,8 @@ import gameObjects.Enemy;
 import gameObjects.GameObject;
 import uiElements.PlacementMenu;
 
-public abstract class Tower extends GameObject  {
-	protected ImageIcon towerPassive;
+public abstract class Tower extends JPanel  {
+	protected BufferedImage towerPassive;
 	private JLabel tLabel;
 	private  boolean menuOpen;
 	private JPanel gS;
@@ -34,25 +36,25 @@ public abstract class Tower extends GameObject  {
 	protected final static String imgP4 = "res/images/yellow square.png";
 	protected final static String imgP5 = "res/images/green square.png";
 			
-	public Tower(JPanel  gS, Coordinate pos, int width, int height, int type, ArrayList towerEntityList, int ArrayPos,ImageIcon towerPassive) {
-		super(gS, pos, width, height, type,0);
+	public Tower(JPanel  gS, Coordinate pos, int width, int height, int type, ArrayList towerEntityList, int ArrayPos,BufferedImage towerPassive) {
 		this.tEL = towerEntityList;
 		this.gS = gS;
 		this.pos = pos;
 		this.aPos = ArrayPos;
 		range = 100;
+		this.towerPassive = towerPassive;
 		//switch (type) {
 		//case 1: 
 		//	towerPassive = new ImageIcon(imgP1);
-			tLabel = new JLabel(towerPassive);
-			tLabel.setBounds(pos.getX(),pos.getY(),60,60);
+		//	tLabel = new JLabel(towerPassive);
+			setBounds(pos.getX(),pos.getY(),width,height);
 
-			gS.add(tLabel);
-			gS.setComponentZOrder(tLabel,0);
+			gS.add(this);
+			gS.setComponentZOrder(this,0);
 
-			tLabel.setVisible(true);
+			setVisible(true);
 		
-		tLabel.addMouseListener(new MouseAdapter() {
+		addMouseListener(new MouseAdapter() {
 	        public void mouseClicked(MouseEvent e) {
 	        	if(menuOpen) {
 	        	closePlacementMenu();
@@ -90,7 +92,6 @@ public abstract class Tower extends GameObject  {
 	}
 	
 	
-	@Override
 	public void vanish() {
 		for(int i =0; i<=pMenu.length-1;i++) {
 			pMenu[i].vanish();
@@ -108,6 +109,9 @@ public abstract class Tower extends GameObject  {
 	
 	public abstract void changeStatus(boolean status);
 	public abstract void setTarget(Enemy target);
+	public Coordinate getPos() {
+		return pos;
+	}
 	
 	public boolean getFiring() {
 		return isFiring;
@@ -115,7 +119,10 @@ public abstract class Tower extends GameObject  {
 	public boolean getStatus() {
 		return isFiring;
 	}
-	public void printThings() {
-		
-	}
+	@Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(towerPassive, pos.getX(), pos.getY(), null);
+        System.out.println("d");
+        }
 }

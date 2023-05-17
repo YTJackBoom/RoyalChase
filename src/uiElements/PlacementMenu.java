@@ -32,9 +32,9 @@ public class PlacementMenu extends JPanel {
 	private int aPos;
 	private int type;
 	private Coordinate towerFoundPos;
-	private GameObject sObject;
+	private Tower sObject;
 
-	public PlacementMenu(JPanel superPanel,int type, File imgFile, Coordinate pos, ArrayList towerEntityList, int arrayPos, GameObject sObject) {
+	public PlacementMenu(JPanel superPanel,int type, File imgFile, Coordinate pos, ArrayList towerEntityList, int arrayPos, Tower sObject) {
 		//switch type: (änderung von größe und newFile()
 		this.pos = pos; 
 		this.sPanel=superPanel;

@@ -2,9 +2,13 @@ package towers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -26,7 +30,7 @@ public class ArrowTower extends Tower {
 	private ArrayList<Arrow> pL = new ArrayList<Arrow>(); // ArrayList für projectile hier: arrows
 
 	public ArrowTower(JPanel sPanel, Coordinate pos, int type, ArrayList towerEntityList, int ArrayPos) {
-		super(sPanel, pos, 35, 35, type, towerEntityList, ArrayPos, new ImageIcon(imgP2));
+		super(sPanel, pos, 35, 35, type, towerEntityList, ArrayPos, getBufferedImage());
 		super.range = 500;
 		this.gS = sPanel;
 		/*
@@ -105,10 +109,18 @@ public class ArrowTower extends Tower {
 		this.target = target;
 	}
 
-	@Override
 	public void setPos(Coordinate pos) {
 		// TODO Auto-generated method stub
 		
+	}
+	public static BufferedImage getBufferedImage() {
+		try {
+			return ImageIO.read(new File(imgP2));
+		} catch (IOException e) {
+			System.out.println(e);
+			System.out.print(" Error in ArrowTower");
+		}
+		return null;
 	}
 
 }

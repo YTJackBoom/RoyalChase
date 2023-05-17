@@ -47,10 +47,13 @@ public class Map extends JPanel {
 	public Map(Status status,int mapNum,GameScreen gS) { //number für nummer der map
 		mapIoStatus = status;
 		this.mapNum=mapNum;
-		this.gS = this;
+		this.gS = gS;
 		iA = new ImageAnalyser(getPMapFile());
 		pathCoordinates = iA.imgToPath();
 		towerFoundationsList = iA.imgToFoundList();
+		gS.add(this);
+		setVisible(true);
+		
 		initTowerFoundations();
 		
 		
@@ -59,8 +62,8 @@ public class Map extends JPanel {
 		mMan = new ActionManager(gS,towerEntityList, enemyList, projectileList,pathCoordinates);
 		}
 	
-
-	protected void paintMe(Graphics g) {
+	@Override
+	protected void paintComponent(Graphics g) {
 
 		Graphics2D g2d = (Graphics2D) g;	
 		try {
@@ -69,9 +72,7 @@ public class Map extends JPanel {
 			System.out.println(e);
 		}
 		g2d.drawImage(mapImage,0,0, null);
-		
-		
-		
+		repaintTowerEntities();		
 	}
 	
 	public void initTowerFoundations() {
@@ -87,5 +88,11 @@ public class Map extends JPanel {
 	public File getMapFile() {
 		return new File("res/Map/BackgroundMaps/Map"+mapNum+".jpg");
 	}
+	public void repaintTowerEntities() {
+		for(Tower Tower : towerEntityList) {
+			Tower.refresh();
+		}
+	}
+	
 		
 }

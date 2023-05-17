@@ -66,9 +66,9 @@ public class ActionManager {
 			eL.get(a).move();
 		}
 	}
-	public boolean checkRange(GameObject object1, GameObject object2) {
+	public boolean checkRange(Tower tower, GameObject object2) {
 	//	System.out.println(Math.abs(object2.getPos().getY()-object1.getPos().getY()));
-		if(Math.abs(object2.getPos().getY()-object1.getPos().getY())<=object1.getRange()&&Math.abs(object2.getPos().getX()-object1.getPos().getX())<=object1.getRange()) {
+		if(Math.abs(object2.getPos().getY()-tower.getPos().getY())<=tower.getRange()&&Math.abs(object2.getPos().getX()-tower.getPos().getX())<=tower.getRange()) {
 			return true;
 	}else return false;
 }

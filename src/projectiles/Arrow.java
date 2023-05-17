@@ -2,8 +2,13 @@ package projectiles;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import basics.GameScreen;
@@ -19,8 +24,8 @@ public class Arrow extends Projectile {
 	private int distance;
 	private Enemy target;
 
-	public Arrow(GameScreen gS, Coordinate start,Enemy target) {
-		super(gS, start, target, new ImageIcon("res/images/black square small.png"));
+	public Arrow(JPanel gS, Coordinate start,Enemy target) {
+		super(gS, start, target, getBufferedImage());
 		// TODO Auto-generated constructor stub
 		System.out.println("arro");
 		pos = start;
@@ -33,7 +38,7 @@ public class Arrow extends Projectile {
 	public void refresh() {
 		ziel = target.getPos();
 		updatePos();
-    	pLabel.setBounds(pos.getX(),pos.getY(),60,60);
+    	setBounds(pos.getX(),pos.getY(),60,60);
     	//System.out.println("s"+pos.getX() +" " +  pos.getY());
     }
 	
@@ -63,10 +68,18 @@ public class Arrow extends Projectile {
 		
 	}
 
-	@Override
 	public void setPos(Coordinate pos) {
 		// TODO Auto-generated method stub
 		
+	}
+	public static BufferedImage getBufferedImage() {
+		try {
+			return ImageIO.read(new File("res/images/black square small.png"));
+		} catch (IOException e) {
+			System.out.println(e);
+			System.out.print(" Error in Arrow");
+		}
+		return null;
 	}
 	
 

@@ -1,7 +1,11 @@
 package towers;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -14,7 +18,7 @@ public class RocketTower extends Tower {
 
 	public RocketTower(JPanel sPanel, Coordinate pos, int type, ArrayList towerEntityList,
 			int ArrayPos) {
-		super(sPanel, pos,35,35, type, towerEntityList, ArrayPos, new ImageIcon(imgP1));
+		super(sPanel, pos,35,35, type, towerEntityList, ArrayPos, getBufferedImage());
 		super.range = 100;
 
 		// TODO Auto-generated constructor stub
@@ -38,4 +42,19 @@ public class RocketTower extends Tower {
 		
 	}
 
+	public static BufferedImage getBufferedImage() {
+		try {
+			return ImageIO.read(new File(imgP1));
+		} catch (IOException e) {
+			System.out.println(e);
+			System.out.print(" Error in RocketTower");
+		}
+		return null;
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
 }

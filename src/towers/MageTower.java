@@ -1,8 +1,13 @@
 package towers;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import basics.GameScreen;
 import gameObjects.Coordinate;
@@ -12,9 +17,9 @@ public class MageTower extends Tower {
 	private int range = 100;
 
 
-	public MageTower(GameScreen gS, Coordinate pos, int type, ArrayList towerEntityList,
+	public MageTower(JPanel gS, Coordinate pos, int type, ArrayList towerEntityList,
 			int ArrayPos) {
-		super(gS, pos, 35, 35, type, towerEntityList, ArrayPos, new ImageIcon(imgP3));
+		super(gS, pos, 35, 35, type, towerEntityList, ArrayPos, getBufferedImage());
 		super.range = 100;
 
 		// TODO Auto-generated constructor stub
@@ -34,6 +39,21 @@ public class MageTower extends Tower {
 
 	@Override
 	public void setTarget(Enemy target) {
+		// TODO Auto-generated method stub
+		
+	}
+	public static BufferedImage getBufferedImage() {
+		try {
+			return ImageIO.read(new File(imgP3));
+		} catch (IOException e) {
+			System.out.println(e);
+			System.out.print(" Error in MageTower");
+		}
+		return null;
+	}
+
+	@Override
+	public void refresh() {
 		// TODO Auto-generated method stub
 		
 	}
