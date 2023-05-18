@@ -1,4 +1,4 @@
-package basics;
+package managers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import basics.GameScreen;
 import gameObjects.Coordinate;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
@@ -40,7 +41,7 @@ public class ActionManager {
 		updateEnemyMovement();
 		moveEnemy();
 		checkTELStatus();
-		refreshTEL();
+		//refreshTEL();
 	//	initFiring();
 		
 	}
@@ -51,10 +52,10 @@ public class ActionManager {
 			if(checkRange(tEL.get(i),eL.get(o))) {
 				tEL.get(i).changeStatus(true);
 				tEL.get(i).setTarget(eL.get(o));
-				System.out.println("			"+i+"inrange"+o);
+		//		System.out.println("			"+i+"inrange"+o);
 			}else {
 				tEL.get(i).changeStatus(false);
-				System.out.println("			"+i+"n range"+o);
+			//	System.out.println("			"+i+"n range"+o);
 			}
 		}
 		}

@@ -22,12 +22,13 @@ import javax.swing.JPanel;
 import gameObjects.Coordinate;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
+import managers.ActionManager;
 import projectiles.Projectile;
 import towers.Tower;
 import towers.TowerFoundation;
 
 
-public class Map extends JPanel {
+public class Map  {
 	private BufferedImage mapImage;
 	private int mapNum;
 	private ImageIcon clickableImg;
@@ -49,9 +50,9 @@ public class Map extends JPanel {
 		iA = new ImageAnalyser(getPMapFile());
 		pathCoordinates = iA.imgToPath();
 		towerFoundationsList = iA.imgToFoundList();
-		setLayout(null);
-		setPreferredSize(gS.getPreferredSize());
-		setVisible(true);
+	////	setLayout(null);
+		//setPreferredSize(gS.getPreferredSize());
+		//setVisible(true);
 		
 		initTowerFoundations();
 		
@@ -61,9 +62,8 @@ public class Map extends JPanel {
 		mMan = new ActionManager(towerEntityList, enemyList, projectileList,pathCoordinates);
 		}
 	
-	@Override
+	
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
 		
 		Graphics2D g2d = (Graphics2D) g;	
 		try {
@@ -90,7 +90,7 @@ public class Map extends JPanel {
 	}
 	public void repaintTowerEntities(Graphics g) {
 		for(Tower Tower : towerEntityList) {
-			Tower.refresh();
+			Tower.refresh(g);
 		}
 	}
 	public ArrayList<Tower> getTowerEntityList() {

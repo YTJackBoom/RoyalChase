@@ -92,8 +92,10 @@ public class PlacementMenu extends JPanel {
 		
 	 @Override
 	public void paintComponent(Graphics g) {
+		 if(isVisible()) {
 	        super.paintComponent(g);
 	        g.drawImage(pMenuImg, pos.getX(), pos.getY(), null);
 	    }
+	 }
 		
 }

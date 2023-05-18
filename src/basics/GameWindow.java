@@ -30,7 +30,7 @@ public class GameWindow extends JFrame{
 		this.setResizable(false);
 		this.setVisible(true);
 
-		repaint();
+		//repaint();
 	}	
 
 	private void registerWindowListener() {        

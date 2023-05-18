@@ -107,7 +107,6 @@ public class GameScreen extends JPanel implements MouseListener, KeyListener { /
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if (t.isRunning()) {
-		//map.paintComponent(g);
 			render.render(g);
 		} else {
 			

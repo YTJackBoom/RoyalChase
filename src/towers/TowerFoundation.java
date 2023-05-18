@@ -1,5 +1,6 @@
 package towers;
 
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -64,9 +65,9 @@ public class TowerFoundation extends Tower {
 		// TODO Auto-generated method stub
 		
 	}
-	public void refresh() {
+	public void refresh(Graphics g) {
 	//	super.revalidate();
-		super.repaint();
+		super.paintComponent(g);
 	}
 	public static BufferedImage getBufferedImage() {
 		try {
@@ -76,6 +77,12 @@ public class TowerFoundation extends Tower {
 			System.out.print(" Error in PlacementMenu");
 		}
 		return null;
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
 	}
 
 		

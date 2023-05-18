@@ -31,11 +31,12 @@ public class Render {
 	}
 	
 	public void renderMenu(Graphics g) {
-		ArrayList<Tower> tEL = currentMap.getTowerEntityList();
+		ArrayList<Tower> tEL = currentMap.getTowerEntityList();  //weiter unten wird als letztes gepaintet
+		currentMap.paintComponent(g);
 		for(Tower Tower : tEL) {
 			Tower.paintComponent(g);
 		}
-		currentMap.paintComponent(g);
+		
 	}
 	
 }
