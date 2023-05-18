@@ -1,5 +1,6 @@
 package towers;
 
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -14,7 +15,6 @@ import javax.swing.JPanel;
 
 import basics.GameScreen;
 import basics.GameWindow;
-import basics.Status;
 import gameObjects.Coordinate;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
@@ -24,7 +24,6 @@ public class TowerFoundation extends Tower {
 	private File towerFoundImgFile;
 	private ImageIcon towerFoundImg;
 	private JLabel towerFoundLabel;
-	private Status status;
 	private Coordinate pos;
 	private JPanel gS;
 	private int arrayPos;
@@ -38,7 +37,6 @@ public class TowerFoundation extends Tower {
 	
 	public TowerFoundation(JPanel gS,Coordinate pos, int width, int height, ArrayList towerEntityList,int arrayPos) {
 		super(gS ,pos, width, height, 0, towerEntityList, arrayPos, getBufferedImage());
-		status = Status.OK;
 		this.pos = pos;
 		this.gS = gS;
 		this.towerEntityList = towerEntityList;
@@ -67,9 +65,9 @@ public class TowerFoundation extends Tower {
 		// TODO Auto-generated method stub
 		
 	}
-	public void refresh() {
-		super.revalidate();
-		super.repaint();
+	public void refresh(Graphics g) {
+	//	super.revalidate();
+		super.paintComponent(g);
 	}
 	public static BufferedImage getBufferedImage() {
 		try {
@@ -79,6 +77,12 @@ public class TowerFoundation extends Tower {
 			System.out.print(" Error in PlacementMenu");
 		}
 		return null;
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
 	}
 
 		

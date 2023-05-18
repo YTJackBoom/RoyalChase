@@ -17,7 +17,6 @@ import javax.swing.plaf.synth.SynthPopupMenuUI;
 
 import basics.GameScreen;
 import basics.GameWindow;
-import basics.Status;
 import gameObjects.Coordinate;
 import gameObjects.GameObject;
 import towers.*;
@@ -26,7 +25,6 @@ public class PlacementMenu extends JPanel {
 	private Coordinate pos;
 	private BufferedImage pMenuImg;
 	private JLabel pMenuLabel;
-	private Status status;
 	private JPanel sPanel;
 	private ArrayList tEL;
 	private int aPos;
@@ -38,7 +36,6 @@ public class PlacementMenu extends JPanel {
 		//switch type: (änderung von größe und newFile()
 		this.pos = pos; 
 		this.sPanel=superPanel;
-		status=Status.OK;
 		this.tEL = towerEntityList;
 		this.aPos = arrayPos;
 		this.type = type;
@@ -94,9 +91,11 @@ public class PlacementMenu extends JPanel {
 	}
 		
 	 @Override
-	    protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
+		 if(isVisible()) {
 	        super.paintComponent(g);
 	        g.drawImage(pMenuImg, pos.getX(), pos.getY(), null);
 	    }
+	 }
 		
 }

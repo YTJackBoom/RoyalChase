@@ -1,14 +1,18 @@
 package towers;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -18,7 +22,7 @@ import gameObjects.Enemy;
 import gameObjects.GameObject;
 import uiElements.PlacementMenu;
 
-public abstract class Tower extends JPanel  {
+public abstract class Tower extends JComponent implements MouseListener  {
 	protected BufferedImage towerPassive;
 	private JLabel tLabel;
 	private  boolean menuOpen;
@@ -29,6 +33,7 @@ public abstract class Tower extends JPanel  {
 	private int aPos;
 	protected int range;
 	private boolean isFiring;
+	private int width, height;
 	
 	protected final static String imgP1 = "res/images/black square.png";
 	protected final static String imgP2 = "res/images/red square.png";
@@ -43,29 +48,12 @@ public abstract class Tower extends JPanel  {
 		this.aPos = ArrayPos;
 		range = 100;
 		this.towerPassive = towerPassive;
-		//switch (type) {
-		//case 1: 
-		//	towerPassive = new ImageIcon(imgP1);
-		//	tLabel = new JLabel(towerPassive);
-			setBounds(pos.getX(),pos.getY(),width,height);
+		this.height = towerPassive.getHeight();
+		this.width = towerPassive.getWidth();
+        setPreferredSize(new Dimension(width,height));
+        this.setBounds(pos.getX(), pos.getY(), width, height);
+        addMouseListener(this);
 
-			gS.add(this);
-			gS.setComponentZOrder(this,0);
-
-			setVisible(true);
-		
-		addMouseListener(new MouseAdapter() {
-	        public void mouseClicked(MouseEvent e) {
-	        	if(menuOpen) {
-	        	closePlacementMenu();
-	        	menuOpen = false;
-	        	}else{
-	            System.out.println("Image clicked!");
-	            openPlacementMenu();
-	            menuOpen = true;
-	        	}
-	        }
-	    });
 		initPlacementMenu();
 	}
 	
@@ -119,10 +107,44 @@ public abstract class Tower extends JPanel  {
 	public boolean getStatus() {
 		return isFiring;
 	}
+	public void paintComponent(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.drawImage(towerPassive, pos.getX(), pos.getY(), null);
+		for (PlacementMenu PlacementMenu : pMenu) {
+			PlacementMenu.paintComponent(g2d);
+		}
+        this.setBounds(pos.getX(), pos.getY(), width, height);
+		g2d.dispose();
+	}
 	@Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(towerPassive, pos.getX(), pos.getY(), null);
-        System.out.println("d");
+    public void mouseClicked(MouseEvent e) {
+        if (menuOpen) {
+            closePlacementMenu();
+            menuOpen = false;
+        } else {
+            System.out.println("Image clicked!");
+            openPlacementMenu();
+            menuOpen = true;
         }
+    }
+    
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // Handle mouse entered event if needed
+    }
+    
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // Handle mouse exited event if needed
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // Handle mouse pressed event if needed
+    }
+    
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // Handle mouse released event if needed
+    }
 }

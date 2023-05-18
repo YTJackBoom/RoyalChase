@@ -18,13 +18,11 @@ import javax.swing.JPanel;
 
 import basics.GameScreen;
 import basics.GameWindow;
-import basics.Status;
 
 public class Enemy extends GameObject {
 	private File enemyGifFile;
 	private ImageIcon enemyGif;
 	private JLabel enemyLabel;
-	private Status status;
 	private Coordinate pos;
 	private JPanel gS;
 	private String imgP;
@@ -34,9 +32,8 @@ public class Enemy extends GameObject {
 	private int height;
 	
 	
-	public Enemy(GameScreen gS, Coordinate pos, int width, int height) {
+	public Enemy(JPanel gS, Coordinate pos, int width, int height) {
 		super(gS, pos, width, height,0,0);
-		status = Status.OK;
 		this.pos = pos;
 		this.gS = gS;
 		this.width = width;
