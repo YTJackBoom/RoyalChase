@@ -21,11 +21,10 @@ public class ActionManager {
 	private ArrayList<Coordinate> pC;//pathCoordinates
 	private GameScreen gS;
 	
-	public ActionManager(GameScreen gS, ArrayList<Tower> towerEntityList, ArrayList<Enemy> enemyList, ArrayList<Projectile> projectileList, ArrayList<Coordinate> pathCoordinates) {
+	public ActionManager( ArrayList<Tower> towerEntityList, ArrayList<Enemy> enemyList, ArrayList<Projectile> projectileList, ArrayList<Coordinate> pathCoordinates) {
 		tEL = towerEntityList;
 		eL = enemyList;
 		pC = pathCoordinates;
-		this.gS  = gS;
 		
 		t = new Timer(10, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

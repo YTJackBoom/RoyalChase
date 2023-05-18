@@ -30,6 +30,7 @@ public class GameScreen extends JPanel implements MouseListener, KeyListener { /
 	private final Dimension prefSize = new Dimension(1920, 1080); // Die Dimension des Spielfeldes k�nnte auch anders
 																// gew�hlt werden...
 	private GameWindow gW;
+	private Render render;
 	
 	private Timer t;
 	private Cursor c;
@@ -38,49 +39,39 @@ public class GameScreen extends JPanel implements MouseListener, KeyListener { /
 	
 	private BufferedImage mapImage;
 	
-	private Status mapIoStatus;
-
 	private boolean isStoped;
 
 	//Player- und Shot-Variablen
 	
 	public GameScreen(GameWindow gW) {
 		this.gW=gW;
+		initMap(1);
+		render = new Render(this,map);
 		setLayout(null);
 		setFocusable(true);
 		setPreferredSize(prefSize);
+		gW.add(this);
+		setVisible(true);
 
 		initGame(); // zum Erstellen der Oberfl�che (Ausgangszustand)
 		startGame(); // Starten des Timers. Dieser ruft die Methode doOnTick() auf, in der die
-						// Ver�nderungen passieren.
-
+	
 	}
 
 	//Erstellen des Spielers und festlegen der Spielervariablen	
 	
 	private void initMap(int mapNum) {
-/*			mapIoStatus = Status.OK;
-		try {
-			mapImage = ImageIO.read(mapImgFile);
-		} catch (IOException e) {
-			mapIoStatus = Status.ERR; // enum "edit"
-			System.out.println(e);
-		}
-		*/
-		map = new Map(mapIoStatus, mapNum, this);
+		map = new Map(mapNum, this);
 	}			
 	
 	private void initGame() {
 
 		
 		
-		initMap(1);
 		addMouseListener(this);
 		
-		//Registrieren des KeyListeners
 		addKeyListener(this);
 
-		// Mauszeiger wird zu Fadenkreuz
 		c = new Cursor(Cursor.CROSSHAIR_CURSOR);
 		this.setCursor(c);
 
@@ -91,16 +82,6 @@ public class GameScreen extends JPanel implements MouseListener, KeyListener { /
 		});
 
 	}
-	/*private void initButtons() {
-		JButton myButton = new JButton("Click me");
-        myButton.addActionListener(new MyButtonListener());
-        add(myButton);
-        
-        gW.setDefaultCloseOperation(gW.EXIT_ON_CLOSE);
-        setSize(300, 200);
-        setVisible(true);
-	}
-*/
 	private void startGame() {
 		t.start();
 	}
@@ -118,17 +99,16 @@ public class GameScreen extends JPanel implements MouseListener, KeyListener { /
 	private void doOnTick() {
 		repaint();
 	}
-
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.drawString("Score: ", 5, 10);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if (t.isRunning()) {
-		map.paintComponent(g);	
-
+		//map.paintComponent(g);
+			render.render(g);
 		} else {
 			
 		

@@ -29,7 +29,6 @@ import towers.TowerFoundation;
 
 public class Map extends JPanel {
 	private BufferedImage mapImage;
-	private Status mapIoStatus;
 	private int mapNum;
 	private ImageIcon clickableImg;
 	
@@ -44,14 +43,14 @@ public class Map extends JPanel {
 	private ArrayList<Coordinate> pathCoordinates;
 	private ArrayList<Coordinate> towerFoundationsList;
 	
-	public Map(Status status,int mapNum,GameScreen gS) { //number für nummer der map
-		mapIoStatus = status;
+	public Map(int mapNum,JPanel gS) { //number für nummer der map
 		this.mapNum=mapNum;
 		this.gS = gS;
 		iA = new ImageAnalyser(getPMapFile());
 		pathCoordinates = iA.imgToPath();
 		towerFoundationsList = iA.imgToFoundList();
-		gS.add(this);
+		setLayout(null);
+		setPreferredSize(gS.getPreferredSize());
 		setVisible(true);
 		
 		initTowerFoundations();
@@ -59,13 +58,12 @@ public class Map extends JPanel {
 		
 		enemyList.add(new Enemy(gS, new Coordinate(500,500), 480,350));
 		
-		mMan = new ActionManager(gS,towerEntityList, enemyList, projectileList,pathCoordinates);
+		mMan = new ActionManager(towerEntityList, enemyList, projectileList,pathCoordinates);
 		}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
 		
 		Graphics2D g2d = (Graphics2D) g;	
 		try {
@@ -74,7 +72,7 @@ public class Map extends JPanel {
 			System.out.println(e);
 		}
 		g2d.drawImage(mapImage,0,0, null);
-		repaintTowerEntities();		
+		//repaintTowerEntities(g);		
 	}
 	
 	public void initTowerFoundations() {
@@ -90,10 +88,13 @@ public class Map extends JPanel {
 	public File getMapFile() {
 		return new File("res/Map/BackgroundMaps/Map"+mapNum+".jpg");
 	}
-	public void repaintTowerEntities() {
+	public void repaintTowerEntities(Graphics g) {
 		for(Tower Tower : towerEntityList) {
 			Tower.refresh();
 		}
+	}
+	public ArrayList<Tower> getTowerEntityList() {
+		return towerEntityList;
 	}
 	
 		

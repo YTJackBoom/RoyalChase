@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 import basics.GameScreen;
 import basics.GameWindow;
-import basics.Status;
 import gameObjects.Coordinate;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
@@ -24,7 +23,6 @@ public class TowerFoundation extends Tower {
 	private File towerFoundImgFile;
 	private ImageIcon towerFoundImg;
 	private JLabel towerFoundLabel;
-	private Status status;
 	private Coordinate pos;
 	private JPanel gS;
 	private int arrayPos;
@@ -38,7 +36,6 @@ public class TowerFoundation extends Tower {
 	
 	public TowerFoundation(JPanel gS,Coordinate pos, int width, int height, ArrayList towerEntityList,int arrayPos) {
 		super(gS ,pos, width, height, 0, towerEntityList, arrayPos, getBufferedImage());
-		status = Status.OK;
 		this.pos = pos;
 		this.gS = gS;
 		this.towerEntityList = towerEntityList;
@@ -68,7 +65,7 @@ public class TowerFoundation extends Tower {
 		
 	}
 	public void refresh() {
-		super.revalidate();
+	//	super.revalidate();
 		super.repaint();
 	}
 	public static BufferedImage getBufferedImage() {

@@ -20,17 +20,16 @@ public class GameWindow extends JFrame{
 		
 		//Spielfeld erzeugen
 		gamescreen = new GameScreen(this);		
-		
+		pack();  //Ideale Gr��e berechnen
+
 		registerWindowListener();    // WindowListener registrieren (z.B. Schlie�en des Fensters)
 		
-		add(gamescreen);  //Hinzuf�gen des Spielfeldes zum SpielFenster ; (add() erben alle von Container)
-		pack();  //Ideale Gr��e berechnen
-		
+		setLayout(null);
 		this.setTitle("s Ball");
-		this.setLocation(10,10); //Linke obere Fensterecke festlegen
+		this.setLocation(0,0); //Linke obere Fensterecke festlegen
 		this.setResizable(false);
 		this.setVisible(true);
-		
+
 		repaint();
 	}	
 

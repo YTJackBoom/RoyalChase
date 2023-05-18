@@ -1,5 +1,6 @@
 package towers;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -43,15 +44,11 @@ public abstract class Tower extends JPanel  {
 		this.aPos = ArrayPos;
 		range = 100;
 		this.towerPassive = towerPassive;
-		//switch (type) {
-		//case 1: 
-		//	towerPassive = new ImageIcon(imgP1);
-		//	tLabel = new JLabel(towerPassive);
+		height = towerPassive.getHeight();
+		width = towerPassive.getWidth();
 			setBounds(pos.getX(),pos.getY(),width,height);
-
+		//	setPreferredSize(new Dimension(width, height));
 			gS.add(this);
-			gS.setComponentZOrder(this,0);
-
 			setVisible(true);
 		
 		addMouseListener(new MouseAdapter() {
@@ -120,9 +117,11 @@ public abstract class Tower extends JPanel  {
 		return isFiring;
 	}
 	@Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void paintComponent(Graphics g) {
+		super.paintComponent(g);
         g.drawImage(towerPassive, pos.getX(), pos.getY(), null);
-        System.out.println("d");
+        for(PlacementMenu PlacementMenu : pMenu) {
+        	PlacementMenu.paintComponent(g);
+        }
         }
 }
