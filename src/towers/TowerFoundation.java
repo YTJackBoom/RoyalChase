@@ -1,8 +1,6 @@
 package towers;
 
 import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,11 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import basics.GameScreen;
-import basics.GameWindow;
 import gameObjects.Coordinate;
-import gameObjects.Enemy;
-import gameObjects.GameObject;
+import enemy.Enemy;
 import uiElements.PlacementMenu;
 
 public class TowerFoundation extends Tower {

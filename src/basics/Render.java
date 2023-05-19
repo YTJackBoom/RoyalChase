@@ -6,16 +6,13 @@ import java.util.ArrayList;
 import towers.Tower;
 
 public class Render {
-	private GameScreen gameScreen;
 	private Map currentMap;
-	
-	public Render (GameScreen gameScreen, Map currentMap) {
-		this.gameScreen = gameScreen;
+	public Render (Game game, Map currentMap) {
+//		this.gameScreen = gameScreen;
 		this.currentMap = currentMap;
 	}
 	
 	public void render (Graphics g) {
-		
 		switch(GameStates.gameState) {
 		case MENU:
 			renderMenu(g);
@@ -36,7 +33,8 @@ public class Render {
 		for(Tower Tower : tEL) {
 			Tower.paintComponent(g);
 		}
-		
+
+
 	}
 	
 }

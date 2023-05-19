@@ -1,12 +1,19 @@
 package scenes;
 
 import basics.Game;
+import controllers.EnemyController;
+import controllers.TowerController;
 
 import java.awt.*;
 
 public class Playing extends GameScenes implements SceneMethods{
+    private EnemyController enemyController;
+    private TowerController towerController;
     public Playing(Game game) {
         super(game);
+
+        enemyController = new EnemyController(this);
+        towerController = new TowerController(this;
     }
 
     @Override

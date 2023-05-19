@@ -1,19 +1,14 @@
 package projectiles;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
-import basics.GameScreen;
 import gameObjects.Coordinate;
-import gameObjects.Enemy;
+import enemy.Enemy;
 
 public class Arrow extends Projectile {
 	private Coordinate pos;

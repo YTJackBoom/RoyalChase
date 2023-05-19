@@ -12,7 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Game extends JFrame  {
-
+        private final int fps = 60;
+        private final int ups = 120; //updates per second, for the game logic
         private GameScreen gameScreen;
 
         // Classes
@@ -30,17 +31,17 @@ public class Game extends JFrame  {
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
             setResizable(false);
-            setTitle("Your Game");
+            setTitle("Bang Bang");
             add(gameScreen);
             pack();
             setVisible(true);
-
         }
 
 
         private void initClasses() {
-            render = new Render(this);
+
             gameScreen = new GameScreen(this);
+            render = new Render(this,gameScreen.getMap());
             menu = new Menu(this);
             playing = new Playing(this);
             settings = new Settings(this);
@@ -49,14 +50,14 @@ public class Game extends JFrame  {
         }
 
         private void start() { //initialises and starts two timers: one for the game and one for the render(in 60fps)
-            RenderTimer = new Timer(8, new ActionListener() {
+            RenderTimer = new Timer((int)(1000/fps), new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     repaint();
                 }
             });
             RenderTimer.start();
 
-            GameTimer = new Timer(16, new ActionListener() {
+            GameTimer = new Timer((int)(1000/ups), new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     updateGame();
                 }
@@ -79,7 +80,6 @@ public class Game extends JFrame  {
         }
 
         public static void main(String[] args) {
-
             Game game = new Game();
             game.gameScreen.initInputs();
             game.start();

@@ -6,12 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import basics.GameScreen;
 import gameObjects.Coordinate;
-import gameObjects.Enemy;
+import enemy.Enemy;
 
 public class MageTower extends Tower {	
 	private int range = 100;

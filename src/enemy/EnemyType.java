@@ -1,0 +1,5 @@
+package enemy;
+
+public enum EnemyType {
+    SKULL, SKELETON, ZOMBIE, WITCH, WIZARD, SKELETON_KING, ZOMBIE_KING, WITCH_KING, WIZARD_KING;
+}

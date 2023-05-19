@@ -19,7 +19,7 @@ public class GameWindow extends JFrame{
 	public GameWindow() {
 		
 		//Spielfeld erzeugen
-		gamescreen = new GameScreen(this);		
+	//	gamescreen = new GameScreen(this);
 		pack();  //Ideale Gr��e berechnen
 
 		registerWindowListener();    // WindowListener registrieren (z.B. Schlie�en des Fensters)

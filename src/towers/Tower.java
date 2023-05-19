@@ -3,23 +3,18 @@ package towers;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import basics.GameScreen;
 import gameObjects.Coordinate;
-import gameObjects.Enemy;
-import gameObjects.GameObject;
+import enemy.Enemy;
 import uiElements.PlacementMenu;
 
 public abstract class Tower extends JComponent implements MouseListener  {

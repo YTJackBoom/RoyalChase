@@ -1,28 +1,19 @@
 package basics;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import gameObjects.Coordinate;
-import gameObjects.Enemy;
-import gameObjects.GameObject;
-import managers.ActionManager;
+import enemy.Enemy;
+import controllers.EnemyController;
 import projectiles.Projectile;
 import towers.Tower;
 import towers.TowerFoundation;
@@ -36,7 +27,7 @@ public class Map  {
 	private JPanel gS;
 	private ImageAnalyser iA;
 	
-	private ActionManager mMan;
+	private EnemyController mMan;
 	
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	private ArrayList<Projectile> projectileList = new ArrayList<Projectile>();
@@ -59,7 +50,7 @@ public class Map  {
 		
 		enemyList.add(new Enemy(gS, new Coordinate(500,500), 480,350));
 		
-		mMan = new ActionManager(towerEntityList, enemyList, projectileList,pathCoordinates);
+		mMan = new EnemyController(towerEntityList, enemyList, projectileList,pathCoordinates);
 		}
 	
 	
