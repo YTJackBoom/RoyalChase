@@ -90,12 +90,12 @@ public class Map  {
 	}
 	public void repaintTowerEntities(Graphics g) {
 		for(Tower Tower : towerEntityList) {
-			Tower.refresh(g);
+			Tower.paintComponent(g);
 		}
 	}
+
 	public ArrayList<Tower> getTowerEntityList() {
 		return towerEntityList;
 	}
-	
-		
+
 }
