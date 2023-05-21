@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import static basics.GameStates.PLAYING;
 
 public class Game extends JFrame  {
+
         private final int fps = 60;
         private final int ups = 120; //updates per second, for the game logic
         private GameScreen gameScreen;
@@ -52,10 +53,12 @@ public class Game extends JFrame  {
 
         }
 
-        private void start() { //initialises and starts two timers: one for the game and one for the render(in 60fps)
+        private void start() {//initialises and starts two timers: one for the game and one for the render(in 60fps)
+
             RenderTimer = new Timer((int)(1000/fps), new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     repaint();
+                    fpsCounter();
                 }
             });
             RenderTimer.start();
@@ -63,6 +66,7 @@ public class Game extends JFrame  {
             GameTimer = new Timer((int)(1000/ups), new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     updateGame();
+                    //upsCounter();
                 }
             });
             GameTimer.start();
@@ -90,6 +94,9 @@ public class Game extends JFrame  {
         }
 
 
+        public void fpsCounter() { //calculates refreshes per second  and  prints themm
+
+        }
         // Getters and setters
         public Render getRender() {
             return render;
@@ -111,6 +118,7 @@ public class Game extends JFrame  {
         public GameOver getGameOver() {
             return gameOver;
         }
+
 
 
     }

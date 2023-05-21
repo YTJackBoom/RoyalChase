@@ -45,7 +45,7 @@ public class Map  {
 		//setPreferredSize(gS.getPreferredSize());
 		//setVisible(true);
 		
-		initTowerFoundations();
+		//initTowerFoundations();
 		
 		
 		//enemyList.add(new Enemy(gS, new Coordinate(500,500), 480,350));
@@ -65,23 +65,18 @@ public class Map  {
 		//repaintTowerEntities(g);		
 	}
 	
-	public void initTowerFoundations() {
+	/*public void initTowerFoundations() {
 			for (int i= 0;i<towerFoundationsList.size();i++) {
-				towerEntityList.add(new TowerFoundation(gS,towerFoundationsList.get(i),51,50,towerEntityList,i));
+				towerEntityList.add(new TowerFoundation());
 			}
 	}
-	
+	*/
 	public File getPMapFile() { 
 		return new File("res/Map/PathMaps/Path"+mapNum+".bmp");
 		}
 	
 	public File getMapFile() {
 		return new File("res/Map/BackgroundMaps/Map"+mapNum+".jpg");
-	}
-	public void repaintTowerEntities(Graphics g) {
-		for(Tower Tower : towerEntityList) {
-			Tower.paintComponent(g);
-		}
 	}
 
 	public ArrayList<Tower> getTowerEntityList() {

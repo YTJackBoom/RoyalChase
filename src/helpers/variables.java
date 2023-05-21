@@ -63,18 +63,34 @@ public class variables { //class to define different variables for thing
                 default -> 0;
             };
         }
-        public static File getEnemyGifFile(int enemyType) {
+        public static File getEnemyPassiveGifFile(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> new File("res/images/enemies/skull.gif");
-                case SKELETON -> new File("src\\assets\\enemies\\skeleton.png");
-                case ZOMBIE -> new File("src\\assets\\enemies\\zombie.png");
-                case WITCH -> new File("src\\assets\\enemies\\witch.png");
-                case WIZARD -> new File("src\\assets\\enemies\\wizard.png");
-                case SKELETON_KING -> new File("src\\assets\\enemies\\skeleton_king.png");
-                case ZOMBIE_KING -> new File("src\\assets\\enemies\\zombie_king.png");
-                case WITCH_QUEEN -> new File("src\\assets\\enemies\\witch_queen.png");
-                case WIZARD_KING -> new File("src\\assets\\enemies\\wizard_king.png");
+                case SKULL -> new File("res/images/enemies/passive/skull_e_passive.gif");
+                case SKELETON -> new File("res/images/enemies/passive/skeleton_e_passive.gif");
+                case ZOMBIE -> new File("res/images/enemies/passive/zombie_e_passive.gif");
+                case WITCH -> new File("res/images/enemies/passive/witch_e_passive.gif");
+                case WIZARD -> new File("res/images/enemies/passive/wizard_e_passive.gif");
+                case SKELETON_KING -> new File("res/images/enemies/passive/skeleton_king_e_passive.gif");
+                case ZOMBIE_KING -> new File("res/images/enemies/passive/zombie_king_e_passive.gif");
+                case WITCH_QUEEN -> new File("res/images/enemies/passive/witch_queen_e_passive.gif");
+                case WIZARD_KING -> new File("res/images/enemies/passive/wizard_king_e_passive.gif");
                 default -> null;
+
+            };
+        }
+        public static File getEnemyActiveGifFile(int enemyType) {
+            return switch (enemyType) {
+                case SKULL -> new File("res/images/enemies/active/skull_e_active.gif");
+                case SKELETON -> new File("res/images/enemies/active/skeleton_e_active.gif");
+                case ZOMBIE -> new File("res/images/enemies/active/zombie_e_active.gif");
+                case WITCH -> new File("res/images/enemies/active/witch_e_active.gif");
+                case WIZARD -> new File("res/images/enemies/active/wizard_e_active.gif");
+                case SKELETON_KING -> new File("res/images/enemies/active/skeleton_king_e_active.gif");
+                case ZOMBIE_KING -> new File("res/images/enemies/active/zombie_king_e_active.gif");
+                case WITCH_QUEEN -> new File("res/images/enemies/active/witch_queen_e_active.gif");
+                case WIZARD_KING -> new File("res/images/enemies/active/wizard_king_e_active.gif");
+                default -> null;
+
             };
         }
         public static int getEnemySpeed(int enemyType) {
@@ -135,5 +151,50 @@ public class variables { //class to define different variables for thing
 
         }
 
+    }
+    public static class Towers{
+        public static final int Foundation_T = 0;
+        public static final int ARROW_T = 1;
+        public static final int MAGE_T = 2;
+        public static final int ROCKET_T = 3;
+        public static final int SNIP_T = 4;
+        public static final int WIZARD = 5;
+        public static final int SKELETON_KING = 6;
+        public static final int ZOMBIE_KING = 7;
+        public static final int WITCH_QUEEN = 8;
+        public static final int WIZARD_KING = 9;
+        public static File getTowerPassiveGifFile(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> new File("res/images/towers/passive/foundation_t_passive.gif");
+                case ARROW_T -> new File("res/images/towers/passive/arrow_t_passive.gif");
+                case MAGE_T -> new File("res/images/towers/passive/mage_t_passive.gif");
+                case ROCKET_T -> new File("res/images/towers/passive/rocket_t_passive.gif");
+                case SNIP_T -> new File("res/images/towers/passive/snip_t_passive.gif");
+                default -> new File("res/images/towers/passive/foundation_t_passive.gif");
+
+            };
+        }
+        public static File getTowerActiveGifFile(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> new File("res/images/towers/active/foundation_t_active.gif");
+                case ARROW_T -> new File("res/images/towers/active/arrow_t_active.gif");
+                case MAGE_T -> new File("res/images/towers/active/mage_t_active.gif");
+                case ROCKET_T -> new File("res/images/towers/active/rocket_t_active.gif");
+                case SNIP_T -> new File("res/images/towers/active/snip_t_active.gif");
+                default -> new File("res/images/towers/active/foundation_t_active.gif");
+
+            };
+        }
+        public static int getRange(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> 100;
+                case ARROW_T -> 0;
+                case MAGE_T -> 0;
+                case ROCKET_T -> 0;
+                case SNIP_T -> 0;
+                default -> 0;
+
+            };
+        }
     }
 }

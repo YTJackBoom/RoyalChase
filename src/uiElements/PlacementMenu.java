@@ -51,7 +51,7 @@ public class PlacementMenu extends JPanel {
 	    public void mouseClicked(MouseEvent e) {
 	       	if(isVisible()) {
 	           System.out.println("Image clicked!");
-	           generateTower();
+	           //generateTower();
 	        }
 	        }
 	    });
@@ -59,7 +59,7 @@ public class PlacementMenu extends JPanel {
 	/*public void setVisible(boolean visbility) {
 		setVisible(visbility);
 	}*/
-	public void generateTower() {
+	/*public void generateTower() {
 		switch(type) {
 		case  1:
 			tEL.set(aPos, new ArrowTower(sPanel, towerFoundPos, type,tEL,aPos ));
@@ -74,9 +74,6 @@ public class PlacementMenu extends JPanel {
 			tEL.set(aPos, new SnipTower(sPanel, towerFoundPos, type,tEL,aPos ));
 			break;
 		}
-			
-		sObject.vanish();
-		//System.out.println("hi");
 	}
 	public void vanish() {
 	//	pMenuLabel.setVisible(false);
@@ -91,5 +88,5 @@ public class PlacementMenu extends JPanel {
 	        g.drawImage(pMenuImg, pos.getX(), pos.getY(), null);
 	    }
 	 }
-		
+	*/
 }

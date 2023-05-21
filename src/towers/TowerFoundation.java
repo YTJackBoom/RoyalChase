@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controllers.TowerController;
 import gameObjects.Coordinate;
 import enemy.Enemy;
 import uiElements.PlacementMenu;
@@ -22,67 +23,22 @@ public class TowerFoundation extends Tower {
 	private Coordinate pos;
 	private JPanel gS;
 	private int arrayPos;
-	private  int range=900;
-	
+	private int range = 900;
+
 	private JPanel menuPanel;
 	private PlacementMenu[] pMenu;
 	private ArrayList towerEntityList;
-	
+
 	private boolean menuOpen;
-	
-	public TowerFoundation(JPanel gS,Coordinate pos, int width, int height, ArrayList towerEntityList,int arrayPos) {
-		super(gS ,pos, width, height, 0, towerEntityList, arrayPos, getBufferedImage());
-		this.pos = pos;
-		this.gS = gS;
-		this.towerEntityList = towerEntityList;
-		this.arrayPos = arrayPos;
-		super.range = 100;
 
-		
-	}
-	
-	@Override
-	public void fire() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void changeStatus(boolean status) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void setTarget(Enemy target) {
-		// TODO Auto-generated method stub
-		
-	}
-	public void setPos(Coordinate pos) {
-		// TODO Auto-generated method stub
-		
-	}
-	public void refresh(Graphics g) {
-	//	super.revalidate();
-		super.paintComponent(g);
-	}
-	public static BufferedImage getBufferedImage() {
-		try {
-			return ImageIO.read(new File("res/images/black square.png"));
-		} catch (IOException e) {
-			System.out.println(e);
-			System.out.print(" Error in PlacementMenu");
-		}
-		return null;
+	public TowerFoundation(TowerController towerController, Coordinate pos, int type) {
+		super(towerController,pos, type);
 	}
 
-	@Override
-	public void refresh() {
-		// TODO Auto-generated method stub
-		
-	}
 
-		
 	
-	
+
+
 }
 
 

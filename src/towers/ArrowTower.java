@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import controllers.TowerController;
 import gameObjects.Coordinate;
 import enemy.Enemy;
 import projectiles.Arrow;
@@ -21,36 +22,11 @@ public class ArrowTower extends Tower {
 	private boolean isLoaded;
 	private boolean isFiring;
 	private Enemy target;
-	private JPanel gS;
 	private ArrayList<Arrow> pL = new ArrayList<Arrow>(); // ArrayList für projectile hier: arrows
 
-	public ArrowTower(JPanel sPanel, Coordinate pos, int type, ArrayList towerEntityList, int ArrayPos) {
-		super(sPanel, pos, 35, 35, type, towerEntityList, ArrayPos, getBufferedImage());
-		super.range = 500;
-		this.gS = sPanel;
-		/*
-		 * towerLabel = new JLabel(towerPassive);
-		 * towerLabel.setBounds(pos.getX(),pos.getY(),60,60);
-		 * 
-		 * gS.add(towerLabel); towerLabel.setVisible(true);
-		 
-		t = new Timer(17, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//System.out.println(isLoaded);
-				if (counter - 100 == 0) {
-					isLoaded = true;
-					counter = 0;
-				} else
-					counter++;
-				fire();
-				reloadpL();
-				// System.out.println("isFirin "+isFiring);
-			}
-		});
-		t.stop();
-	*/
+	public ArrowTower(TowerController towerController, Coordinate pos, int type) {
+		super(towerController,pos, type);
 	}
-	
 	public void refresh() {
 		if (counter - cooldown == 0) {
 			isLoaded = true;
@@ -61,10 +37,10 @@ public class ArrowTower extends Tower {
 		reloadpL();
 	}
 
-	@Override
+
 	public void fire() {
 		if (isLoaded && isFiring) {
-			pL.add(new Arrow(gS, new Coordinate(getPos().getX(), getPos().getY()), target)); // target mitgabe, um
+			//pL.add(new Arrow(gS, new Coordinate(getPos().getX(), getPos().getY()), target)); // target mitgabe, um
 																								// target zu damagen
 			isLoaded = false;
 		}
@@ -107,15 +83,6 @@ public class ArrowTower extends Tower {
 	public void setPos(Coordinate pos) {
 		// TODO Auto-generated method stub
 		
-	}
-	public static BufferedImage getBufferedImage() {
-		try {
-			return ImageIO.read(new File(imgP2));
-		} catch (IOException e) {
-			System.out.println(e);
-			System.out.print(" Error in ArrowTower");
-		}
-		return null;
 	}
 
 }

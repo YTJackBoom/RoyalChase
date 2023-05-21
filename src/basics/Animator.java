@@ -20,6 +20,7 @@ public class Animator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+       // System.out.println(imageArray.length);
     }
 
     public void splitGifIntoFrames() throws IOException {
@@ -52,6 +53,15 @@ public class Animator {
         } else {
             currentImageIndex = 0;
         }
+       // System.out.println(currentImageIndex);
         return imageArray[currentImageIndex];
+    }
+
+    public int getWidth(){
+        return imageArray[0].getWidth();
+    }
+
+    public int getHeight() {
+        return imageArray[0].getHeight();
     }
 }

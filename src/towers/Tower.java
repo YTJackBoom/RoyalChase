@@ -13,45 +13,47 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import basics.Animator;
+import controllers.TowerController;
 import gameObjects.Coordinate;
 import enemy.Enemy;
+import helpers.variables;
 import uiElements.PlacementMenu;
 
 public class Tower  {
-	protected BufferedImage towerPassive;
-	private JLabel tLabel;
+	protected Animator passiveAnimator, activeAnimator;
 	private  boolean menuOpen;
-	private JPanel gS;
 	private Coordinate pos;
 	private PlacementMenu[] pMenu;
-	private ArrayList tEL;
-	private int aPos;
 	protected int range;
 	private Enemy target;
-	private boolean isFiring;
+	private boolean isActive;
+	private int type;
 	private int width, height;
 	
-	protected final static String imgP1 = "res/images/black square.png";
-	protected final static String imgP2 = "res/images/red square.png";
-	protected final static String imgP3 = "res/images/blue square.png";
-	protected final static String imgP4 = "res/images/yellow square.png";
-	protected final static String imgP5 = "res/images/green square.png";
-			
-	public Tower(JPanel  gS, Coordinate pos, int width, int height, int type, ArrayList towerEntityList, int ArrayPos,BufferedImage towerPassive) {
-		this.tEL = towerEntityList;
-		this.gS = gS;
-		this.pos = pos;
-		this.aPos = ArrayPos;
-		range = 100;
-		this.towerPassive = towerPassive;
-		this.height = towerPassive.getHeight();
-		this.width = towerPassive.getWidth();
 
-		initPlacementMenu();
+			
+	public Tower(TowerController towerController, Coordinate pos, int type) {
+		this.type = type;
+		this.pos = pos;
+		initAnimators();
+		initVariables();
+
+
+	//	initPlacementMenu();
 	}
 	
-	
-	public void initPlacementMenu() {
+
+	public void initAnimators() {
+		passiveAnimator = new Animator(variables.Towers.getTowerPassiveGifFile(type));
+		activeAnimator = new Animator(variables.Towers.getTowerActiveGifFile(type));
+	}
+	public void initVariables() {
+		range = variables.Towers.getRange(type);
+		this.height = activeAnimator.getHeight();
+		this.width = activeAnimator.getWidth();
+	}
+	/*public void initPlacementMenu() {
 		pMenu = new PlacementMenu[4];
 		pMenu[0] = new PlacementMenu(gS,1,new File("res/images/black square small.png"), new Coordinate(pos.getX()-40, pos.getY()),tEL,aPos,this);
 		pMenu[1] = new PlacementMenu(gS,2,new File("res/images/black square small.png"), new Coordinate(pos.getX()-85, pos.getY()),tEL,aPos,this);
@@ -83,9 +85,9 @@ public class Tower  {
 	public int getRange() {
 		return range;
 	}
-
+	*/
 	public void changeStatus(boolean status) {
-		isFiring = status;
+		isActive = status;
 	}
 
 	public void setTarget(Enemy target) {
@@ -95,50 +97,20 @@ public class Tower  {
 	public Coordinate getPos() {
 		return pos;
 	}
-	
-	public boolean getFiring() {
-		return isFiring;
+
+	public boolean isActive() {
+		return isActive;
 	}
-	public boolean getStatus() {
-		return isFiring;
+
+	public Animator getActiveAnimator() {
+		return activeAnimator;
 	}
-	public void paintComponent(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.drawImage(towerPassive, pos.getX(), pos.getY(), null);
-		for (PlacementMenu PlacementMenu : pMenu) {
-			PlacementMenu.paintComponent(g2d);
-		}
-		g2d.dispose();
+
+	public Animator getPassiveAnimator() {
+		return passiveAnimator;
 	}
-	@
-    public void mouseClicked(MouseEvent e) {
-        if (menuOpen) {
-            closePlacementMenu();
-            menuOpen = false;
-        } else {
-            System.out.println("Image clicked!");
-            openPlacementMenu();
-            menuOpen = true;
-        }
-    }
-    
 
-    public void mouseEntered(MouseEvent e) {
-        // Handle mouse entered event if needed
-    }
-    
-
-    public void mouseExited(MouseEvent e) {
-        // Handle mouse exited event if needed
-    }
-    
-
-    public void mousePressed(MouseEvent e) {
-        // Handle mouse pressed event if needed
-    }
-    
-
-    public void mouseReleased(MouseEvent e) {
-        // Handle mouse released event if needed
-    }
+	public int getType() {
+		return type;
+	}
 }
