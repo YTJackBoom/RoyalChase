@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 import basics.GameScreen;
 
-public abstract class GameObject {
+public abstract class  GameObject {
  private int height;
  private int width;
  private int range;

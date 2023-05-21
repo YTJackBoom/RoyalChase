@@ -17,7 +17,7 @@ import gameObjects.Coordinate;
 import enemy.Enemy;
 import uiElements.PlacementMenu;
 
-public abstract class Tower extends JComponent implements MouseListener  {
+public class Tower  {
 	protected BufferedImage towerPassive;
 	private JLabel tLabel;
 	private  boolean menuOpen;
@@ -27,6 +27,7 @@ public abstract class Tower extends JComponent implements MouseListener  {
 	private ArrayList tEL;
 	private int aPos;
 	protected int range;
+	private Enemy target;
 	private boolean isFiring;
 	private int width, height;
 	
@@ -45,9 +46,6 @@ public abstract class Tower extends JComponent implements MouseListener  {
 		this.towerPassive = towerPassive;
 		this.height = towerPassive.getHeight();
 		this.width = towerPassive.getWidth();
-        setPreferredSize(new Dimension(width,height));
-        this.setBounds(pos.getX(), pos.getY(), width, height);
-        addMouseListener(this);
 
 		initPlacementMenu();
 	}
@@ -85,13 +83,15 @@ public abstract class Tower extends JComponent implements MouseListener  {
 	public int getRange() {
 		return range;
 	}
-	
-	
-	public abstract void fire();
-	public abstract void refresh();
-	
-	public abstract void changeStatus(boolean status);
-	public abstract void setTarget(Enemy target);
+
+	public void changeStatus(boolean status) {
+		isFiring = status;
+	}
+
+	public void setTarget(Enemy target) {
+		this.target = target;
+	}
+
 	public Coordinate getPos() {
 		return pos;
 	}
@@ -108,10 +108,9 @@ public abstract class Tower extends JComponent implements MouseListener  {
 		for (PlacementMenu PlacementMenu : pMenu) {
 			PlacementMenu.paintComponent(g2d);
 		}
-        this.setBounds(pos.getX(), pos.getY(), width, height);
 		g2d.dispose();
 	}
-	@Override
+	@
     public void mouseClicked(MouseEvent e) {
         if (menuOpen) {
             closePlacementMenu();
@@ -123,22 +122,22 @@ public abstract class Tower extends JComponent implements MouseListener  {
         }
     }
     
-    @Override
+
     public void mouseEntered(MouseEvent e) {
         // Handle mouse entered event if needed
     }
     
-    @Override
+
     public void mouseExited(MouseEvent e) {
         // Handle mouse exited event if needed
     }
     
-    @Override
+
     public void mousePressed(MouseEvent e) {
         // Handle mouse pressed event if needed
     }
     
-    @Override
+
     public void mouseReleased(MouseEvent e) {
         // Handle mouse released event if needed
     }

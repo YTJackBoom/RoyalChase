@@ -48,9 +48,8 @@ public class Map  {
 		initTowerFoundations();
 		
 		
-		enemyList.add(new Enemy(gS, new Coordinate(500,500), 480,350));
-		
-		mMan = new EnemyController(towerEntityList, enemyList, projectileList,pathCoordinates);
+		//enemyList.add(new Enemy(gS, new Coordinate(500,500), 480,350));
+
 		}
 	
 	

@@ -11,6 +11,8 @@ import scenes.Settings;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static basics.GameStates.PLAYING;
+
 public class Game extends JFrame  {
         private final int fps = 60;
         private final int ups = 120; //updates per second, for the game logic
@@ -35,13 +37,14 @@ public class Game extends JFrame  {
             add(gameScreen);
             pack();
             setVisible(true);
+            GameStates.gameState = PLAYING;
         }
 
 
         private void initClasses() {
 
             gameScreen = new GameScreen(this);
-            render = new Render(this,gameScreen.getMap());
+            render = new Render(this);
             menu = new Menu(this);
             playing = new Playing(this);
             settings = new Settings(this);

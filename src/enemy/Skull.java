@@ -1,8 +1,11 @@
 package enemy;
 
-public class Skull extends Enemy{
-    @Override
-    public void die() {
+import controllers.EnemyController;
+import gameObjects.Coordinate;
 
+public class Skull extends Enemy{
+    public Skull(EnemyController enemyController, Coordinate pos) {
+        super(enemyController, pos, 0);
     }
+
 }

@@ -13,6 +13,10 @@ public class Settings extends GameScenes implements SceneMethods {
     public void render(Graphics g) {
 
     }
+    @Override
+    public void update(){
+
+    }
 
     @Override
     public void mouseClicked(int x, int y) {

@@ -7,18 +7,18 @@ import towers.Tower;
 
 public class Render {
 	private Map currentMap;
-	public Render (Game game, Map currentMap) {
-//		this.gameScreen = gameScreen;
-		this.currentMap = currentMap;
+	private Game game;
+	public Render (Game game) {
+		this.game = game;
 	}
 	
 	public void render (Graphics g) {
 		switch(GameStates.gameState) {
 		case MENU:
-			renderMenu(g);
 			break;
 		case PLAYING:
-			
+			game.getPlaying().render(g);
+
 			break;
 		case SETTINGS:
 			
@@ -26,15 +26,5 @@ public class Render {
 		
 		}
 	}
-	
-	public void renderMenu(Graphics g) {
-		ArrayList<Tower> tEL = currentMap.getTowerEntityList();  //weiter unten wird als letztes gepaintet
-		currentMap.paintComponent(g);
-		for(Tower Tower : tEL) {
-			Tower.paintComponent(g);
-		}
 
-
-	}
-	
 }

@@ -1,7 +1,6 @@
 package uiElements;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -10,15 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.plaf.synth.SynthPopupMenuUI;
 
-import basics.GameScreen;
-import basics.GameWindow;
 import gameObjects.Coordinate;
-import gameObjects.GameObject;
 import towers.*;
 
 public class PlacementMenu extends JPanel {

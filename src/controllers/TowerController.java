@@ -2,16 +2,20 @@ package controllers;
 
 import enemy.Enemy;
 import gameObjects.GameObject;
+import scenes.Playing;
 import towers.Tower;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class TowerController {
     private ArrayList<Tower> tEL;
+    private Playing playing;
     private ArrayList<Enemy> eL;
-    public TowerController(ArrayList<Tower> towerEntityList, ArrayList<Enemy> enemyList) {
-        tEL = towerEntityList;
-        eL = enemyList;
+    public TowerController(Playing playing) {
+        tEL = new ArrayList<Tower>();
+        eL = playing.getEnemyController().getEnemyList();
+        this.playing = playing;
 
     }
 
@@ -33,10 +37,14 @@ public class TowerController {
     }
 
 
-    public boolean checkRange(Tower tower, GameObject object2) {
+    public boolean checkRange(Tower tower, Enemy object2) {
         //	System.out.println(Math.abs(object2.getPos().getY()-object1.getPos().getY()));
         if(Math.abs(object2.getPos().getY()-tower.getPos().getY())<=tower.getRange()&&Math.abs(object2.getPos().getX()-tower.getPos().getX())<=tower.getRange()) {
             return true;
         }else return false;
+    }
+    public void render(Graphics g) {
+        for (Tower tower : tEL) {
+        }
     }
 }
