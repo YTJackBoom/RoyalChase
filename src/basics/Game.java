@@ -38,7 +38,7 @@ public class Game extends JFrame  {
             add(gameScreen);
             pack();
             setVisible(true);
-            GameStates.gameState = PLAYING;
+         //   GameStates.gameState = PLAYING;
         }
 
 

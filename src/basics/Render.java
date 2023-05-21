@@ -15,10 +15,10 @@ public class Render {
 	public void render (Graphics g) {
 		switch(GameStates.gameState) {
 		case MENU:
+			game.getMenu().render(g);
 			break;
 		case PLAYING:
 			game.getPlaying().render(g);
-
 			break;
 		case SETTINGS:
 			
