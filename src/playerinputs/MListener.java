@@ -27,10 +27,12 @@ public class MListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        switch (GameStates.gameState) {
-            case MENU -> game.getMenu().mousePressed(e.getX(), e.getY());
-            case PLAYING -> game.getPlaying().mousePressed(e.getX(), e.getY());
-            case SETTINGS -> game.getSettings().mousePressed(e.getX(), e.getY());
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            switch (GameStates.gameState) {
+                case MENU -> game.getMenu().mousePressed(e.getX(), e.getY());
+                case PLAYING -> game.getPlaying().mousePressed(e.getX(), e.getY());
+                case SETTINGS -> game.getSettings().mousePressed(e.getX(), e.getY());
+            }
         }
     }
 

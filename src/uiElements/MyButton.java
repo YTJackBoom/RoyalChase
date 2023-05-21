@@ -71,4 +71,8 @@ public class MyButton {
 		this.mouseHover = false;
 		this.mousePressed = false;
 	}
+
+	public String getText() {
+		return text;
+	}
 }
