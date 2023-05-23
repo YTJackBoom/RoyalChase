@@ -1,16 +1,11 @@
 package towers;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import controllers.TowerController;
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 import enemy.Enemy;
 import projectiles.Arrow;
 

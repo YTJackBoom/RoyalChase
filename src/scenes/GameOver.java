@@ -42,4 +42,6 @@ public class GameOver extends GameScenes implements SceneMethods{
     public void mouseDragged(int x, int y) {
 
     }
+
+
 }

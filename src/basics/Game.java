@@ -38,7 +38,7 @@ public class Game extends JFrame  {
             add(gameScreen);
             pack();
             setVisible(true);
-         //   GameStates.gameState = PLAYING;
+         // GameStates.gameState = PLAYING;
         }
 
 
@@ -92,9 +92,17 @@ public class Game extends JFrame  {
             game.start();
 
         }
+        public void togglePause() {
+            if (RenderTimer.isRunning()) {
+                RenderTimer.stop();
+                GameTimer.stop();
+            } else {
+                RenderTimer.start();
+                GameTimer.start();
+            }
+        }
 
-
-        public void fpsCounter() { //calculates refreshes per second  and  prints themm
+        public void fpsCounter() { //calculates refreshes per second  and  prints them
 
         }
         // Getters and setters

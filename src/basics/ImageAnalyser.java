@@ -4,14 +4,11 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 
 public class ImageAnalyser {
 	private ArrayList<Coordinate> pathCoordinates;

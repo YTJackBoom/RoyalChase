@@ -1,6 +1,5 @@
 package uiElements;
 
-import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -12,7 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 import towers.*;
 
 public class PlacementMenu extends JPanel {

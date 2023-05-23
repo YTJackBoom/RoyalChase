@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import enemy.*;
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 import scenes.Playing;
 
 public class EnemyController {

@@ -1,30 +1,36 @@
 package controllers;
 
 import enemy.Enemy;
-import gameObjects.Coordinate;
-import gameObjects.GameObject;
+import helpers.Coordinate;
 import helpers.variables;
 import scenes.Playing;
 import towers.Tower;
+import towers.TowerFoundation;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class TowerController {
-    private ArrayList<Tower> tEL;
+    private ArrayList<Tower> towerEntityList;
     private Playing playing;
     private ArrayList<Enemy> eL;
     public TowerController(Playing playing) {
-        tEL = new ArrayList<Tower>();
+        towerEntityList = new ArrayList<Tower>();
         eL = playing.getEnemyController().getEnemyList();
         this.playing = playing;
 
+        initTowers(playing.getImageAnalyser().imgToFoundList());
     }
 
 
 
+    public void initTowers(ArrayList<Coordinate> foundList) {
+        for (Coordinate coordinate : foundList) {
+            towerEntityList.add(new TowerFoundation(this, coordinate));
+        }
+    }
     public void checkTELStatus() {
-        for (Tower tower : tEL) {
+        for (Tower tower : towerEntityList) {
             for (Enemy enemy : eL) {
                 if (checkRange(tower, enemy)) {
                     tower.changeStatus(true);
@@ -48,8 +54,8 @@ public class TowerController {
         }else return false;
     }
     public void render(Graphics g) {
-        if (tEL != null) {
-            for (Tower tower : tEL) {
+        if (towerEntityList != null) {
+            for (Tower tower : towerEntityList) {
                 if(tower.isActive()) {
                     g.drawImage(tower.getActiveAnimator().getCurrentImage(), tower.getPos().getX(), tower.getPos().getY(), null);
                 } else {

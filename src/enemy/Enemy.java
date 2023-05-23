@@ -1,11 +1,9 @@
 package enemy;
 
 import controllers.EnemyController;
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 import basics.Animator;
 import helpers.variables;
-
-import java.io.File;
 
 public class Enemy {
 	private Coordinate pos;

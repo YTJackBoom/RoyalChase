@@ -1,21 +1,8 @@
 package towers;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import basics.Animator;
 import controllers.TowerController;
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 import enemy.Enemy;
 import helpers.variables;
 import uiElements.PlacementMenu;

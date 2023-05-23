@@ -42,4 +42,6 @@ public class Settings extends GameScenes implements SceneMethods {
     public void mouseDragged(int x, int y) {
 
     }
+
+
 }

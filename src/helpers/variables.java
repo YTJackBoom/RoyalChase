@@ -197,4 +197,55 @@ public class variables { //class to define different variables for thing
             };
         }
     }
+
+    public static class Buttons {
+        public static final int PLAY_B = 0;
+        public static final int SETTINGS_B = 1;
+        public static final int EXIT_B = 2;
+        public static final int BACK_B = 3;
+        public static final int SAVE_B = 4;
+        public static final int LOAD_B = 5;
+        public static final int RESUME_B = 6;
+        public static final int QUIT_B = 7;
+        public static final int TOWER_B = 8;
+        public static final int UPGRADE_B = 9;
+        public static final int SELL_B = 10;
+        public static final int NEXT_B = 11;
+        public static final int PREVIOUS_B = 12;
+        public static final int START_B = 13;
+        public static final int PAUSE_B = 14;
+        public static final int RESTART_B = 15;
+        public static final int MAIN_MENU_B = 16;
+        public static final int CONTINUE_B = 17;
+        public static final int SAVE_GAME_B = 18;
+        public static final int LOAD_GAME_B = 19;
+        public static final int NEW_GAME_B = 20;
+        public static final int EXIT_GAME_B = 21;
+        public static final int TOWER_1_B = 22;
+        public static final int TOWER_2_B = 23;
+        public static final int TOWER_3_B = 24;
+        public static final int TOWER_4_B = 25;
+        public static final int TOWER_5_B = 26;
+        public static final int TOWER_6_B = 27;
+        public static final int TOWER_7_B = 28;
+        public static final int TOWER_8_B = 29;
+        public static final int TOWER_9_B = 30;
+        public static final int TOWER_10_B = 31;
+        public static final int TOWER_11_B = 32;
+        public static final int TOWER_12_B = 33;
+        public static final int TOWER_13_B = 34;
+        public static final int TOWER_14_B = 35;
+        public static final int TOWER_15_B = 36;
+        public static final int TOWER_16_B = 37;
+        public static final int TOWER_17_B = 38;
+
+        public static File getButtonImageFile(int buttonType) {
+            return switch (buttonType) {
+                case TOWER_1_B -> new File("res/images/buttonimages/yellow_square.png");
+                case TOWER_2_B -> new File("res/images/buttonimages/arrow_t_button.png");
+
+                default -> throw new IllegalStateException("Unexpected value: " + buttonType);
+            };
+        }
+    }
 }

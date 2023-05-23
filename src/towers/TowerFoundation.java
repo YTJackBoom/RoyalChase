@@ -1,19 +1,14 @@
 package towers;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controllers.TowerController;
-import gameObjects.Coordinate;
-import enemy.Enemy;
+import helpers.Coordinate;
 import uiElements.PlacementMenu;
 
 public class TowerFoundation extends Tower {
@@ -31,8 +26,8 @@ public class TowerFoundation extends Tower {
 
 	private boolean menuOpen;
 
-	public TowerFoundation(TowerController towerController, Coordinate pos, int type) {
-		super(towerController,pos, type);
+	public TowerFoundation(TowerController towerController, Coordinate pos) {
+		super(towerController,pos, 0);
 	}
 
 

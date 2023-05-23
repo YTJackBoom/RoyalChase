@@ -1,7 +1,7 @@
 package enemy;
 
 import controllers.EnemyController;
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 
 public class Skeleton_King extends Enemy{
     public Skeleton_King(EnemyController enemyController, Coordinate pos) {

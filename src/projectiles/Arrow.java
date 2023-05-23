@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 import enemy.Enemy;
 
 public class Arrow extends Projectile {

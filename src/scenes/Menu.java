@@ -49,9 +49,6 @@ public class Menu extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseClicked(int x, int y) {
-        //if(playButton.getBounds().contains(x,y)){
-        //  GameStates.gameState = GameStates.PLAYING;
-        //}
         for (MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 if(button.getText().equals("Play")){
@@ -67,11 +64,6 @@ public class Menu extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseMoved(int x, int y) {
-        /*if(playButton.getBounds().contains(x,y)){
-            playButton.setHovered(true);
-        }else{
-            playButton.setHovered(false);
-        }*/
         for(MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 button.setHovered(true);
@@ -84,9 +76,6 @@ public class Menu extends GameScenes implements SceneMethods {
 
     @Override
     public void mousePressed(int x, int y) {
-        //if (playButton.getBounds().contains(x, y)) {
-        // //playButton.setPressed(true);
-        //}
         for(MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 button.setPressed(true);
@@ -103,5 +92,7 @@ public class Menu extends GameScenes implements SceneMethods {
     public void mouseDragged(int x, int y) {
 
     }
+
+
 
 }

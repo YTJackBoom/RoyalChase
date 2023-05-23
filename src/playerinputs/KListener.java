@@ -10,8 +10,9 @@ import java.awt.event.KeyListener;
 
 
 public class KListener implements KeyListener {
+    private Game game;
     public KListener(Game game) {
-
+        this.game = game;
     }
 
     @Override
@@ -21,6 +22,11 @@ public class KListener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        switch (GameStates.gameState) {
+            case MENU -> game.getMenu().keyPressed(e);
+            case PLAYING -> game.getPlaying().keyPressed(e);
+            case SETTINGS -> game.getSettings().keyPressed(e);
+        }
         if(e.getKeyCode() == KeyEvent.VK_A) {
             GameStates.gameState = MENU;
         }

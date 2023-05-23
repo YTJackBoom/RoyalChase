@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 import enemy.Enemy;
 
 public abstract class Projectile extends JPanel{

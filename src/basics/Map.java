@@ -11,12 +11,11 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 import enemy.Enemy;
 import controllers.EnemyController;
 import projectiles.Projectile;
 import towers.Tower;
-import towers.TowerFoundation;
 
 
 public class Map  {

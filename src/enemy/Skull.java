@@ -1,7 +1,7 @@
 package enemy;
 
 import controllers.EnemyController;
-import gameObjects.Coordinate;
+import helpers.Coordinate;
 
 public class Skull extends Enemy{
     public Skull(EnemyController enemyController, Coordinate pos) {

@@ -2,7 +2,7 @@ package gameObjects;
 
 import javax.swing.JPanel;
 
-import basics.GameScreen;
+import helpers.Coordinate;
 
 public abstract class  GameObject {
  private int height;
