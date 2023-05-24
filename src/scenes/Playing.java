@@ -7,16 +7,20 @@ import controllers.TowerController;
 import helpers.variables;
 import uiElements.MyButtonBar;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 public class Playing extends GameScenes implements SceneMethods{
     private EnemyController enemyController;
     private TowerController towerController;
     private ImageAnalyser imageAnalyser;
     private MyButtonBar buttonBar;
-    private int currentLevel;
+    private int currentLevel,selectedTower;
+    private int mouseX, mouseY;
+    private boolean towerSelected, dragingTower;
 
     public Playing(Game game) {
         super(game);
@@ -34,6 +38,9 @@ public class Playing extends GameScenes implements SceneMethods{
         enemyController.render(g);
         towerController.render(g);
         buttonBar.render(g);
+        if (dragingTower) {
+            renderDraggedButton(g);
+        }
     }
     @Override
     public void update(){
@@ -41,6 +48,19 @@ public class Playing extends GameScenes implements SceneMethods{
         //towerController.update();
     }
 
+
+
+    public void renderDraggedButton(Graphics g) {
+
+        BufferedImage draggedImage;
+        try {
+            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(selectedTower));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        g.drawImage(draggedImage, mouseX-draggedImage.getWidth()/2 , mouseY-draggedImage.getHeight()/2, null);
+    }
     @Override
     public void mouseClicked(int x, int y) {
         if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
@@ -54,10 +74,13 @@ public class Playing extends GameScenes implements SceneMethods{
             buttonBar.mouseMoved(x,y);
         }
 
+
     }
 
     @Override
     public void mousePressed(int x, int y) {
+        mouseX = x;
+        mouseY = y;
         if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
             buttonBar.mousePressed(x,y);
         }
@@ -67,11 +90,16 @@ public class Playing extends GameScenes implements SceneMethods{
     @Override
     public void mouseReleased(int x, int y) {
         buttonBar.mouseReleased(x,y);
-
+        if (dragingTower) {
+            towerController.mouseReleased(x, y);
+            dragingTower = false;
+        }
     }
 
     @Override
     public void mouseDragged(int x, int y) {
+        mouseX = x;
+        mouseY = y;
         if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
 
         }
@@ -98,4 +126,19 @@ public class Playing extends GameScenes implements SceneMethods{
     }
     public ImageAnalyser getImageAnalyser() {return imageAnalyser;}
 
+    public void setTowerSelected(boolean towerSelected) {
+        this.towerSelected = towerSelected;
+    }
+    public void setSelectedTower(int selectedTower) {
+        this.selectedTower = selectedTower;
+    }
+    public boolean isTowerSelected() {
+        return towerSelected;
+    }
+    public int getSelectedTower() {
+        return selectedTower;
+    }
+    public void setDragingTower(boolean b) {
+        dragingTower = b;
+    }
 }

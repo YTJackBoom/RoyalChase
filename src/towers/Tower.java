@@ -7,6 +7,8 @@ import enemy.Enemy;
 import helpers.variables;
 import uiElements.PlacementMenu;
 
+import java.awt.*;
+
 public class Tower  {
 	protected Animator passiveAnimator, activeAnimator;
 	private  boolean menuOpen;
@@ -17,6 +19,7 @@ public class Tower  {
 	private boolean isActive;
 	private int type;
 	private int width, height;
+	private Rectangle bounds;
 	
 
 			
@@ -25,6 +28,7 @@ public class Tower  {
 		this.pos = pos;
 		initAnimators();
 		initVariables();
+		initBounds();
 
 
 	//	initPlacementMenu();
@@ -39,6 +43,9 @@ public class Tower  {
 		range = variables.Towers.getRange(type);
 		this.height = activeAnimator.getHeight();
 		this.width = activeAnimator.getWidth();
+	}
+	public void initBounds() {
+			bounds = new Rectangle(pos.getX(),pos.getY(),width,height);
 	}
 	/*public void initPlacementMenu() {
 		pMenu = new PlacementMenu[4];
@@ -99,5 +106,8 @@ public class Tower  {
 
 	public int getType() {
 		return type;
+	}
+	public Rectangle getBounds() {
+		return bounds;
 	}
 }

@@ -15,6 +15,7 @@ public class MyButton {
 	private int type;
 	private Rectangle bounds;
 	private int x,y,width,height;
+	private BufferedImage ButtonImage;
 	public MyButton(String text, int x, int y, int width, int height) {
 		this.text = text;
 		this.x = x;
@@ -31,11 +32,19 @@ public class MyButton {
 		this.width = width;
 		this.height = height;
 		initBounds();
+		initButtonImage();
 	}
 
 
 	private void initBounds() {
 		bounds = new Rectangle(x,y,width,height);
+	}
+	private void initButtonImage() {
+		try {
+			ButtonImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(type));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void render(Graphics g) {
@@ -45,7 +54,6 @@ public class MyButton {
 			renderButtonText(g);
 		}else {
 			renderButtonImage(g);
-			renderButtonBody(g);
 			renderButtonBox(g);
 		}
 	}
@@ -74,12 +82,6 @@ public class MyButton {
 		g.drawString(text, x - width2/2 + width/2, y + height2/2 + height/2 );
 	}
 	private void renderButtonImage(Graphics g) {
-		BufferedImage ButtonImage;
-		try {
-			ButtonImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(type));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 		g.drawImage(ButtonImage, x, y, width, height, null);
 	}
 
@@ -104,5 +106,11 @@ public class MyButton {
 
 	public int getType() {
 		return type;
+	}
+	public boolean isTowerButton() {
+		if (type < 40&&!isTextButton) { //TODO: Change this to a better way of checking if it is a tower button
+			return true;
+		}
+		else return false;
 	}
 }

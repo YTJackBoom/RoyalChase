@@ -64,4 +64,14 @@ public class TowerController {
             }
         }
     }
+
+    public void mouseReleased(int x, int y) {
+        for (int i = 0; i < towerEntityList.size(); i++) {
+            Tower tower = towerEntityList.get(i);
+            if (tower.getBounds().contains(x, y)) {
+                towerEntityList.set(i, new Tower(this, tower.getPos(), playing.getSelectedTower()));
+                System.out.println("Tower placed");
+            }
+        }
+    }
 }

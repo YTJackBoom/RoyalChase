@@ -26,7 +26,7 @@ public class MyButtonBar {
 
 	public void initButtons() {
 		buttons.add(new MyButton("Menu",pos.getX() + 10, pos.getY() + 10, 100, 80));
-		buttons.add(new MyButton(22,pos.getX() + 120, pos.getY() + 10, 100, 80));
+		buttons.add(new MyButton(1,pos.getX() + 120, pos.getY() + 10, 100, 80));
 	}
 	public void render(Graphics g) {
 		g.setColor(Color.BLACK);
@@ -58,7 +58,7 @@ public class MyButtonBar {
 
 	//Mouse Lsiteners
 	public void mouseClicked(int x, int y) {
-		for (MyButton button: buttons) {
+		for (MyButton button : buttons) {
 			if (button.getBounds().contains(x, y)) {
 				if (button.getText() != null) {
 					if (button.getText().equals("Play")) {
@@ -70,17 +70,12 @@ public class MyButtonBar {
 					} else if (button.getText().equals("Menu")) {
 						GameStates.gameState = GameStates.MENU;
 					}
-
-				}else {
-					switch (button.getType()) {
-						case 22 -> System.out.println("dawddd");
-
-					}
-
 				}
 			}
 		}
 	}
+
+
 
 	public void mouseMoved(int x, int y) {
 		for(MyButton button: buttons){
@@ -97,8 +92,13 @@ public class MyButtonBar {
 		for(MyButton button: buttons){
 			if(button.getBounds().contains(x,y)){
 				button.setPressed(true);
+				if(button.isTowerButton()){
+					playing.setDragingTower(true);
+					playing.setSelectedTower(button.getType());
+				}
 			}
 		}
+
 	}
 
 	public void mouseReleased(int x, int y) {

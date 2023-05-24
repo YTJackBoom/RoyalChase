@@ -58,7 +58,11 @@ public class MListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        switch (GameStates.gameState) {
+            case MENU -> game.getMenu().mouseDragged(e.getX(), e.getY());
+            case PLAYING -> game.getPlaying().mouseDragged(e.getX(), e.getY());
+            case SETTINGS -> game.getSettings().mouseDragged(e.getX(), e.getY());
+        }
     }
 
     @Override
