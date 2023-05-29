@@ -4,6 +4,7 @@ import basics.Game;
 import basics.ImageAnalyser;
 import controllers.EnemyController;
 import controllers.TowerController;
+import controllers.WaveController;
 import helpers.variables;
 import uiElements.MyButtonBar;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class Playing extends GameScenes implements SceneMethods{
     private EnemyController enemyController;
     private TowerController towerController;
+    private WaveController waveController;
     private ImageAnalyser imageAnalyser;
     private MyButtonBar buttonBar;
     private int currentLevel,selectedTower;
@@ -28,6 +30,7 @@ public class Playing extends GameScenes implements SceneMethods{
 
         enemyController = new EnemyController(this, imageAnalyser.imgToPath());
         towerController = new TowerController(this);
+        waveController = new WaveController(this);
 
         buttonBar = new MyButtonBar(this, new helpers.Coordinate(0, 700), 500, 100);
     }
@@ -44,6 +47,7 @@ public class Playing extends GameScenes implements SceneMethods{
     }
     @Override
     public void update(){
+        waveController.update();
         enemyController.update();
         //towerController.update();
     }
@@ -71,7 +75,10 @@ public class Playing extends GameScenes implements SceneMethods{
     @Override
     public void mouseMoved(int x, int y) {
         if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
+            buttonBar.setVisible(true);
             buttonBar.mouseMoved(x,y);
+        } else{
+            buttonBar.setVisible(false);
         }
 
 

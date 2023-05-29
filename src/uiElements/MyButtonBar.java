@@ -14,6 +14,7 @@ public class MyButtonBar {
 	private ArrayList<MyButton> buttons;
 	private int width;
 	private int height;
+	private boolean isVisible = false;
 	public MyButtonBar(Playing playing, Coordinate pos, int width, int height){
 		buttons = new ArrayList<MyButton>();
 		this.pos = pos;
@@ -29,9 +30,11 @@ public class MyButtonBar {
 		buttons.add(new MyButton(1,pos.getX() + 120, pos.getY() + 10, 100, 80));
 	}
 	public void render(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(pos.getX(), pos.getY(), width, height);
-		renderButtons(g);
+		if (isVisible) {
+			g.setColor(Color.BLACK);
+			g.fillRect(pos.getX(), pos.getY(), width, height);
+			renderButtons(g);
+		}
 
 	}
 	public void renderButtons(Graphics g) {
@@ -107,6 +110,9 @@ public class MyButtonBar {
 
 	public void mouseDragged(int x, int y) {
 
+	}
+	public void setVisible(boolean b) {
+		isVisible = b;
 	}
 
 

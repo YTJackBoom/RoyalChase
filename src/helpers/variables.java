@@ -2,6 +2,7 @@ package helpers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.nio.file.Path;
 
 public class variables { //class to define different variables for thing
 
@@ -150,6 +151,21 @@ public class variables { //class to define different variables for thing
             }
 
         }
+        public static File getMapWaveFile(int waveType) {
+            return switch (waveType) {
+                case 0 -> new File("res/text/waveFiles/waves0.txt");
+                case 1 -> new File("res/text/waveFiles/waves1.txt");
+                case 2 -> new File("res/text/waveFiles/waves2.txt");
+                case 3 -> new File("res/text/waveFiles/waves3.txt");
+                case 4 -> new File("res/text/waveFiles/waves4.txt");
+                case 5 -> new File("res/text/waveFiles/waves5.txt");
+                case 6 -> new File("res/text/waveFiles/waves6.txt");
+                case 7 -> new File("res/text/waveFiles/waves7.txt");
+                case 8 -> new File("res/text/waveFiles/waves8.txt");
+                case 9 -> new File("res/text/waveFiles/waves9.txt");
+                default -> null;
+            };
+        }
 
     }
     public static class Towers{
@@ -212,4 +228,5 @@ public class variables { //class to define different variables for thing
             };
         }
     }
+
 }
