@@ -31,9 +31,9 @@ public class TowerFoundation extends Tower {
 	}
 
 
-	
-
-
+	@Override
+	public void update() {
+	}
 }
 
 

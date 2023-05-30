@@ -11,7 +11,10 @@ public class MageTower extends Tower {
 		super(towerController,pos, type);
 	}
 
+	@Override
+	public void update() {
 
+	}
 
 
 }

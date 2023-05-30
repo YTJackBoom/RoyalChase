@@ -53,7 +53,7 @@ public class WaveFileAnalyser {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(spawnList);
+        //System.out.println(spawnList);
         return spawnList;
     }
 }

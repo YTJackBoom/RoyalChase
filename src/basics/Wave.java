@@ -15,7 +15,10 @@ public class Wave {
     }
 
     public int getCurrentEnemyType() {
-        return spawnList.get(currentIndex);
+        if (spawnList.size() > currentIndex) {
+            return spawnList.get(currentIndex);
+        }
+        return -1;
     }
     public void setCurrentIndex(int currentIndex) {
         this.currentIndex = currentIndex;

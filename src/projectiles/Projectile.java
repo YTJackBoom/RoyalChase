@@ -1,42 +1,42 @@
 package projectiles;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import basics.Animator;
 import helpers.Coordinate;
 import enemy.Enemy;
+import helpers.variables;
 
-public abstract class Projectile extends JPanel{
-	protected JLabel pLabel;
+
+public abstract class Projectile {
 	private Coordinate pos;
-	private BufferedImage pImage;
 	private JPanel gS;
-	
-	public Projectile(JPanel gS, Coordinate start, Enemy target, BufferedImage pImage) {
+	private int type;
+	private Animator animator;
+	private Enemy target;
+
+
+	public Projectile( Coordinate start, Enemy target,int type) {
 		this.pos = start;
 		this.gS = gS;
-		setBounds(pos.getX(),pos.getY(),60,60);
+		this.type = type;
+		this.target = target;
+		initAnimator();
+	}
 
-		gS.add(this);
-		gS.setComponentZOrder(this,0);
-		setVisible(true);
-		
+	private void initAnimator() {
+		animator = new Animator(variables.Projectiles.getProjectileGifFile(type));
 	}
 	public Coordinate getPos() {
 		return pos;
 	}
-	public void vanish() {
-		setVisible(false);
-		gS.remove(this);
+
+	public abstract void update();
+
+	public Animator getAnimator() {
+		return animator;
 	}
-	public abstract void refresh();
-	
-	 @Override
-	protected void paintComponent(Graphics g) {
-	        super.paintComponent(g);
-	        g.drawImage(pImage, pos.getX(), pos.getY(), null);
-	    }
+	public Enemy getTarget() {return target;}
+	public int getType() {return type;}
 }

@@ -200,12 +200,39 @@ public class variables { //class to define different variables for thing
         public static int getRange(int towerType) {
             return switch (towerType) {
                 case Foundation_T -> 100;
-                case ARROW_T -> 0;
+                case ARROW_T -> 100;
                 case MAGE_T -> 0;
                 case ROCKET_T -> 0;
                 case SNIP_T -> 0;
                 default -> 0;
 
+            };
+        }
+    }
+
+    public static class Projectiles {
+        public static final int ARROW = 1;
+
+
+
+
+        public static int getProjectileSpeed(int projectileType) {
+            return switch (projectileType) {
+                case ARROW -> 10;
+                default -> 0;
+            };
+        }
+        public static int getProjectileDamage(int projectileType) {
+            return switch (projectileType) {
+                case ARROW -> 10;
+                default -> 0;
+            };
+        }
+
+        public static File getProjectileGifFile(int projectileType) {
+            return switch (projectileType) {
+                case ARROW -> new File("res/images/projectiles/active/arrow_p_active.gif");
+                default -> new File("res/images/projectiles/active/arrow_p_active.gif");
             };
         }
     }

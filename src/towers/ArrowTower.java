@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import controllers.ProjectileController;
 import controllers.TowerController;
 import helpers.Coordinate;
 import enemy.Enemy;
@@ -17,47 +18,31 @@ public class ArrowTower extends Tower {
 	private boolean isLoaded;
 	private boolean isFiring;
 	private Enemy target;
-	private ArrayList<Arrow> pL = new ArrayList<Arrow>(); // ArrayList für projectile hier: arrows
+	private ProjectileController projectileController;
 
 	public ArrowTower(TowerController towerController, Coordinate pos, int type) {
 		super(towerController,pos, type);
+		projectileController = towerController.getPlaying().getProjectileController();
 	}
-	public void refresh() {
+	@Override
+	public void update() {
 		if (counter - cooldown == 0) {
 			isLoaded = true;
 			counter = 0;
 		} else counter++;
-		System.out.println(counter);
-		fire();
-		reloadpL();
+		fire();;;
+		//System.out.println("sdfe");
 	}
 
 
 	public void fire() {
-		if (isLoaded && isFiring) {
-			//pL.add(new Arrow(gS, new Coordinate(getPos().getX(), getPos().getY()), target)); // target mitgabe, um
-																								// target zu damagen
+		System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
+		if (isLoaded && isFiring&&target != null) {
+			projectileController.spawnProjectile(new Coordinate(getPos().getX(), getPos().getY()), target,1); // target mitgabe, um target zu damagen
+			System.out.println("ürpjectile sdpawnes");
+
 			isLoaded = false;
 		}
-	}
-
-	public void reloadpL() {
-		if (pL.size() != 0) {
-			for (int i = 0; i < pL.size(); i++) {
-				pL.get(i).refresh();
-				checkCollision(i);   				//zumsparen einer for-schleife hier und nicht timer
-			}
-		}
-	}
-
-	public void checkCollision(int i) { // Collisionscheck kugel u. gegner + löschen u damage
-		int distanceY = target.getPos().getY() - pL.get(i).getPos().getY();
-		int distanceX = target.getPos().getX() - pL.get(i).getPos().getX();
-		if (Math.abs(distanceX)<=3&&Math.abs(distanceY)<=3) {
-			pL.get(i).vanish();
-			pL.remove(i);
-		}
-		
 	}
 
 	public boolean getStatus() {
@@ -65,7 +50,7 @@ public class ArrowTower extends Tower {
 	}
 
 	@Override
-	public void changeStatus(boolean status) {
+	public void setStatus(boolean status) {
 		isFiring = status;
 
 	}
@@ -73,11 +58,7 @@ public class ArrowTower extends Tower {
 	@Override
 	public void setTarget(Enemy target) {
 		this.target = target;
-	}
-
-	public void setPos(Coordinate pos) {
-		// TODO Auto-generated method stub
-		
+		super.setTarget(target);
 	}
 
 }

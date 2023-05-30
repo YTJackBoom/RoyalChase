@@ -25,15 +25,20 @@ public class EnemyController {
 	}
 
 	public void updateEnemyMovement() {
+		ArrayList<Enemy> removeQue = new ArrayList<Enemy>();
 		for (Enemy enemy : eL) {
 			if (!((pathCoordinates.size() - enemy.getPathIndex()) <= enemy.getSpeed()) ) {
 				enemy.setPathIndex(enemy.getPathIndex() + enemy.getSpeed());
 				enemy.setPos(pathCoordinates.get(enemy.getPathIndex()));
 			//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
 				//System.out.println(eL.get(a).getPos().getX());
-			} else { //Enemy hat das tor erreicht --> verschiedene verhalten
-
+			} else { //Enemy hat das tor erreicht --> verschiedene verhalten //TODO: damage player
+				removeQue.add(enemy);
 			}
+		}
+		for (Enemy enemy : removeQue) {
+			eL.remove(enemy);
+			//playing.getHealthController().decreaseHealth();
 		}
 	}
 	public void spawnEnemy(int enemyType) {
@@ -53,14 +58,20 @@ public class EnemyController {
    public void render(Graphics g) {
 	   if (eL != null) {
 		   for (Enemy enemy : eL) {
-			   if(enemy.isActive()) {
-				   g.drawImage(enemy.getActiveAnimator().getCurrentImage(), enemy.getPos().getX(), enemy.getPos().getY(), null);
-			   } else {
-				   g.drawImage(enemy.getPassiveAnimator().getCurrentImage(), enemy.getPos().getX(), enemy.getPos().getY(), null);
+			   if (enemy != null) {
+			   		if(enemy.isActive()) {
+				  		 g.drawImage(enemy.getActiveAnimator().getCurrentImage(), enemy.getPos().getX(), enemy.getPos().getY(), null);
+			   		} else {
+				   		g.drawImage(enemy.getPassiveAnimator().getCurrentImage(), enemy.getPos().getX(), enemy.getPos().getY(), null);
+			    	}
 			   }
 		   }
 	   }
    }
+   public void damageEnemy(Enemy enemy, int damage) {
+		//TODO: damage enemy
+   }
+
    //Getters and Setters
    public void setPathCoordinates(ArrayList<Coordinate> newPathCoordinates) {
 		pathCoordinates = newPathCoordinates;
@@ -68,6 +79,10 @@ public class EnemyController {
 
 	public ArrayList<Enemy> getEnemyList() {
 		return eL;
+	}
+
+	public boolean contains(Enemy enemy) {
+		return eL.contains(enemy);
 	}
 }
 

@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import basics.Animator;
+import controllers.ProjectileController;
 import helpers.Coordinate;
 import enemy.Enemy;
 
@@ -18,23 +20,27 @@ public class Arrow extends Projectile {
 	private int distanceY;
 	private int distance;
 	private Enemy target;
+	private ProjectileController projectileController;
 
-	public Arrow(JPanel gS, Coordinate start,Enemy target) {
-		super(gS, start, target, getBufferedImage());
-		// TODO Auto-generated constructor stub
+	public Arrow(ProjectileController projectileController, Coordinate start, Enemy target, int type) {
+		super( start, target,type);
 		System.out.println("arro");
 		pos = start;
 		ziel = target.getPos();
 		pSpeed =5;
 		this.target = target;
+		this.projectileController = projectileController;
 	}
 
-	@Override
-	public void refresh() {
-		ziel = target.getPos();
-		updatePos();
-    	setBounds(pos.getX(),pos.getY(),60,60);
-    	//System.out.println("s"+pos.getX() +" " +  pos.getY());
+	public void update() {
+		if(target != null) {
+			ziel = target.getPos();
+			updatePos();
+			//System.out.println("s"+pos.getX() +" " +  pos.getY());
+		} else {
+			System.out.println("target null");
+			projectileController.removeProjectile(this);
+		}
     }
 	
 	private void updatePos() { //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
@@ -64,20 +70,8 @@ public class Arrow extends Projectile {
 	}
 
 	public void setPos(Coordinate pos) {
-		// TODO Auto-generated method stub
-		
+		this.pos = pos;
 	}
-	public static BufferedImage getBufferedImage() {
-		try {
-			return ImageIO.read(new File("res/images/black square small.png"));
-		} catch (IOException e) {
-			System.out.println(e);
-			System.out.print(" Error in Arrow");
-		}
-		return null;
-	}
-	
-
 }
 
 

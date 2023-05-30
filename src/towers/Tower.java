@@ -33,7 +33,12 @@ public class Tower  {
 
 	//	initPlacementMenu();
 	}
-	
+
+
+	public void update() {
+		System.out.println("3");
+	}
+
 
 	public void initAnimators() {
 		passiveAnimator = new Animator(variables.Towers.getTowerPassiveGifFile(type));
@@ -80,7 +85,7 @@ public class Tower  {
 		return range;
 	}
 	*/
-	public void changeStatus(boolean status) {
+	public void setStatus(boolean status) {
 		isActive = status;
 	}
 
@@ -110,4 +115,8 @@ public class Tower  {
 	public Rectangle getBounds() {
 		return bounds;
 	}
+	public Enemy getTarget() {
+		return target;
+	}
+
 }

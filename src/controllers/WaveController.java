@@ -12,12 +12,12 @@ public class WaveController {
     private EnemyController enemyController;
     private WaveFileAnalyser waveFileAnalyser;
     private int currentWave, counter, counter2;
-    private int cooldown = 1000;
+    private int cooldown = 100;
     private int timeBetweenSpawns = 100;
     private ArrayList<Wave> waves;
 
 
-    public WaveController(Playing playing) {
+    public WaveController(Playing playing) { //TODO: prob needs changes
         this.playing = playing;
         enemyController = playing.getEnemyController();
         currentWave = 0;
@@ -38,7 +38,7 @@ public class WaveController {
         if (enemyController.getEnemyList().size() == 0) {
             if (counter / cooldown == 1) {
                 newWave();
-                currentWave++;
+                counter = 0;
             }else {
                 counter++;
             }
@@ -51,7 +51,8 @@ public class WaveController {
         }
     }
     public void newWave() {
-        ;
+        currentWave++;
+
     }
     public void spawnEnemy() {
         enemyController.spawnEnemy(waves.get(currentWave).getCurrentEnemyType());

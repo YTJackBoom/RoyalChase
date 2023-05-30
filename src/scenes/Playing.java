@@ -3,6 +3,7 @@ package scenes;
 import basics.Game;
 import basics.ImageAnalyser;
 import controllers.EnemyController;
+import controllers.ProjectileController;
 import controllers.TowerController;
 import controllers.WaveController;
 import helpers.variables;
@@ -18,6 +19,7 @@ public class Playing extends GameScenes implements SceneMethods{
     private EnemyController enemyController;
     private TowerController towerController;
     private WaveController waveController;
+    private ProjectileController projectileController;
     private ImageAnalyser imageAnalyser;
     private MyButtonBar buttonBar;
     private int currentLevel,selectedTower;
@@ -31,6 +33,7 @@ public class Playing extends GameScenes implements SceneMethods{
         enemyController = new EnemyController(this, imageAnalyser.imgToPath());
         towerController = new TowerController(this);
         waveController = new WaveController(this);
+        projectileController = new ProjectileController(this);
 
         buttonBar = new MyButtonBar(this, new helpers.Coordinate(0, 700), 500, 100);
     }
@@ -40,6 +43,7 @@ public class Playing extends GameScenes implements SceneMethods{
         g.drawImage(variables.Maps.getMapBufferedImage(currentLevel), 0, 0, null);
         enemyController.render(g);
         towerController.render(g);
+        projectileController.render(g);
         buttonBar.render(g);
         if (dragingTower) {
             renderDraggedButton(g);
@@ -49,7 +53,8 @@ public class Playing extends GameScenes implements SceneMethods{
     public void update(){
         waveController.update();
         enemyController.update();
-        //towerController.update();
+        towerController.update();
+        projectileController.update();
     }
 
 
@@ -147,5 +152,9 @@ public class Playing extends GameScenes implements SceneMethods{
     }
     public void setDragingTower(boolean b) {
         dragingTower = b;
+    }
+
+    public ProjectileController getProjectileController() {
+        return projectileController;
     }
 }

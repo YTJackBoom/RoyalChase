@@ -41,7 +41,7 @@ public class KListener implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("djaw");
+        //System.out.println("djaw");
     }
 }
 //sa
