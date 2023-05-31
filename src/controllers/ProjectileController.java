@@ -59,10 +59,13 @@ public class ProjectileController {
     }
     public void workRemoveQueue() {
         for (Projectile projectile : removeQueue) {
-            removeProjectile(projectile);
+            projectileList.remove(projectile);
         }
         removeQueue.clear();
+    }public void removeProjectile (Projectile projectile) {
+        removeQueue.add(projectile);
     }
+
 
     public void spawnProjectile(Coordinate start, Enemy ziel, int type) {
         switch (type) {
@@ -77,9 +80,7 @@ public class ProjectileController {
             case 8 -> projectileList.add(new Arrow(this,start,ziel,type));
         }
     }
-    public void removeProjectile (Projectile projectile) {
-        projectileList.remove(projectile);
-    }
+
 
 
 }

@@ -35,22 +35,8 @@ public class variables { //class to define different variables for thing
             };
         }
 
-        public static float GetSpeed(int enemyType) {
-            return switch (enemyType) {
-                case SKULL -> 0.5f;
-                case SKELETON -> 0.7f;
-                case ZOMBIE -> 0.45f;
-                case WITCH -> 0.85f;
-                case WIZARD -> 0.85f;
-                case SKELETON_KING -> 0.5f;
-                case ZOMBIE_KING -> 0.45f;
-                case WITCH_QUEEN -> 0.85f;
-                case WIZARD_KING -> 0.85f;
-                default -> 0;
-            };
-        }
 
-        public static int GetStartHealth(int enemyType) {
+        public static int getEnemyHealth(int enemyType) {
             return switch (enemyType) {
                 case SKULL -> 100;
                 case SKELETON -> 100;
@@ -61,7 +47,7 @@ public class variables { //class to define different variables for thing
                 case ZOMBIE_KING -> 100;
                 case WITCH_QUEEN -> 100;
                 case WIZARD_KING -> 100;
-                default -> 0;
+                default -> throw new IllegalStateException("getEnemyHealth: Unexpected value:  " + enemyType);
             };
         }
         public static File getEnemyPassiveGifFile(int enemyType) {
@@ -75,7 +61,7 @@ public class variables { //class to define different variables for thing
                 case ZOMBIE_KING -> new File("res/images/enemies/passive/zombie_king_e_passive.gif");
                 case WITCH_QUEEN -> new File("res/images/enemies/passive/witch_queen_e_passive.gif");
                 case WIZARD_KING -> new File("res/images/enemies/passive/wizard_king_e_passive.gif");
-                default -> null;
+                default -> throw new IllegalStateException("getEnemyPassiveGifFile: Unexpected value:  " + enemyType);
 
             };
         }
@@ -90,7 +76,7 @@ public class variables { //class to define different variables for thing
                 case ZOMBIE_KING -> new File("res/images/enemies/active/zombie_king_e_active.gif");
                 case WITCH_QUEEN -> new File("res/images/enemies/active/witch_queen_e_active.gif");
                 case WIZARD_KING -> new File("res/images/enemies/active/wizard_king_e_active.gif");
-                default -> null;
+                default -> throw new IllegalStateException("getEnemyActiveGifFile: Unexpected value:  " + enemyType);
 
             };
         }
@@ -105,7 +91,7 @@ public class variables { //class to define different variables for thing
                 case ZOMBIE_KING -> 5;
                 case WITCH_QUEEN -> 5;
                 case WIZARD_KING -> 5;
-                default -> 0;
+                default -> throw new IllegalStateException("getEnemySpeed: Unexpected value:  " + enemyType);
             };
         }
     }
@@ -123,7 +109,7 @@ public class variables { //class to define different variables for thing
                 case 7 -> new File("res/images/maps/pathMaps/path7.bmp");
                 case 8 -> new File("res/images/maps/pathMaps/path8.bmp");
                 case 9 -> new File("res/images/maps/pathMaps/path9.bmp");
-                default -> null;
+                default -> throw new IllegalStateException("getPMapFile: Unexpected value:  " + mapType);
             };
         }
         public static BufferedImage getMapBufferedImage(int mapType) {
@@ -140,7 +126,7 @@ public class variables { //class to define different variables for thing
                 case 7 -> mapFile = new File("res/images/maps/backgroundMaps/map7.jpg");
                 case 8 -> mapFile = new File("res/images/maps/backgroundMaps/map8.jpg");
                 case 9 -> mapFile = new File("res/images/maps/backgroundMaps/map9.jpg");
-                default -> mapFile = null;
+                default -> throw new IllegalStateException("getMapBufferedImage: Unexpected value:  " + mapType);
             };
             try {
                 mapImage = javax.imageio.ImageIO.read(mapFile);
@@ -163,7 +149,7 @@ public class variables { //class to define different variables for thing
                 case 7 -> new File("res/text/waveFiles/waves7.txt");
                 case 8 -> new File("res/text/waveFiles/waves8.txt");
                 case 9 -> new File("res/text/waveFiles/waves9.txt");
-                default -> null;
+                default -> throw new IllegalStateException("getMapWaveFile: Unexpected value:  " + waveType);
             };
         }
 
@@ -182,7 +168,7 @@ public class variables { //class to define different variables for thing
                 case MAGE_T -> new File("res/images/towers/passive/mage_t_passive.gif");
                 case ROCKET_T -> new File("res/images/towers/passive/rocket_t_passive.gif");
                 case SNIP_T -> new File("res/images/towers/passive/snip_t_passive.gif");
-                default -> new File("res/images/towers/passive/foundation_t_passive.gif");
+                default -> throw new IllegalStateException("getTowerPassiveGifFile: Unexpected value:  " + towerType);
 
             };
         }
@@ -193,7 +179,7 @@ public class variables { //class to define different variables for thing
                 case MAGE_T -> new File("res/images/towers/active/mage_t_active.gif");
                 case ROCKET_T -> new File("res/images/towers/active/rocket_t_active.gif");
                 case SNIP_T -> new File("res/images/towers/active/snip_t_active.gif");
-                default -> new File("res/images/towers/active/foundation_t_active.gif");
+                default -> throw new IllegalStateException("getTowerActiveGifFile: Unexpected value:  " + towerType);
 
             };
         }
@@ -204,7 +190,8 @@ public class variables { //class to define different variables for thing
                 case MAGE_T -> 0;
                 case ROCKET_T -> 0;
                 case SNIP_T -> 0;
-                default -> 0;
+                default -> throw new IllegalStateException("getRange: Unexpected value:  " + towerType);
+
 
             };
         }
@@ -219,20 +206,20 @@ public class variables { //class to define different variables for thing
         public static int getProjectileSpeed(int projectileType) {
             return switch (projectileType) {
                 case ARROW -> 10;
-                default -> 0;
+                default -> throw new IllegalStateException("getProjectileSpeed: Unexpected value:  " + projectileType);
             };
         }
         public static int getProjectileDamage(int projectileType) {
             return switch (projectileType) {
                 case ARROW -> 10;
-                default -> 0;
+                default -> throw new IllegalStateException("getProjectileDamage: Unexpected value:  " + projectileType);
             };
         }
 
         public static File getProjectileGifFile(int projectileType) {
             return switch (projectileType) {
                 case ARROW -> new File("res/images/projectiles/active/arrow_p_active.gif");
-                default -> new File("res/images/projectiles/active/arrow_p_active.gif");
+                default -> throw new IllegalStateException("getProjectileGifFile: Unexpected value:  " + projectileType);
             };
         }
     }
@@ -251,7 +238,7 @@ public class variables { //class to define different variables for thing
                 case Foundation_T -> new File("res/images/buttons/yellow_square.png");
                 case ARROW_T -> new File("res/images/buttons/arrow_t_button.png");
 
-                default -> throw new IllegalStateException("Unexpected value: " + buttonType);
+                default -> throw new IllegalStateException("getButtonImageFile: Unexpected value: " + buttonType);
             };
         }
     }

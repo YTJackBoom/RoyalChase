@@ -17,7 +17,7 @@ public abstract class Projectile {
 	private Enemy target;
 
 
-	public Projectile( Coordinate start, Enemy target,int type) {
+	public Projectile( Coordinate start, Enemy target,int type) {  //TODO: eine "animaion" pro richtung, prob in animation selber. wie enemys und towers verbessern
 		this.pos = start;
 		this.gS = gS;
 		this.type = type;

@@ -6,11 +6,10 @@ import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class Animator {
+public class Animator { //TODO: verschiedene animationen je nach bewegungsrichtung, zwichenspeichern des punktes in de ranimatiopn
     private int currentImageIndex;
-    private BufferedImage imageArray[];
+    private BufferedImage[] imageArray;
     private File gifFile;
     public Animator(File gifFile) {
         currentImageIndex = 0;
