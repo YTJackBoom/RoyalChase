@@ -7,34 +7,51 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Animator { //TODO: verschiedene animationen je nach bewegungsrichtung, zwichenspeichern des punktes in de ranimatiopn
+import static basics.Direction.NORMAL;
+
+public class Animator {
     private int currentImageIndex;
-    private BufferedImage[] imageArray;
-    private File gifFile;
-    public Animator(File gifFile) {
+    private BufferedImage[] imageArray,imageArrayUp, imageArrayDown, imageArrayLeft, imageArrayRight;
+    private File gifFile, gifFileUp, gifFileDown, gifFileLeft, gifFileRight;
+    private Direction direction;
+    public Animator(String gifFilesPath) {
+        direction = NORMAL;
         currentImageIndex = 0;
-        this.gifFile = gifFile;
+        initGifs(gifFilesPath);
         try {
-            splitGifIntoFrames();
+            imageArray = splitGifIntoFrames(gifFile);
+            imageArrayUp = splitGifIntoFrames(gifFileUp);
+            imageArrayDown = splitGifIntoFrames(gifFileDown);
+            imageArrayLeft = splitGifIntoFrames(gifFileLeft);
+            imageArrayRight = splitGifIntoFrames(gifFileRight);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
        // System.out.println(imageArray.length);
     }
 
-    public void splitGifIntoFrames() throws IOException {
+    public void initGifs(String gifFilesPath) {
+        gifFile = new File(gifFilesPath + "normal.gif");
+        gifFileUp = new File(gifFilesPath + "up.gif");
+        gifFileDown = new File(gifFilesPath + "down.gif");
+        gifFileLeft = new File(gifFilesPath + "left.gif");
+        gifFileRight = new File(gifFilesPath + "right.gif");
+    }
+
+    public BufferedImage[] splitGifIntoFrames(File tgifFile) throws IOException {
+        BufferedImage[] tempArray;
         ImageReader reader = null;
         ImageInputStream input = null;
         try {
-            input = ImageIO.createImageInputStream(gifFile);
+            input = ImageIO.createImageInputStream(tgifFile);
             reader = ImageIO.getImageReadersByFormatName("gif").next();
             reader.setInput(input);
 
             int frameCount = reader.getNumImages(true);
-            imageArray = new BufferedImage[frameCount];
+            tempArray = new BufferedImage[frameCount];
 
             for (int i = 0; i < frameCount; i++) {
-                imageArray[i] = reader.read(i);
+                tempArray[i] = reader.read(i);
             }
         } finally {
             if (reader != null) {
@@ -44,6 +61,7 @@ public class Animator { //TODO: verschiedene animationen je nach bewegungsrichtu
                 input.close();
             }
         }
+        return tempArray;
     }
 
     public BufferedImage getCurrentImage() {
@@ -53,7 +71,13 @@ public class Animator { //TODO: verschiedene animationen je nach bewegungsrichtu
             currentImageIndex = 0;
         }
        // System.out.println(currentImageIndex);
-        return imageArray[currentImageIndex];
+        return switch (direction) {
+            case NORMAL -> imageArray[currentImageIndex];
+            case UP -> imageArrayUp[currentImageIndex];
+            case DOWN -> imageArrayDown[currentImageIndex];
+            case LEFT -> imageArrayLeft[currentImageIndex];
+            case RIGHT -> imageArrayRight[currentImageIndex];
+        };
     }
 
     public int getWidth(){
@@ -62,5 +86,8 @@ public class Animator { //TODO: verschiedene animationen je nach bewegungsrichtu
 
     public int getHeight() {
         return imageArray[0].getHeight();
+    }
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

@@ -26,8 +26,8 @@ public class Enemy {
 
 
 	public void initAnimators() {
-		activeAnimator = new Animator(variables.Enemies.getEnemyActiveGifFile(type));
-		passiveAnimator = new Animator(variables.Enemies.getEnemyPassiveGifFile(type));
+		activeAnimator = new Animator(variables.Enemies.getEnemyActiveGifPath(type));
+		passiveAnimator = new Animator(variables.Enemies.getEnemyPassiveGifPath(type));
 	}
 	public void initVariables() {
 		speed = variables.Enemies.getEnemySpeed(type);

@@ -41,8 +41,8 @@ public class Tower  {
 
 
 	public void initAnimators() {
-		passiveAnimator = new Animator(variables.Towers.getTowerPassiveGifFile(type));
-		activeAnimator = new Animator(variables.Towers.getTowerActiveGifFile(type));
+		passiveAnimator = new Animator(variables.Towers.getTowerPassiveGifPath(type));
+		activeAnimator = new Animator(variables.Towers.getTowerActiveGifPath(type));
 	}
 	public void initVariables() {
 		range = variables.Towers.getRange(type);

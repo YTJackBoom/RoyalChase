@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import basics.Animator;
+import basics.Direction;
 import controllers.ProjectileController;
 import helpers.Coordinate;
 import enemy.Enemy;

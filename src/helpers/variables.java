@@ -2,7 +2,6 @@ package helpers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.file.Path;
 
 public class variables { //class to define different variables for thing
 
@@ -50,32 +49,32 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getEnemyHealth: Unexpected value:  " + enemyType);
             };
         }
-        public static File getEnemyPassiveGifFile(int enemyType) {
+        public static String getEnemyPassiveGifPath(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> new File("res/images/enemies/passive/skull_e_passive.gif");
-                case SKELETON -> new File("res/images/enemies/passive/skeleton_e_passive.gif");
-                case ZOMBIE -> new File("res/images/enemies/passive/zombie_e_passive.gif");
-                case WITCH -> new File("res/images/enemies/passive/witch_e_passive.gif");
-                case WIZARD -> new File("res/images/enemies/passive/wizard_e_passive.gif");
-                case SKELETON_KING -> new File("res/images/enemies/passive/skeleton_king_e_passive.gif");
-                case ZOMBIE_KING -> new File("res/images/enemies/passive/zombie_king_e_passive.gif");
-                case WITCH_QUEEN -> new File("res/images/enemies/passive/witch_queen_e_passive.gif");
-                case WIZARD_KING -> new File("res/images/enemies/passive/wizard_king_e_passive.gif");
+                case SKULL -> "res/images/enemies/passive/skull_e_passive/";
+                case SKELETON -> "res/images/enemies/passive/skeleton_e_passive/";
+                case ZOMBIE ->  "res/images/enemies/passive/zombie_e_passive/";
+                case WITCH -> "res/images/enemies/passive/witch_e_passive/";
+                case WIZARD ->  "res/images/enemies/passive/wizard_e_passive/";
+                case SKELETON_KING -> "res/images/enemies/passive/skeleton_king_e_passive/";
+                case ZOMBIE_KING -> "res/images/enemies/passive/zombie_king_e_passive/";
+                case WITCH_QUEEN -> "res/images/enemies/passive/witch_queen_e_passive/";
+                case WIZARD_KING -> "res/images/enemies/passive/wizard_king_e_passive/";
                 default -> throw new IllegalStateException("getEnemyPassiveGifFile: Unexpected value:  " + enemyType);
 
             };
         }
-        public static File getEnemyActiveGifFile(int enemyType) {
+        public static String getEnemyActiveGifPath(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> new File("res/images/enemies/active/skull_e_active.gif");
-                case SKELETON -> new File("res/images/enemies/active/skeleton_e_active.gif");
-                case ZOMBIE -> new File("res/images/enemies/active/zombie_e_active.gif");
-                case WITCH -> new File("res/images/enemies/active/witch_e_active.gif");
-                case WIZARD -> new File("res/images/enemies/active/wizard_e_active.gif");
-                case SKELETON_KING -> new File("res/images/enemies/active/skeleton_king_e_active.gif");
-                case ZOMBIE_KING -> new File("res/images/enemies/active/zombie_king_e_active.gif");
-                case WITCH_QUEEN -> new File("res/images/enemies/active/witch_queen_e_active.gif");
-                case WIZARD_KING -> new File("res/images/enemies/active/wizard_king_e_active.gif");
+                case SKULL -> "res/images/enemies/active/skull_e_active/";
+                case SKELETON -> "res/images/enemies/active/skeleton_e_active/";
+                case ZOMBIE ->  "res/images/enemies/active/zombie_e_active/";
+                case WITCH -> "res/images/enemies/active/witch_e_active/";
+                case WIZARD ->  "res/images/enemies/active/wizard_e_active/";
+                case SKELETON_KING -> "res/images/enemies/active/skeleton_king_e_active/";
+                case ZOMBIE_KING -> "res/images/enemies/active/zombie_king_e_active/";
+                case WITCH_QUEEN -> "res/images/enemies/active/witch_queen_e_active/";
+                case WIZARD_KING -> "res/images/enemies/active/wizard_king_e_active/";
                 default -> throw new IllegalStateException("getEnemyActiveGifFile: Unexpected value:  " + enemyType);
 
             };
@@ -161,24 +160,24 @@ public class variables { //class to define different variables for thing
         public static final int ROCKET_T = 3;
         public static final int SNIP_T = 4;
 
-        public static File getTowerPassiveGifFile(int towerType) {
+        public static String getTowerPassiveGifPath(int towerType) {
             return switch (towerType) {
-                case Foundation_T -> new File("res/images/towers/passive/foundation_t_passive.gif");
-                case ARROW_T -> new File("res/images/towers/passive/arrow_t_passive.gif");
-                case MAGE_T -> new File("res/images/towers/passive/mage_t_passive.gif");
-                case ROCKET_T -> new File("res/images/towers/passive/rocket_t_passive.gif");
-                case SNIP_T -> new File("res/images/towers/passive/snip_t_passive.gif");
+                case Foundation_T -> "res/images/towers/passive/foundation_t_passive/";
+                case ARROW_T -> "res/images/towers/passive/arrow_t_passive/";
+                case MAGE_T -> "res/images/towers/passive/mage_t_passive/";
+                case ROCKET_T -> "res/images/towers/passive/rocket_t_passive/";
+                case SNIP_T -> "res/images/towers/passive/snip_t_passive/";
                 default -> throw new IllegalStateException("getTowerPassiveGifFile: Unexpected value:  " + towerType);
 
             };
         }
-        public static File getTowerActiveGifFile(int towerType) {
+        public static String getTowerActiveGifPath(int towerType) {
             return switch (towerType) {
-                case Foundation_T -> new File("res/images/towers/active/foundation_t_active.gif");
-                case ARROW_T -> new File("res/images/towers/active/arrow_t_active.gif");
-                case MAGE_T -> new File("res/images/towers/active/mage_t_active.gif");
-                case ROCKET_T -> new File("res/images/towers/active/rocket_t_active.gif");
-                case SNIP_T -> new File("res/images/towers/active/snip_t_active.gif");
+                case Foundation_T -> "res/images/towers/active/foundation_t_active/";
+                case ARROW_T -> "res/images/towers/active/arrow_t_active/";
+                case MAGE_T -> "res/images/towers/active/mage_t_active/";
+                case ROCKET_T -> "res/images/towers/active/rocket_t_active/";
+                case SNIP_T -> "res/images/towers/active/snip_t_active/";
                 default -> throw new IllegalStateException("getTowerActiveGifFile: Unexpected value:  " + towerType);
 
             };
@@ -216,9 +215,9 @@ public class variables { //class to define different variables for thing
             };
         }
 
-        public static File getProjectileGifFile(int projectileType) {
+        public static String getProjectileGifPath(int projectileType) {
             return switch (projectileType) {
-                case ARROW -> new File("res/images/projectiles/active/arrow_p_active.gif");
+                case ARROW -> "res/images/projectiles/active/arrow_p_active/";
                 default -> throw new IllegalStateException("getProjectileGifFile: Unexpected value:  " + projectileType);
             };
         }

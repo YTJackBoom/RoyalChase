@@ -4,6 +4,7 @@ package projectiles;
 import javax.swing.JPanel;
 
 import basics.Animator;
+import basics.Direction;
 import helpers.Coordinate;
 import enemy.Enemy;
 import helpers.variables;
@@ -26,7 +27,8 @@ public abstract class Projectile {
 	}
 
 	private void initAnimator() {
-		animator = new Animator(variables.Projectiles.getProjectileGifFile(type));
+		animator = new Animator(variables.Projectiles.getProjectileGifPath(type));
+
 	}
 	public Coordinate getPos() {
 		return pos;
