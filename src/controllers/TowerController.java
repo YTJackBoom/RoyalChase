@@ -28,8 +28,8 @@ public class TowerController implements ControllerMethods{
 
 
     public void update() {
-        checkTELStatus();
         for (Tower tower : towerEntityList) {
+            checkTELStatus(tower);
             tower.update();
         }
     }
@@ -38,24 +38,25 @@ public class TowerController implements ControllerMethods{
             towerEntityList.add(new TowerFoundation(this, coordinate));
         }
     }
-    public void checkTELStatus() {
-        for (Tower tower : towerEntityList) {
+    public void checkTELStatus(Tower tower) {
             for (Enemy enemy : enemyList) {
                 if (math.TowerMath.checkRange(tower, enemy) && tower.getTarget() == null) {
-                   // if(tower.getType()==1) System.out.println("notdam");
+                    if (tower.getType() == 1) System.out.println("tower target set");
                     tower.setStatus(true);
                     tower.setTarget(enemy);
                     //System.out.println("			"+tower+"inrange"+enemy);
                 }
             }
-                    //	System.out.println("			"+i+"n range"+o);
-            if (!math.TowerMath.checkRange(tower, tower.getTarget())) {
-                    tower.setStatus(false);
-                    tower.setTarget(null);
-                    //if(tower.getType()==1) System.out.println("dam");
-                }
+
+            //	System.out.println("			"+i+"n range"+o);
+             if (!enemyList.contains(tower.getTarget())) {
+                tower.setStatus(false);
+                tower.setTarget(null);
+                if (tower.getType() == 1) System.out.println("towerTarget reset");
+
             }
         }
+
 
 
     public void render(Graphics g) {

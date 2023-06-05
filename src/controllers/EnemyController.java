@@ -64,7 +64,7 @@ public class EnemyController implements ControllerMethods{
 	public void workRemoveQue() {
 			for (Enemy enemy : removeQue) {
 				enemy.removeAnimators();
-				enemyList.set(enemyList.indexOf(enemy), null);
+				enemyList.remove(enemy);
 			}
 			removeQue.clear();
 		}

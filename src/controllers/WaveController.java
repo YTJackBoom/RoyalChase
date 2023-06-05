@@ -13,7 +13,7 @@ public class WaveController implements ControllerMethods {
     private WaveFileAnalyser waveFileAnalyser;
     private int currentWave, counter, counter2;
     private int cooldown = 100;
-    private int timeBetweenSpawns = 500;
+    private int timeBetweenSpawns = 100;
     private ArrayList<Wave> waves;
 
 

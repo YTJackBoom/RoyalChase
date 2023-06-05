@@ -61,4 +61,8 @@ public class ArrowTower extends Tower {
 		super.setTarget(target);
 	}
 
+	@Override
+	public Enemy getTarget() {
+		return target;
+	}
 }
