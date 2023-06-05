@@ -11,7 +11,7 @@ import towers.TowerFoundation;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class TowerController {
+public class TowerController implements ControllerMethods{
     private ArrayList<Tower> towerEntityList;
     private Playing playing;
     private ArrayList<Enemy> enemyList;
@@ -42,7 +42,7 @@ public class TowerController {
         for (Tower tower : towerEntityList) {
             for (Enemy enemy : enemyList) {
                 if (math.TowerMath.checkRange(tower, enemy) && tower.getTarget() == null) {
-                    if(tower.getType()==1) System.out.println(99);
+                   // if(tower.getType()==1) System.out.println("notdam");
                     tower.setStatus(true);
                     tower.setTarget(enemy);
                     //System.out.println("			"+tower+"inrange"+enemy);
@@ -52,7 +52,7 @@ public class TowerController {
             if (!math.TowerMath.checkRange(tower, tower.getTarget())) {
                     tower.setStatus(false);
                     tower.setTarget(null);
-                    if(tower.getType()==1) System.out.println(100);
+                    //if(tower.getType()==1) System.out.println("dam");
                 }
             }
         }

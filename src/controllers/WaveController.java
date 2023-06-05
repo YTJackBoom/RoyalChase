@@ -7,13 +7,13 @@ import scenes.Playing;
 
 import java.util.ArrayList;
 
-public class WaveController {
+public class WaveController implements ControllerMethods {
     private Playing playing;
     private EnemyController enemyController;
     private WaveFileAnalyser waveFileAnalyser;
     private int currentWave, counter, counter2;
     private int cooldown = 100;
-    private int timeBetweenSpawns = 100;
+    private int timeBetweenSpawns = 500;
     private ArrayList<Wave> waves;
 
 
@@ -35,7 +35,7 @@ public class WaveController {
 
     }
     public void update() {
-        if (enemyController.getEnemyList().size() == 0) {
+        if (enemyController.getEnemyList().size() == 0&&counter2/timeBetweenSpawns == 1) {
             if (counter / cooldown == 1) {
                 newWave();
                 counter = 0;
@@ -60,4 +60,8 @@ public class WaveController {
 
     }
 
+    @Override
+    public Playing getPlaying() {
+        return playing;
+    }
 }

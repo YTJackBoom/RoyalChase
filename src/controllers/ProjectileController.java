@@ -5,19 +5,19 @@ import helpers.Coordinate;
 import projectiles.Arrow;
 import projectiles.Projectile;
 import scenes.Playing;
-import towers.Tower;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ProjectileController {
+public class ProjectileController implements ControllerMethods {
     private Playing playing;
-    private ArrayList<Projectile> projectileList;
-    ArrayList<Projectile> removeQueue;
+    private ArrayList<Projectile> projectileList, removeQueue ,addQueue ;
+
 
     public ProjectileController(Playing playing) {
         projectileList = new ArrayList<Projectile>();
-        removeQueue = new ArrayList<Projectile>();
+        removeQueue  = new ArrayList<Projectile>();
+        addQueue  = new ArrayList<Projectile>();
         this.playing = playing;
     }
 
@@ -42,45 +42,58 @@ public class ProjectileController {
                     checkCollision(projectile,projectile.getTarget());
                 } else {
                     removeQueue.add(projectile);
+                    System.out.println("removed");
+
                 }
             }
         }
         workRemoveQueue();
+        workAddQueue();
     }
 
 
    public void checkCollision(Projectile projectile, Enemy target) { // Collisionscheck kugel u. gegner + löschen u damage
         int distanceY = target.getPos().getY() - projectile.getPos().getY();
         int distanceX = target.getPos().getX() - projectile.getPos().getX();
-        if (Math.abs(distanceX)<=3&&Math.abs(distanceY)<=3) {
+        if (Math.abs(distanceX)<=0&&Math.abs(distanceY)<=0) {
             removeQueue.add(projectile);
-            playing.getEnemyController().damageEnemy(target,projectile.getType());
+            playing.getEnemyController().damageEnemy(target,projectile.getDamage());
+           // System.out.println("hit");
         }
     }
     public void workRemoveQueue() {
         for (Projectile projectile : removeQueue) {
+            projectile.removeAnimators();
             projectileList.remove(projectile);
         }
         removeQueue.clear();
-    }public void removeProjectile (Projectile projectile) {
+    }
+    public void workAddQueue() {
+        projectileList.addAll(addQueue);
+        addQueue.clear();
+    }
+        public void removeProjectile (Projectile projectile) {
         removeQueue.add(projectile);
     }
 
 
     public void spawnProjectile(Coordinate start, Enemy ziel, int type) {
         switch (type) {
-            case 0 -> projectileList.add(new Arrow(this,start,ziel,type));
-            case 1 -> projectileList.add(new Arrow(this,start,ziel,type));
-            case 2 -> projectileList.add(new Arrow(this,start,ziel,type));
-            case 3 -> projectileList.add(new Arrow(this,start,ziel,type));
-            case 4 -> projectileList.add(new Arrow(this,start,ziel,type));
-            case 5 -> projectileList.add(new Arrow(this,start,ziel,type));
-            case 6 -> projectileList.add(new Arrow(this,start,ziel,type));
-            case 7 -> projectileList.add(new Arrow(this,start,ziel,type));
-            case 8 -> projectileList.add(new Arrow(this,start,ziel,type));
+            case 0 -> addQueue.add(new Arrow(this,start,ziel,type));
+            case 1 -> addQueue.add(new Arrow(this,start,ziel,type));
+            case 2 -> addQueue.add(new Arrow(this,start,ziel,type));
+            case 3 -> addQueue.add(new Arrow(this,start,ziel,type));
+            case 4 -> addQueue.add(new Arrow(this,start,ziel,type));
+            case 5 -> addQueue.add(new Arrow(this,start,ziel,type));
+            case 6 -> addQueue.add(new Arrow(this,start,ziel,type));
+            case 7 -> addQueue.add(new Arrow(this,start,ziel,type));
+            case 8 -> addQueue.add(new Arrow(this,start,ziel,type));
         }
     }
 
 
-
+    @Override
+    public Playing getPlaying() {
+        return playing;
+    }
 }

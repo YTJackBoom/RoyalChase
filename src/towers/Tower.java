@@ -4,6 +4,7 @@ import basics.Animator;
 import controllers.TowerController;
 import helpers.Coordinate;
 import enemy.Enemy;
+import helpers.PreLoader;
 import helpers.variables;
 import uiElements.PlacementMenu;
 
@@ -20,12 +21,13 @@ public class Tower  {
 	private int type;
 	private int width, height;
 	private Rectangle bounds;
-	
+	private TowerController towerController;
 
 			
 	public Tower(TowerController towerController, Coordinate pos, int type) {
 		this.type = type;
 		this.pos = pos;
+		this.towerController = towerController;
 		initAnimators();
 		initVariables();
 		initBounds();
@@ -41,8 +43,9 @@ public class Tower  {
 
 
 	public void initAnimators() {
-		passiveAnimator = new Animator(variables.Towers.getTowerPassiveGifPath(type));
-		activeAnimator = new Animator(variables.Towers.getTowerActiveGifPath(type));
+		PreLoader preLoader = towerController.getPlaying().getGame().getPreLoader();
+		passiveAnimator = preLoader.getTowerPassiveAnimator(type);
+		activeAnimator = preLoader.getTowerActiveAnimator(type);
 	}
 	public void initVariables() {
 		range = variables.Towers.getRange(type);

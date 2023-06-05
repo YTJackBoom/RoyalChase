@@ -26,6 +26,8 @@ public class Playing extends GameScenes implements SceneMethods{
     private int mouseX, mouseY;
     private boolean towerSelected, dragingTower;
 
+    private int gold;
+
     public Playing(Game game) {
         super(game);
         imageAnalyser = new ImageAnalyser(getCurrentPMapFile());
@@ -51,10 +53,12 @@ public class Playing extends GameScenes implements SceneMethods{
     }
     @Override
     public void update(){
-        waveController.update();
-        enemyController.update();
-        towerController.update();
         projectileController.update();
+        towerController.update();
+        enemyController.update();
+        waveController.update();
+
+
     }
 
 
@@ -153,8 +157,14 @@ public class Playing extends GameScenes implements SceneMethods{
     public void setDragingTower(boolean b) {
         dragingTower = b;
     }
-
     public ProjectileController getProjectileController() {
         return projectileController;
+    }
+    public void setGold(int i){
+        gold=+i;
+    }
+
+    public int getGold() {
+        return gold;
     }
 }

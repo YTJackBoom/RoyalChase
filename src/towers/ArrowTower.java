@@ -36,9 +36,9 @@ public class ArrowTower extends Tower {
 
 
 	public void fire() {
-		System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
+		//System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
 		if (isLoaded && isFiring&&target != null) {
-			projectileController.spawnProjectile(new Coordinate(getPos().getX(), getPos().getY()), target,1); // target mitgabe, um target zu damagen
+			projectileController.spawnProjectile(new Coordinate(getPos().getX(), getPos().getY()), target,0); // target mitgabe, um target zu damagen
 			System.out.println("ürpjectile sdpawnes");
 
 			isLoaded = false;

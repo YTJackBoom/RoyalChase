@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import basics.Animator;
 import basics.Direction;
+import controllers.ProjectileController;
 import helpers.Coordinate;
 import enemy.Enemy;
 import helpers.variables;
@@ -16,18 +17,20 @@ public abstract class Projectile {
 	private int type;
 	private Animator animator;
 	private Enemy target;
+	private ProjectileController projectileController;
 
 
-	public Projectile( Coordinate start, Enemy target,int type) {  //TODO: eine "animaion" pro richtung, prob in animation selber. wie enemys und towers verbessern
+	public Projectile(ProjectileController projectileController, Coordinate start, Enemy target, int type) {  // TODO: eine "animaion" pro richtung, prob in animation selber. wie enemys und towers verbessern
 		this.pos = start;
 		this.gS = gS;
 		this.type = type;
 		this.target = target;
+		this.projectileController = projectileController;
 		initAnimator();
 	}
 
 	private void initAnimator() {
-		animator = new Animator(variables.Projectiles.getProjectileGifPath(type));
+		animator = projectileController.getPlaying().getGame().getPreLoader().getProjectileAnimator(type);
 
 	}
 	public Coordinate getPos() {
@@ -41,4 +44,11 @@ public abstract class Projectile {
 	}
 	public Enemy getTarget() {return target;}
 	public int getType() {return type;}
+
+	public int getDamage() {
+		return variables.Projectiles.getProjectileDamage(type);
+	}
+	public void removeAnimators() {
+		animator = null;
+	}
 }

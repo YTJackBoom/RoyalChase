@@ -2,6 +2,7 @@ package helpers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.reflect.Field;
 
 public class variables { //class to define different variables for thing
 
@@ -19,7 +20,7 @@ public class variables { //class to define different variables for thing
 
 
 
-        public static int GetReward(int enemyType) {
+        public static int getEnemyReward(int enemyType) {
             return switch (enemyType) {
                 case SKULL -> 5;
                 case SKELETON -> 5;
@@ -81,7 +82,7 @@ public class variables { //class to define different variables for thing
         }
         public static int getEnemySpeed(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> 5;
+                case SKULL -> 2;
                 case SKELETON -> 5;
                 case ZOMBIE -> 5;
                 case WITCH -> 5;
@@ -92,6 +93,9 @@ public class variables { //class to define different variables for thing
                 case WIZARD_KING -> 5;
                 default -> throw new IllegalStateException("getEnemySpeed: Unexpected value:  " + enemyType);
             };
+        }
+        public static int getNumberOfIntDeclarations() {
+            return variables.getNumberOfIntDeclarations(Enemies.class);
         }
     }
     public static class Maps {
@@ -164,9 +168,9 @@ public class variables { //class to define different variables for thing
             return switch (towerType) {
                 case Foundation_T -> "res/images/towers/passive/foundation_t_passive/";
                 case ARROW_T -> "res/images/towers/passive/arrow_t_passive/";
-                case MAGE_T -> "res/images/towers/passive/mage_t_passive/";
-                case ROCKET_T -> "res/images/towers/passive/rocket_t_passive/";
-                case SNIP_T -> "res/images/towers/passive/snip_t_passive/";
+                case MAGE_T -> "res/images/towers/passive/foundation_t_passive/";
+                case ROCKET_T -> "res/images/towers/passive/foundation_t_passive/";
+                case SNIP_T -> "res/images/towers/passive/foundation_t_passive/";
                 default -> throw new IllegalStateException("getTowerPassiveGifFile: Unexpected value:  " + towerType);
 
             };
@@ -175,9 +179,9 @@ public class variables { //class to define different variables for thing
             return switch (towerType) {
                 case Foundation_T -> "res/images/towers/active/foundation_t_active/";
                 case ARROW_T -> "res/images/towers/active/arrow_t_active/";
-                case MAGE_T -> "res/images/towers/active/mage_t_active/";
-                case ROCKET_T -> "res/images/towers/active/rocket_t_active/";
-                case SNIP_T -> "res/images/towers/active/snip_t_active/";
+                case MAGE_T -> "res/images/towers/active/foundation_t_active/";
+                case ROCKET_T -> "res/images/towers/active/foundation_t_active/";
+                case SNIP_T -> "res/images/towers/active/foundation_t_active/";
                 default -> throw new IllegalStateException("getTowerActiveGifFile: Unexpected value:  " + towerType);
 
             };
@@ -185,7 +189,7 @@ public class variables { //class to define different variables for thing
         public static int getRange(int towerType) {
             return switch (towerType) {
                 case Foundation_T -> 100;
-                case ARROW_T -> 100;
+                case ARROW_T -> 500;
                 case MAGE_T -> 0;
                 case ROCKET_T -> 0;
                 case SNIP_T -> 0;
@@ -194,10 +198,13 @@ public class variables { //class to define different variables for thing
 
             };
         }
+        public static int getNumberOfIntDeclarations() {
+            return variables.getNumberOfIntDeclarations(Towers.class);
+        }
     }
 
     public static class Projectiles {
-        public static final int ARROW = 1;
+        public static final int ARROW = 0;
 
 
 
@@ -210,7 +217,7 @@ public class variables { //class to define different variables for thing
         }
         public static int getProjectileDamage(int projectileType) {
             return switch (projectileType) {
-                case ARROW -> 10;
+                case ARROW -> 50;
                 default -> throw new IllegalStateException("getProjectileDamage: Unexpected value:  " + projectileType);
             };
         }
@@ -220,6 +227,9 @@ public class variables { //class to define different variables for thing
                 case ARROW -> "res/images/projectiles/active/arrow_p_active/";
                 default -> throw new IllegalStateException("getProjectileGifFile: Unexpected value:  " + projectileType);
             };
+        }
+        public static int getNumberOfIntDeclarations() {
+            return variables.getNumberOfIntDeclarations(Projectiles.class);
         }
     }
 
@@ -240,6 +250,16 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getButtonImageFile: Unexpected value: " + buttonType);
             };
         }
+    }
+    public static int getNumberOfIntDeclarations(Class<?> clazz) {
+        int count = 0;
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getType() == int.class || field.getType() == Integer.class) {
+                count++;
+            }
+        }
+        return count;
     }
 
 }

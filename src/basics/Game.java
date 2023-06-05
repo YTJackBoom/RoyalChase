@@ -3,6 +3,7 @@ package basics;
 import javax.swing.*;
 
 
+import helpers.PreLoader;
 import scenes.GameOver;
 import scenes.Menu;
 import scenes.Playing;
@@ -15,8 +16,9 @@ import static basics.GameStates.PLAYING;
 
 public class Game extends JFrame  {
 
-        private final int fps = 60;
+        private final int fps = 15;
         private final int ups = 120; //updates per second, for the game logic
+        private final int speedOffset = 1;
         private GameScreen gameScreen;
 
         // Classes
@@ -27,6 +29,7 @@ public class Game extends JFrame  {
         private GameOver gameOver;
 
         private Timer RenderTimer, GameTimer;
+        private PreLoader preLoader;
 
         public Game() {
             initClasses();
@@ -43,6 +46,8 @@ public class Game extends JFrame  {
 
 
         private void initClasses() {
+            preLoader = new PreLoader();
+
 
             gameScreen = new GameScreen(this);
             render = new Render(this);
@@ -126,7 +131,12 @@ public class Game extends JFrame  {
         public GameOver getGameOver() {
             return gameOver;
         }
-
+        public PreLoader getPreLoader() {
+            return preLoader;
+        }
+        public int getSpeedOffset() {
+            return speedOffset;
+        }
 
 
     }

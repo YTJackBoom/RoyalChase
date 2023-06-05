@@ -22,9 +22,10 @@ public class Arrow extends Projectile {
 	private int distance;
 	private Enemy target;
 	private ProjectileController projectileController;
+	private int i=0;
 
 	public Arrow(ProjectileController projectileController, Coordinate start, Enemy target, int type) {
-		super( start, target,type);
+		super(projectileController, start, target,type);
 		System.out.println("arro");
 		pos = start;
 		ziel = target.getPos();
@@ -36,15 +37,16 @@ public class Arrow extends Projectile {
 	public void update() {
 		if(target != null) {
 			ziel = target.getPos();
-			updatePos();
-			//System.out.println("s"+pos.getX() +" " +  pos.getY());
-		} else {
-			System.out.println("target null");
-			projectileController.removeProjectile(this);
+			if(i>=projectileController.getPlaying().getGame().getSpeedOffset()) {
+				move();
+				i=0;
+			}else i++;
+
 		}
     }
 	
-	private void updatePos() { //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
+	public void move() { //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
+
 		double xMultiplyer;
 		double yMultiplyer;
 		double yDistance = Math.abs(ziel.getY()-pos.getY());
