@@ -1,7 +1,6 @@
 package scenes;
 
 import basics.Game;
-import basics.GameStates;
 import uiElements.MyButton;
 
 import java.awt.*;
@@ -52,7 +51,7 @@ public class Menu extends GameScenes implements SceneMethods {
         for (MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 if(button.getText().equals("Play")){
-                    GameStates.gameState = GameStates.PLAYING;
+                    GameStates.gameState = GameStates.LEVELSELECT;
                 }else if(button.getText().equals("Settings")){
                     GameStates.gameState = GameStates.SETTINGS;
                 }else if(button.getText().equals("Exit")){
@@ -93,6 +92,10 @@ public class Menu extends GameScenes implements SceneMethods {
 
     }
 
+    @Override
+    public void reset() {
+
+    }
 
 
 }

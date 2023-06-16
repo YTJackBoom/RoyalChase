@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 public class MyButton {
+	private boolean checked = false;
 	private boolean isTextButton = false;
 	private boolean mouseHover = false;
 	private boolean mousePressed = false;
@@ -112,5 +113,26 @@ public class MyButton {
 			return true;
 		}
 		else return false;
+	}
+
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public int getHeight() {
+		return height;
+	}
+
+	public void setChecked(boolean b) {
+		checked = b;
+	}
+
+	public boolean isChecked() {
+		return checked;
 	}
 }

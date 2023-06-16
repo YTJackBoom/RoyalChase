@@ -1,11 +1,12 @@
 package scenes;
 
 import basics.Game;
-import basics.ImageAnalyser;
+import helpers.ImageAnalyser;
 import controllers.EnemyController;
 import controllers.ProjectileController;
 import controllers.TowerController;
 import controllers.WaveController;
+import helpers.Values;
 import helpers.variables;
 import uiElements.MyButtonBar;
 
@@ -15,6 +16,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static helpers.Values.HEALTH;
+import static helpers.Values.LEVEL;
+import static scenes.GameStates.GAMEOVER;
+import static scenes.GameStates.gameState;
+
 public class Playing extends GameScenes implements SceneMethods{
     private EnemyController enemyController;
     private TowerController towerController;
@@ -22,14 +28,15 @@ public class Playing extends GameScenes implements SceneMethods{
     private ProjectileController projectileController;
     private ImageAnalyser imageAnalyser;
     private MyButtonBar buttonBar;
-    private int currentLevel,selectedTower;
+    private int selectedTower;
     private int mouseX, mouseY;
     private boolean towerSelected, dragingTower;
-
-    private int gold;
+    private boolean isPaused = false;
+    private Game game;
 
     public Playing(Game game) {
         super(game);
+        this.game = game;
         imageAnalyser = new ImageAnalyser(getCurrentPMapFile());
 
         enemyController = new EnemyController(this, imageAnalyser.imgToPath());
@@ -37,16 +44,18 @@ public class Playing extends GameScenes implements SceneMethods{
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
 
-        buttonBar = new MyButtonBar(this, new helpers.Coordinate(0, 700), 500, 100);
+        initButtonBar();
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(variables.Maps.getMapBufferedImage(currentLevel), 0, 0, null);
+        g.drawImage(variables.Maps.getMapBufferedImage(LEVEL), 0, 0, null);
         enemyController.render(g);
         towerController.render(g);
         projectileController.render(g);
         buttonBar.render(g);
+        renderUserInformation(g);
+        waveController.render(g);
         if (dragingTower) {
             renderDraggedButton(g);
         }
@@ -57,12 +66,40 @@ public class Playing extends GameScenes implements SceneMethods{
         towerController.update();
         enemyController.update();
         waveController.update();
+        checkHealth();
+    }
 
+    public void initButtonBar() {
+        int width = 120;
+        int height = 1000;
 
+        int x = game.getWidth() - width - 20;
+        int y = game.getHeight() - height - 20;
+
+        buttonBar = new MyButtonBar(this, new helpers.Coordinate(x, y), width, height);
+
+    }
+    public void reset() {
+        imageAnalyser = new ImageAnalyser(getCurrentPMapFile());
+        enemyController = new EnemyController(this, imageAnalyser.imgToPath());
+        towerController = new TowerController(this);
+        waveController = new WaveController(this);
+        projectileController = new ProjectileController(this);
     }
 
 
-
+    public void renderUserInformation(Graphics g) {
+        int startX = 10;
+        int startY = 50;
+        int xOffset = 0;
+        int yOffset = 20;
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Gold: " + Values.GOLD, startX, startY);
+        g.drawString("Wave: " + waveController.getCurrentWave(), startX+xOffset, startY+yOffset);
+        g.drawString("Enemies: " + enemyController.getEnemyList().size(), startX+xOffset*2, startY+yOffset*2);
+        g.drawString("Health: " + HEALTH, startX+xOffset*3, startY+yOffset*3);
+    }
     public void renderDraggedButton(Graphics g) {
 
         BufferedImage draggedImage;
@@ -74,6 +111,13 @@ public class Playing extends GameScenes implements SceneMethods{
 
         g.drawImage(draggedImage, mouseX-draggedImage.getWidth()/2 , mouseY-draggedImage.getHeight()/2, null);
     }
+    public void checkHealth() {
+        if (HEALTH <= 0) {
+            gameState = GAMEOVER;
+            game.resetAll();
+            Values.reset();
+        }
+    }
     @Override
     public void mouseClicked(int x, int y) {
         if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
@@ -83,7 +127,7 @@ public class Playing extends GameScenes implements SceneMethods{
 
     @Override
     public void mouseMoved(int x, int y) {
-        if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
+        if(buttonBar.getBounds().contains(x,y)){
             buttonBar.setVisible(true);
             buttonBar.mouseMoved(x,y);
         } else{
@@ -116,26 +160,20 @@ public class Playing extends GameScenes implements SceneMethods{
     public void mouseDragged(int x, int y) {
         mouseX = x;
         mouseY = y;
-        if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
-
-        }
 
     }
 
 
 
     //Getters and Setters
+    public MyButtonBar getButtonBar() {
+        return buttonBar;
+    }
     public File getCurrentPMapFile(){
-        return helpers.variables.Maps.getPMapFile(currentLevel);
+        return helpers.variables.Maps.getPMapFile(LEVEL);
     }
     public BufferedImage getCurrentMapFile(){
-        return helpers.variables.Maps.getMapBufferedImage(currentLevel);
-    }
-    public int getCurrentLevel(){
-        return currentLevel;
-    }
-    public void setCurrentLevel(int currentLevel){
-        this.currentLevel = currentLevel;
+        return helpers.variables.Maps.getMapBufferedImage(LEVEL);
     }
     public EnemyController getEnemyController(){
         return enemyController;
@@ -160,11 +198,14 @@ public class Playing extends GameScenes implements SceneMethods{
     public ProjectileController getProjectileController() {
         return projectileController;
     }
-    public void setGold(int i){
-        gold=+i;
+    public boolean isPaused() {
+        return isPaused;
     }
 
-    public int getGold() {
-        return gold;
+    public void pause() {
+        isPaused = true;
+    }
+    public void resume() {
+        isPaused = false;
     }
 }

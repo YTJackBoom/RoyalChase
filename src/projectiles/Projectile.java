@@ -3,8 +3,7 @@ package projectiles;
 
 import javax.swing.JPanel;
 
-import basics.Animator;
-import basics.Direction;
+import helpers.Animator;
 import controllers.ProjectileController;
 import helpers.Coordinate;
 import enemy.Enemy;

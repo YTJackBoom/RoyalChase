@@ -1,4 +1,6 @@
-package basics;
+package helpers;
+
+import basics.Direction;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;

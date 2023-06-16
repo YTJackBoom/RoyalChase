@@ -6,7 +6,12 @@ import java.util.ArrayList;
 import basics.Game;
 import enemy.*;
 import helpers.Coordinate;
+import helpers.Values;
+import helpers.variables;
 import scenes.Playing;
+
+import static helpers.Values.GOLD;
+import static helpers.Values.HEALTH;
 
 public class EnemyController implements ControllerMethods{
 	private ArrayList<Enemy> enemyList,removeQue,addQue;
@@ -26,11 +31,12 @@ public class EnemyController implements ControllerMethods{
 	public void update() {
 		workAddQue();
 		workRemoveQue();
-		if(i >=playing.getGame().getSpeedOffset()) { //TODO: potentially find a better way to do this
-			updateEnemyMovement();
-			i=0;
-		}else i++;
-
+		if (!playing.isPaused()) {
+			if (i >= playing.getGame().getSpeedOffset()) { //TODO: potentially find a better way to do this
+				updateEnemyMovement();
+				i = 0;
+			} else i++;
+		}
 		checkEnemyHealth();
 	}
 
@@ -42,20 +48,21 @@ public class EnemyController implements ControllerMethods{
 					enemy.setPos(pathCoordinates.get(enemy.getPathIndex()));
 					//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
 					//System.out.println(enemyList.get(a).getPos().getX());
-				} else { //Enemy hat das tor erreicht --> verschiedene verhalten //TODO: damage player
+				} else {//Enemy hat das tor erreicht --> verschiedene verhalten //TODO: damage player
+					HEALTH = HEALTH - variables.Enemies.getEnemyDamage(enemy.getType());
 					removeQue.add(enemy);
 					System.out.println("Enemy reached the end");
 				}
 			}
 		}
-		System.out.println(enemyList.size());
+//		System.out.println(enemyList.size());
 	}
 	public void checkEnemyHealth() {
 		for (Enemy enemy : enemyList) {
 			if (enemy != null) {
 				if (enemy.getHealth() <= 0) {
 					removeQue.add(enemy);
-					playing.setGold(playing.getGold() + enemy.getReward());
+					GOLD = (int) (GOLD +  (enemy.getReward()* Values.REWARDMULTIPLYER));
 					System.out.println("Nemy killed for " + enemy.getReward() + " gold");
 				}
 			}
@@ -123,7 +130,7 @@ public class EnemyController implements ControllerMethods{
 			}
 		}
 
-		System.out.println(enemyList.indexOf(enemy)+" "+removeQue.indexOf(enemy));
+//		System.out.println(enemyList.indexOf(enemy)+" "+removeQue.indexOf(enemy));
 		//return enemyList.contains(enemy);
 		return false;
 	}

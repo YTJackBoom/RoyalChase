@@ -1,5 +1,6 @@
 package helpers;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Field;
@@ -94,6 +95,20 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getEnemySpeed: Unexpected value:  " + enemyType);
             };
         }
+        public static int getEnemyDamage(int enemyType) {
+            return switch (enemyType) {
+                case SKULL -> 100;
+                case SKELETON -> 5;
+                case ZOMBIE -> 5;
+                case WITCH -> 5;
+                case WIZARD -> 5;
+                case SKELETON_KING -> 5;
+                case ZOMBIE_KING -> 5;
+                case WITCH_QUEEN -> 5;
+                case WIZARD_KING -> 5;
+                default -> throw new IllegalStateException("getEnemyDamage: Unexpected value:  " + enemyType);
+            };
+        }
         public static int getNumberOfIntDeclarations() {
             return variables.getNumberOfIntDeclarations(Enemies.class);
         }
@@ -135,7 +150,7 @@ public class variables { //class to define different variables for thing
                 mapImage = javax.imageio.ImageIO.read(mapFile);
                 return mapImage;
             } catch (Exception e) {
-                System.out.println("When reading MapBufferedImage: " + e);
+                System.out.println("When reading MapBufferedImage "+mapType+": " + e);
                 return null;
             }
 
@@ -251,6 +266,29 @@ public class variables { //class to define different variables for thing
             };
         }
     }
+
+    public static class Town {
+        public static final int COAL = 1;
+        public static final int IRON = 2;
+        public static final int STONE = 3;
+        public static final int WOOD = 4;
+        public static final int MINE = 5;
+        public static final int WORKSHOP = 6;
+
+        public static BufferedImage getBackgroundImage() {
+            File mapFile = new File("res/images/town/town_background.jpg");
+            BufferedImage mapImage;
+            try {
+                mapImage = ImageIO.read(mapFile);
+                return mapImage;
+            } catch (Exception e) {
+                System.out.println("When reading townBackgroundBufferedImage :" + e);
+                return null;
+            }
+        }
+
+    }
+
     public static int getNumberOfIntDeclarations(Class<?> clazz) {
         int count = 0;
         Field[] fields = clazz.getDeclaredFields();

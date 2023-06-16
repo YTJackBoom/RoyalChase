@@ -16,6 +16,8 @@ public interface SceneMethods {
     public void mouseReleased(int x, int y);
 
     public void mouseDragged(int x, int y);
-   // public void keyPressed(int keyCode);
+
+    public void reset();
+    // public void keyPressed(int keyCode);
 
 }

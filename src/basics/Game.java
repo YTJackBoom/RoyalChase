@@ -4,21 +4,19 @@ import javax.swing.*;
 
 
 import helpers.PreLoader;
-import scenes.GameOver;
-import scenes.Menu;
-import scenes.Playing;
-import scenes.Settings;
+import helpers.Values;
+import scenes.*;
+import uiElements.InfoBar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static basics.GameStates.PLAYING;
-
 public class Game extends JFrame  {
 
-        private final int fps = 15;
-        private final int ups = 120; //updates per second, for the game logic
-        private final int speedOffset = 1;
+        public final static int fps = 15;
+        public static final int ups = 120; //updates per second, for the game logic
+        public static final int speedOffset = 1;
+        private boolean isPaused = false;
         private GameScreen gameScreen;
 
         // Classes
@@ -27,12 +25,19 @@ public class Game extends JFrame  {
         private Playing playing;
         private Settings settings;
         private GameOver gameOver;
+        private LevelCleared levelCleared;
+        private LevelSelect levelSelect;
+        private Tutorial tutorial;
+        private Town town;
+        private InfoBar infoBar;
+
 
         private Timer RenderTimer, GameTimer;
         private PreLoader preLoader;
 
         public Game() {
             initClasses();
+            initVariables();
 
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
@@ -55,9 +60,24 @@ public class Game extends JFrame  {
             playing = new Playing(this);
             settings = new Settings(this);
             gameOver = new GameOver(this);
+            levelCleared = new LevelCleared(this);
+            levelSelect = new LevelSelect(this);
+            tutorial = new Tutorial(this);
+            town = new Town(this);
+
+            infoBar = new InfoBar(this);
+
+        }
+        private void initVariables(){
 
         }
 
+        public static void main(String[] args) {
+            Game game = new Game();
+            game.gameScreen.initInputs();
+            game.start();
+
+        }
         private void start() {//initialises and starts two timers: one for the game and one for the render(in 60fps)
 
             RenderTimer = new Timer((int)(1000/fps), new ActionListener() {
@@ -79,31 +99,29 @@ public class Game extends JFrame  {
 
         private void updateGame() {
             switch (GameStates.gameState) {
-                case MENU:
-                    break;
-                case PLAYING:
-                    playing.update();
-                    break;
-                case SETTINGS:
-                    break;
-                default:
-                    break;
+                case MENU ->menu.update();
+                case PLAYING -> playing.update();
+                case SETTINGS -> settings.update();
+                case GAMEOVER -> gameOver.update();
+                case LEVELCLEARED -> levelCleared.update();
+                case LEVELSELECT -> levelSelect.update();
+                case TUTORIAL -> tutorial.update();
+                case TOWN -> town.update();
+
             }
         }
 
-        public static void main(String[] args) {
-            Game game = new Game();
-            game.gameScreen.initInputs();
-            game.start();
-
-        }
         public void togglePause() {
-            if (RenderTimer.isRunning()) {
-                RenderTimer.stop();
-                GameTimer.stop();
+            if (!isPaused) {
+                isPaused = true;
+                playing.pause();
+                town.pause();
+                tutorial.pause();
             } else {
-                RenderTimer.start();
-                GameTimer.start();
+                isPaused = false;
+                playing.resume();
+                town.resume();
+                tutorial.resume();
             }
         }
 
@@ -126,18 +144,44 @@ public class Game extends JFrame  {
         public Settings getSettings() {
             return settings;
         }
-
-
         public GameOver getGameOver() {
             return gameOver;
         }
+        public LevelSelect getLevelSelect() {return levelSelect;}
+        public Tutorial getTutorial() {return tutorial;}
+        public Town getTown() {return town;}
+        public InfoBar getInfoBar() {return infoBar;}
+
+
         public PreLoader getPreLoader() {
             return preLoader;
         }
         public int getSpeedOffset() {
             return speedOffset;
         }
+        public int getUps() {return ups;}
 
+         public LevelCleared getLevelCleared() {
+            return levelCleared;
+        }
+        @Override
+        public int getHeight() {
+            return gameScreen.getHeight();
+        }
+        @Override
+        public int getWidth() {
+            return gameScreen.getWidth();
+        }
+        public boolean isPaused() {
+            return isPaused;
+        }
 
-    }
+        public void resetAll() {
+        playing.reset();
+        levelSelect.reset();
+        tutorial.reset();
+        town.reset();
+        Values.reset();
+        }
+}
 

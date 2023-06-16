@@ -1,11 +1,10 @@
 package uiElements;
 
-import basics.GameStates;
+import scenes.GameStates;
 import helpers.Coordinate;
 import scenes.Playing;
 
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 
 public class MyButtonBar {
@@ -14,6 +13,7 @@ public class MyButtonBar {
 	private ArrayList<MyButton> buttons;
 	private int width;
 	private int height;
+	private Rectangle bounds;
 	private boolean isVisible = false;
 	public MyButtonBar(Playing playing, Coordinate pos, int width, int height){
 		buttons = new ArrayList<MyButton>();
@@ -22,13 +22,32 @@ public class MyButtonBar {
 		this.height = height;
 		this.playing = playing;
 		initButtons();
+		initBounds();
 	}
 
 
 	public void initButtons() {
-		buttons.add(new MyButton("Menu",pos.getX() + 10, pos.getY() + 10, 100, 80));
-		buttons.add(new MyButton(1,pos.getX() + 120, pos.getY() + 10, 100, 80));
+		int startX = pos.getX()+10;
+		int startY = pos.getY()+10;
+		int xOffset = 0;
+		int yOffset = 90;
+		int width = 100;
+		int height = 80;
+
+		buttons.add(new MyButton("Town",startX, startY , width, height));
+		buttons.add(new MyButton("Sell",startX+xOffset, startY+yOffset, width, height));
+		buttons.add(new MyButton("Upgrade",startX+xOffset*2, startY+yOffset*2, width, height));
+
+		buttons.add(new MyButton(1,startX+xOffset*3, startY+yOffset*3, width, height));
+
+
+		buttons.add(new MyButton("Menu",startX+xOffset*5, startY+yOffset*5, width, height));
+
 	}
+	public void initBounds() {
+		bounds = new Rectangle(pos.getX(), pos.getY(), width, height);
+	}
+
 	public void render(Graphics g) {
 		if (isVisible) {
 			g.setColor(Color.BLACK);
@@ -66,8 +85,8 @@ public class MyButtonBar {
 				if (button.getText() != null) {
 					if (button.getText().equals("Play")) {
 						GameStates.gameState = GameStates.PLAYING;
-					} else if (button.getText().equals("Settings")) {
-						GameStates.gameState = GameStates.SETTINGS;
+					} else if (button.getText().equals("Town")) {
+						GameStates.gameState = GameStates.TOWN;
 					} else if (button.getText().equals("Exit")) {
 						System.exit(0);
 					} else if (button.getText().equals("Menu")) {
@@ -90,7 +109,6 @@ public class MyButtonBar {
 		}
 
 	}
-
 	public void mousePressed(int x, int y) {
 		for(MyButton button: buttons){
 			if(button.getBounds().contains(x,y)){
@@ -113,6 +131,10 @@ public class MyButtonBar {
 	}
 	public void setVisible(boolean b) {
 		isVisible = b;
+	}
+
+	public Rectangle getBounds() {
+		return bounds;
 	}
 
 

@@ -35,7 +35,7 @@ public class ProjectileController implements ControllerMethods {
 
 
     public void update() {
-        if (projectileList != null) {
+        if (projectileList != null&&!playing.isPaused()) {
             for (Projectile projectile : projectileList) {
                 if(playing.getEnemyController().contains(projectile.getTarget())) {
                     projectile.update();
@@ -95,5 +95,12 @@ public class ProjectileController implements ControllerMethods {
     @Override
     public Playing getPlaying() {
         return playing;
+    }
+
+    public void clearProjectiles() {
+        for (Projectile projectile : projectileList) {
+            projectile.removeAnimators();
+        }
+        projectileList.clear();
     }
 }

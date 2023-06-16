@@ -1,20 +1,25 @@
 package controllers;
 
+import basics.Game;
+import helpers.Values;
+import scenes.GameStates;
 import basics.Wave;
-import enemy.Enemy;
 import helpers.WaveFileAnalyser;
 import scenes.Playing;
 
+import java.awt.*;
 import java.util.ArrayList;
 
+import static scenes.GameStates.LEVELCLEARED;
 public class WaveController implements ControllerMethods {
     private Playing playing;
     private EnemyController enemyController;
     private WaveFileAnalyser waveFileAnalyser;
     private int currentWave, counter, counter2;
-    private int cooldown = 100;
-    private int timeBetweenSpawns = 100;
+    private int cooldown = 400;
     private ArrayList<Wave> waves;
+    private boolean generateNewWave = false;
+
 
 
     public WaveController(Playing playing) { //TODO: prob needs changes
@@ -26,32 +31,49 @@ public class WaveController implements ControllerMethods {
 
 
     public void initWaves() {
-        waveFileAnalyser = new WaveFileAnalyser(playing.getCurrentLevel());
+        waveFileAnalyser = new WaveFileAnalyser();
         int wavesNum = waveFileAnalyser.getWavesNum();
         waves = new ArrayList<Wave>();
         for(int i = 0; i < wavesNum; i++) {
-            waves.add(new Wave(waveFileAnalyser.getArrayList(i)));
+            waveFileAnalyser.initArrayLists(i);
+//            System.out.println(waveFileAnalyser.getSpawnList().size() + " " + waveFileAnalyser.getDelayList().size());
+            waves.add(new Wave(waveFileAnalyser.getSpawnList(),waveFileAnalyser.getDelayList()));
         }
 
     }
     public void update() {
-        if (enemyController.getEnemyList().size() == 0&&counter2/timeBetweenSpawns == 1) {
-            if (counter / cooldown == 1) {
-                newWave();
+//        System.out.println(waves.get(currentWave).getCurrentIndex() + " " + waves.get(currentWave).getSpawnList().size()+" "+waves.get(currentWave).getCurrentDelay()+" "+counter2 );
+        if (!playing.isPaused()) {
+
+            if (waves.get(currentWave).getCurrentIndex() == waves.get(currentWave).getSpawnList().size()) {
+                if (enemyController.getEnemyList().size() == 0) {
+                    generateNewWave = true;
+                }
+            } else if (waves.get(currentWave).getCurrentDelay() != 0) {
+                if (counter2 / waves.get(currentWave).getCurrentDelay() == 1) {
+                    spawnEnemy();
+                    counter2 = 0;
+                } else counter2++;
+            }
+            updateNewWave();
+        }
+    }
+    public void updateNewWave() {
+        if(generateNewWave) {
+            if (counter/cooldown == 1) {
+                currentWave++;
+                generateNewWave = false;
                 counter = 0;
             }else {
                 counter++;
             }
+            if(currentWave+1 == waves.size()&&waves.get(currentWave).getCurrentIndex() == waves.get(currentWave).getSpawnList().size()&&enemyController.getEnemyList().size() == 0) {
+                playing.getProjectileController().clearProjectiles();
+                playing.getButtonBar().setVisible(false);
+                generateNewWave = false;
+                GameStates.gameState = LEVELCLEARED;
+            }
         }
-        if(counter2/timeBetweenSpawns == 1) {
-            spawnEnemy();
-            counter2 = 0;
-        }else {
-            counter2++;
-        }
-    }
-    public void newWave() {
-        currentWave++;
 
     }
     public void spawnEnemy() {
@@ -60,8 +82,19 @@ public class WaveController implements ControllerMethods {
 
     }
 
+    public void render(Graphics g) {
+        if(generateNewWave) {
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.BOLD, 50));
+            g.drawString("New Wave in: "+(cooldown-counter)/ Game.ups, 100, 100);
+        }
+    }
     @Override
     public Playing getPlaying() {
         return playing;
+    }
+
+    public int getCurrentWave() {
+        return currentWave;
     }
 }

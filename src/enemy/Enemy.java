@@ -2,7 +2,7 @@ package enemy;
 
 import controllers.EnemyController;
 import helpers.Coordinate;
-import basics.Animator;
+import helpers.Animator;
 import helpers.PreLoader;
 import helpers.variables;
 

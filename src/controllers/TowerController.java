@@ -29,7 +29,9 @@ public class TowerController implements ControllerMethods{
 
     public void update() {
         for (Tower tower : towerEntityList) {
-            checkTELStatus(tower);
+            if(!playing.isPaused()) {
+                checkTELStatus(tower);
+            }
             tower.update();
         }
     }
@@ -41,21 +43,19 @@ public class TowerController implements ControllerMethods{
     public void checkTELStatus(Tower tower) {
             for (Enemy enemy : enemyList) {
                 if (math.TowerMath.checkRange(tower, enemy) && tower.getTarget() == null) {
-                    if (tower.getType() == 1) System.out.println("tower target set");
                     tower.setStatus(true);
                     tower.setTarget(enemy);
-                    //System.out.println("			"+tower+"inrange"+enemy);
+//                    if (tower.getType() == 1) System.out.println("tower target set");
                 }
             }
 
-            //	System.out.println("			"+i+"n range"+o);
              if (!enemyList.contains(tower.getTarget())) {
                 tower.setStatus(false);
                 tower.setTarget(null);
-                if (tower.getType() == 1) System.out.println("towerTarget reset");
+//              if (tower.getType() == 1) System.out.println("towerTarget reset");
 
             }
-        }
+    }
 
 
 

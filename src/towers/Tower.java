@@ -1,12 +1,11 @@
 package towers;
 
-import basics.Animator;
+import helpers.Animator;
 import controllers.TowerController;
 import helpers.Coordinate;
 import enemy.Enemy;
 import helpers.PreLoader;
 import helpers.variables;
-import uiElements.PlacementMenu;
 
 import java.awt.*;
 
@@ -14,7 +13,6 @@ public class Tower  {
 	protected Animator passiveAnimator, activeAnimator;
 	private  boolean menuOpen;
 	private Coordinate pos;
-	private PlacementMenu[] pMenu;
 	protected int range;
 	private Enemy target;
 	private boolean isActive;
@@ -38,7 +36,9 @@ public class Tower  {
 
 
 	public void update() {
-		System.out.println("3");
+		if (!towerController.getPlaying().isPaused()) {
+			System.out.println("3");
+		}
 	}
 
 

@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import helpers.Coordinate;
 import enemy.Enemy;
 import controllers.EnemyController;
+import helpers.ImageAnalyser;
 import projectiles.Projectile;
 import towers.Tower;
 

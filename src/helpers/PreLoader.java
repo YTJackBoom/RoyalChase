@@ -1,7 +1,5 @@
 package helpers;
 
-import basics.Animator;
-
 import java.util.ArrayList;
 
 public class PreLoader {

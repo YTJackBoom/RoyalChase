@@ -19,19 +19,25 @@ public class ArrowTower extends Tower {
 	private boolean isFiring;
 	private Enemy target;
 	private ProjectileController projectileController;
+	private TowerController towerController;
 
 	public ArrowTower(TowerController towerController, Coordinate pos, int type) {
 		super(towerController,pos, type);
 		projectileController = towerController.getPlaying().getProjectileController();
+		this.towerController = towerController;
 	}
 	@Override
 	public void update() {
-		if (counter - cooldown == 0) {
-			isLoaded = true;
-			counter = 0;
-		} else counter++;
-		fire();;;
-		//System.out.println("sdfe");
+		if (!towerController.getPlaying().isPaused()) {
+			if (counter - cooldown == 0) {
+				isLoaded = true;
+				counter = 0;
+			} else counter++;
+			fire();
+			;
+			;
+			//System.out.println("sdfe");
+		}
 	}
 
 

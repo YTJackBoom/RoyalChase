@@ -1,8 +1,8 @@
 package playerinputs;
 
 import basics.Game;
-import static basics.GameStates.*;
-import basics.GameStates;
+import static scenes.GameStates.*;
+import scenes.GameStates;
 
 
 import java.awt.event.KeyEvent;
@@ -26,6 +26,12 @@ public class KListener implements KeyListener {
             case MENU -> game.getMenu().keyPressed(e);
             case PLAYING -> game.getPlaying().keyPressed(e);
             case SETTINGS -> game.getSettings().keyPressed(e);
+            case GAMEOVER -> game.getGameOver().keyPressed(e);
+            case LEVELCLEARED -> game.getLevelCleared().keyPressed(e);
+            case LEVELSELECT -> game.getLevelSelect().keyPressed(e);
+            case TUTORIAL -> game.getTutorial().keyPressed(e);
+            case TOWN -> game.getTown().keyPressed(e);
+
         }
         if(e.getKeyCode() == KeyEvent.VK_A) {
             GameStates.gameState = MENU;

@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 import controllers.TowerController;
 import helpers.Coordinate;
-import uiElements.PlacementMenu;
 
 public class TowerFoundation extends Tower {
 	private File towerFoundImgFile;
@@ -21,7 +20,6 @@ public class TowerFoundation extends Tower {
 	private int range = 900;
 
 	private JPanel menuPanel;
-	private PlacementMenu[] pMenu;
 	private ArrayList towerEntityList;
 
 	private boolean menuOpen;

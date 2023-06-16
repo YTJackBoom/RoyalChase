@@ -1,9 +1,8 @@
 package basics;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 
-import towers.Tower;
+import scenes.GameStates;
 
 public class Render {
 	private Map currentMap;
@@ -13,18 +12,30 @@ public class Render {
 	}
 	
 	public void render (Graphics g) {
-		switch(GameStates.gameState) {
-		case MENU:
-			game.getMenu().render(g);
-			break;
-		case PLAYING:
-			game.getPlaying().render(g);
-			break;
-		case SETTINGS:
-			
-			break;
-		
+		switch (GameStates.gameState) {
+			case MENU -> game.getMenu().render(g);
+			case PLAYING -> {
+				game.getPlaying().render(g);
+				game.getInfoBar().render(g);
+			}
+			case SETTINGS -> game.getSettings().render(g);
+			case GAMEOVER -> {
+				game.getGameOver().render(g);
+				game.getInfoBar().render(g);
+			}
+			case LEVELCLEARED -> game.getLevelCleared().render(g);
+			case LEVELSELECT -> game.getLevelSelect().render(g);
+			case TUTORIAL -> {
+				game.getTutorial().render(g);
+				game.getInfoBar().render(g);
+			}
+			case TOWN -> {
+				game.getTown().render(g);
+				game.getInfoBar().render(g);
+			}
 		}
+
+
 	}
 
 }
