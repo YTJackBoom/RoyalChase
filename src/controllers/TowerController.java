@@ -5,7 +5,7 @@ import helpers.Coordinate;
 import helpers.math;
 import scenes.Playing;
 import towers.ArrowTower;
-import towers.Tower;
+import gameObjects.Tower;
 import towers.TowerFoundation;
 
 import java.awt.*;
@@ -75,13 +75,28 @@ public class TowerController implements ControllerMethods{
         for (int i = 0; i < towerEntityList.size(); i++) {
             Tower tower = towerEntityList.get(i);
             if (tower.getBounds().contains(x, y)) {
-                towerEntityList.set(i, new ArrowTower(this, tower.getPos(), playing.getSelectedTower()));
-                System.out.println("Tower placed");
+                if(math.PlayerMath.canAfford(playing.getSelectedTower(), 0)) {
+                    math.PlayerMath.deduct(playing.getSelectedTower(),0);
+                    towerEntityList.set(i, new ArrowTower(this, tower.getPos(), playing.getSelectedTower()));
+                    System.out.println("Tower placed");
+                }else {
+                    playing.setCantAfford(true);
+                }
             }
         }
     }
 
     public Playing getPlaying() {
         return playing;
+    }
+
+    @Override
+    public void workAddQueue() {
+
+    }
+
+    @Override
+    public void workRemoveQueue() {
+
     }
 }

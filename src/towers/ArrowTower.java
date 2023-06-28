@@ -1,14 +1,12 @@
 package towers;
 
-import java.util.ArrayList;
-
 import javax.swing.Timer;
 
 import controllers.ProjectileController;
 import controllers.TowerController;
+import gameObjects.Tower;
 import helpers.Coordinate;
 import enemy.Enemy;
-import projectiles.Arrow;
 
 public class ArrowTower extends Tower {
 	private int cooldown = 20;
@@ -45,7 +43,7 @@ public class ArrowTower extends Tower {
 		//System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
 		if (isLoaded && isFiring&&target != null) {
 			projectileController.spawnProjectile(new Coordinate(getPos().getX(), getPos().getY()), target,0); // target mitgabe, um target zu damagen
-			System.out.println("ürpjectile sdpawnes");
+//			System.out.println("ürpjectile sdpawnes");
 
 			isLoaded = false;
 		}

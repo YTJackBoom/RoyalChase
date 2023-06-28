@@ -20,7 +20,6 @@ public class variables { //class to define different variables for thing
         public static final int WIZARD_KING = 8;
 
 
-
         public static int getEnemyReward(int enemyType) {
             return switch (enemyType) {
                 case SKULL -> 5;
@@ -51,13 +50,14 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getEnemyHealth: Unexpected value:  " + enemyType);
             };
         }
+
         public static String getEnemyPassiveGifPath(int enemyType) {
             return switch (enemyType) {
                 case SKULL -> "res/images/enemies/passive/skull_e_passive/";
                 case SKELETON -> "res/images/enemies/passive/skeleton_e_passive/";
-                case ZOMBIE ->  "res/images/enemies/passive/zombie_e_passive/";
+                case ZOMBIE -> "res/images/enemies/passive/zombie_e_passive/";
                 case WITCH -> "res/images/enemies/passive/witch_e_passive/";
-                case WIZARD ->  "res/images/enemies/passive/wizard_e_passive/";
+                case WIZARD -> "res/images/enemies/passive/wizard_e_passive/";
                 case SKELETON_KING -> "res/images/enemies/passive/skeleton_king_e_passive/";
                 case ZOMBIE_KING -> "res/images/enemies/passive/zombie_king_e_passive/";
                 case WITCH_QUEEN -> "res/images/enemies/passive/witch_queen_e_passive/";
@@ -66,13 +66,14 @@ public class variables { //class to define different variables for thing
 
             };
         }
+
         public static String getEnemyActiveGifPath(int enemyType) {
             return switch (enemyType) {
                 case SKULL -> "res/images/enemies/active/skull_e_active/";
                 case SKELETON -> "res/images/enemies/active/skeleton_e_active/";
-                case ZOMBIE ->  "res/images/enemies/active/zombie_e_active/";
+                case ZOMBIE -> "res/images/enemies/active/zombie_e_active/";
                 case WITCH -> "res/images/enemies/active/witch_e_active/";
-                case WIZARD ->  "res/images/enemies/active/wizard_e_active/";
+                case WIZARD -> "res/images/enemies/active/wizard_e_active/";
                 case SKELETON_KING -> "res/images/enemies/active/skeleton_king_e_active/";
                 case ZOMBIE_KING -> "res/images/enemies/active/zombie_king_e_active/";
                 case WITCH_QUEEN -> "res/images/enemies/active/witch_queen_e_active/";
@@ -81,6 +82,7 @@ public class variables { //class to define different variables for thing
 
             };
         }
+
         public static int getEnemySpeed(int enemyType) {
             return switch (enemyType) {
                 case SKULL -> 2;
@@ -95,6 +97,7 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getEnemySpeed: Unexpected value:  " + enemyType);
             };
         }
+
         public static int getEnemyDamage(int enemyType) {
             return switch (enemyType) {
                 case SKULL -> 100;
@@ -109,10 +112,12 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getEnemyDamage: Unexpected value:  " + enemyType);
             };
         }
+
         public static int getNumberOfIntDeclarations() {
             return variables.getNumberOfIntDeclarations(Enemies.class);
         }
     }
+
     public static class Maps {
 
         public static File getPMapFile(int mapType) {
@@ -130,6 +135,7 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getPMapFile: Unexpected value:  " + mapType);
             };
         }
+
         public static BufferedImage getMapBufferedImage(int mapType) {
             File mapFile;
             BufferedImage mapImage;
@@ -145,16 +151,18 @@ public class variables { //class to define different variables for thing
                 case 8 -> mapFile = new File("res/images/maps/backgroundMaps/map8.jpg");
                 case 9 -> mapFile = new File("res/images/maps/backgroundMaps/map9.jpg");
                 default -> throw new IllegalStateException("getMapBufferedImage: Unexpected value:  " + mapType);
-            };
+            }
+            ;
             try {
                 mapImage = javax.imageio.ImageIO.read(mapFile);
                 return mapImage;
             } catch (Exception e) {
-                System.out.println("When reading MapBufferedImage "+mapType+": " + e);
+                System.out.println("When reading MapBufferedImage " + mapType + ": " + e);
                 return null;
             }
 
         }
+
         public static File getMapWaveFile(int waveType) {
             return switch (waveType) {
                 case 0 -> new File("res/text/waveFiles/waves0.txt");
@@ -172,7 +180,8 @@ public class variables { //class to define different variables for thing
         }
 
     }
-    public static class Towers{
+
+    public static class Towers {
         public static final int Foundation_T = 0;
         public static final int ARROW_T = 1;
         public static final int MAGE_T = 2;
@@ -190,6 +199,7 @@ public class variables { //class to define different variables for thing
 
             };
         }
+
         public static String getTowerActiveGifPath(int towerType) {
             return switch (towerType) {
                 case Foundation_T -> "res/images/towers/active/foundation_t_active/";
@@ -201,6 +211,7 @@ public class variables { //class to define different variables for thing
 
             };
         }
+
         public static int getRange(int towerType) {
             return switch (towerType) {
                 case Foundation_T -> 100;
@@ -213,6 +224,48 @@ public class variables { //class to define different variables for thing
 
             };
         }
+
+        public static int getTowerManaCost(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> 0;
+                case ARROW_T -> 0;
+                case MAGE_T -> 10;
+                case ROCKET_T -> 0;
+                case SNIP_T -> 0;
+                default -> 0;
+            };
+        }
+        public static int getTowerIronCost(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> 0;
+                case ARROW_T -> 5;
+                case MAGE_T -> 0;
+                case ROCKET_T -> 50;
+                case SNIP_T -> 100;
+                default -> 0;
+            };
+        }
+        public static int getTowerWoodCost(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> 0;
+                case ARROW_T -> 30;
+                case MAGE_T -> 20;
+                case ROCKET_T -> 20;
+                case SNIP_T -> 30;
+                default -> 0;
+            };
+        }
+        public static int getTowerStoneCost(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> 0;
+                case ARROW_T -> 20;
+                case MAGE_T -> 30;
+                case ROCKET_T -> 40;
+                case SNIP_T -> 30;
+                default -> 0;
+            };
+        }
+
         public static int getNumberOfIntDeclarations() {
             return variables.getNumberOfIntDeclarations(Towers.class);
         }
@@ -220,9 +273,7 @@ public class variables { //class to define different variables for thing
 
     public static class Projectiles {
         public static final int ARROW = 0;
-
-
-
+//        public static final int ARROW_SPEED = 10;
 
         public static int getProjectileSpeed(int projectileType) {
             return switch (projectileType) {
@@ -230,6 +281,7 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getProjectileSpeed: Unexpected value:  " + projectileType);
             };
         }
+
         public static int getProjectileDamage(int projectileType) {
             return switch (projectileType) {
                 case ARROW -> 50;
@@ -243,6 +295,7 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("getProjectileGifFile: Unexpected value:  " + projectileType);
             };
         }
+
         public static int getNumberOfIntDeclarations() {
             return variables.getNumberOfIntDeclarations(Projectiles.class);
         }
@@ -256,7 +309,6 @@ public class variables { //class to define different variables for thing
         public static final int SNIP_T = 4;
 
 
-
         public static File getButtonImageFile(int buttonType) {
             return switch (buttonType) {
                 case Foundation_T -> new File("res/images/buttons/yellow_square.png");
@@ -268,12 +320,7 @@ public class variables { //class to define different variables for thing
     }
 
     public static class Town {
-        public static final int COAL = 1;
-        public static final int IRON = 2;
-        public static final int STONE = 3;
-        public static final int WOOD = 4;
-        public static final int MINE = 5;
-        public static final int WORKSHOP = 6;
+
 
         public static BufferedImage getBackgroundImage() {
             File mapFile = new File("res/images/town/town_background.jpg");
@@ -286,18 +333,123 @@ public class variables { //class to define different variables for thing
                 return null;
             }
         }
-
     }
 
-    public static int getNumberOfIntDeclarations(Class<?> clazz) {
-        int count = 0;
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            if (field.getType() == int.class || field.getType() == Integer.class) {
-                count++;
-            }
+    public static class Buildings {
+        public static final int PLACEHOLDER = 0;
+        public static final int MANA = 1;
+        public static final int IRON = 2;
+        public static final int STONE = 3;
+        public static final int WOOD = 4;
+
+
+
+        public static File getBuidingGifFile(int buildingType) {
+            return switch (buildingType) {
+                case 0 -> new File("res/images/towers/active/foundation_t_active/down.gif");
+                case 1 -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case 2 -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case 3 -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case 4 -> new File("res/images/towers/active/arrow_t_active/down.gif");
+//                case 5 -> new File("res/text/waveFiles/waves5.txt");
+//                case 6 -> new File("res/text/waveFiles/waves6.txt");
+//                case 7 -> new File("res/text/waveFiles/waves7.txt");
+//                case 8 -> new File("res/text/waveFiles/waves8.txt");
+//                case 9 -> new File("res/text/waveFiles/waves9.txt");
+                default -> throw new IllegalStateException("Errropr when trying to read buildingGifFile");
+            };
+
         }
-        return count;
+
+
+        public static int getManaProduction(int buildingType) {
+            return switch (buildingType) {
+                case MANA -> 5;
+                default -> 0;
+            };
+        }
+        public static int getIronProduction(int buildingType) {
+            return switch (buildingType) {
+                case IRON -> 5;
+                default -> 0;
+            };
+        }
+        public static int getWoodProduction(int buildingType) {
+            return switch (buildingType) {
+                case WOOD -> 5;
+                default -> 0;
+            };
+        }
+        public static int getStoneProduction(int buildingType) {
+            return switch (buildingType) {
+                case STONE -> 5;
+                default -> 0;
+            };
+        }
+
+        public static int getBuildingIronCost(int buildingType) {
+            return switch (buildingType) {
+                case MANA -> 10;
+                case IRON -> 0;
+                case STONE -> 5;
+                case WOOD -> 5;
+                default -> 0;
+            };
+        }
+        public static int getBuildingManaCost(int buildingType) {
+            return switch (buildingType) {
+                case MANA -> 0;
+                case IRON -> 0;
+                case STONE -> 0;
+                case WOOD -> 5;
+                default -> 0;
+            };
+        }
+        public static int getBuildingWoodCost(int buildingType) {
+            return switch (buildingType) {
+                case MANA -> 10;
+                case IRON -> 25;
+                case STONE -> 25;
+                case WOOD -> 5;
+                default -> 0;
+            };
+        }
+        public static int getBuildingStoneCost(int buildingType) {
+            return switch (buildingType) {
+                case MANA -> 25;
+                case IRON -> 10;
+                case STONE -> 0;
+                case WOOD -> 10;
+                default -> 0;
+            };
+        }
+        public static int getBuildingGoldCost(int buildingType) {
+            return switch (buildingType) {
+                case MANA -> 50;
+                case IRON -> 5;
+                case STONE -> 5;
+                case WOOD -> 5;
+                default -> 0;
+            };
+        }
+
+
+
+        public static int getNumberOfIntDeclarations() {
+            return variables.getNumberOfIntDeclarations(Buildings.class);
+        }
     }
+
+
+    public static int getNumberOfIntDeclarations (Class < ? > clazz){
+                int count = 0;
+                Field[] fields = clazz.getDeclaredFields();
+                for (Field field : fields) {
+                    if (field.getType() == int.class || field.getType() == Integer.class) {
+                        count++;
+                    }
+                }
+                return count;
+            }
 
 }

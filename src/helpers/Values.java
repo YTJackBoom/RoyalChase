@@ -5,6 +5,10 @@ public class Values {
     public static int HEALTH = 100;
     public static int SCORE = 0;
     public static int LEVEL = 1;
+    public static int MANA = 100;
+    public static int IRON = 100;
+    public static int WOOD = 100;
+    public static int STONE = 100;
     public static int LEVELSCLEARED = 0;
     public static double REWARDMULTIPLYER = 1;
 
@@ -14,5 +18,9 @@ public class Values {
         SCORE = 0;
         LEVEL = 1;
         LEVELSCLEARED = 0;
+        MANA = 100;
+        IRON = 100;
+        WOOD = 100;
+        STONE = 100;
     }
 }

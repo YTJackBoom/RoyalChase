@@ -3,7 +3,6 @@ package basics;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 import playerinputs.KListener;
 import playerinputs.MListener;
@@ -17,8 +16,9 @@ public class GameScreen extends JPanel {
 	private Game game;
 
 	private Map map;
-	private final int width = 1920;
-	private final int height = 1080;
+
+	public static final int fWIDTH = 1920;
+	public static final int fHEIGHT = 1080;
 
 
 
@@ -28,7 +28,7 @@ public class GameScreen extends JPanel {
 		setPanelSize();
 	}
 	public void setPanelSize() {
-		Dimension prefSize = new Dimension(width, height);
+		Dimension prefSize = new Dimension(fWIDTH, fHEIGHT);
 		setPreferredSize(prefSize);
 		setMinimumSize(prefSize);
 		setMaximumSize(prefSize);
@@ -52,11 +52,11 @@ public class GameScreen extends JPanel {
 	}
 	@Override
 	public int getWidth() {
-		return width;
+		return fWIDTH;
 	}
 	@Override
 	public int getHeight() {
-		return height;
+		return fHEIGHT;
 	}
 }
 

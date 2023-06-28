@@ -31,7 +31,16 @@ public class Animator {
         }
        // System.out.println(imageArray.length);
     }
-
+    public Animator (File gifFile) {
+        direction = NORMAL;
+        currentImageIndex = 0;
+        this.gifFile= gifFile;
+        try {
+            imageArray = splitGifIntoFrames(gifFile);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
     public void initGifs(String gifFilesPath) {
         gifFile = new File(gifFilesPath + "normal.gif");
         gifFileUp = new File(gifFilesPath + "up.gif");

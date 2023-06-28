@@ -3,7 +3,7 @@ package helpers;
 import java.util.ArrayList;
 
 public class PreLoader {
-    public ArrayList<Animator> enemyActiveAnimators,enemyPassiveAnimators,towerActiveAnimators,towerPassiveAnimators,projectileAnimators;
+    public ArrayList<Animator> enemyActiveAnimators,enemyPassiveAnimators,towerActiveAnimators,towerPassiveAnimators,projectileAnimators,buildingsAnimators;
     public PreLoader() {
         initVars();
         preLoadAnimators();
@@ -14,10 +14,12 @@ public class PreLoader {
         towerActiveAnimators = new ArrayList<Animator>();
         towerPassiveAnimators = new ArrayList<Animator>();
         projectileAnimators = new ArrayList<Animator>();
+        buildingsAnimators = new ArrayList<Animator>();
+
     }
 
     public void preLoadAnimators() {
-        System.out.println( variables.Enemies.getNumberOfIntDeclarations());
+//        System.out.println( variables.Enemies.getNumberOfIntDeclarations());
         for(int i = 0; i < variables.Enemies.getNumberOfIntDeclarations();i++) {
             enemyActiveAnimators.add(new Animator(variables.Enemies.getEnemyActiveGifPath(i)));
             enemyPassiveAnimators.add(new Animator(variables.Enemies.getEnemyPassiveGifPath(i)));
@@ -28,6 +30,9 @@ public class PreLoader {
         }
         for(int i = 0; i < variables.Projectiles.getNumberOfIntDeclarations();i++) {
             projectileAnimators.add(new Animator(variables.Projectiles.getProjectileGifPath(i)));
+        }
+        for(int i = 0; i <variables.Buildings.getNumberOfIntDeclarations();i++) {
+            buildingsAnimators.add(new Animator(variables.Buildings.getBuidingGifFile(i)));
         }
     }
 
@@ -45,5 +50,8 @@ public class PreLoader {
     }
     public Animator getProjectileAnimator(int index) {
     	return projectileAnimators.get(index);
+    }
+    public Animator getBuildingAnimator(int index) {
+        return buildingsAnimators.get(index);
     }
 }

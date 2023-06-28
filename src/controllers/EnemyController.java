@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import basics.Game;
 import enemy.*;
+import helpers.Constants;
 import helpers.Coordinate;
 import helpers.Values;
 import helpers.variables;
@@ -29,10 +30,10 @@ public class EnemyController implements ControllerMethods{
 		addQue = new ArrayList<Enemy>();
 	}
 	public void update() {
-		workAddQue();
-		workRemoveQue();
+		workAddQueue();
+		workRemoveQueue();
 		if (!playing.isPaused()) {
-			if (i >= playing.getGame().getSpeedOffset()) { //TODO: potentially find a better way to do this
+			if (i >= Constants.ObjectConstants.SPEEDOFFSET) { //TODO: potentially find a better way to do this
 				updateEnemyMovement();
 				i = 0;
 			} else i++;
@@ -68,14 +69,16 @@ public class EnemyController implements ControllerMethods{
 			}
 		}
 	}
-	public void workRemoveQue() {
+	@Override
+	public void workRemoveQueue() {
 			for (Enemy enemy : removeQue) {
 				enemy.removeAnimators();
 				enemyList.remove(enemy);
 			}
 			removeQue.clear();
-		}
-	public void workAddQue() {
+	}
+	@Override
+	public void workAddQueue() {
 		enemyList.addAll(addQue);
 		addQue.clear();
 	}

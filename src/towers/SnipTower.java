@@ -1,6 +1,7 @@
 package towers;
 
 import controllers.TowerController;
+import gameObjects.Tower;
 import helpers.Coordinate;
 
 public class SnipTower extends Tower {

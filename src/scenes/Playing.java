@@ -1,6 +1,7 @@
 package scenes;
 
 import basics.Game;
+import helpers.Constants;
 import helpers.ImageAnalyser;
 import controllers.EnemyController;
 import controllers.ProjectileController;
@@ -8,7 +9,7 @@ import controllers.TowerController;
 import controllers.WaveController;
 import helpers.Values;
 import helpers.variables;
-import uiElements.MyButtonBar;
+import uiElements.MyPlayingButtonBar;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,8 +17,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static basics.Game.fps;
+import static basics.GameScreen.fHEIGHT;
+import static basics.GameScreen.fWIDTH;
 import static helpers.Values.HEALTH;
 import static helpers.Values.LEVEL;
+import static java.awt.image.ImageObserver.WIDTH;
 import static scenes.GameStates.GAMEOVER;
 import static scenes.GameStates.gameState;
 
@@ -27,10 +32,12 @@ public class Playing extends GameScenes implements SceneMethods{
     private WaveController waveController;
     private ProjectileController projectileController;
     private ImageAnalyser imageAnalyser;
-    private MyButtonBar buttonBar;
+    private MyPlayingButtonBar buttonBar;
     private int selectedTower;
     private int mouseX, mouseY;
-    private boolean towerSelected, dragingTower;
+    private boolean dragingTower;
+    private boolean cantAfford;
+    private int cantAffordCounter;
     private boolean isPaused = false;
     private Game game;
 
@@ -45,6 +52,8 @@ public class Playing extends GameScenes implements SceneMethods{
         projectileController = new ProjectileController(this);
 
         initButtonBar();
+
+
     }
 
     @Override
@@ -54,7 +63,7 @@ public class Playing extends GameScenes implements SceneMethods{
         towerController.render(g);
         projectileController.render(g);
         buttonBar.render(g);
-        renderUserInformation(g);
+        renderCantAfford(g);
         waveController.render(g);
         if (dragingTower) {
             renderDraggedButton(g);
@@ -73,10 +82,10 @@ public class Playing extends GameScenes implements SceneMethods{
         int width = 120;
         int height = 1000;
 
-        int x = game.getWidth() - width - 20;
-        int y = game.getHeight() - height - 20;
+        int x = fWIDTH - width - 20;
+        int y = fHEIGHT - height - 20;
 
-        buttonBar = new MyButtonBar(this, new helpers.Coordinate(x, y), width, height);
+        buttonBar = new MyPlayingButtonBar(this, new helpers.Coordinate(x, y), width, height);
 
     }
     public void reset() {
@@ -85,20 +94,6 @@ public class Playing extends GameScenes implements SceneMethods{
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
-    }
-
-
-    public void renderUserInformation(Graphics g) {
-        int startX = 10;
-        int startY = 50;
-        int xOffset = 0;
-        int yOffset = 20;
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Gold: " + Values.GOLD, startX, startY);
-        g.drawString("Wave: " + waveController.getCurrentWave(), startX+xOffset, startY+yOffset);
-        g.drawString("Enemies: " + enemyController.getEnemyList().size(), startX+xOffset*2, startY+yOffset*2);
-        g.drawString("Health: " + HEALTH, startX+xOffset*3, startY+yOffset*3);
     }
     public void renderDraggedButton(Graphics g) {
 
@@ -110,6 +105,20 @@ public class Playing extends GameScenes implements SceneMethods{
         }
 
         g.drawImage(draggedImage, mouseX-draggedImage.getWidth()/2 , mouseY-draggedImage.getHeight()/2, null);
+    }
+    public void renderCantAfford(Graphics g) {
+        if (cantAfford) {
+            g.setFont(Constants.UIConstants.CANTAFFORDFONT);
+            g.setColor(Color.BLACK);
+            g.drawString("Cant Afford!", fWIDTH / 2, fHEIGHT / 2);
+            cantAffordCounter++;
+//			System.out.println("s ");
+//			System.out.print(fWIDTH+" "+fHEIGHT);
+            if (cantAffordCounter >= fps * Constants.UIConstants.CANTAFFORDTIMEONSCREEN) {
+                cantAfford = false;
+                cantAffordCounter = 0;
+            }
+        }
     }
     public void checkHealth() {
         if (HEALTH <= 0) {
@@ -166,7 +175,7 @@ public class Playing extends GameScenes implements SceneMethods{
 
 
     //Getters and Setters
-    public MyButtonBar getButtonBar() {
+    public MyPlayingButtonBar getButtonBar() {
         return buttonBar;
     }
     public File getCurrentPMapFile(){
@@ -178,17 +187,17 @@ public class Playing extends GameScenes implements SceneMethods{
     public EnemyController getEnemyController(){
         return enemyController;
     }
+
+    public WaveController getWaveController() {
+        return waveController;
+    }
     public ImageAnalyser getImageAnalyser() {return imageAnalyser;}
 
-    public void setTowerSelected(boolean towerSelected) {
-        this.towerSelected = towerSelected;
-    }
+
     public void setSelectedTower(int selectedTower) {
         this.selectedTower = selectedTower;
     }
-    public boolean isTowerSelected() {
-        return towerSelected;
-    }
+
     public int getSelectedTower() {
         return selectedTower;
     }
@@ -208,4 +217,5 @@ public class Playing extends GameScenes implements SceneMethods{
     public void resume() {
         isPaused = false;
     }
+    public void setCantAfford(boolean b) {cantAfford=b;}
 }

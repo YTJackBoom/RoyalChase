@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controllers.TowerController;
+import gameObjects.Tower;
 import helpers.Coordinate;
 
 public class TowerFoundation extends Tower {

@@ -15,7 +15,6 @@ public class Game extends JFrame  {
 
         public final static int fps = 15;
         public static final int ups = 120; //updates per second, for the game logic
-        public static final int speedOffset = 1;
         private boolean isPaused = false;
         private GameScreen gameScreen;
 
@@ -100,12 +99,14 @@ public class Game extends JFrame  {
         private void updateGame() {
             switch (GameStates.gameState) {
                 case MENU ->menu.update();
-                case PLAYING -> playing.update();
+                case PLAYING -> {playing.update();
+                                 town.softUpdate();}
                 case SETTINGS -> settings.update();
                 case GAMEOVER -> gameOver.update();
                 case LEVELCLEARED -> levelCleared.update();
                 case LEVELSELECT -> levelSelect.update();
-                case TUTORIAL -> tutorial.update();
+                case TUTORIAL -> {tutorial.update();
+                                  town.softUpdate();}
                 case TOWN -> town.update();
 
             }
@@ -155,9 +156,6 @@ public class Game extends JFrame  {
 
         public PreLoader getPreLoader() {
             return preLoader;
-        }
-        public int getSpeedOffset() {
-            return speedOffset;
         }
         public int getUps() {return ups;}
 

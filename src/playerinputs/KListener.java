@@ -41,6 +41,7 @@ public class KListener implements KeyListener {
         }
         if(e.getKeyCode() == KeyEvent.VK_D) {
             GameStates.gameState = SETTINGS;
+            game.resetAll();
         }
 
     }

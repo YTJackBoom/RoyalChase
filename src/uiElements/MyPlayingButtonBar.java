@@ -7,7 +7,7 @@ import scenes.Playing;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class MyButtonBar {
+public class MyPlayingButtonBar {
 	private Coordinate pos;
 	private Playing playing;
 	private ArrayList<MyButton> buttons;
@@ -15,7 +15,7 @@ public class MyButtonBar {
 	private int height;
 	private Rectangle bounds;
 	private boolean isVisible = false;
-	public MyButtonBar(Playing playing, Coordinate pos, int width, int height){
+	public MyPlayingButtonBar(Playing playing, Coordinate pos, int width, int height){
 		buttons = new ArrayList<MyButton>();
 		this.pos = pos;
 		this.width = width;

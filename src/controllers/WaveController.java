@@ -89,9 +89,18 @@ public class WaveController implements ControllerMethods {
             g.drawString("New Wave in: "+(cooldown-counter)/ Game.ups, 100, 100);
         }
     }
-    @Override
     public Playing getPlaying() {
         return playing;
+    }
+
+    @Override
+    public void workAddQueue() {
+
+    }
+
+    @Override
+    public void workRemoveQueue() {
+
     }
 
     public int getCurrentWave() {

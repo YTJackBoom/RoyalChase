@@ -61,6 +61,7 @@ public class ProjectileController implements ControllerMethods {
            // System.out.println("hit");
         }
     }
+    @Override
     public void workRemoveQueue() {
         for (Projectile projectile : removeQueue) {
             projectile.removeAnimators();
@@ -68,6 +69,7 @@ public class ProjectileController implements ControllerMethods {
         }
         removeQueue.clear();
     }
+    @Override
     public void workAddQueue() {
         projectileList.addAll(addQueue);
         addQueue.clear();
@@ -92,7 +94,6 @@ public class ProjectileController implements ControllerMethods {
     }
 
 
-    @Override
     public Playing getPlaying() {
         return playing;
     }

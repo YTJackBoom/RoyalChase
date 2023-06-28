@@ -1,9 +1,10 @@
 package towers;
 
 import controllers.TowerController;
+import gameObjects.Tower;
 import helpers.Coordinate;
 
-public class MageTower extends Tower {	
+public class MageTower extends Tower {
 	private int range = 100;
 
 
