@@ -11,7 +11,7 @@ import static basics.Game.fps;
 import static basics.Game.ups;
 import static helpers.Values.*;
 
-public class Building {
+public class Building extends GameObject{
 	private int x,y;
 	private int counter;
 	private int type;

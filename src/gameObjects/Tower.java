@@ -1,34 +1,35 @@
 package gameObjects;
 
-import helpers.Animator;
+import controllers.ProjectileController;
+import helpers.*;
 import controllers.TowerController;
-import helpers.Coordinate;
-import enemy.Enemy;
-import helpers.PreLoader;
-import helpers.variables;
 
 import java.awt.*;
 
-public class Tower  {
+public class Tower extends GameObject {
 	protected Animator passiveAnimator, activeAnimator;
-	private  boolean menuOpen;
 	private Coordinate pos;
-	protected int range;
+	protected int counter;
 	private Enemy target;
-	private boolean isActive;
+	private boolean isFiring,isLoaded;
 	private int type;
 	private int width, height;
 	private Rectangle bounds;
 	private TowerController towerController;
-
+	private ProjectileController projectileController;
+	private Circle[] circles;
 			
 	public Tower(TowerController towerController, Coordinate pos, int type) {
 		this.type = type;
 		this.pos = pos;
 		this.towerController = towerController;
+		projectileController = towerController.getPlaying().getProjectileController();
+		isLoaded = true;
+
 		initAnimators();
 		initVariables();
 		initBounds();
+		initRange();
 
 
 	}
@@ -36,7 +37,28 @@ public class Tower  {
 
 	public void update() {
 		if (!towerController.getPlaying().isPaused()) {
-			System.out.println("3");
+			if (counter - 3 == 0) {
+				isLoaded = true;
+				counter = 0;
+			} else counter++;
+			fire();
+			;
+			;
+			//System.out.println("sdfe");
+		}
+	}
+	public void fire() {
+		//System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
+		if (isLoaded && isFiring&&target != null) {
+			projectileController.spawnProjectile(new Coordinate(getPos().getX(), getPos().getY()), target,type); // target mitgabe, um target zu damagen
+//			System.out.println("ürpjectile sdpawnes");
+
+			isLoaded = false;
+		}
+	}
+	public void renderRange(Graphics g) {
+		for(Circle circle: circles) {
+			circle.render(g);
 		}
 	}
 
@@ -47,15 +69,22 @@ public class Tower  {
 		activeAnimator = preLoader.getTowerActiveAnimator(type);
 	}
 	public void initVariables() {
-		range = variables.Towers.getRange(type);
 		this.height = activeAnimator.getHeight();
 		this.width = activeAnimator.getWidth();
 	}
 	public void initBounds() {
-			bounds = new Rectangle(pos.getX(),pos.getY(),width,height);
+			bounds = new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
+	}
+	public void initRange() {
+		int range = variables.Towers.getTowerRange(type);
+		circles = new Circle[Constants.UIConstants.NUMBEROFRANGECIRCLES];
+
+		for(int i = 0; i<circles.length; i++) {
+			circles[i] = new Circle(pos,range-circles.length+i);
+		}
 	}
 	public void setStatus(boolean status) {
-		isActive = status;
+		isFiring = status;
 	}
 
 	public void setTarget(Enemy target) {
@@ -67,7 +96,7 @@ public class Tower  {
 	}
 
 	public boolean isActive() {
-		return isActive;
+		return isFiring;
 	}
 
 	public Animator getActiveAnimator() {
@@ -86,6 +115,12 @@ public class Tower  {
 	}
 	public Enemy getTarget() {
 		return target;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public int getWidth() {
+		return width;
 	}
 
 }

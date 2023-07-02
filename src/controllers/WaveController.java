@@ -1,5 +1,6 @@
 package controllers;
 
+import basics.Direction;
 import basics.Game;
 import helpers.Values;
 import scenes.GameStates;
@@ -69,7 +70,11 @@ public class WaveController implements ControllerMethods {
             }
             if(currentWave+1 == waves.size()&&waves.get(currentWave).getCurrentIndex() == waves.get(currentWave).getSpawnList().size()&&enemyController.getEnemyList().size() == 0) {
                 playing.getProjectileController().clearProjectiles();
-                playing.getButtonBar().setVisible(false);
+                playing.setDragingTower(false);
+                playing.setSelectedTower(null);
+                playing.getButtonBar(Direction.RIGHT).setVisible(false);
+                playing.getButtonBar(Direction.DOWN).setVisible(false);
+
                 generateNewWave = false;
                 GameStates.gameState = LEVELCLEARED;
             }

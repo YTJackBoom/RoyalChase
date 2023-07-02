@@ -44,4 +44,10 @@ public class Coordinate {
         }
         return true;
     }
+	public double distanceTo(Coordinate pos2) {
+		double deltaX = pos2.getX() - this.getX();
+		double deltaY = pos2.getY() - this.getY();
+
+		return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+	}
 }

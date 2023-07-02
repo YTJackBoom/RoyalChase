@@ -1,18 +1,15 @@
 package towers;
 
-import javax.swing.Timer;
-
 import controllers.ProjectileController;
 import controllers.TowerController;
 import gameObjects.Tower;
 import helpers.Coordinate;
-import enemy.Enemy;
+import gameObjects.Enemy;
+
+import static helpers.variables.Projectiles.ARROW;
 
 public class ArrowTower extends Tower {
-	private int cooldown = 20;
-	private int range = 100;
 	double counter;
-	private Timer t;
 	private boolean isLoaded;
 	private boolean isFiring;
 	private Enemy target;
@@ -23,11 +20,12 @@ public class ArrowTower extends Tower {
 		super(towerController,pos, type);
 		projectileController = towerController.getPlaying().getProjectileController();
 		this.towerController = towerController;
+		isLoaded = true;
 	}
 	@Override
 	public void update() {
 		if (!towerController.getPlaying().isPaused()) {
-			if (counter - cooldown == 0) {
+			if (counter - 3 == 0) {
 				isLoaded = true;
 				counter = 0;
 			} else counter++;
@@ -42,7 +40,7 @@ public class ArrowTower extends Tower {
 	public void fire() {
 		//System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
 		if (isLoaded && isFiring&&target != null) {
-			projectileController.spawnProjectile(new Coordinate(getPos().getX(), getPos().getY()), target,0); // target mitgabe, um target zu damagen
+			projectileController.spawnProjectile(new Coordinate(getPos().getX(), getPos().getY()), target,ARROW); // target mitgabe, um target zu damagen
 //			System.out.println("ürpjectile sdpawnes");
 
 			isLoaded = false;

@@ -3,12 +3,9 @@ package controllers;
 import java.awt.*;
 import java.util.ArrayList;
 
-import basics.Game;
 import enemy.*;
-import helpers.Constants;
-import helpers.Coordinate;
-import helpers.Values;
-import helpers.variables;
+import gameObjects.Enemy;
+import helpers.*;
 import scenes.Playing;
 
 import static helpers.Values.GOLD;
@@ -100,10 +97,12 @@ public class EnemyController implements ControllerMethods{
 	   if (enemyList != null) {
 		   for (Enemy enemy : enemyList) {
 			   if (enemy != null) {
+				   int width = enemy.getActiveAnimator().getWidth();
+				   int height = enemy.getActiveAnimator().getHeight();
 				   if (enemy.isActive()) {
-					   g.drawImage(enemy.getActiveAnimator().getCurrentImage(), enemy.getPos().getX(), enemy.getPos().getY(), null);
+					   g.drawImage(enemy.getActiveAnimator().getCurrentImage(), enemy.getPos().getX()-width/2, enemy.getPos().getY()-height/2, null);
 				   } else {
-					   g.drawImage(enemy.getPassiveAnimator().getCurrentImage(), enemy.getPos().getX(), enemy.getPos().getY(), null);
+					   g.drawImage(enemy.getPassiveAnimator().getCurrentImage(), enemy.getPos().getX()-width/2, enemy.getPos().getY()-height/2, null);
 				   }
 				   enemy.renderHealthBar(g);
 
@@ -114,6 +113,13 @@ public class EnemyController implements ControllerMethods{
    public void damageEnemy(Enemy enemy, int damage) {
 		enemyList.get(enemyList.indexOf(enemy)).damage(damage);
    }
+	public void damageEnemiesInRadius(Circle explosion, int damage) {
+		for(Enemy enemy : enemyList) {
+			if(explosion.contains(enemy.getPos())) {
+				enemy.damage(damage);
+			}
+		}
+	}
 
    //Getters and Setters
    public void setPathCoordinates(ArrayList<Coordinate> newPathCoordinates) {
@@ -141,6 +147,7 @@ public class EnemyController implements ControllerMethods{
 	public Playing getPlaying() {
 		return playing;
 	}
+
 
 
 }

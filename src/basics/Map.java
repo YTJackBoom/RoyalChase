@@ -12,10 +12,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import helpers.Coordinate;
-import enemy.Enemy;
+import gameObjects.Enemy;
 import controllers.EnemyController;
 import helpers.ImageAnalyser;
-import projectiles.Projectile;
+import gameObjects.Projectile;
 import gameObjects.Tower;
 
 

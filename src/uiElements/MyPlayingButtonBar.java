@@ -1,11 +1,15 @@
 package uiElements;
 
+import basics.Direction;
+import gameObjects.GameObject;
 import scenes.GameStates;
 import helpers.Coordinate;
 import scenes.Playing;
 
 import java.awt.*;
 import java.util.ArrayList;
+
+import static helpers.variables.Buttons.*;
 
 public class MyPlayingButtonBar {
 	private Coordinate pos;
@@ -15,13 +19,17 @@ public class MyPlayingButtonBar {
 	private int height;
 	private Rectangle bounds;
 	private boolean isVisible = false;
-	public MyPlayingButtonBar(Playing playing, Coordinate pos, int width, int height){
+	private GameObject pointer;
+	public MyPlayingButtonBar(Playing playing, Coordinate pos, int width, int height, Direction dir){ //1: playingRight, 2: playingDown
 		buttons = new ArrayList<MyButton>();
 		this.pos = pos;
 		this.width = width;
 		this.height = height;
 		this.playing = playing;
-		initButtons();
+		switch (dir) {
+			case DOWN -> initButtonsDown();
+			default -> initButtons();
+		}
 		initBounds();
 	}
 
@@ -38,11 +46,24 @@ public class MyPlayingButtonBar {
 		buttons.add(new MyButton("Sell",startX+xOffset, startY+yOffset, width, height));
 		buttons.add(new MyButton("Upgrade",startX+xOffset*2, startY+yOffset*2, width, height));
 
-		buttons.add(new MyButton(1,startX+xOffset*3, startY+yOffset*3, width, height));
+		buttons.add(new MyButton(ARROW_T_B,startX+xOffset*3, startY+yOffset*3, width, height));
+		buttons.add(new MyButton(ROCKET_T_B,startX+xOffset*4, startY+yOffset*4,width,height));
 
 
 		buttons.add(new MyButton("Menu",startX+xOffset*5, startY+yOffset*5, width, height));
 
+	}
+
+	public void initButtonsDown() {
+		int startX = pos.getX()+10;
+		int startY = pos.getY()+10;
+		int xOffset = 50;
+		int yOffset = 0;
+		int width = 100;
+		int height = 80;
+
+		buttons.add(new MyButton("Sell",startX, startY, width, height));
+		buttons.add(new MyButton("Upgrade",startX+xOffset, startY+yOffset, width, height));
 	}
 	public void initBounds() {
 		bounds = new Rectangle(pos.getX(), pos.getY(), width, height);
@@ -78,7 +99,7 @@ public class MyPlayingButtonBar {
 	}
 
 
-	//Mouse Lsiteners
+	//Mouse Listeners
 	public void mouseClicked(int x, int y) {
 		for (MyButton button : buttons) {
 			if (button.getBounds().contains(x, y)) {
@@ -115,7 +136,7 @@ public class MyPlayingButtonBar {
 				button.setPressed(true);
 				if(button.isTowerButton()){
 					playing.setDragingTower(true);
-					playing.setSelectedTower(button.getType());
+					playing.setDraggedTower(button.getType());
 				}
 			}
 		}
@@ -135,6 +156,9 @@ public class MyPlayingButtonBar {
 
 	public Rectangle getBounds() {
 		return bounds;
+	}
+	public void setPointer(GameObject pointer) {
+		this.pointer = pointer;
 	}
 
 

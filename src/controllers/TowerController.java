@@ -1,10 +1,9 @@
 package controllers;
 
-import enemy.Enemy;
+import gameObjects.Enemy;
 import helpers.Coordinate;
 import helpers.math;
 import scenes.Playing;
-import towers.ArrowTower;
 import gameObjects.Tower;
 import towers.TowerFoundation;
 
@@ -15,8 +14,6 @@ public class TowerController implements ControllerMethods{
     private ArrayList<Tower> towerEntityList;
     private Playing playing;
     private ArrayList<Enemy> enemyList;
-    private int counter = 0;
-    private int delay = 10;
     public TowerController(Playing playing) {
         towerEntityList = new ArrayList<Tower>();
         enemyList = playing.getEnemyController().getEnemyList();
@@ -24,6 +21,7 @@ public class TowerController implements ControllerMethods{
 
         initTowers(playing.getImageAnalyser().imgToFoundList());
     }
+
 
 
 
@@ -62,26 +60,39 @@ public class TowerController implements ControllerMethods{
     public void render(Graphics g) {
         if (towerEntityList != null) {
             for (Tower tower : towerEntityList) {
+                int width = tower.getWidth();
+                int height = tower.getHeight();
                 if(tower.isActive()) {
-                    g.drawImage(tower.getActiveAnimator().getCurrentImage(), tower.getPos().getX(), tower.getPos().getY(), null);
+                    g.drawImage(tower.getActiveAnimator().getCurrentImage(), tower.getPos().getX()-width/2, tower.getPos().getY()-height/2, null);
                 } else {
-                    g.drawImage(tower.getPassiveAnimator().getCurrentImage(), tower.getPos().getX(), tower.getPos().getY(), null);
+                    g.drawImage(tower.getPassiveAnimator().getCurrentImage(), tower.getPos().getX()-width/2, tower.getPos().getY()-height/2, null);
                 }
             }
+            renderTowerInfos(g);
         }
+    }
+    public void renderTowerInfos(Graphics g) {
+
     }
 
     public void mouseReleased(int x, int y) {
         for (int i = 0; i < towerEntityList.size(); i++) {
             Tower tower = towerEntityList.get(i);
             if (tower.getBounds().contains(x, y)) {
-                if(math.PlayerMath.canAfford(playing.getSelectedTower(), 0)) {
-                    math.PlayerMath.deduct(playing.getSelectedTower(),0);
-                    towerEntityList.set(i, new ArrowTower(this, tower.getPos(), playing.getSelectedTower()));
+                if(math.PlayerMath.canAfford(playing.getDraggedTower(), 0)) {
+                    math.PlayerMath.deduct(playing.getDraggedTower(),0);
+                    towerEntityList.set(i, new Tower(this, tower.getPos(), playing.getDraggedTower()));
                     System.out.println("Tower placed");
                 }else {
                     playing.setCantAfford(true);
                 }
+            }
+        }
+    }
+    public void mouseClicked(int x, int y) {
+        for(Tower tower : towerEntityList) {
+            if(tower.getBounds().contains(x,y)) {
+                playing.setSelectedTower(tower);
             }
         }
     }
@@ -99,4 +110,6 @@ public class TowerController implements ControllerMethods{
     public void workRemoveQueue() {
 
     }
+
+
 }

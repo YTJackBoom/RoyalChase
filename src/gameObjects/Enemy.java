@@ -1,4 +1,4 @@
-package enemy;
+package gameObjects;
 
 import controllers.EnemyController;
 import helpers.Coordinate;
@@ -8,7 +8,7 @@ import helpers.variables;
 
 import java.awt.*;
 
-public class Enemy {
+public class Enemy extends GameObject{
 	private Coordinate pos;
 	private int pathIndex;
 	private int speed;
@@ -45,12 +45,12 @@ public class Enemy {
 	}
 	public void renderHealthBar(Graphics g) {
 		int t = variables.Enemies.getEnemyHealth(type);
-		int hpbarx = pos.getX()+width/2-variables.Enemies.getEnemyHealth(type)/2;
+		int hpbarx = pos.getX()-variables.Enemies.getEnemyHealth(type)/2;
 		g.setColor(Color.RED);
-		g.fillRect(hpbarx, pos.getY()-10, t, 5);
+		g.fillRect(hpbarx, pos.getY()-10-height/2, t, 5);
 
 		g.setColor(Color.GREEN);
-		g.fillRect(hpbarx, pos.getY()-10, (int)(t*((double)health/variables.Enemies.getEnemyHealth(type))), 5);
+		g.fillRect(hpbarx, pos.getY()-10-height/2, (int)(t*((double)health/variables.Enemies.getEnemyHealth(type))), 5);
 	}
 
 
@@ -116,5 +116,12 @@ public class Enemy {
 	public void removeAnimators() {
 		activeAnimator = null;
 		passiveAnimator = null;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+	public int getHeight() {
+		return height;
 	}
 }

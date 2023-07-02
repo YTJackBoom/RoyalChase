@@ -1,12 +1,11 @@
 package scenes;
 
+import basics.Direction;
 import basics.Game;
+import controllers.*;
+import gameObjects.Tower;
 import helpers.Constants;
 import helpers.ImageAnalyser;
-import controllers.EnemyController;
-import controllers.ProjectileController;
-import controllers.TowerController;
-import controllers.WaveController;
 import helpers.Values;
 import helpers.variables;
 import uiElements.MyPlayingButtonBar;
@@ -22,7 +21,6 @@ import static basics.GameScreen.fHEIGHT;
 import static basics.GameScreen.fWIDTH;
 import static helpers.Values.HEALTH;
 import static helpers.Values.LEVEL;
-import static java.awt.image.ImageObserver.WIDTH;
 import static scenes.GameStates.GAMEOVER;
 import static scenes.GameStates.gameState;
 
@@ -32,13 +30,15 @@ public class Playing extends GameScenes implements SceneMethods{
     private WaveController waveController;
     private ProjectileController projectileController;
     private ImageAnalyser imageAnalyser;
-    private MyPlayingButtonBar buttonBar;
-    private int selectedTower;
+    private MyPlayingButtonBar buttonBarRight,buttonBarDown;
+    private RangeController rangeController;
+    private int draggedTower;
     private int mouseX, mouseY;
     private boolean dragingTower;
     private boolean cantAfford;
     private int cantAffordCounter;
     private boolean isPaused = false;
+    private Tower selectedTower;
     private Game game;
 
     public Playing(Game game) {
@@ -50,8 +50,9 @@ public class Playing extends GameScenes implements SceneMethods{
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
+        rangeController = new RangeController(this);
 
-        initButtonBar();
+        initButtonBars();
 
 
     }
@@ -62,12 +63,14 @@ public class Playing extends GameScenes implements SceneMethods{
         enemyController.render(g);
         towerController.render(g);
         projectileController.render(g);
-        buttonBar.render(g);
+        buttonBarRight.render(g);
+        buttonBarDown.render(g);
         renderCantAfford(g);
         waveController.render(g);
         if (dragingTower) {
             renderDraggedButton(g);
         }
+        rangeController.render(g);
     }
     @Override
     public void update(){
@@ -75,17 +78,25 @@ public class Playing extends GameScenes implements SceneMethods{
         towerController.update();
         enemyController.update();
         waveController.update();
+        updateRangeController();
         checkHealth();
+        updateButtonBarDown();
     }
 
-    public void initButtonBar() {
-        int width = 120;
-        int height = 1000;
+    public void initButtonBars() {
+        //the right bar
+        int widthr = 120;
+        int heightr = 1000;
+        int xr = fWIDTH - widthr - 20;
+        int yr = fHEIGHT - heightr - 20;
+        //the buttom bar
+        int widthd = 100;
+        int heightd = 100;
+        int xd = fWIDTH/2-widthd;
+        int yd = fHEIGHT-10-heightd;
 
-        int x = fWIDTH - width - 20;
-        int y = fHEIGHT - height - 20;
-
-        buttonBar = new MyPlayingButtonBar(this, new helpers.Coordinate(x, y), width, height);
+        buttonBarRight = new MyPlayingButtonBar(this, new helpers.Coordinate(xr, yr), widthr, heightr, Direction.RIGHT);
+        buttonBarDown = new MyPlayingButtonBar(this,new helpers.Coordinate(xd, yd),widthd,heightd,Direction.DOWN);
 
     }
     public void reset() {
@@ -99,7 +110,7 @@ public class Playing extends GameScenes implements SceneMethods{
 
         BufferedImage draggedImage;
         try {
-            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(selectedTower));
+            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(draggedTower));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -127,21 +138,35 @@ public class Playing extends GameScenes implements SceneMethods{
             Values.reset();
         }
     }
+    public void updateButtonBarDown() {
+        if(selectedTower != null) {
+            buttonBarDown.setPointer(selectedTower);
+            buttonBarDown.setVisible(true);
+        } else {
+            buttonBarDown.setVisible(false);
+        }
+    }
+    public void updateRangeController() {
+        rangeController.setPointer(selectedTower);
+        rangeController.setDraggedPointer(draggedTower);
+    }
     @Override
     public void mouseClicked(int x, int y) {
-        if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
-            buttonBar.mouseClicked(x,y);
+        if(y>=buttonBarRight.getPos().getY() && y<=buttonBarRight.getPos().getY()+buttonBarRight.getHeight()){
+            buttonBarRight.mouseClicked(x,y);
         }
+        towerController.mouseClicked(x,y);
     }
 
     @Override
     public void mouseMoved(int x, int y) {
-        if(buttonBar.getBounds().contains(x,y)){
-            buttonBar.setVisible(true);
-            buttonBar.mouseMoved(x,y);
+        if(buttonBarRight.getBounds().contains(x,y)){
+            buttonBarRight.setVisible(true);
+            buttonBarRight.mouseMoved(x,y);
         } else{
-            buttonBar.setVisible(false);
+            buttonBarRight.setVisible(false);
         }
+        buttonBarDown.mouseMoved(x,y);
 
 
     }
@@ -150,15 +175,15 @@ public class Playing extends GameScenes implements SceneMethods{
     public void mousePressed(int x, int y) {
         mouseX = x;
         mouseY = y;
-        if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
-            buttonBar.mousePressed(x,y);
+        if(y>=buttonBarRight.getPos().getY() && y<=buttonBarRight.getPos().getY()+buttonBarRight.getHeight()){
+            buttonBarRight.mousePressed(x,y);
         }
 
     }
 
     @Override
     public void mouseReleased(int x, int y) {
-        buttonBar.mouseReleased(x,y);
+        buttonBarRight.mouseReleased(x,y);
         if (dragingTower) {
             towerController.mouseReleased(x, y);
             dragingTower = false;
@@ -169,14 +194,18 @@ public class Playing extends GameScenes implements SceneMethods{
     public void mouseDragged(int x, int y) {
         mouseX = x;
         mouseY = y;
-
+        rangeController.mouseDragged(x,y);
     }
 
 
 
     //Getters and Setters
-    public MyPlayingButtonBar getButtonBar() {
-        return buttonBar;
+    public MyPlayingButtonBar getButtonBar(Direction dir) {
+        return switch (dir) {
+            case RIGHT -> buttonBarRight;
+            case DOWN -> buttonBarDown;
+            default -> null;
+        };
     }
     public File getCurrentPMapFile(){
         return helpers.variables.Maps.getPMapFile(LEVEL);
@@ -194,12 +223,15 @@ public class Playing extends GameScenes implements SceneMethods{
     public ImageAnalyser getImageAnalyser() {return imageAnalyser;}
 
 
-    public void setSelectedTower(int selectedTower) {
-        this.selectedTower = selectedTower;
+    public void setDraggedTower(int draggedTower) {
+        this.draggedTower = draggedTower;
+    }
+    public boolean getDragingTower() {
+        return dragingTower;
     }
 
-    public int getSelectedTower() {
-        return selectedTower;
+    public int getDraggedTower() {
+        return draggedTower;
     }
     public void setDragingTower(boolean b) {
         dragingTower = b;
@@ -218,4 +250,5 @@ public class Playing extends GameScenes implements SceneMethods{
         isPaused = false;
     }
     public void setCantAfford(boolean b) {cantAfford=b;}
+    public void setSelectedTower(Tower t) {selectedTower = t;}
 }

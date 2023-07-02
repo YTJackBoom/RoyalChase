@@ -1,15 +1,14 @@
 package helpers;
 
-import enemy.Enemy;
+import gameObjects.Enemy;
 import gameObjects.Tower;
-import projectiles.Arrow;
 
 public  class math {
 
     public static class TowerMath {
         public static boolean checkRange(Tower tower, Enemy object2) {
             if (object2 != null) {
-                int towerRange = variables.Towers.getRange(tower.getType());
+                int towerRange = variables.Towers.getTowerRange(tower.getType());
                 Coordinate towerPos = tower.getPos();
                 Coordinate object2Pos = object2.getPos();
                 //System.out.println("towerPos"+towerPos.getX()+"enemyPos"+enemyPos.getX()+"towerRange"+towerRange);
@@ -24,37 +23,44 @@ public  class math {
     }
 
     public static class ProjectileMath {
-        public static int[] calculateArrowChange(Coordinate pos1,Coordinate pos2) { // int[0] = x ; 1 = y //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
+        private static long previousTime;
+        public static int[] calculateArrowChange(Coordinate pos1, Coordinate pos2) { // int[0] = x ; 1 = y //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
             int[] returnArray = new int[2];
 
             double xMultiplyer;
             double yMultiplyer;
-            double yDistance = Math.abs(pos2.getY()-pos1.getY());
-            double xDistance = Math.abs(pos2.getX()-pos1.getX());
+            double yDistance = Math.abs(pos2.getY() - pos1.getY());
+            double xDistance = Math.abs(pos2.getX() - pos1.getX());
             double angel = Math.atan2(yDistance, xDistance);
 
             //wenn auf einer coordinaten ebene --> verdopllung  des speeds
-            if(xDistance ==0) {yMultiplyer=2;}
-            else {yMultiplyer=1;}
-            if(yDistance ==0) {xMultiplyer=2;}
-            else {xMultiplyer=1;}
+            if (xDistance == 0) {
+                yMultiplyer = 2;
+            } else {
+                yMultiplyer = 1;
+            }
+            if (yDistance == 0) {
+                xMultiplyer = 2;
+            } else {
+                xMultiplyer = 1;
+            }
 
             //Berechnung x
-            if(xDistance != 0&&pos2.getX()-pos1.getX()>0) {
-                returnArray[0] = (int)Math.round(Math.cos(angel)*variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW)*xMultiplyer);
+            if (xDistance != 0 && pos2.getX() - pos1.getX() > 0) {
+                returnArray[0] = (int) Math.round(Math.cos(angel) * variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW) * xMultiplyer);
 //                pos.setX((pos.getX()+(int)Math.round(Math.cos(angel)*pSpeed*xMultiplyer)));
-            } else if (xDistance !=0) {
-                returnArray[0] = (int)Math.round(-Math.cos(angel)*variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW)*xMultiplyer);
+            } else if (xDistance != 0) {
+                returnArray[0] = (int) Math.round(-Math.cos(angel) * variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW) * xMultiplyer);
 //                pos.setX((pos.getX()+(int)Math.round(-Math.cos(angel)*pSpeed*xMultiplyer)));
             } else {
                 returnArray[0] = 0;
             }
 
             //Berechnung y
-            if(yDistance!=0&&pos2.getY()- pos1.getY()>0) {
-                returnArray[1] = (int)Math.round(Math.sin(angel)*variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW)*yMultiplyer);
-            }else if (yDistance != 0 ) {
-                returnArray[1] = (int)Math.round(-Math.sin(angel)*variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW)*yMultiplyer);
+            if (yDistance != 0 && pos2.getY() - pos1.getY() > 0) {
+                returnArray[1] = (int) Math.round(Math.sin(angel) * variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW) * yMultiplyer);
+            } else if (yDistance != 0) {
+                returnArray[1] = (int) Math.round(-Math.sin(angel) * variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW) * yMultiplyer);
             } else {
                 returnArray[1] = 0;
             }
@@ -63,7 +69,53 @@ public  class math {
             return returnArray;
         }
 
+        public static Coordinate calculateRocketPos(Coordinate rocketPosition, Coordinate targetPosition,double sineX) {
+            double newX;
+            double newY;
+
+            double speed = variables.Projectiles.getProjectileSpeed(variables.Projectiles.ROCKET);
+//            int deltaTime = 2;
+            double xDiff = targetPosition.getX() - rocketPosition.getX();
+            double yDiff = targetPosition.getY() - rocketPosition.getY();
+            double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+
+
+
+            // smaller value
+            double displacement = Math.min(speed, distance);
+
+            // Calculate the angle in radians between the rocket and target
+            double angleA = (Math.atan2(Math.abs(yDiff), Math.abs(xDiff)));
+            double angleB = 180-90-angleA;
+            double angleC = 90-angleB;
+
+            //Pos on the straight line
+            if(xDiff<0) {
+                newX = rocketPosition.getX() + (displacement * Math.cos(angleB));
+            }else {
+                newX = rocketPosition.getX() - (displacement * Math.cos(angleB));
+            }
+           if(yDiff<0) {
+                newY = rocketPosition.getY() - (displacement * Math.sin(angleA));
+            }else {
+                newY = rocketPosition.getY() + (displacement * Math.sin(angleA));
+            }
+
+
+
+            //using the line from rocketPos to target Pos as x-Axis, calculates y for sine
+            double sineY = 2*Math.sin(sineX);
+
+            // converts sineY and displaycement to final coords
+            double finalX = newX + (sineY*Math.cos(angleC));
+            double finalY = newY + (sineY*Math.sin(180-90-angleC));
+
+            return new Coordinate((int)finalX, (int)finalY);
+        }
+
+
     }
+
 
     public static class PlayerMath {
         public static boolean canAfford(int type, int toggle) { //toggle: 0=tower;1=building
@@ -103,6 +155,7 @@ public  class math {
                     Values.WOOD -= variables.Buildings.getBuildingWoodCost(type);
                 }
             }
+        }
     }
 }
 
@@ -117,4 +170,4 @@ public  class math {
 
 
 
-}
+

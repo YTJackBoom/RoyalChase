@@ -19,26 +19,30 @@ public class Animator {
     public Animator(String gifFilesPath) {
         direction = NORMAL;
         currentImageIndex = 0;
-        initGifs(gifFilesPath);
-        try {
-            imageArray = splitGifIntoFrames(gifFile);
-            imageArrayUp = splitGifIntoFrames(gifFileUp);
-            imageArrayDown = splitGifIntoFrames(gifFileDown);
-            imageArrayLeft = splitGifIntoFrames(gifFileLeft);
-            imageArrayRight = splitGifIntoFrames(gifFileRight);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (gifFilesPath != null) {
+            initGifs(gifFilesPath);
+            try {
+                imageArray = splitGifIntoFrames(gifFile);
+                imageArrayUp = splitGifIntoFrames(gifFileUp);
+                imageArrayDown = splitGifIntoFrames(gifFileDown);
+                imageArrayLeft = splitGifIntoFrames(gifFileLeft);
+                imageArrayRight = splitGifIntoFrames(gifFileRight);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            // System.out.println(imageArray.length);
         }
-       // System.out.println(imageArray.length);
     }
     public Animator (File gifFile) {
         direction = NORMAL;
         currentImageIndex = 0;
-        this.gifFile= gifFile;
-        try {
-            imageArray = splitGifIntoFrames(gifFile);
-        }catch (IOException e){
-            throw new RuntimeException(e);
+        if(gifFile != null) {
+            this.gifFile = gifFile;
+            try {
+                imageArray = splitGifIntoFrames(gifFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     public void initGifs(String gifFilesPath) {
