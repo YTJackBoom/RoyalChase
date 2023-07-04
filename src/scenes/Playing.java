@@ -8,6 +8,7 @@ import helpers.Constants;
 import helpers.ImageAnalyser;
 import helpers.Values;
 import helpers.variables;
+import uiElements.InfoOverlay;
 import uiElements.MyPlayingButtonBar;
 
 import javax.imageio.ImageIO;
@@ -31,7 +32,7 @@ public class Playing extends GameScenes implements SceneMethods{
     private ProjectileController projectileController;
     private ImageAnalyser imageAnalyser;
     private MyPlayingButtonBar buttonBarRight,buttonBarDown;
-    private RangeController rangeController;
+    private InfoOverlay infoOverlay;
     private int draggedTower;
     private int mouseX, mouseY;
     private boolean dragingTower;
@@ -44,13 +45,13 @@ public class Playing extends GameScenes implements SceneMethods{
     public Playing(Game game) {
         super(game);
         this.game = game;
+        this.infoOverlay = game.getInfoOverlay();
         imageAnalyser = new ImageAnalyser(getCurrentPMapFile());
 
         enemyController = new EnemyController(this, imageAnalyser.imgToPath());
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
-        rangeController = new RangeController(this);
 
         initButtonBars();
 
@@ -70,7 +71,7 @@ public class Playing extends GameScenes implements SceneMethods{
         if (dragingTower) {
             renderDraggedButton(g);
         }
-        rangeController.render(g);
+//        infoOverlay.render(g);
     }
     @Override
     public void update(){
@@ -78,7 +79,7 @@ public class Playing extends GameScenes implements SceneMethods{
         towerController.update();
         enemyController.update();
         waveController.update();
-        updateRangeController();
+        updateInfoOverlay();
         checkHealth();
         updateButtonBarDown();
     }
@@ -146,9 +147,9 @@ public class Playing extends GameScenes implements SceneMethods{
             buttonBarDown.setVisible(false);
         }
     }
-    public void updateRangeController() {
-        rangeController.setPointer(selectedTower);
-        rangeController.setDraggedPointer(draggedTower);
+    public void updateInfoOverlay() {
+        infoOverlay.setTowerPointer(selectedTower);
+        infoOverlay.setDraggedTowerType(draggedTower);
     }
     @Override
     public void mouseClicked(int x, int y) {
@@ -194,7 +195,7 @@ public class Playing extends GameScenes implements SceneMethods{
     public void mouseDragged(int x, int y) {
         mouseX = x;
         mouseY = y;
-        rangeController.mouseDragged(x,y);
+        infoOverlay.mouseDragged(x,y);
     }
 
 

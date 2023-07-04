@@ -6,7 +6,7 @@ import javax.swing.*;
 import helpers.PreLoader;
 import helpers.Values;
 import scenes.*;
-import uiElements.InfoBar;
+import uiElements.InfoOverlay;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +28,7 @@ public class Game extends JFrame  {
         private LevelSelect levelSelect;
         private Tutorial tutorial;
         private Town town;
-        private InfoBar infoBar;
+        private InfoOverlay infoOverlay;
 
 
         private Timer RenderTimer, GameTimer;
@@ -52,6 +52,8 @@ public class Game extends JFrame  {
         private void initClasses() {
             preLoader = new PreLoader();
 
+            infoOverlay = new InfoOverlay(this);
+
 
             gameScreen = new GameScreen(this);
             render = new Render(this);
@@ -64,7 +66,6 @@ public class Game extends JFrame  {
             tutorial = new Tutorial(this);
             town = new Town(this);
 
-            infoBar = new InfoBar(this);
 
         }
         private void initVariables(){
@@ -151,7 +152,7 @@ public class Game extends JFrame  {
         public LevelSelect getLevelSelect() {return levelSelect;}
         public Tutorial getTutorial() {return tutorial;}
         public Town getTown() {return town;}
-        public InfoBar getInfoBar() {return infoBar;}
+        public InfoOverlay getInfoOverlay() {return infoOverlay;}
 
 
         public PreLoader getPreLoader() {

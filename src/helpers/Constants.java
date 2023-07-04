@@ -11,6 +11,6 @@ public class Constants {
 	}
 	public static class ObjectConstants {
 		public static final int SPEEDOFFSET = 1; //delay for certasin speed adjustments
-		public static final int EXPLOSIONRADIUS = 300;
+		public static final int EXPLOSIONRADIUS = 500;
 	}
 }

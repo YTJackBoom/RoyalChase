@@ -1,7 +1,9 @@
 package uiElements;
 
 import basics.Game;
-import helpers.Values;
+import gameObjects.Tower;
+import helpers.*;
+import scenes.Playing;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,11 +12,16 @@ import java.io.File;
 
 import static helpers.Values.*;
 
-public class InfoBar {
+public class InfoOverlay {
     private Game game;
+    private Playing playing;
     private BufferedImage pausedImage,resumeImage;
-    public InfoBar(Game game) {
+    private Tower towerPointer;
+    private int draggedTowerType;
+    private int mouseY,mouseX;
+    public InfoOverlay(Game game) {
         this.game = game;
+//        this.playing = game.getPlaying();
         initVariables();
     }
     private void initVariables(){
@@ -29,6 +36,14 @@ public class InfoBar {
     }
 
     public void render(Graphics g) {
+        this.playing = game.getPlaying();
+        renderPlayerInfos(g);
+        renderTowerRanges(g);
+
+
+    }
+
+    public void renderPlayerInfos(Graphics g) {
         int startX = 10;
         int startY = 50;
         int xOffset = 0;
@@ -48,6 +63,31 @@ public class InfoBar {
         }else {
             g.drawImage(resumeImage, 10, 0, null);
         }
+    }
 
+    public void renderTowerRanges(Graphics g) {
+        if (towerPointer != null) {
+            g.setColor(Color.BLACK);
+            towerPointer.renderRange(g);
+        }
+        if (playing.getDragingTower()) {
+            int range = variables.Towers.getTowerRange(draggedTowerType);
+//			Circle [] circles = new Circle[Constants.UIConstants.NUMBEROFRANGECIRCLES];
+
+            for (int i = 0; i < Constants.UIConstants.NUMBEROFRANGECIRCLES; i++) {
+                Circle c = new Circle(new Coordinate(mouseX, mouseY), range - Constants.UIConstants.NUMBEROFRANGECIRCLES + i);
+                c.render(g);
+            }
+        }
+    }
+    public void setTowerPointer(Tower t) {
+        towerPointer = t;
+    }
+    public void setDraggedTowerType(int t) {
+        draggedTowerType = t;
+    }
+    public void mouseDragged(int x, int y) {
+        mouseX = x;
+        mouseY = y;
     }
 }

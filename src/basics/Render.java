@@ -16,22 +16,22 @@ public class Render {
 			case MENU -> game.getMenu().render(g);
 			case PLAYING -> {
 				game.getPlaying().render(g);
-				game.getInfoBar().render(g);
+				game.getInfoOverlay().render(g);
 			}
 			case SETTINGS -> game.getSettings().render(g);
 			case GAMEOVER -> {
 				game.getGameOver().render(g);
-				game.getInfoBar().render(g);
+				game.getInfoOverlay().render(g);
 			}
 			case LEVELCLEARED -> game.getLevelCleared().render(g);
 			case LEVELSELECT -> game.getLevelSelect().render(g);
 			case TUTORIAL -> {
 				game.getTutorial().render(g);
-				game.getInfoBar().render(g);
+				game.getInfoOverlay().render(g);
 			}
 			case TOWN -> {
 				game.getTown().render(g);
-				game.getInfoBar().render(g);
+				game.getInfoOverlay().render(g);
 			}
 		}
 
