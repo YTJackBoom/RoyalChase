@@ -3,6 +3,7 @@ package controllers;
 import gameObjects.Enemy;
 import helpers.Coordinate;
 import helpers.math;
+import helpers.variables;
 import scenes.Playing;
 import gameObjects.Tower;
 import towers.TowerFoundation;
@@ -91,8 +92,10 @@ public class TowerController implements ControllerMethods{
     }
     public void mouseClicked(int x, int y) {
         for(Tower tower : towerEntityList) {
-            if(tower.getBounds().contains(x,y)) {
-                playing.setSelectedTower(tower);
+            if(tower.getType() != variables.Towers.Foundation_T) {
+                if (tower.getBounds().contains(x, y)) {
+                    playing.setSelectedTower(tower);
+                }
             }
         }
     }

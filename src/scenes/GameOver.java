@@ -4,6 +4,7 @@ import basics.Game;
 import uiElements.MyButton;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class GameOver extends GameScenes implements SceneMethods{
@@ -54,7 +55,9 @@ public class GameOver extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseClicked(int x, int y) {
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
         for (MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 if(button.getText().equals("Try Again")){
@@ -79,17 +82,19 @@ public class GameOver extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mousePressed(int x, int y) {
-        for(MyButton button: buttons){
-            if(button.getBounds().contains(x,y)){
-                button.setPressed(true);
+    public void mousePressed(MouseEvent e) {
+        if(e.getButton() == 1) {
+            for (MyButton button : buttons) {
+                if (button.getBounds().contains(e.getX(), e.getY())) {
+                    button.setPressed(true);
+                }
             }
         }
     }
 
     @Override
-    public void mouseReleased(int x, int y) {
-        resetButtons();
+    public void mouseReleased(MouseEvent e) {
+        if(e.getButton() == 1){resetButtons();}
     }
 
     @Override

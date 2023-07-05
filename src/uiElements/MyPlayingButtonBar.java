@@ -57,7 +57,7 @@ public class MyPlayingButtonBar {
 	public void initButtonsDown() {
 		int startX = pos.getX()+10;
 		int startY = pos.getY()+10;
-		int xOffset = 50;
+		int xOffset = 110;
 		int yOffset = 0;
 		int width = 100;
 		int height = 80;
@@ -107,6 +107,7 @@ public class MyPlayingButtonBar {
 					if (button.getText().equals("Play")) {
 						GameStates.gameState = GameStates.PLAYING;
 					} else if (button.getText().equals("Town")) {
+						playing.resetBools();
 						GameStates.gameState = GameStates.TOWN;
 					} else if (button.getText().equals("Exit")) {
 						System.exit(0);

@@ -13,6 +13,7 @@ import uiElements.MyPlayingButtonBar;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -152,11 +153,20 @@ public class Playing extends GameScenes implements SceneMethods{
         infoOverlay.setDraggedTowerType(draggedTower);
     }
     @Override
-    public void mouseClicked(int x, int y) {
-        if(y>=buttonBarRight.getPos().getY() && y<=buttonBarRight.getPos().getY()+buttonBarRight.getHeight()){
-            buttonBarRight.mouseClicked(x,y);
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+
+        if(e.getButton() ==1) {
+            infoOverlay.mouseClicked(x,y);
+
+            if (y >= buttonBarRight.getPos().getY() && y <= buttonBarRight.getPos().getY() + buttonBarRight.getHeight()) {
+                buttonBarRight.mouseClicked(x, y);
+            }
+            towerController.mouseClicked(x, y);
+        } else if (e.getButton() ==3) {
+            selectedTower =null;
         }
-        towerController.mouseClicked(x,y);
     }
 
     @Override
@@ -173,21 +183,34 @@ public class Playing extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mousePressed(int x, int y) {
-        mouseX = x;
-        mouseY = y;
-        if(y>=buttonBarRight.getPos().getY() && y<=buttonBarRight.getPos().getY()+buttonBarRight.getHeight()){
-            buttonBarRight.mousePressed(x,y);
-        }
+    public void mousePressed(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+        if(e.getButton()==1) {
+            infoOverlay.mousePressed(mouseX,mouseY);
 
+            if (buttonBarRight.getBounds().contains(mouseX, mouseY)) {
+                buttonBarRight.mousePressed(mouseX, mouseY);
+            } else if (buttonBarDown.getBounds().contains(mouseX, mouseY)) {
+                buttonBarDown.mousePressed(mouseX, mouseY);
+            }
+        } else if (e.getButton()==3) {
+            selectedTower =null;
+        }
     }
 
     @Override
-    public void mouseReleased(int x, int y) {
-        buttonBarRight.mouseReleased(x,y);
-        if (dragingTower) {
-            towerController.mouseReleased(x, y);
-            dragingTower = false;
+    public void mouseReleased(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        if(e.getButton()==1) {
+            buttonBarRight.mouseReleased(x, y);
+            buttonBarDown.mouseReleased(x,y);
+            if (dragingTower) {
+                towerController.mouseReleased(x, y);
+                dragingTower = false;
+            }
+
         }
     }
 
@@ -196,6 +219,12 @@ public class Playing extends GameScenes implements SceneMethods{
         mouseX = x;
         mouseY = y;
         infoOverlay.mouseDragged(x,y);
+    }
+
+    public void resetBools() {
+        dragingTower = false;
+        selectedTower = null;
+        update();
     }
 
 

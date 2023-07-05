@@ -4,6 +4,7 @@ import basics.Game;
 import uiElements.MyButton;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class Menu extends GameScenes implements SceneMethods {
@@ -47,7 +48,10 @@ public class Menu extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mouseClicked(int x, int y) {
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+
         for (MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 if(button.getText().equals("Play")){
@@ -74,7 +78,10 @@ public class Menu extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mousePressed(int x, int y) {
+    public void mousePressed(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+
         for(MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 button.setPressed(true);
@@ -83,7 +90,7 @@ public class Menu extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mouseReleased(int x, int y) {
+    public void mouseReleased(MouseEvent e) {
         resetButtons();
     }
 

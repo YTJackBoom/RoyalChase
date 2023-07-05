@@ -10,6 +10,7 @@ import uiElements.MyTownButtonBar;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -103,9 +104,11 @@ public class Town extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseClicked(int x, int y) {
-        if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
-            buttonBar.mouseClicked(x,y);
+    public void mouseClicked(MouseEvent e) {
+        mouseX=e.getX();
+        mouseY=e.getY();
+        if(buttonBar.getBounds().contains(mouseX,mouseY)){
+            buttonBar.mouseClicked(mouseX,mouseY);
         }
     }
 
@@ -121,24 +124,28 @@ public class Town extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mousePressed(int x, int y) {
-        mouseX = x;
-        mouseY = y;
-        if(y>=buttonBar.getPos().getY() && y<=buttonBar.getPos().getY()+buttonBar.getHeight()){
-            buttonBar.mousePressed(x,y);
+    public void mousePressed(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+        if (e.getButton()==1) {
+            if (buttonBar.getBounds().contains(mouseX, mouseY)) {
+                buttonBar.mousePressed(mouseX, mouseY);
+            }
         }
     }
 
     @Override
-    public void mouseReleased(int x, int y) {
-        mouseX = x;
-        mouseY = y;
+    public void mouseReleased(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
 
 //  System.out.println("ad");
-        buttonBar.mouseReleased(x,y);
-        if (dragingBuilding) {
-            buildingsController.mouseReleased( x, y);
-            dragingBuilding = false;
+        if(e.getButton()==1) {
+            buttonBar.mouseReleased(mouseX,mouseY);
+            if (dragingBuilding) {
+                buildingsController.mouseReleased(mouseX,mouseY);
+                dragingBuilding = false;
+            }
         }
     }
 

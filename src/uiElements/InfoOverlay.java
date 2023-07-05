@@ -90,4 +90,12 @@ public class InfoOverlay {
         mouseX = x;
         mouseY = y;
     }
+    public void mousePressed(int x,int y) {
+        mouseX = x;
+        mouseY = y;
+    }
+    public void mouseClicked(int x,int y) {
+        mouseX = x;
+        mouseY = y;
+    }
 }

@@ -4,6 +4,7 @@ import basics.Game;
 import uiElements.MyButton;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import static helpers.Values.LEVELSCLEARED;
@@ -63,19 +64,23 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
         }
     }
     @Override
-    public void mouseClicked(int x, int y) {
-        for (MyButton button: buttons){
-            if(button.getBounds().contains(x,y)){
-                if(REWARDMULTIPLYER == 1) {
-                    LEVELSCLEARED = LEVELSCLEARED + 1;
-                }
-                if(button.getText().equals("Continue")){
-                    GameStates.gameState = GameStates.LEVELSELECT;
-                    System.out.println("Continue");
-                }else if(button.getText().equals("Save")){
+    public void mouseClicked(MouseEvent e) {
+        if(e.getButton() == 1) {
+            int x = e.getX();
+            int y = e.getY();
+            for (MyButton button : buttons) {
+                if (button.getBounds().contains(x, y)) {
+                    if (REWARDMULTIPLYER == 1) {
+                        LEVELSCLEARED = LEVELSCLEARED + 1;
+                    }
+                    if (button.getText().equals("Continue")) {
+                        GameStates.gameState = GameStates.LEVELSELECT;
+                        System.out.println("Continue");
+                    } else if (button.getText().equals("Save")) {
 //                    GameStates.gameState = GameStates.SAVE;
-                }else if(button.getText().equals("Main Menu")){
-                    GameStates.gameState = GameStates.MENU;
+                    } else if (button.getText().equals("Main Menu")) {
+                        GameStates.gameState = GameStates.MENU;
+                    }
                 }
             }
         }
@@ -95,17 +100,20 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mousePressed(int x, int y) {
-        for(MyButton button: buttons){
-            if(button.getBounds().contains(x,y)){
-                button.setPressed(true);
+    public void mousePressed(MouseEvent e) {
+        if (e.getButton()==1) {
+            int x = e.getX();
+            int y = e.getY();
+            for (MyButton button : buttons) {
+                if (button.getBounds().contains(x, y)) {
+                    button.setPressed(true);
+                }
             }
         }
-
     }
 
     @Override
-    public void mouseReleased(int x, int y) {
+    public void mouseReleased(MouseEvent e) {
         resetButtons();
 
     }

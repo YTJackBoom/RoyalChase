@@ -3,6 +3,7 @@ package scenes;
 import basics.Game;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class Settings extends GameScenes implements SceneMethods {
     public Settings(Game game) {
@@ -19,7 +20,7 @@ public class Settings extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mouseClicked(int x, int y) {
+    public void mouseClicked(MouseEvent e) {
 
     }
 
@@ -29,12 +30,12 @@ public class Settings extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mousePressed(int x, int y) {
+    public void mousePressed(MouseEvent e) {
 
     }
 
     @Override
-    public void mouseReleased(int x, int y) {
+    public void mouseReleased(MouseEvent e) {
 
     }
 

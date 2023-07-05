@@ -5,6 +5,7 @@ import helpers.Values;
 import uiElements.MyButton;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class LevelSelect extends GameScenes implements SceneMethods{
@@ -83,7 +84,10 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseClicked(int x, int y) {  //TODO: Make this wor
+    public void mouseClicked(MouseEvent e) {  //TODO: Make this wor
+        int x = e.getX();
+        int y = e.getY();
+
         for (MyButton button: buttons){
             if(button.getBounds().contains(x,y)) {
                 if (button.isChecked()) {
@@ -113,7 +117,10 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mousePressed(int x, int y) {
+    public void mousePressed(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+
         for(MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 button.setPressed(true);
@@ -123,7 +130,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseReleased(int x, int y) {
+    public void mouseReleased(MouseEvent e) {
         resetButtons();
 
     }
@@ -135,7 +142,9 @@ public class LevelSelect extends GameScenes implements SceneMethods{
 
     @Override
     public void reset() {
-        //TODO: reset level
+        for (MyButton b  : buttons) {
+            b.setChecked(false);
+        }
     }
 
     public void resetButtons(){

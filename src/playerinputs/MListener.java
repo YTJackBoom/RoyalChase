@@ -15,50 +15,47 @@ public class MListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
             switch (GameStates.gameState) {
-                case MENU -> game.getMenu().mouseClicked(e.getX(), e.getY());
-                case PLAYING -> game.getPlaying().mouseClicked(e.getX(), e.getY());
-                case SETTINGS -> game.getSettings().mouseClicked(e.getX(), e.getY());
-                case GAMEOVER -> game.getGameOver().mouseClicked(e.getX(), e.getY());
-                case LEVELCLEARED -> game.getLevelCleared().mouseClicked(e.getX(), e.getY());
-                case LEVELSELECT -> game.getLevelSelect().mouseClicked(e.getX(), e.getY());
-                case TUTORIAL -> game.getTutorial().mouseClicked(e.getX(), e.getY());
-                case TOWN -> game.getTown().mouseClicked(e.getX(), e.getY());
+                case MENU -> game.getMenu().mouseClicked(e);
+                case PLAYING -> game.getPlaying().mouseClicked(e);
+                case SETTINGS -> game.getSettings().mouseClicked(e);
+                case GAMEOVER -> game.getGameOver().mouseClicked(e);
+                case LEVELCLEARED -> game.getLevelCleared().mouseClicked(e);
+                case LEVELSELECT -> game.getLevelSelect().mouseClicked(e);
+                case TUTORIAL -> game.getTutorial().mouseClicked(e);
+                case TOWN -> game.getTown().mouseClicked(e);
             }
-        }
+
 
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
             switch (GameStates.gameState) {
-                case MENU -> game.getMenu().mousePressed(e.getX(), e.getY());
-                case PLAYING -> game.getPlaying().mousePressed(e.getX(), e.getY());
-                case SETTINGS -> game.getSettings().mousePressed(e.getX(), e.getY());
-                case GAMEOVER -> game.getGameOver().mousePressed(e.getX(), e.getY());
-                case LEVELCLEARED -> game.getLevelCleared().mousePressed(e.getX(), e.getY());
-                case LEVELSELECT -> game.getLevelSelect().mousePressed(e.getX(), e.getY());
-                case TUTORIAL -> game.getTutorial().mousePressed(e.getX(), e.getY());
-                case TOWN -> game.getTown().mousePressed(e.getX(), e.getY());
+                case MENU -> game.getMenu().mousePressed(e);
+                case PLAYING -> game.getPlaying().mousePressed(e);
+                case SETTINGS -> game.getSettings().mousePressed(e);
+                case GAMEOVER -> game.getGameOver().mousePressed(e);
+                case LEVELCLEARED -> game.getLevelCleared().mousePressed(e);
+                case LEVELSELECT -> game.getLevelSelect().mousePressed(e);
+                case TUTORIAL -> game.getTutorial().mousePressed(e);
+                case TOWN -> game.getTown().mousePressed(e);
 
 
             }
-        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         switch (GameStates.gameState) {
-            case MENU -> game.getMenu().mouseReleased(e.getX(), e.getY());
-            case PLAYING -> game.getPlaying().mouseReleased(e.getX(), e.getY());
-            case SETTINGS -> game.getSettings().mouseReleased(e.getX(), e.getY());
-            case GAMEOVER -> game.getGameOver().mouseReleased(e.getX(), e.getY());
-            case LEVELCLEARED -> game.getLevelCleared().mouseReleased(e.getX(), e.getY());
-            case LEVELSELECT -> game.getLevelSelect().mouseReleased(e.getX(), e.getY());
-            case TUTORIAL -> game.getTutorial().mouseReleased(e.getX(), e.getY());
-            case TOWN -> game.getTown().mouseReleased(e.getX(), e.getY());
+            case MENU -> game.getMenu().mouseReleased(e);
+            case PLAYING -> game.getPlaying().mouseReleased(e);
+            case SETTINGS -> game.getSettings().mouseReleased(e);
+            case GAMEOVER -> game.getGameOver().mouseReleased(e);
+            case LEVELCLEARED -> game.getLevelCleared().mouseReleased(e);
+            case LEVELSELECT -> game.getLevelSelect().mouseReleased(e);
+            case TUTORIAL -> game.getTutorial().mouseReleased(e);
+            case TOWN -> game.getTown().mouseReleased(e);
 
         }
 
