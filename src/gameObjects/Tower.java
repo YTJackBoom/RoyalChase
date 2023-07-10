@@ -14,6 +14,7 @@ public class Tower extends GameObject {
 	private boolean isFiring,isLoaded;
 	private int type;
 	private int width, height;
+	private int level;
 	private Rectangle bounds;
 	private TowerController towerController;
 	private ProjectileController projectileController;
@@ -25,6 +26,7 @@ public class Tower extends GameObject {
 		this.towerController = towerController;
 		projectileController = towerController.getPlaying().getProjectileController();
 		isLoaded = true;
+		level =1;
 
 		initAnimators();
 		initVariables();
@@ -122,5 +124,8 @@ public class Tower extends GameObject {
 	public int getWidth() {
 		return width;
 	}
+	public void upgrade() {level ++;}
+	public int getLevel() {return level;}
+
 
 }

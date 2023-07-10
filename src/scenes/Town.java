@@ -2,11 +2,11 @@ package scenes;
 
 import basics.Game;
 import controllers.BuildingsController;
-import controllers.TowerController;
 import helpers.Constants;
 import helpers.variables;
-import uiElements.MyPlayingButtonBar;
-import uiElements.MyTownButtonBar;
+import uiElements.InfoOverlay;
+import uiElements.MyButtonBar;
+import uiElements.UIPos;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -25,14 +25,16 @@ public class Town extends GameScenes implements SceneMethods{
     private int mouseX,mouseY;
 
     private BuildingsController buildingsController;
-    private MyTownButtonBar buttonBar;
+    private MyButtonBar buttonBar;
     private BufferedImage townImage;
     private int selectedBuilding;
     private boolean cantAfford;
     private int cantAffordCounter;
+    private InfoOverlay infoOverlay;
     public Town(Game game){
         super(game);
         this.game = game;
+        infoOverlay = game.getInfoOverlay();
         initClasses();
         initVariables();
         initButtonBar();
@@ -54,7 +56,7 @@ public class Town extends GameScenes implements SceneMethods{
             int x = game.getWidth() - width - 20;
             int y = game.getHeight() - height - 20;
 
-            buttonBar = new MyTownButtonBar(this, new helpers.Coordinate(x, y), width, height);
+            buttonBar = new MyButtonBar(this, new helpers.Coordinate(x, y), width, height, UIPos.TOWNRIGHT);
 
     }
 
@@ -87,11 +89,15 @@ public class Town extends GameScenes implements SceneMethods{
     @Override
     public void update() {
         buildingsController.update();
+        updateInfoOverlay();
     }
     public void softUpdate() {
         buildingsController.update();
     }
 
+    public void updateInfoOverlay() {
+        infoOverlay.setHoveredButton(buttonBar.getHoveredButton());
+    }
     public void renderDraggedButton(Graphics g) {
         BufferedImage draggedImage;
         try {

@@ -1,7 +1,9 @@
 package controllers;
 
 import gameObjects.Enemy;
+import gameObjects.ObjectType;
 import helpers.Coordinate;
+import helpers.Values;
 import helpers.math;
 import helpers.variables;
 import scenes.Playing;
@@ -15,6 +17,7 @@ public class TowerController implements ControllerMethods{
     private ArrayList<Tower> towerEntityList;
     private Playing playing;
     private ArrayList<Enemy> enemyList;
+    private Tower selectedTower;
     public TowerController(Playing playing) {
         towerEntityList = new ArrayList<Tower>();
         enemyList = playing.getEnemyController().getEnemyList();
@@ -69,19 +72,29 @@ public class TowerController implements ControllerMethods{
                     g.drawImage(tower.getPassiveAnimator().getCurrentImage(), tower.getPos().getX()-width/2, tower.getPos().getY()-height/2, null);
                 }
             }
-            renderTowerInfos(g);
         }
     }
-    public void renderTowerInfos(Graphics g) {
 
+
+     public void upgradeTower() {
+        if(Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA) &&
+           Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA) &&
+           Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA) &&
+           Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA)) {
+            selectedTower.upgrade();
+            System.out.println("d");
+        } else {
+            playing.setCantAfford(true);
+            System.out.println("$");
+        }
     }
 
     public void mouseReleased(int x, int y) {
         for (int i = 0; i < towerEntityList.size(); i++) {
             Tower tower = towerEntityList.get(i);
             if (tower.getBounds().contains(x, y)) {
-                if(math.PlayerMath.canAfford(playing.getDraggedTower(), 0)) {
-                    math.PlayerMath.deduct(playing.getDraggedTower(),0);
+                if(math.PlayerMath.canAfford(playing.getDraggedTower(), ObjectType.TOWER)) {
+                    math.PlayerMath.deduct(playing.getDraggedTower(),ObjectType.TOWER);
                     towerEntityList.set(i, new Tower(this, tower.getPos(), playing.getDraggedTower()));
                     System.out.println("Tower placed");
                 }else {
@@ -94,6 +107,7 @@ public class TowerController implements ControllerMethods{
         for(Tower tower : towerEntityList) {
             if(tower.getType() != variables.Towers.Foundation_T) {
                 if (tower.getBounds().contains(x, y)) {
+                    selectedTower = tower;
                     playing.setSelectedTower(tower);
                 }
             }

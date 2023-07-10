@@ -4,6 +4,7 @@ import basics.Game;
 import gameObjects.Tower;
 import helpers.*;
 import scenes.Playing;
+import scenes.Town;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,10 +16,12 @@ import static helpers.Values.*;
 public class InfoOverlay {
     private Game game;
     private Playing playing;
+    private Town town;
     private BufferedImage pausedImage,resumeImage;
     private Tower towerPointer;
     private int draggedTowerType;
     private int mouseY,mouseX;
+    private MyButton hoveredButton;
     public InfoOverlay(Game game) {
         this.game = game;
 //        this.playing = game.getPlaying();
@@ -37,8 +40,10 @@ public class InfoOverlay {
 
     public void render(Graphics g) {
         this.playing = game.getPlaying();
+        this.town = game.getTown();
         renderPlayerInfos(g);
         renderTowerRanges(g);
+        renderTowerCosts(g);
 
 
     }
@@ -80,6 +85,57 @@ public class InfoOverlay {
             }
         }
     }
+
+    public void renderTowerCosts(Graphics g) {
+        if(hoveredButton != null) {
+            if (hoveredButton.isTowerButton()) {
+                int x = hoveredButton.getX() - hoveredButton.getWidth()/2;
+                int y = hoveredButton.getY() + hoveredButton.getHeight()/3;
+                int type = hoveredButton.getType();
+
+                int manaCost = variables.Towers.getTowerManaCost(type);
+                int ironCost = variables.Towers.getTowerIronCost(type);
+                int woodCost = variables.Towers.getTowerWoodCost(type);
+                int stoneCost = variables.Towers.getTowerStoneCost(type);
+
+                g.setFont(Constants.UIConstants.TOWERCOSTFONT);
+
+
+                if(manaCost>MANA) {
+                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                }else {
+                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                }
+                g.drawString(String.valueOf(manaCost),x,y);
+
+                if(ironCost>IRON) {
+                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                }else {
+                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                }
+                g.drawString(String.valueOf(ironCost),x,y+(int)Constants.UIConstants.TOWERCOSTFONT.getSize2D());
+
+                if(woodCost>WOOD) {
+                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                }else {
+                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                }
+                g.drawString(String.valueOf(woodCost),x,y+(int)(2*Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
+
+                if(stoneCost>STONE) {
+                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                }else {
+                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                }
+                g.drawString(String.valueOf(stoneCost),x,y+(int)(3*Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
+
+
+
+
+            }
+        }
+
+    }
     public void setTowerPointer(Tower t) {
         towerPointer = t;
     }
@@ -97,5 +153,9 @@ public class InfoOverlay {
     public void mouseClicked(int x,int y) {
         mouseX = x;
         mouseY = y;
+    }
+
+    public void setHoveredButton(MyButton hoveredButton) {
+        this.hoveredButton = hoveredButton;
     }
 }

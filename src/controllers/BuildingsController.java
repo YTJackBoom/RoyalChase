@@ -1,6 +1,7 @@
 package controllers;
 
 import gameObjects.Building;
+import gameObjects.ObjectType;
 import helpers.math;
 import scenes.Town;
 
@@ -78,8 +79,8 @@ public class BuildingsController implements ControllerMethods{
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
 			if (building.getBounds().contains(x, y)) {
-				if (math.PlayerMath.canAfford(town.getSelectedBuilding(), 1)) {
-					math.PlayerMath.deduct(town.getSelectedBuilding(), 1);
+				if (math.PlayerMath.canAfford(town.getSelectedBuilding(), ObjectType.BUILDING)) {
+					math.PlayerMath.deduct(town.getSelectedBuilding(), ObjectType.BUILDING);
 					buildingsList.set(i, new Building(this, building.getX(), building.getY(), town.getSelectedBuilding()));
 					System.out.println("Building placed");
 				}else {

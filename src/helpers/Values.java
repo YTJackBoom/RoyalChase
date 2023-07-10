@@ -1,6 +1,9 @@
 package helpers;
 
 public class Values {
+    public static enum VALUES {
+        MANA,IRON,WOOD,STONE;
+    }
     public static int GOLD = 100;
     public static int HEALTH = 100;
     public static int SCORE = 0;

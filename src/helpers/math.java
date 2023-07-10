@@ -1,6 +1,7 @@
 package helpers;
 
 import gameObjects.Enemy;
+import gameObjects.ObjectType;
 import gameObjects.Tower;
 
 public  class math {
@@ -20,7 +21,38 @@ public  class math {
 
             } else return false;
         }
-    }
+        public static double calculateTowerUpgradeCost(Tower tower,Values.VALUES values) {
+          return calculateTowerWorth(tower,values) * Constants.ObjectConstants.UPGRADEMULTIPLYER;
+        }
+
+        public static double calculateTowerWorth(Tower tower,Values.VALUES values) {
+            int level = tower.getLevel();
+            int type = tower.getType();
+            double worth =0;
+            int intialCost = 0;
+
+            switch (values) {
+                case MANA -> {
+                    intialCost = variables.Towers.getTowerManaCost(type);
+                }
+                case IRON -> {
+                    intialCost = variables.Towers.getTowerIronCost(type);
+                }
+                case WOOD -> {
+                    intialCost = variables.Towers.getTowerWoodCost(type);
+                }
+                case STONE -> {
+                    intialCost = variables.Towers.getTowerStoneCost(type);
+                }
+            }
+            worth = (double) intialCost;
+            for (int i = 1; i <= level; i++) {
+                worth += worth*Constants.ObjectConstants.UPGRADEMULTIPLYER;
+            }
+
+            return worth;
+            }
+        }
 
     public static class ProjectileMath {
         private static long previousTime;
@@ -98,7 +130,7 @@ public  class math {
            if(yDiff<0) {
                 newY = rocketPosition.getY() - (displacement * Math.sin(angleA));
             }else {
-                newY = rocketPosition.getY() + (displacement * Math.sin(angleA));
+                newY = rocketPosition.getY() + 0*(displacement * Math.sin(angleA));
             }
 
 
@@ -110,7 +142,7 @@ public  class math {
             double finalX = newX + (sineY*Math.cos(angleC));
             double finalY = newY + (sineY*Math.sin(180-90-angleC));
 
-            return new Coordinate((int)finalX, (int)finalY);
+            return new Coordinate((int)finalX, (int)finalY+5);
         }
 
 
@@ -118,16 +150,16 @@ public  class math {
 
 
     public static class PlayerMath {
-        public static boolean canAfford(int type, int toggle) { //toggle: 0=tower;1=building
-            switch (toggle) {
-                case 0: {
+        public static boolean canAfford(int type, ObjectType objectType) {
+            switch (objectType) {
+                case TOWER: {
                     if (variables.Towers.getTowerIronCost(type) > Values.IRON) return false;
                     if (variables.Towers.getTowerManaCost(type) > Values.MANA) return false;
                     if (variables.Towers.getTowerStoneCost(type) > Values.STONE) return false;
                     if (variables.Towers.getTowerWoodCost(type) > Values.WOOD) return false;
                     return true;
                 }
-                case 1: {
+                case BUILDING: {
                     if (variables.Buildings.getBuildingIronCost(type) > Values.IRON) return false;
                     if (variables.Buildings.getBuildingManaCost(type) > Values.MANA) return false;
                     if (variables.Buildings.getBuildingStoneCost(type) > Values.STONE) return false;
@@ -140,15 +172,15 @@ public  class math {
             return false;
         }
 
-        public static void deduct(int type, int toggle) {
-            switch (toggle) {
-                case 0: {
+        public static void deduct(int type, ObjectType objectType) {
+            switch (objectType) {
+                case TOWER: {
                     Values.IRON -= variables.Towers.getTowerIronCost(type);
                     Values.MANA -= variables.Towers.getTowerManaCost(type);
                     Values.STONE -= variables.Towers.getTowerStoneCost(type);
                     Values.WOOD -= variables.Towers.getTowerWoodCost(type);
                 }
-                case 1: {
+                case BUILDING: {
                     Values.IRON -= variables.Buildings.getBuildingIronCost(type);
                     Values.MANA -= variables.Buildings.getBuildingManaCost(type);
                     Values.STONE -= variables.Buildings.getBuildingStoneCost(type);

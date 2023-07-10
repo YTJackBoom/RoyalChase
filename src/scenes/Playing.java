@@ -9,7 +9,9 @@ import helpers.ImageAnalyser;
 import helpers.Values;
 import helpers.variables;
 import uiElements.InfoOverlay;
-import uiElements.MyPlayingButtonBar;
+import uiElements.MyButton;
+import uiElements.MyButtonBar;
+import uiElements.UIPos;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -17,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static basics.Game.fps;
 import static basics.GameScreen.fHEIGHT;
@@ -32,7 +35,7 @@ public class Playing extends GameScenes implements SceneMethods{
     private WaveController waveController;
     private ProjectileController projectileController;
     private ImageAnalyser imageAnalyser;
-    private MyPlayingButtonBar buttonBarRight,buttonBarDown;
+    private MyButtonBar buttonBarRight,buttonBarDown;
     private InfoOverlay infoOverlay;
     private int draggedTower;
     private int mouseX, mouseY;
@@ -65,8 +68,9 @@ public class Playing extends GameScenes implements SceneMethods{
         enemyController.render(g);
         towerController.render(g);
         projectileController.render(g);
-        buttonBarRight.render(g);
         buttonBarDown.render(g);
+        buttonBarRight.render(g);
+
         renderCantAfford(g);
         waveController.render(g);
         if (dragingTower) {
@@ -92,13 +96,13 @@ public class Playing extends GameScenes implements SceneMethods{
         int xr = fWIDTH - widthr - 20;
         int yr = fHEIGHT - heightr - 20;
         //the buttom bar
-        int widthd = 100;
+        int widthd = 260;
         int heightd = 100;
         int xd = fWIDTH/2-widthd;
         int yd = fHEIGHT-10-heightd;
 
-        buttonBarRight = new MyPlayingButtonBar(this, new helpers.Coordinate(xr, yr), widthr, heightr, Direction.RIGHT);
-        buttonBarDown = new MyPlayingButtonBar(this,new helpers.Coordinate(xd, yd),widthd,heightd,Direction.DOWN);
+        buttonBarRight = new MyButtonBar(this, new helpers.Coordinate(xr, yr), widthr, heightr, UIPos.PLAYINGRIGHT);
+        buttonBarDown = new MyButtonBar(this,new helpers.Coordinate(xd, yd),widthd,heightd,UIPos.PLAYINGDOWN);
 
     }
     public void reset() {
@@ -151,6 +155,7 @@ public class Playing extends GameScenes implements SceneMethods{
     public void updateInfoOverlay() {
         infoOverlay.setTowerPointer(selectedTower);
         infoOverlay.setDraggedTowerType(draggedTower);
+        infoOverlay.setHoveredButton(buttonBarRight.getHoveredButton());
     }
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -160,8 +165,11 @@ public class Playing extends GameScenes implements SceneMethods{
         if(e.getButton() ==1) {
             infoOverlay.mouseClicked(x,y);
 
-            if (y >= buttonBarRight.getPos().getY() && y <= buttonBarRight.getPos().getY() + buttonBarRight.getHeight()) {
+            if (buttonBarRight.getBounds().contains(x,y)) {
                 buttonBarRight.mouseClicked(x, y);
+            }
+            if (buttonBarDown.getBounds().contains(x,y)) {
+                buttonBarDown.mouseClicked(x,y);
             }
             towerController.mouseClicked(x, y);
         } else if (e.getButton() ==3) {
@@ -176,6 +184,7 @@ public class Playing extends GameScenes implements SceneMethods{
             buttonBarRight.mouseMoved(x,y);
         } else{
             buttonBarRight.setVisible(false);
+            buttonBarRight.setHoveredButton(null);
         }
         buttonBarDown.mouseMoved(x,y);
 
@@ -230,13 +239,14 @@ public class Playing extends GameScenes implements SceneMethods{
 
 
     //Getters and Setters
-    public MyPlayingButtonBar getButtonBar(Direction dir) {
+    public MyButtonBar getButtonBar(Direction dir) {
         return switch (dir) {
             case RIGHT -> buttonBarRight;
             case DOWN -> buttonBarDown;
             default -> null;
         };
     }
+    public TowerController getTowerController() {return towerController;}
     public File getCurrentPMapFile(){
         return helpers.variables.Maps.getPMapFile(LEVEL);
     }

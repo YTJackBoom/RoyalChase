@@ -73,7 +73,7 @@ public class ProjectileController implements ControllerMethods {
     public void checkRocketCollision(Projectile projectile, Enemy target) {
         int distanceY = target.getPos().getY() - projectile.getPos().getY();
         int distanceX = target.getPos().getX() - projectile.getPos().getX();
-        if (Math.abs(distanceX) <= target.getWidth()/2+projectile.getWidth()/2+2 && Math.abs(distanceY) <= target.getHeight()/2+projectile.getHeight()/2+2) {
+        if (Math.abs(distanceX) <= target.getWidth()/2+projectile.getWidth()/2 && Math.abs(distanceY) <= target.getHeight()/2+projectile.getHeight()/2) {
             Circle explosion = new Circle(projectile.getPos(), Constants.ObjectConstants.EXPLOSIONRADIUS);
             playing.getEnemyController().damageEnemiesInRadius(explosion, projectile.getDamage());
             removeQueue.add(projectile);
