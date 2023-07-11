@@ -110,10 +110,10 @@ public class EnemyController implements ControllerMethods{
 		   }
 	   }
    }
-   public void damageEnemy(Enemy enemy, int damage) {
+   public void damageEnemy(Enemy enemy, double damage) {
 		enemyList.get(enemyList.indexOf(enemy)).damage(damage);
    }
-	public void damageEnemiesInRadius(Circle explosion, int damage) {
+	public void damageEnemiesInRadius(Circle explosion, double damage) {
 		for(Enemy enemy : enemyList) {
 			if(explosion.contains(enemy.getPos())) {
 				enemy.damage(damage);

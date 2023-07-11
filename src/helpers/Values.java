@@ -21,9 +21,9 @@ public class Values {
         SCORE = 0;
         LEVEL = 1;
         LEVELSCLEARED = 0;
-        MANA = 100;
-        IRON = 100;
-        WOOD = 100;
-        STONE = 100;
+        MANA = 11500;
+        IRON = 11500;
+        WOOD = 11500;
+        STONE = 11500;
     }
 }

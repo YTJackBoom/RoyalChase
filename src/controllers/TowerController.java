@@ -13,6 +13,8 @@ import towers.TowerFoundation;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static helpers.variables.Towers.ARROW_T;
+
 public class TowerController implements ControllerMethods{
     private ArrayList<Tower> towerEntityList;
     private Playing playing;
@@ -35,6 +37,9 @@ public class TowerController implements ControllerMethods{
                 checkTELStatus(tower);
             }
             tower.update();
+            if(tower.getType() == ARROW_T) {
+                System.out.println(tower.getPos().getX()+ "  "+tower.getPos().getY());
+            }
         }
     }
     public void initTowers(ArrayList<Coordinate> foundList) {
@@ -78,15 +83,34 @@ public class TowerController implements ControllerMethods{
 
      public void upgradeTower() {
         if(Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA) &&
-           Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA) &&
-           Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA) &&
-           Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA)) {
+           Values.WOOD > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.WOOD) &&
+           Values.IRON > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.IRON) &&
+           Values.STONE > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.STONE)) {
+
+            Values.MANA -= math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA);
+            Values.WOOD -= math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.WOOD);
+            Values.IRON -= math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.IRON);
+            Values.STONE -= math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.STONE);
+
             selectedTower.upgrade();
             System.out.println("d");
         } else {
             playing.setCantAfford(true);
             System.out.println("$");
         }
+    }
+
+    public void sellTower() {
+        Values.MANA += math.TowerMath.calculateTowerWorth(selectedTower, Values.VALUES.MANA);
+        Values.WOOD += math.TowerMath.calculateTowerWorth(selectedTower, Values.VALUES.WOOD);
+        Values.IRON += math.TowerMath.calculateTowerWorth(selectedTower, Values.VALUES.IRON);
+        Values.STONE += math.TowerMath.calculateTowerWorth(selectedTower, Values.VALUES.STONE);
+
+        int towerIndex = towerEntityList.indexOf(selectedTower);
+        towerEntityList.set(towerIndex,new TowerFoundation(this, selectedTower.getPos()));
+        selectedTower = null;
+        playing.setSelectedTower(null);
+
     }
 
     public void mouseReleased(int x, int y) {

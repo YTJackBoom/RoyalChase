@@ -293,7 +293,7 @@ public class variables { //class to define different variables for thing
 
         public static double getProjectileSpeed(int projectileType) {
             return switch (projectileType) {
-                case ARROW -> 20;
+                case ARROW -> 1;
                 case ROCKET -> 15;
                 default -> throw new IllegalStateException("variables: getProjectileSpeed: Unexpected value:  " + projectileType);
             };
@@ -301,7 +301,7 @@ public class variables { //class to define different variables for thing
 
         public static int getProjectileDamage(int projectileType) {
             return switch (projectileType) {
-                case ARROW -> 50;
+                case ARROW -> 5;
                 case ROCKET -> 70;
                 default -> throw new IllegalStateException("variables: getProjectileDamage: Unexpected value:  " + projectileType);
             };
@@ -331,6 +331,7 @@ public class variables { //class to define different variables for thing
         public static final int MAGE_T_B = 2;
         public static final int ROCKET_T_B = 3;
         public static final int SNIP_T_B = 4;
+        public static final int MANA_B_B = -1;
 
 
         public static File getButtonImageFile(int buttonType) {
@@ -338,6 +339,7 @@ public class variables { //class to define different variables for thing
                 case Foundation_T_B -> new File("res/images/buttons/blue_square.png");
                 case ARROW_T_B -> new File("res/images/buttons/green_square.png");
                 case ROCKET_T_B -> new File("res/images/buttons/red_square.png");
+                case MANA_B_B -> new File("res/images/buttons/blue_square.png");
 
                 default -> throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);
             };

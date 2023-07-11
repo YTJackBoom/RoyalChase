@@ -155,7 +155,10 @@ public class Playing extends GameScenes implements SceneMethods{
     public void updateInfoOverlay() {
         infoOverlay.setTowerPointer(selectedTower);
         infoOverlay.setDraggedTowerType(draggedTower);
-        infoOverlay.setHoveredButton(buttonBarRight.getHoveredButton());
+        infoOverlay.setHoveredButton(buttonBarRight.getHoveredButton() != null ? buttonBarRight.getHoveredButton() : buttonBarDown.getHoveredButton());
+        if (buttonBarDown.getHoveredButton() == null && buttonBarRight.getHoveredButton() == null)
+            infoOverlay.setHoveredButton(null);
+
     }
     @Override
     public void mouseClicked(MouseEvent e) {

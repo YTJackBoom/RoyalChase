@@ -22,5 +22,10 @@ public class Constants {
 		public static final int SPEEDOFFSET = 1; //delay for certasin speed adjustments
 		public static final int EXPLOSIONRADIUS = 500;
 		public static final double UPGRADEMULTIPLYER = 0.5;
+
+		public static final double DMGUPGRADE = 0.15;
+		public static final double SPEEDUPGRADE = 0.15;
+
+
 	}
 }

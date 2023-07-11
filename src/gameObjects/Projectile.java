@@ -13,17 +13,19 @@ public class Projectile extends GameObject{
 	private int type;
 	private Animator animator;
 	private Enemy target;
+	private Tower origin;
 	private ProjectileController projectileController;
 	private int counter;
 	private double numberForTrajectory;
 	int height,width;
 
 
-	public Projectile(ProjectileController projectileController, Coordinate start, Enemy target, int type) {  // TODO: eine "animaion" pro richtung, prob in animation selber. wie enemys und towers verbessern
-		this.pos = start;
+	public Projectile(ProjectileController projectileController,Tower tower, Enemy target, int type) {  // TODO: eine "animaion" pro richtung, prob in animation selber. wie enemys und towers verbessern
+		this.pos = new Coordinate(tower.getPos().getX(),tower.getPos().getY());
 		this.type = type;
 		this.target = target;
 		this.projectileController = projectileController;
+		origin = tower;
 		initAnimator();
 		height = animator.getHeight();
 		width = animator.getWidth();
@@ -49,21 +51,21 @@ public class Projectile extends GameObject{
 	public void move() { //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
 		switch (type) {
 			case ARROW -> {
-				int[] tempArray = math.ProjectileMath.calculateArrowChange(pos, target.getPos());
+				int[] tempArray = math.ProjectileMath.calculateArrowChange(pos, target.getPos(),getSpeed());
 				pos.setX(pos.getX() + tempArray[0]);
 				pos.setY(pos.getY() + tempArray[1]);
 			}
 			case ROCKET -> {
 				numberForTrajectory += variables.Projectiles.getProjectileSpeed(variables.Projectiles.ROCKET);
-				pos = math.ProjectileMath.calculateRocketPos(pos, target.getPos(), numberForTrajectory);
+				pos = math.ProjectileMath.calculateRocketPos(pos, target.getPos(), numberForTrajectory, getSpeed());
 			}
 		}
 
 //		int[] tempArray = math.ProjectileMath.calculateArrowChange(pos, target.getPos());
 //		pos.setX(pos.getX()+tempArray[0]);
 //		pos.setY(pos.getY()+tempArray[1]);
-		numberForTrajectory+=variables.Projectiles.getProjectileSpeed(variables.Projectiles.ROCKET);
-		pos = math.ProjectileMath.calculateRocketPos(pos,target.getPos(),numberForTrajectory);
+//		numberForTrajectory+=variables.Projectiles.getProjectileSpeed(variables.Projectiles.ROCKET);
+//		pos = math.ProjectileMath.calculateRocketPos(pos,target.getPos(),numberForTrajectory,getSpeed());
 	}
 
 	public Animator getAnimator() {
@@ -73,8 +75,24 @@ public class Projectile extends GameObject{
 	public int getType() {return type;}
 
 
-	public int getDamage() {
-		return variables.Projectiles.getProjectileDamage(type);
+	public double getDamage() {
+		double dmg = variables.Projectiles.getProjectileDamage(type);
+		int tLevel = origin.getLevel();
+
+		for(int i =1 ; i<tLevel;i++) {
+			dmg += dmg*Constants.ObjectConstants.DMGUPGRADE;
+		}
+		return dmg;
+	}
+
+	public double getSpeed() {
+		double speed = variables.Projectiles.getProjectileDamage(type);
+		int tLevel = origin.getLevel();
+
+		for(int i =1 ; i<tLevel;i++) {
+			speed += speed*Constants.ObjectConstants.SPEEDUPGRADE;
+		}
+		return speed;
 	}
 	public void removeAnimators() {
 		animator = null;

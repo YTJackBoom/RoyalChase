@@ -12,7 +12,7 @@ public class Enemy extends GameObject{
 	private Coordinate pos;
 	private int pathIndex;
 	private int speed;
-	private int health;
+	private double health;
 	private int type;
 	private int width, height;
 	private boolean isActive;
@@ -57,7 +57,7 @@ public class Enemy extends GameObject{
 	public void die() {
 
 	}
-	public void damage(int i) {
+	public void damage(double i) {
 		health -= i;
 	}
 
@@ -82,7 +82,7 @@ public class Enemy extends GameObject{
 	public int getType() {
 		return type;
 	}
-	public int getHealth() {
+	public double getHealth() {
 		return health;
 	}
 

@@ -1,6 +1,7 @@
 package controllers;
 
 import gameObjects.Enemy;
+import gameObjects.Tower;
 import helpers.Constants;
 import helpers.Coordinate;
 import gameObjects.Projectile;
@@ -100,19 +101,8 @@ public class ProjectileController implements ControllerMethods {
     }
 
 
-    public void spawnProjectile(Coordinate start, Enemy ziel, int type) {
-//        switch (type) {
-//            case 0 -> addQueue.add(new Arrow(this,start,ziel,type));
-//            case 1 -> addQueue.add(new Arrow(this,start,ziel,type));
-//            case 2 -> addQueue.add(new Arrow(this,start,ziel,type));
-//            case 3 -> addQueue.add(new Arrow(this,start,ziel,type));
-//            case 4 -> addQueue.add(new Arrow(this,start,ziel,type));
-//            case 5 -> addQueue.add(new Arrow(this,start,ziel,type));
-//            case 6 -> addQueue.add(new Arrow(this,start,ziel,type));
-//            case 7 -> addQueue.add(new Arrow(this,start,ziel,type));
-//            case 8 -> addQueue.add(new Arrow(this,start,ziel,type));
-//        }
-        addQueue.add(new Projectile(this,start,ziel,type));
+    public void spawnProjectile(Tower tower, Enemy ziel, int type) {
+        addQueue.add(new Projectile(this,tower,ziel,type));
     }
 
 

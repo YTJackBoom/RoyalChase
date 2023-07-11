@@ -46,8 +46,10 @@ public  class math {
                 }
             }
             worth = (double) intialCost;
-            for (int i = 1; i <= level; i++) {
-                worth += worth*Constants.ObjectConstants.UPGRADEMULTIPLYER;
+            if(level != 0) {
+                for (int i = 0; i < level; i++) {
+                    worth += worth * Constants.ObjectConstants.UPGRADEMULTIPLYER;
+                }
             }
 
             return worth;
@@ -56,7 +58,7 @@ public  class math {
 
     public static class ProjectileMath {
         private static long previousTime;
-        public static int[] calculateArrowChange(Coordinate pos1, Coordinate pos2) { // int[0] = x ; 1 = y //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
+        public static int[] calculateArrowChange(Coordinate pos1, Coordinate pos2, double speed) { // int[0] = x ; 1 = y //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
             int[] returnArray = new int[2];
 
             double xMultiplyer;
@@ -79,10 +81,10 @@ public  class math {
 
             //Berechnung x
             if (xDistance != 0 && pos2.getX() - pos1.getX() > 0) {
-                returnArray[0] = (int) Math.round(Math.cos(angel) * variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW) * xMultiplyer);
+                returnArray[0] = (int) Math.round(Math.cos(angel) * speed * xMultiplyer);
 //                pos.setX((pos.getX()+(int)Math.round(Math.cos(angel)*pSpeed*xMultiplyer)));
             } else if (xDistance != 0) {
-                returnArray[0] = (int) Math.round(-Math.cos(angel) * variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW) * xMultiplyer);
+                returnArray[0] = (int) Math.round(-Math.cos(angel) * speed * xMultiplyer);
 //                pos.setX((pos.getX()+(int)Math.round(-Math.cos(angel)*pSpeed*xMultiplyer)));
             } else {
                 returnArray[0] = 0;
@@ -90,9 +92,9 @@ public  class math {
 
             //Berechnung y
             if (yDistance != 0 && pos2.getY() - pos1.getY() > 0) {
-                returnArray[1] = (int) Math.round(Math.sin(angel) * variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW) * yMultiplyer);
+                returnArray[1] = (int) Math.round(Math.sin(angel) * speed * yMultiplyer);
             } else if (yDistance != 0) {
-                returnArray[1] = (int) Math.round(-Math.sin(angel) * variables.Projectiles.getProjectileSpeed(variables.Projectiles.ARROW) * yMultiplyer);
+                returnArray[1] = (int) Math.round(-Math.sin(angel) * speed * yMultiplyer);
             } else {
                 returnArray[1] = 0;
             }
@@ -101,11 +103,10 @@ public  class math {
             return returnArray;
         }
 
-        public static Coordinate calculateRocketPos(Coordinate rocketPosition, Coordinate targetPosition,double sineX) {
+        public static Coordinate calculateRocketPos(Coordinate rocketPosition, Coordinate targetPosition,double sineX,double speed) {
             double newX;
             double newY;
 
-            double speed = variables.Projectiles.getProjectileSpeed(variables.Projectiles.ROCKET);
 //            int deltaTime = 2;
             double xDiff = targetPosition.getX() - rocketPosition.getX();
             double yDiff = targetPosition.getY() - rocketPosition.getY();
@@ -175,7 +176,7 @@ public  class math {
         public static void deduct(int type, ObjectType objectType) {
             switch (objectType) {
                 case TOWER: {
-                    Values.IRON -= variables.Towers.getTowerIronCost(type);
+                    Values.IRON = Values.IRON-variables.Towers.getTowerIronCost(type);
                     Values.MANA -= variables.Towers.getTowerManaCost(type);
                     Values.STONE -= variables.Towers.getTowerStoneCost(type);
                     Values.WOOD -= variables.Towers.getTowerWoodCost(type);

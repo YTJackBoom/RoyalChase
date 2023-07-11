@@ -28,7 +28,7 @@ public class Building extends GameObject{
 
 	public void initVariables() {
 		PreLoader preLoader = buildingsController.getTown().getGame().getPreLoader();
-		animator = preLoader.getBuildingAnimator(type);
+		animator = preLoader.getBuildingAnimator(type*-1);
 		bounds = new Rectangle(x,y,animator.getWidth(),animator.getHeight());
 	}
 	public void update() { //coal iro wood stone

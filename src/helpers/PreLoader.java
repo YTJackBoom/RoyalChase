@@ -24,7 +24,7 @@ public class PreLoader {
             enemyActiveAnimators.add(new Animator(variables.Enemies.getEnemyActiveGifPath(i)));
             enemyPassiveAnimators.add(new Animator(variables.Enemies.getEnemyPassiveGifPath(i)));
         }
-        for(int i = 0; i < variables.Towers.getNumberOfIntDeclarations();i++) {
+        for(int i =0 ; i < variables.Towers.getNumberOfIntDeclarations();i++) {
             towerActiveAnimators.add(new Animator(variables.Towers.getTowerActiveGifPath(i)));
             towerPassiveAnimators.add(new Animator(variables.Towers.getTowerPassiveGifPath(i)));
         }

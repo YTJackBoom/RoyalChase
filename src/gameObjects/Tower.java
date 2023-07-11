@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class Tower extends GameObject {
 	protected Animator passiveAnimator, activeAnimator;
-	private Coordinate pos;
+	private final Coordinate pos;
 	protected int counter;
 	private Enemy target;
 	private boolean isFiring,isLoaded;
@@ -26,7 +26,7 @@ public class Tower extends GameObject {
 		this.towerController = towerController;
 		projectileController = towerController.getPlaying().getProjectileController();
 		isLoaded = true;
-		level =1;
+		level =0;
 
 		initAnimators();
 		initVariables();
@@ -52,7 +52,7 @@ public class Tower extends GameObject {
 	public void fire() {
 		//System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
 		if (isLoaded && isFiring&&target != null) {
-			projectileController.spawnProjectile(new Coordinate(getPos().getX(), getPos().getY()), target,type); // target mitgabe, um target zu damagen
+			projectileController.spawnProjectile(this, target,type); // target mitgabe, um target zu damagen
 //			System.out.println("ürpjectile sdpawnes");
 
 			isLoaded = false;
@@ -104,7 +104,6 @@ public class Tower extends GameObject {
 	public Animator getActiveAnimator() {
 		return activeAnimator;
 	}
-
 	public Animator getPassiveAnimator() {
 		return passiveAnimator;
 	}

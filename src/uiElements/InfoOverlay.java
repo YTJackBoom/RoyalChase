@@ -44,6 +44,7 @@ public class InfoOverlay {
         renderPlayerInfos(g);
         renderTowerRanges(g);
         renderTowerCosts(g);
+        renderUpgradeCosts(g);
 
 
     }
@@ -87,55 +88,69 @@ public class InfoOverlay {
     }
 
     public void renderTowerCosts(Graphics g) {
-        if(hoveredButton != null) {
-            if (hoveredButton.isTowerButton()) {
-                int x = hoveredButton.getX() - hoveredButton.getWidth()/2;
-                int y = hoveredButton.getY() + hoveredButton.getHeight()/3;
-                int type = hoveredButton.getType();
+        if (hoveredButton != null) {
+            if (hoveredButton.isTowerButton() || (hoveredButton.getText().equals("Upgrade"))) {
+                int x = hoveredButton.getX() - hoveredButton.getWidth() / 2;
+                int y = hoveredButton.getY() + hoveredButton.getHeight() / 3;
 
-                int manaCost = variables.Towers.getTowerManaCost(type);
-                int ironCost = variables.Towers.getTowerIronCost(type);
-                int woodCost = variables.Towers.getTowerWoodCost(type);
-                int stoneCost = variables.Towers.getTowerStoneCost(type);
+                int manaCost=0, ironCost=0, woodCost=0, stoneCost=0;
 
-                g.setFont(Constants.UIConstants.TOWERCOSTFONT);
+                if (hoveredButton.isTowerButton()) {
+                    int type = hoveredButton.getType();
 
-
-                if(manaCost>MANA) {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                }else {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                    manaCost = variables.Towers.getTowerManaCost(type);
+                    ironCost = variables.Towers.getTowerIronCost(type);
+                    woodCost = variables.Towers.getTowerWoodCost(type);
+                    stoneCost = variables.Towers.getTowerStoneCost(type);
                 }
-                g.drawString(String.valueOf(manaCost),x,y);
+                if(hoveredButton.getText() != null) {
+                    if (hoveredButton.getText().equals("Upgrade")) {
+                        manaCost = (int) Math.round(math.TowerMath.calculateTowerUpgradeCost(towerPointer, Values.VALUES.MANA));
+                        ironCost = (int) Math.round(math.TowerMath.calculateTowerUpgradeCost(towerPointer, Values.VALUES.IRON));
+                        woodCost = (int) Math.round(math.TowerMath.calculateTowerUpgradeCost(towerPointer, VALUES.WOOD));
+                        stoneCost = (int) Math.round(math.TowerMath.calculateTowerUpgradeCost(towerPointer, VALUES.STONE));
 
-                if(ironCost>IRON) {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                }else {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                        g.setFont(Constants.UIConstants.TOWERCOSTFONT);
+                        System.out.println("f");
+                    }
                 }
-                g.drawString(String.valueOf(ironCost),x,y+(int)Constants.UIConstants.TOWERCOSTFONT.getSize2D());
 
-                if(woodCost>WOOD) {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                }else {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                    if (manaCost > MANA) {
+                        g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                    } else {
+                        g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                    }
+                    g.drawString(String.valueOf(manaCost), x, y);
+
+                    if (ironCost > IRON) {
+                        g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                    } else {
+                        g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                    }
+                    g.drawString(String.valueOf(ironCost), x, y + (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D());
+
+                    if (woodCost > WOOD) {
+                        g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                    } else {
+                        g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                    }
+                    g.drawString(String.valueOf(woodCost), x, y + (int) (2 * Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
+
+                    if (stoneCost > STONE) {
+                        g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                    } else {
+                        g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                    }
+                    g.drawString(String.valueOf(stoneCost), x, y + (int) (3 * Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
+
+
                 }
-                g.drawString(String.valueOf(woodCost),x,y+(int)(2*Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
-
-                if(stoneCost>STONE) {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                }else {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
-                }
-                g.drawString(String.valueOf(stoneCost),x,y+(int)(3*Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
-
-
-
-
             }
+
         }
 
-    }
+
+    public void renderUpgradeCosts(Graphics g ) {}
     public void setTowerPointer(Tower t) {
         towerPointer = t;
     }

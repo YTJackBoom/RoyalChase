@@ -23,10 +23,10 @@ public class Animator {
             initGifs(gifFilesPath);
             try {
                 imageArray = splitGifIntoFrames(gifFile);
-                imageArrayUp = splitGifIntoFrames(gifFileUp);
-                imageArrayDown = splitGifIntoFrames(gifFileDown);
-                imageArrayLeft = splitGifIntoFrames(gifFileLeft);
-                imageArrayRight = splitGifIntoFrames(gifFileRight);
+//                imageArrayUp = splitGifIntoFrames(gifFileUp);
+//                imageArrayDown = splitGifIntoFrames(gifFileDown);
+//                imageArrayLeft = splitGifIntoFrames(gifFileLeft);
+//                imageArrayRight = splitGifIntoFrames(gifFileRight);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -47,10 +47,10 @@ public class Animator {
     }
     public void initGifs(String gifFilesPath) {
         gifFile = new File(gifFilesPath + "normal.gif");
-        gifFileUp = new File(gifFilesPath + "up.gif");
-        gifFileDown = new File(gifFilesPath + "down.gif");
-        gifFileLeft = new File(gifFilesPath + "left.gif");
-        gifFileRight = new File(gifFilesPath + "right.gif");
+//        gifFileUp = new File(gifFilesPath + "up.gif");
+//        gifFileDown = new File(gifFilesPath + "down.gif");
+//        gifFileLeft = new File(gifFilesPath + "left.gif");
+//        gifFileRight = new File(gifFilesPath + "right.gif");
     }
 
     public BufferedImage[] splitGifIntoFrames(File tgifFile) throws IOException {
