@@ -9,7 +9,6 @@ import helpers.ImageAnalyser;
 import helpers.Values;
 import helpers.variables;
 import uiElements.InfoOverlay;
-import uiElements.MyButton;
 import uiElements.MyButtonBar;
 import uiElements.UIPos;
 
@@ -19,13 +18,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static basics.Game.fps;
 import static basics.GameScreen.fHEIGHT;
 import static basics.GameScreen.fWIDTH;
-import static helpers.Values.HEALTH;
-import static helpers.Values.LEVEL;
 import static scenes.GameStates.GAMEOVER;
 import static scenes.GameStates.gameState;
 
@@ -37,6 +33,7 @@ public class Playing extends GameScenes implements SceneMethods{
     private ImageAnalyser imageAnalyser;
     private MyButtonBar buttonBarRight,buttonBarDown;
     private InfoOverlay infoOverlay;
+    private Values playerValues;
     private int draggedTower;
     private int mouseX, mouseY;
     private boolean dragingTower;
@@ -49,6 +46,7 @@ public class Playing extends GameScenes implements SceneMethods{
     public Playing(Game game) {
         super(game);
         this.game = game;
+        playerValues = game.getPlayerValues();
         this.infoOverlay = game.getInfoOverlay();
         imageAnalyser = new ImageAnalyser(getCurrentPMapFile());
 
@@ -57,6 +55,8 @@ public class Playing extends GameScenes implements SceneMethods{
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
 
+
+
         initButtonBars();
 
 
@@ -64,7 +64,7 @@ public class Playing extends GameScenes implements SceneMethods{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(variables.Maps.getMapBufferedImage(LEVEL), 0, 0, null);
+        g.drawImage(variables.Maps.getMapBufferedImage(playerValues.getLevel()), 0, 0, null);
         enemyController.render(g);
         towerController.render(g);
         projectileController.render(g);
@@ -138,10 +138,10 @@ public class Playing extends GameScenes implements SceneMethods{
         }
     }
     public void checkHealth() {
-        if (HEALTH <= 0) {
+        if (playerValues.getHealth() <= 0) {
             gameState = GAMEOVER;
             game.resetAll();
-            Values.reset();
+            playerValues.reset();
         }
     }
     public void updateButtonBarDown() {
@@ -251,10 +251,10 @@ public class Playing extends GameScenes implements SceneMethods{
     }
     public TowerController getTowerController() {return towerController;}
     public File getCurrentPMapFile(){
-        return helpers.variables.Maps.getPMapFile(LEVEL);
+        return helpers.variables.Maps.getPMapFile(playerValues.getLevel());
     }
     public BufferedImage getCurrentMapFile(){
-        return helpers.variables.Maps.getMapBufferedImage(LEVEL);
+        return helpers.variables.Maps.getMapBufferedImage(playerValues.getLevel());
     }
     public EnemyController getEnemyController(){
         return enemyController;

@@ -20,11 +20,13 @@ public class WaveController implements ControllerMethods {
     private int cooldown = 400;
     private ArrayList<Wave> waves;
     private boolean generateNewWave = false;
+    private Values playerValues;
 
 
 
     public WaveController(Playing playing) { //TODO: prob needs changes
         this.playing = playing;
+        playerValues = playing.getGame().getPlayerValues();
         enemyController = playing.getEnemyController();
         currentWave = 0;
         initWaves();
@@ -32,7 +34,7 @@ public class WaveController implements ControllerMethods {
 
 
     public void initWaves() {
-        waveFileAnalyser = new WaveFileAnalyser();
+        waveFileAnalyser = new WaveFileAnalyser(playerValues);
         int wavesNum = waveFileAnalyser.getWavesNum();
         waves = new ArrayList<Wave>();
         for(int i = 0; i < wavesNum; i++) {

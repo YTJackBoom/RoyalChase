@@ -8,18 +8,20 @@ import java.util.ArrayList;
 public class WaveFileAnalyser {
     private BufferedReader reader;
     private ArrayList<Integer> spawnList,delayList;
+    private Values playerValues;
+    public WaveFileAnalyser(Values playerValues) {
+        this.playerValues = playerValues;
 
-    public WaveFileAnalyser() {
         spawnList = new ArrayList<Integer>();
         delayList = new ArrayList<Integer>();
-        initWaveFileAnalyser();
+        initWaveFileAnalyser(playerValues.getLevel());
     }
 
-    public void initWaveFileAnalyser() {
+    public void initWaveFileAnalyser(int i) {
         try {
-            reader = new BufferedReader(new FileReader(variables.Maps.getMapWaveFile(Values.LEVEL)));
+            reader = new BufferedReader(new FileReader(variables.Maps.getMapWaveFile(i)));
         } catch (IOException e) {
-            System.out.println("WaveFileAnalyser cant read " + Values.LEVEL);
+            System.out.println("WaveFileAnalyser cant read " + i);
         }
     }
 
@@ -38,7 +40,7 @@ public class WaveFileAnalyser {
 
 
     public void initArrayLists(int lineNum) {
-        initWaveFileAnalyser();
+        initWaveFileAnalyser(playerValues.getLevel());
         spawnList.clear();
         delayList.clear();
         try {

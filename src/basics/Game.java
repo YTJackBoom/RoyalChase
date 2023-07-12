@@ -29,6 +29,7 @@ public class Game extends JFrame  {
         private Tutorial tutorial;
         private Town town;
         private InfoOverlay infoOverlay;
+        private Values playerValues;
 
 
         private Timer RenderTimer, GameTimer;
@@ -50,6 +51,8 @@ public class Game extends JFrame  {
 
 
         private void initClasses() {
+            playerValues = new Values();
+
             preLoader = new PreLoader();
 
             infoOverlay = new InfoOverlay(this);
@@ -163,6 +166,7 @@ public class Game extends JFrame  {
          public LevelCleared getLevelCleared() {
             return levelCleared;
         }
+        public Values getPlayerValues() {return playerValues;}
         @Override
         public int getHeight() {
             return gameScreen.getHeight();
@@ -180,7 +184,7 @@ public class Game extends JFrame  {
         levelSelect.reset();
         tutorial.reset();
         town.reset();
-        Values.reset();
+        playerValues.reset();
         }
 }
 

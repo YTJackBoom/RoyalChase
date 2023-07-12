@@ -3,6 +3,7 @@ package gameObjects;
 import controllers.BuildingsController;
 import helpers.Animator;
 import helpers.PreLoader;
+import helpers.Values;
 import helpers.variables;
 
 import java.awt.*;
@@ -18,6 +19,7 @@ public class Building extends GameObject{
 	private BuildingsController buildingsController;
 	private Animator animator;
 	private Rectangle bounds;
+	private Values playerValues;
 	public Building(BuildingsController buildingsController, int x, int y, int type ) {
 		this.x = x;
 		this.y = y;
@@ -30,14 +32,16 @@ public class Building extends GameObject{
 		PreLoader preLoader = buildingsController.getTown().getGame().getPreLoader();
 		animator = preLoader.getBuildingAnimator(type*-1);
 		bounds = new Rectangle(x,y,animator.getWidth(),animator.getHeight());
+
+		playerValues = buildingsController.getTown().getGame().getPlayerValues();
 	}
 	public void update() { //coal iro wood stone
 		if (counter >=ups) {
 			counter = 0;
-			MANA += variables.Buildings.getManaProduction(type) * REWARDMULTIPLYER;
-			WOOD += variables.Buildings.getWoodProduction(type) * REWARDMULTIPLYER;
-			IRON += variables.Buildings.getIronProduction(type) * REWARDMULTIPLYER;
-			STONE += variables.Buildings.getStoneProduction(type) * REWARDMULTIPLYER;
+			playerValues.setMana((int) (playerValues.getMana()+variables.Buildings.getManaProduction(type) * playerValues.getRewardmultiplyer()));
+			playerValues.setIron((int) (playerValues.getIron()+variables.Buildings.getIronProduction(type) * playerValues.getRewardmultiplyer()));
+			playerValues.setWood((int) (playerValues.getWood()+variables.Buildings.getWoodProduction(type) * playerValues.getRewardmultiplyer()));
+			playerValues.setStone((int) (playerValues.getStone()+variables.Buildings.getStoneProduction(type) * playerValues.getRewardmultiplyer()));
 		} else {
 			counter++;
 		}

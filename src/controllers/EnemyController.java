@@ -8,8 +8,6 @@ import gameObjects.Enemy;
 import helpers.*;
 import scenes.Playing;
 
-import static helpers.Values.GOLD;
-import static helpers.Values.HEALTH;
 
 public class EnemyController implements ControllerMethods{
 	private ArrayList<Enemy> enemyList,removeQue,addQue;
@@ -17,7 +15,8 @@ public class EnemyController implements ControllerMethods{
 	private ArrayList<Coordinate> pathCoordinates;//pathCoordinates
 
 	private Playing playing;
-	int i ;
+	private Values playerValues;
+	private int i ;
 
 	public EnemyController(Playing playing, ArrayList<Coordinate> pathCoordinates) {
 		this.playing = playing;
@@ -25,6 +24,7 @@ public class EnemyController implements ControllerMethods{
 		enemyList = new ArrayList<Enemy>();
 		removeQue = new ArrayList<Enemy>();
 		addQue = new ArrayList<Enemy>();
+		playerValues = playing.getGame().getPlayerValues();
 	}
 	public void update() {
 		workAddQueue();
@@ -47,7 +47,7 @@ public class EnemyController implements ControllerMethods{
 					//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
 					//System.out.println(enemyList.get(a).getPos().getX());
 				} else {//Enemy hat das tor erreicht --> verschiedene verhalten //TODO: damage player
-					HEALTH = HEALTH - variables.Enemies.getEnemyDamage(enemy.getType());
+					playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
 					removeQue.add(enemy);
 					System.out.println("Enemy reached the end");
 				}
@@ -60,7 +60,7 @@ public class EnemyController implements ControllerMethods{
 			if (enemy != null) {
 				if (enemy.getHealth() <= 0) {
 					removeQue.add(enemy);
-					GOLD = (int) (GOLD +  (enemy.getReward()* Values.REWARDMULTIPLYER));
+					playerValues.setGold((int) (playerValues.getGold() +  (enemy.getReward()* playerValues.getRewardmultiplyer())));
 					System.out.println("Nemy killed for " + enemy.getReward() + " gold");
 				}
 			}

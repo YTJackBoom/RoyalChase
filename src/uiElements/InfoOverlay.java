@@ -22,8 +22,10 @@ public class InfoOverlay {
     private int draggedTowerType;
     private int mouseY,mouseX;
     private MyButton hoveredButton;
+    private Values playerValues;
     public InfoOverlay(Game game) {
         this.game = game;
+        playerValues = game.getPlayerValues();
 //        this.playing = game.getPlaying();
         initVariables();
     }
@@ -56,14 +58,14 @@ public class InfoOverlay {
         int yOffset = 20;
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Gold: " + Values.GOLD, startX, startY);
+        g.drawString("Gold: " + playerValues.getGold(), startX, startY);
         g.drawString("Wave: " + game.getPlaying().getWaveController().getCurrentWave(), startX+xOffset, startY+yOffset);
         g.drawString("Enemies: " + game.getPlaying().getEnemyController().getEnemyList().size(), startX+xOffset*2, startY+yOffset*2);
-        g.drawString("Health: " + HEALTH, startX+xOffset*3, startY+yOffset*3);
-        g.drawString("Mana: " + MANA,startX+xOffset*4,startY+yOffset*4);
-        g.drawString("Iron: " + IRON,startX+xOffset*5,startY+yOffset*5);
-        g.drawString("Wood: " + WOOD,startX+xOffset*6,startY+yOffset*6);
-        g.drawString("Stone: " + STONE,startX+xOffset*7,startY+yOffset*7);
+        g.drawString("Health: " + playerValues.getHealth(), startX+xOffset*3, startY+yOffset*3);
+        g.drawString("Mana: " + playerValues.getMana(),startX+xOffset*4,startY+yOffset*4);
+        g.drawString("Iron: " + playerValues.getIron(),startX+xOffset*5,startY+yOffset*5);
+        g.drawString("Wood: " + playerValues.getWood(),startX+xOffset*6,startY+yOffset*6);
+        g.drawString("Stone: " + playerValues.getStone(),startX+xOffset*7,startY+yOffset*7);
         if(game.isPaused()){
             g.drawImage(pausedImage, 10, 0, null);
         }else {
@@ -97,46 +99,50 @@ public class InfoOverlay {
 
                 if (hoveredButton.isTowerButton()) {
                     int type = hoveredButton.getType();
+                    Values cost = variables.Towers.getCost(type);
 
-                    manaCost = variables.Towers.getTowerManaCost(type);
-                    ironCost = variables.Towers.getTowerIronCost(type);
-                    woodCost = variables.Towers.getTowerWoodCost(type);
-                    stoneCost = variables.Towers.getTowerStoneCost(type);
+                    manaCost = (int)cost.getMana();
+                    ironCost = (int)cost.getIron();
+                    woodCost = (int)cost.getWood();
+                    stoneCost = (int)cost.getStone();
                 }
-                if(hoveredButton.getText() != null) {
+                if(hoveredButton.getText() != null&&towerPointer!=null) {
                     if (hoveredButton.getText().equals("Upgrade")) {
-                        manaCost = (int) Math.round(math.TowerMath.calculateTowerUpgradeCost(towerPointer, Values.VALUES.MANA));
-                        ironCost = (int) Math.round(math.TowerMath.calculateTowerUpgradeCost(towerPointer, Values.VALUES.IRON));
-                        woodCost = (int) Math.round(math.TowerMath.calculateTowerUpgradeCost(towerPointer, VALUES.WOOD));
-                        stoneCost = (int) Math.round(math.TowerMath.calculateTowerUpgradeCost(towerPointer, VALUES.STONE));
+                        Values upgradeCost = towerPointer.getWorth().getUpgradeCost();
+                        manaCost = (int) upgradeCost.getMana();
+                        ironCost = (int) upgradeCost.getIron();
+                        woodCost = (int) upgradeCost.getWood();
+                        stoneCost = (int) upgradeCost.getStone();
 
                         g.setFont(Constants.UIConstants.TOWERCOSTFONT);
                         System.out.println("f");
+                    } else if (hoveredButton.getText().equals("Upgrade")) {
+
                     }
                 }
 
-                    if (manaCost > MANA) {
+                    if (manaCost > playerValues.getMana()) {
                         g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
                     } else {
                         g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
                     }
                     g.drawString(String.valueOf(manaCost), x, y);
 
-                    if (ironCost > IRON) {
+                    if (ironCost > playerValues.getIron()) {
                         g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
                     } else {
                         g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
                     }
                     g.drawString(String.valueOf(ironCost), x, y + (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D());
 
-                    if (woodCost > WOOD) {
+                    if (woodCost > playerValues.getWood()) {
                         g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
                     } else {
                         g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
                     }
                     g.drawString(String.valueOf(woodCost), x, y + (int) (2 * Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
 
-                    if (stoneCost > STONE) {
+                    if (stoneCost > playerValues.getStone()) {
                         g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
                     } else {
                         g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);

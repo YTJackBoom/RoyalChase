@@ -11,9 +11,11 @@ import java.util.ArrayList;
 public class LevelSelect extends GameScenes implements SceneMethods{
     private Game game;
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
+    private Values playerValues;
     public LevelSelect(Game game){
         super(game);
         this.game = game;
+        playerValues = game.getPlayerValues();
 
         initButtons();
 
@@ -75,10 +77,10 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
     @Override
     public void update() {
-        for (int i = 0; i < Values.LEVELSCLEARED; i++) {
+        for (int i = 0; i < playerValues.getLevelscleared(); i++) {
             buttons.get(i).setChecked(true);
         }
-        for(int i = Values.LEVELSCLEARED; i < buttons.size(); i++){
+        for(int i = playerValues.getLevelscleared(); i < buttons.size(); i++){
             buttons.get(i).setChecked(false);
         }
     }
@@ -92,9 +94,9 @@ public class LevelSelect extends GameScenes implements SceneMethods{
             if(button.getBounds().contains(x,y)) {
                 if (button.isChecked()) {
 //                helpers.Values.LEVEL = button.getType();
-                    Values.REWARDMULTIPLYER = 0;
+                    playerValues.setRewardmultiplyer(0);
                 } else {
-                    Values.REWARDMULTIPLYER = 1;
+                    playerValues.setRewardmultiplyer(1);
                 }
                 System.out.println("Level " + button.getText());
                 game.getPlaying().reset();

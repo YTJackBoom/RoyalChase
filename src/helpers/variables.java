@@ -238,46 +238,19 @@ public class variables { //class to define different variables for thing
             };
         }
 
-        public static int getTowerManaCost(int towerType) {
+        public static Values getCost(int towerType) {
             return switch (towerType) {
-                case Foundation_T -> 0;
-                case ARROW_T -> 0;
-                case MAGE_T -> 10;
-                case ROCKET_T -> 0;
-                case SNIP_T -> 0;
-                default -> 0;
+                case Foundation_T -> new Values(0,0,0,0);
+                case ARROW_T -> new Values(0,5,30,20);
+                case MAGE_T -> new Values(10,0,20,30);
+                case ROCKET_T -> new Values(0,50,20,40);
+                case SNIP_T -> new Values(0,100,30,30);
+                default -> new Values(999,999,999,999);
+
+
             };
         }
-        public static int getTowerIronCost(int towerType) {
-            return switch (towerType) {
-                case Foundation_T -> 0;
-                case ARROW_T -> 5;
-                case MAGE_T -> 0;
-                case ROCKET_T -> 50;
-                case SNIP_T -> 100;
-                default -> 0;
-            };
-        }
-        public static int getTowerWoodCost(int towerType) {
-            return switch (towerType) {
-                case Foundation_T -> 0;
-                case ARROW_T -> 30;
-                case MAGE_T -> 20;
-                case ROCKET_T -> 20;
-                case SNIP_T -> 30;
-                default -> 0;
-            };
-        }
-        public static int getTowerStoneCost(int towerType) {
-            return switch (towerType) {
-                case Foundation_T -> 0;
-                case ARROW_T -> 20;
-                case MAGE_T -> 30;
-                case ROCKET_T -> 40;
-                case SNIP_T -> 30;
-                default -> 0;
-            };
-        }
+
 
         public static int getNumberOfIntDeclarations() {
             return variables.getNumberOfIntDeclarations(Towers.class);
@@ -411,58 +384,21 @@ public class variables { //class to define different variables for thing
                 default -> 0;
             };
         }
-
-        public static int getBuildingIronCost(int buildingType) {
+        public static Values getCost(int buildingType) {
             return switch (buildingType) {
-                case MANA -> 10;
-                case IRON -> 0;
-                case STONE -> 5;
-                case WOOD -> 5;
-                default -> 0;
+                case MANA -> new Values(0,10,10,25);
+                case IRON -> new Values(0,0,25,10);
+                case STONE -> new Values(0,5,25,0);
+                case WOOD -> new Values(5,5,5,10);
+                default -> new Values(999,999,999,999);
             };
         }
-        public static int getBuildingManaCost(int buildingType) {
-            return switch (buildingType) {
-                case MANA -> 0;
-                case IRON -> 0;
-                case STONE -> 0;
-                case WOOD -> 5;
-                default -> 0;
-            };
-        }
-        public static int getBuildingWoodCost(int buildingType) {
-            return switch (buildingType) {
-                case MANA -> 10;
-                case IRON -> 25;
-                case STONE -> 25;
-                case WOOD -> 5;
-                default -> 0;
-            };
-        }
-        public static int getBuildingStoneCost(int buildingType) {
-            return switch (buildingType) {
-                case MANA -> 25;
-                case IRON -> 10;
-                case STONE -> 0;
-                case WOOD -> 10;
-                default -> 0;
-            };
-        }
-        public static int getBuildingGoldCost(int buildingType) {
-            return switch (buildingType) {
-                case MANA -> 50;
-                case IRON -> 5;
-                case STONE -> 5;
-                case WOOD -> 5;
-                default -> 0;
-            };
-        }
-
-
 
         public static int getNumberOfIntDeclarations() {
             return variables.getNumberOfIntDeclarations(Buildings.class);
         }
+
+
     }
 
 

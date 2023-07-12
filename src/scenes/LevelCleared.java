@@ -1,21 +1,22 @@
 package scenes;
 
 import basics.Game;
+import helpers.Values;
 import uiElements.MyButton;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import static helpers.Values.LEVELSCLEARED;
-import static helpers.Values.REWARDMULTIPLYER;
 
 public class LevelCleared  extends GameScenes implements SceneMethods {
     private Game game;
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
+    private Values playerValues;
     public LevelCleared(Game game) {
         super(game);
         this.game = game;
+        playerValues = game.getPlayerValues();
         initButtons();
     }
     public void initButtons() {
@@ -70,8 +71,8 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
             int y = e.getY();
             for (MyButton button : buttons) {
                 if (button.getBounds().contains(x, y)) {
-                    if (REWARDMULTIPLYER == 1) {
-                        LEVELSCLEARED = LEVELSCLEARED + 1;
+                    if (playerValues.getRewardmultiplyer() == 1) {
+                        playerValues.setLevelscleared(playerValues.getLevelscleared()+1);
                     }
                     if (button.getText().equals("Continue")) {
                         GameStates.gameState = GameStates.LEVELSELECT;

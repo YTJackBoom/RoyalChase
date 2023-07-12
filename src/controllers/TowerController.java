@@ -20,10 +20,12 @@ public class TowerController implements ControllerMethods{
     private Playing playing;
     private ArrayList<Enemy> enemyList;
     private Tower selectedTower;
+    private Values playerValues;
     public TowerController(Playing playing) {
         towerEntityList = new ArrayList<Tower>();
         enemyList = playing.getEnemyController().getEnemyList();
         this.playing = playing;
+        playerValues = playing.getGame().getPlayerValues();
 
         initTowers(playing.getImageAnalyser().imgToFoundList());
     }
@@ -82,15 +84,10 @@ public class TowerController implements ControllerMethods{
 
 
      public void upgradeTower() {
-        if(Values.MANA > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA) &&
-           Values.WOOD > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.WOOD) &&
-           Values.IRON > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.IRON) &&
-           Values.STONE > math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.STONE)) {
-
-            Values.MANA -= math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.MANA);
-            Values.WOOD -= math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.WOOD);
-            Values.IRON -= math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.IRON);
-            Values.STONE -= math.TowerMath.calculateTowerUpgradeCost(selectedTower, Values.VALUES.STONE);
+        Values upgradeCost = selectedTower.getWorth().getUpgradeCost();
+        if(playerValues.canAfford(upgradeCost)) {
+            playerValues.decrease(upgradeCost);
+            selectedTower.getWorth().increase(upgradeCost);
 
             selectedTower.upgrade();
             System.out.println("d");
@@ -101,10 +98,7 @@ public class TowerController implements ControllerMethods{
     }
 
     public void sellTower() {
-        Values.MANA += math.TowerMath.calculateTowerWorth(selectedTower, Values.VALUES.MANA);
-        Values.WOOD += math.TowerMath.calculateTowerWorth(selectedTower, Values.VALUES.WOOD);
-        Values.IRON += math.TowerMath.calculateTowerWorth(selectedTower, Values.VALUES.IRON);
-        Values.STONE += math.TowerMath.calculateTowerWorth(selectedTower, Values.VALUES.STONE);
+        playerValues.increase(selectedTower.getWorth());
 
         int towerIndex = towerEntityList.indexOf(selectedTower);
         towerEntityList.set(towerIndex,new TowerFoundation(this, selectedTower.getPos()));
@@ -117,8 +111,9 @@ public class TowerController implements ControllerMethods{
         for (int i = 0; i < towerEntityList.size(); i++) {
             Tower tower = towerEntityList.get(i);
             if (tower.getBounds().contains(x, y)) {
-                if(math.PlayerMath.canAfford(playing.getDraggedTower(), ObjectType.TOWER)) {
-                    math.PlayerMath.deduct(playing.getDraggedTower(),ObjectType.TOWER);
+                Values cost = variables.Towers.getCost(playing.getDraggedTower());
+                if(playerValues.canAfford(cost)){
+                    playerValues.decrease(cost);
                     towerEntityList.set(i, new Tower(this, tower.getPos(), playing.getDraggedTower()));
                     System.out.println("Tower placed");
                 }else {

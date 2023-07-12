@@ -19,14 +19,12 @@ public class Tower extends GameObject {
 	private TowerController towerController;
 	private ProjectileController projectileController;
 	private Circle[] circles;
+	private Values worth;
 			
 	public Tower(TowerController towerController, Coordinate pos, int type) {
 		this.type = type;
 		this.pos = pos;
 		this.towerController = towerController;
-		projectileController = towerController.getPlaying().getProjectileController();
-		isLoaded = true;
-		level =0;
 
 		initAnimators();
 		initVariables();
@@ -73,6 +71,12 @@ public class Tower extends GameObject {
 	public void initVariables() {
 		this.height = activeAnimator.getHeight();
 		this.width = activeAnimator.getWidth();
+		projectileController = towerController.getPlaying().getProjectileController();
+		isLoaded = true;
+		level = 0;
+		worth = variables.Towers.getCost(type);
+
+
 	}
 	public void initBounds() {
 			bounds = new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
@@ -127,4 +131,7 @@ public class Tower extends GameObject {
 	public int getLevel() {return level;}
 
 
+	public Values getWorth() {
+		return worth;
+	}
 }

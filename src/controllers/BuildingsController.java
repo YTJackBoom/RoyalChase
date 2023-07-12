@@ -2,7 +2,9 @@ package controllers;
 
 import gameObjects.Building;
 import gameObjects.ObjectType;
+import helpers.Values;
 import helpers.math;
+import helpers.variables;
 import scenes.Town;
 
 import java.awt.*;
@@ -17,6 +19,7 @@ public class BuildingsController implements ControllerMethods{
 	private Town town;
 	private boolean cantAfford;
 	private ArrayList<Building> buildingsList;
+	private Values playerValues;
 	public BuildingsController(Town town) {
 		this.town = town;
 		initVariables();
@@ -25,6 +28,7 @@ public class BuildingsController implements ControllerMethods{
 
 	public void initVariables() {
 		buildingsList = new ArrayList<Building>();
+		playerValues = town.getGame().getPlayerValues();
 	}
 	public void initBuildings() { //places buildings in a grid like pattern
 		int startX = 50;
@@ -79,8 +83,9 @@ public class BuildingsController implements ControllerMethods{
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
 			if (building.getBounds().contains(x, y)) {
-				if (math.PlayerMath.canAfford(town.getSelectedBuilding(), ObjectType.BUILDING)) {
-					math.PlayerMath.deduct(town.getSelectedBuilding(), ObjectType.BUILDING);
+				Values cost =  variables.Buildings.getCost(town.getSelectedBuilding());
+				if (playerValues.canAfford(cost)) {
+					playerValues.decrease(cost);
 					buildingsList.set(i, new Building(this, building.getX(), building.getY(), town.getSelectedBuilding()));
 					System.out.println("Building placed");
 				}else {
