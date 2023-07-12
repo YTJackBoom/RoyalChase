@@ -91,7 +91,7 @@ public class InfoOverlay {
 
     public void renderTowerCosts(Graphics g) {
         if (hoveredButton != null) {
-            if (hoveredButton.isTowerButton() || (hoveredButton.getText().equals("Upgrade"))) {
+            if (hoveredButton.isTowerButton() || (!hoveredButton.getText().isBlank())) {
                 int x = hoveredButton.getX() - hoveredButton.getWidth() / 2;
                 int y = hoveredButton.getY() + hoveredButton.getHeight() / 3;
 
@@ -106,7 +106,7 @@ public class InfoOverlay {
                     woodCost = (int)cost.getWood();
                     stoneCost = (int)cost.getStone();
                 }
-                if(hoveredButton.getText() != null&&towerPointer!=null) {
+                if(hoveredButton.getText()!=null&&towerPointer!=null) {
                     if (hoveredButton.getText().equals("Upgrade")) {
                         Values upgradeCost = towerPointer.getWorth().getUpgradeCost();
                         manaCost = (int) upgradeCost.getMana();
@@ -116,8 +116,12 @@ public class InfoOverlay {
 
                         g.setFont(Constants.UIConstants.TOWERCOSTFONT);
                         System.out.println("f");
-                    } else if (hoveredButton.getText().equals("Upgrade")) {
-
+                    } else if (hoveredButton.getText().equals("Sell")) {
+                        Values worth  = towerPointer.getWorth();
+                        manaCost = (int) worth.getMana();
+                        ironCost = (int) worth.getIron();
+                        woodCost = (int) worth.getWood();
+                        stoneCost = (int) worth.getStone();
                     }
                 }
 
