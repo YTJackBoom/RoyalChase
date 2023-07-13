@@ -182,11 +182,11 @@ public class variables { //class to define different variables for thing
     }
 
     public static class Towers {
-        public static final int Foundation_T = 0;
-        public static final int ARROW_T = 1;
-        public static final int MAGE_T = 2;
-        public static final int ROCKET_T = 3;
-        public static final int SNIP_T = 4;
+        public static final int Foundation_T = Buttons.Foundation_T_B;
+        public static final int ARROW_T = Buttons.ARROW_T_B;
+        public static final int MAGE_T = Buttons.MAGE_T_B;
+        public static final int ROCKET_T = Buttons.ROCKET_T_B;
+        public static final int SNIP_T = Buttons.SNIP_T_B;
 
         public static String getTowerPassiveGifPath(int towerType) {
             return switch (towerType) {
@@ -230,7 +230,7 @@ public class variables { //class to define different variables for thing
                 case Foundation_T -> 0;
                 case ARROW_T -> 100;
                 case MAGE_T -> 250;
-                case ROCKET_T -> 500;
+                case ROCKET_T -> 2000;
                 case SNIP_T -> 500;
                 default -> throw new IllegalStateException("variables: getTowerReload: Unexpected value:  " + towerType);
 
@@ -267,7 +267,7 @@ public class variables { //class to define different variables for thing
         public static double getProjectileSpeed(int projectileType) {
             return switch (projectileType) {
                 case ARROW -> 1;
-                case ROCKET -> 15;
+                case ROCKET -> 20;
                 default -> throw new IllegalStateException("variables: getProjectileSpeed: Unexpected value:  " + projectileType);
             };
         }
@@ -361,31 +361,31 @@ public class variables { //class to define different variables for thing
 
 
         public static int getManaProduction(int buildingType) {
-            return switch (buildingType) {
+            return switch (buildingType*-1) {
                 case MANA -> 5;
                 default -> 0;
             };
         }
         public static int getIronProduction(int buildingType) {
-            return switch (buildingType) {
+            return switch (buildingType*-1) {
                 case IRON -> 5;
                 default -> 0;
             };
         }
         public static int getWoodProduction(int buildingType) {
-            return switch (buildingType) {
+            return switch (buildingType*-1) {
                 case WOOD -> 5;
                 default -> 0;
             };
         }
         public static int getStoneProduction(int buildingType) {
-            return switch (buildingType) {
+            return switch (buildingType*-1) {
                 case STONE -> 5;
                 default -> 0;
             };
         }
         public static Values getCost(int buildingType) {
-            return switch (buildingType) {
+            return switch (buildingType*-1) {
                 case MANA -> new Values(0,10,10,25);
                 case IRON -> new Values(0,0,25,10);
                 case STONE -> new Values(0,5,25,0);

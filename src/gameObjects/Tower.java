@@ -37,7 +37,7 @@ public class Tower extends GameObject {
 
 	public void update() {
 		if (!towerController.getPlaying().isPaused()) {
-			if (counter - 3 == 0) {
+			if (counter - getReloadTime() >= 0) {
 				isLoaded = true;
 				counter = 0;
 			} else counter++;
@@ -73,8 +73,8 @@ public class Tower extends GameObject {
 		this.width = activeAnimator.getWidth();
 		projectileController = towerController.getPlaying().getProjectileController();
 		isLoaded = true;
-		level = 0;
 		worth = variables.Towers.getCost(type);
+		level = 1;
 
 
 	}
@@ -89,6 +89,20 @@ public class Tower extends GameObject {
 			circles[i] = new Circle(pos,range-circles.length+i);
 		}
 	}
+
+	public double getReloadTime() {
+		int r = variables.Towers.getTowerReloadTime(type);
+
+		for(int i =1 ; i<level;i++) {
+			if ((r-r*Constants.ObjectConstants.SPEEDUPGRADE)>Constants.ObjectConstants.LOWESTRELOADSPEED){
+				r -= r * Constants.ObjectConstants.SPEEDUPGRADE;
+			}else break;
+		}
+		return r;
+	}
+
+
+	//Getters n setter
 	public void setStatus(boolean status) {
 		isFiring = status;
 	}

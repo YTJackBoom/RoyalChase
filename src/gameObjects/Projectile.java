@@ -86,13 +86,12 @@ public class Projectile extends GameObject{
 	}
 
 	public double getSpeed() {
-		double speed = variables.Projectiles.getProjectileDamage(type);
-		int tLevel = origin.getLevel();
-
-		for(int i =1 ; i<tLevel;i++) {
-			speed += speed*Constants.ObjectConstants.SPEEDUPGRADE;
-		}
-		return speed;
+		//		int tLevel = origin.getLevel();
+//
+//		for(int i =1 ; i<tLevel;i++) {
+//			speed += speed*Constants.ObjectConstants.SPEEDUPGRADE;
+//		}
+		return variables.Projectiles.getProjectileSpeed(type);
 	}
 	public void removeAnimators() {
 		animator = null;

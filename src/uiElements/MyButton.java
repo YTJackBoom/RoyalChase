@@ -109,10 +109,11 @@ public class MyButton {
 		return type;
 	}
 	public boolean isTowerButton() {
-		if (type < 40&&!isTextButton) { //TODO: Change this to a better way of checking if it is a tower button
-			return true;
-		}
-		else return false;
+		//TODO: Change this to a better way of checking if it is a tower button
+		return type < 40 && !isTextButton && type >= 0;
+	}
+	public boolean isBuildingButton() {
+		return type <= 0 && type > -40 && !isTextButton;
 	}
 
 	public int getX() {

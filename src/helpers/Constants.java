@@ -26,6 +26,8 @@ public class Constants {
 		public static final double DMGUPGRADE = 0.15;
 		public static final double SPEEDUPGRADE = 0.15;
 
+		public static final double LOWESTRELOADSPEED = 300;
+
 
 	}
 }

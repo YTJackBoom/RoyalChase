@@ -91,7 +91,7 @@ public class InfoOverlay {
 
     public void renderTowerCosts(Graphics g) {
         if (hoveredButton != null) {
-            if (hoveredButton.isTowerButton() || (!hoveredButton.getText().isBlank())) {
+            if ((hoveredButton.getText()!=null && !hoveredButton.getText().isBlank()) || hoveredButton.isTowerButton() || hoveredButton.isBuildingButton()) {
                 int x = hoveredButton.getX() - hoveredButton.getWidth() / 2;
                 int y = hoveredButton.getY() + hoveredButton.getHeight() / 3;
 
@@ -100,6 +100,15 @@ public class InfoOverlay {
                 if (hoveredButton.isTowerButton()) {
                     int type = hoveredButton.getType();
                     Values cost = variables.Towers.getCost(type);
+
+                    manaCost = (int)cost.getMana();
+                    ironCost = (int)cost.getIron();
+                    woodCost = (int)cost.getWood();
+                    stoneCost = (int)cost.getStone();
+                }
+                if (hoveredButton.isBuildingButton()) {
+                    int type = hoveredButton.getType();
+                    Values cost = variables.Buildings.getCost(type);
 
                     manaCost = (int)cost.getMana();
                     ironCost = (int)cost.getIron();
