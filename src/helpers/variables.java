@@ -193,7 +193,7 @@ public class variables { //class to define different variables for thing
                 case Foundation_T -> "res/images/towers/passive/foundation_t_passive/";
                 case ARROW_T -> "res/images/towers/passive/arrow_t_passive/";
                 case MAGE_T -> "res/images/towers/passive/foundation_t_passive/";
-                case ROCKET_T -> "res/images/towers/passive/arrow_t_passive/";
+                case ROCKET_T -> "res/images/towers/passive/rocket_t_passive/";
                 case SNIP_T -> "res/images/towers/passive/foundation_t_passive/";
                 default -> throw new IllegalStateException("variables: getTowerPassiveGifFile: Unexpected value:  " + towerType);
 
@@ -205,7 +205,7 @@ public class variables { //class to define different variables for thing
                 case Foundation_T -> "res/images/towers/active/foundation_t_active/";
                 case ARROW_T -> "res/images/towers/active/arrow_t_active/";
                 case MAGE_T -> "res/images/towers/active/foundation_t_active/";
-                case ROCKET_T -> "res/images/towers/active/arrow_t_active/";
+                case ROCKET_T -> "res/images/towers/active/rocket_t_active/";
                 case SNIP_T -> "res/images/towers/active/foundation_t_active/";
                 default -> throw new IllegalStateException("variables: getTowerActiveGifFile: Unexpected value:  " + towerType);
 
