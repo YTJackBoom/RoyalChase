@@ -87,7 +87,7 @@ public class variables { //class to define different variables for thing
             return switch (enemyType) {
                 case SKULL -> 2;
                 case SKELETON -> 5;
-                case ZOMBIE -> 5;
+                case ZOMBIE -> 2;
                 case WITCH -> 5;
                 case WIZARD -> 5;
                 case SKELETON_KING -> 5;
@@ -285,7 +285,7 @@ public class variables { //class to define different variables for thing
                 case EMPTY -> null;
                 case ARROW -> "res/images/projectiles/active/arrow_p_active/";
                 case FIREBALL -> null;
-                case ROCKET -> "res/images/projectiles/active/arrow_p_active/";
+                case ROCKET -> "res/images/projectiles/active/rocket_P_active/";
                 case BULLET -> null;
 
                 default -> throw new IllegalStateException("variables: getProjectileGifPath: Unexpected value:  " + projectileType);
