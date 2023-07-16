@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import static basics.Game.fps;
 import static basics.GameScreen.fHEIGHT;
 import static basics.GameScreen.fWIDTH;
+import static helpers.variables.Buildings.*;
 
 public class BuildingsController implements ControllerMethods{
 	private int cantAffordCounter;
@@ -41,6 +42,7 @@ public class BuildingsController implements ControllerMethods{
 			for (int j = 0; j < buildingsPerLine; j++) {
 				buildingsList.add(new Building(this,startX + (i * (buildingSize + buildingSpacing)), startY + (j * (buildingSize + buildingSpacing)), type));
 			}
+			buildingsList.add(new Building(this, 800,800,MANAORE));
 		}
 
 
@@ -82,16 +84,18 @@ public class BuildingsController implements ControllerMethods{
 //		System.out.println("s");
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
-			if (building.getBounds().contains(x, y)) {
-				Values cost =  variables.Buildings.getCost(town.getSelectedBuilding());
-				if (playerValues.canAfford(cost)) {
-					playerValues.decrease(cost);
-					buildingsList.set(i, new Building(this, building.getX(), building.getY(), town.getSelectedBuilding()));
-					System.out.println("Building placed");
-				}else {
-					town.setCantAfford(true);
+			if (building.getBounds().contains(x, y) && (building.getType() > WOOD && building.getType() <= WOODORE)) {
+				if (town.getSelectedBuilding() == (building.getType() + 4) && building.getType()!=0) {
+					Values cost = variables.Buildings.getCost(town.getSelectedBuilding());
+					if (playerValues.canAfford(cost)) {
+						playerValues.decrease(cost);
+						buildingsList.set(i, new Building(this, building.getX(), building.getY(), town.getSelectedBuilding()));
+						System.out.println("Building placed");
+					} else {
+						town.setCantAfford(true);
+					}
 				}
 			}
 		}
+		}
 	}
-}

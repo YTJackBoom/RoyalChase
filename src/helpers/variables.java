@@ -339,20 +339,24 @@ public class variables { //class to define different variables for thing
         public static final int IRON = 2;
         public static final int STONE = 3;
         public static final int WOOD = 4;
+        public static final int MANAORE = 5;
+        public static final int IRONORE = 6;
+        public static final int STONEORE = 7;
+        public static final int WOODORE = 8;
 
 
 
         public static File getBuidingGifFile(int buildingType) {
             return switch (buildingType) {
-                case 0 -> new File("res/images/towers/active/foundation_t_active/down.gif");
-                case 1 -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case 2 -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case 3 -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case 4 -> new File("res/images/towers/active/arrow_t_active/down.gif");
-//                case 5 -> new File("res/text/waveFiles/waves5.txt");
-//                case 6 -> new File("res/text/waveFiles/waves6.txt");
-//                case 7 -> new File("res/text/waveFiles/waves7.txt");
-//                case 8 -> new File("res/text/waveFiles/waves8.txt");
+                case PLACEHOLDER -> new File("res/images/towers/active/foundation_t_active/down.gif");
+                case MANA -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case IRON -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case STONE -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case WOOD -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case MANAORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case IRONORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case STONEORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case WOODORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
 //                case 9 -> new File("res/text/waveFiles/waves9.txt");
                 default -> throw new IllegalStateException("Evariables: rrropr when trying to read buildingGifFile");
             };
@@ -360,28 +364,14 @@ public class variables { //class to define different variables for thing
         }
 
 
-        public static int getManaProduction(int buildingType) {
-            return switch (buildingType*-1) {
-                case MANA -> 5;
-                default -> 0;
-            };
-        }
-        public static int getIronProduction(int buildingType) {
-            return switch (buildingType*-1) {
-                case IRON -> 5;
-                default -> 0;
-            };
-        }
-        public static int getWoodProduction(int buildingType) {
-            return switch (buildingType*-1) {
-                case WOOD -> 5;
-                default -> 0;
-            };
-        }
-        public static int getStoneProduction(int buildingType) {
-            return switch (buildingType*-1) {
-                case STONE -> 5;
-                default -> 0;
+        public static Values getProduction(int type) {
+            return switch (type*-1) {
+                case PLACEHOLDER -> new Values(0,0,0,0);
+                case MANA -> new Values(5,0,0,0);
+                case IRON -> new Values(0,5,0,0);
+                case WOOD -> new Values(0,0,5,0);
+                case STONE -> new Values(0,0,0,5);
+                default -> new Values(0,0,0,0);
             };
         }
         public static Values getCost(int buildingType) {

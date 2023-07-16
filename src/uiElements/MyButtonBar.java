@@ -41,8 +41,8 @@ public class MyButtonBar {
 
 
 	public void initPlayingButtons() {
-		int startX = pos.getX()+10;
-		int startY = pos.getY()+10;
+		int startX = pos.getX()-10;
+		int startY = pos.getY()-10;
 		int xOffset = 0;
 		int yOffset = 90;
 		int width = 100;

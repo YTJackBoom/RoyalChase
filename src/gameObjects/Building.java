@@ -38,10 +38,7 @@ public class Building extends GameObject{
 	public void update() { //coal iro wood stone
 		if (counter >=ups) {
 			counter = 0;
-			playerValues.setMana((int) (playerValues.getMana()+variables.Buildings.getManaProduction(type) * playerValues.getRewardmultiplyer()));
-			playerValues.setIron((int) (playerValues.getIron()+variables.Buildings.getIronProduction(type) * playerValues.getRewardmultiplyer()));
-			playerValues.setWood((int) (playerValues.getWood()+variables.Buildings.getWoodProduction(type) * playerValues.getRewardmultiplyer()));
-			playerValues.setStone((int) (playerValues.getStone()+variables.Buildings.getStoneProduction(type) * playerValues.getRewardmultiplyer()));
+			playerValues.increase(variables.Buildings.getProduction(type));
 		} else {
 			counter++;
 		}
