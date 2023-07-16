@@ -9,7 +9,7 @@ public class variables { //class to define different variables for thing
 
     public static class Enemies {
 
-        public static final int SKULL = 0;
+        public static final int SLIME = 0;
         public static final int SKELETON = 1;
         public static final int ZOMBIE = 2;
         public static final int WITCH = 3;
@@ -22,7 +22,7 @@ public class variables { //class to define different variables for thing
 
         public static int getEnemyReward(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> 5;
+                case SLIME -> 5;
                 case SKELETON -> 5;
                 case ZOMBIE -> 25;
                 case WITCH -> 10;
@@ -38,7 +38,7 @@ public class variables { //class to define different variables for thing
 
         public static int getEnemyHealth(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> 100;
+                case SLIME -> 100;
                 case SKELETON -> 100;
                 case ZOMBIE -> 100;
                 case WITCH -> 100;
@@ -53,7 +53,7 @@ public class variables { //class to define different variables for thing
 
         public static String getEnemyPassiveGifPath(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> "res/images/enemies/passive/skull_e_passive/";
+                case SLIME -> "res/images/enemies/passive/skull_e_passive/";
                 case SKELETON -> "res/images/enemies/passive/skeleton_e_passive/";
                 case ZOMBIE -> "res/images/enemies/passive/zombie_e_passive/";
                 case WITCH -> "res/images/enemies/passive/witch_e_passive/";
@@ -69,7 +69,7 @@ public class variables { //class to define different variables for thing
 
         public static String getEnemyActiveGifPath(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> "res/images/enemies/active/skull_e_active/";
+                case SLIME -> "res/images/enemies/active/slime_e_active/";
                 case SKELETON -> "res/images/enemies/active/skeleton_e_active/";
                 case ZOMBIE -> "res/images/enemies/active/zombie_e_active/";
                 case WITCH -> "res/images/enemies/active/witch_e_active/";
@@ -85,7 +85,7 @@ public class variables { //class to define different variables for thing
 
         public static int getEnemySpeed(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> 2;
+                case SLIME -> 2;
                 case SKELETON -> 5;
                 case ZOMBIE -> 2;
                 case WITCH -> 5;
@@ -100,7 +100,7 @@ public class variables { //class to define different variables for thing
 
         public static int getEnemyDamage(int enemyType) {
             return switch (enemyType) {
-                case SKULL -> 100;
+                case SLIME -> 100;
                 case SKELETON -> 5;
                 case ZOMBIE -> 5;
                 case WITCH -> 5;
@@ -114,8 +114,10 @@ public class variables { //class to define different variables for thing
         }
 
         public static int getNumberOfIntDeclarations() {
-            return variables.getNumberOfIntDeclarations(Enemies.class);
+            return variables.getHighestInt(Enemies.class);
         }
+        public static int getLowestInt(){return variables.getLowestInt(Enemies.class);}
+
     }
 
     public static class Maps {
@@ -253,8 +255,10 @@ public class variables { //class to define different variables for thing
 
 
         public static int getNumberOfIntDeclarations() {
-            return variables.getNumberOfIntDeclarations(Towers.class);
+            return variables.getHighestInt(Towers.class);
         }
+        public static int getLowestInt(){return variables.getLowestInt(Towers.class);}
+
     }
 
     public static class Projectiles {
@@ -294,8 +298,10 @@ public class variables { //class to define different variables for thing
         }
 
         public static int getNumberOfIntDeclarations() {
-            return variables.getNumberOfIntDeclarations(Projectiles.class);
+            return variables.getHighestInt(Projectiles.class);
         }
+        public static int getLowestInt(){return variables.getLowestInt(Projectiles.class);}
+
     }
 
     public static class Buttons {
@@ -304,7 +310,7 @@ public class variables { //class to define different variables for thing
         public static final int MAGE_T_B = 2;
         public static final int ROCKET_T_B = 3;
         public static final int SNIP_T_B = 4;
-        public static final int MANA_B_B = -1;
+        public static final int MANA_B_B = 5;
 
 
         public static File getButtonImageFile(int buttonType) {
@@ -335,14 +341,14 @@ public class variables { //class to define different variables for thing
 
     public static class Buildings {
         public static final int PLACEHOLDER = 0;
-        public static final int MANA = 1;
-        public static final int IRON = 2;
-        public static final int STONE = 3;
-        public static final int WOOD = 4;
-        public static final int MANAORE = 5;
-        public static final int IRONORE = 6;
-        public static final int STONEORE = 7;
-        public static final int WOODORE = 8;
+        public static final int MANA = 5;
+        public static final int IRON = 6;
+        public static final int STONE = 7;
+        public static final int WOOD = 8;
+        public static final int MANAORE = 1;
+        public static final int IRONORE = 2;
+        public static final int STONEORE = 3;
+        public static final int WOODORE = 4;
 
 
 
@@ -358,14 +364,14 @@ public class variables { //class to define different variables for thing
                 case STONEORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
                 case WOODORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
 //                case 9 -> new File("res/text/waveFiles/waves9.txt");
-                default -> throw new IllegalStateException("Evariables: rrropr when trying to read buildingGifFile");
+                default -> throw new IllegalStateException("Evariables: rrropr when trying to read buildingGifFile "+buildingType);
             };
 
         }
 
 
         public static Values getProduction(int type) {
-            return switch (type*-1) {
+            return switch (type) {
                 case PLACEHOLDER -> new Values(0,0,0,0);
                 case MANA -> new Values(5,0,0,0);
                 case IRON -> new Values(0,5,0,0);
@@ -375,7 +381,7 @@ public class variables { //class to define different variables for thing
             };
         }
         public static Values getCost(int buildingType) {
-            return switch (buildingType*-1) {
+            return switch (buildingType) {
                 case MANA -> new Values(0,10,10,25);
                 case IRON -> new Values(0,0,25,10);
                 case STONE -> new Values(0,5,25,0);
@@ -385,22 +391,54 @@ public class variables { //class to define different variables for thing
         }
 
         public static int getNumberOfIntDeclarations() {
-            return variables.getNumberOfIntDeclarations(Buildings.class);
+            return variables.getHighestInt(Buildings.class);
         }
+        public static int getLowestInt(){return variables.getLowestInt(Buildings.class);}
 
 
     }
 
 
-    public static int getNumberOfIntDeclarations (Class < ? > clazz){
-                int count = 0;
-                Field[] fields = clazz.getDeclaredFields();
-                for (Field field : fields) {
-                    if (field.getType() == int.class || field.getType() == Integer.class) {
-                        count++;
+    public static int getHighestInt(Class < ? > clazz){
+        int highestNumber = Integer.MIN_VALUE;  // Initialize with a high value
+
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getType() == int.class || field.getType() == Integer.class) {
+                try {
+                    field.setAccessible(true);
+                    int value = field.getInt(clazz);
+                    if (value > highestNumber) {
+                        highestNumber = value;
                     }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
-                return count;
             }
+        }
+
+        return highestNumber;
+    }
+    public static int getLowestInt(Class < ? > clazz) {
+        int lowestNumber = Integer.MAX_VALUE;  // Initialize with a high value
+
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getType() == int.class || field.getType() == Integer.class) {
+                try {
+                    field.setAccessible(true);
+                    int value = field.getInt(clazz);
+                    if (value < lowestNumber) {
+                        lowestNumber = value;
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return lowestNumber;
+    }
+
 
 }

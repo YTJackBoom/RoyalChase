@@ -1,10 +1,13 @@
 package uiElements;
 
+import helpers.variables;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.invoke.VarHandle;
 import java.util.Collection;
 
 public class MyButton {
@@ -110,10 +113,10 @@ public class MyButton {
 	}
 	public boolean isTowerButton() {
 		//TODO: Change this to a better way of checking if it is a tower button
-		return type < 40 && !isTextButton && type >= 0;
+		return type < 40 && !isTextButton && type >= -6;
 	}
 	public boolean isBuildingButton() {
-		return type <= 0 && type > -40 && !isTextButton;
+		return type > variables.Buttons.SNIP_T_B && !isTextButton;
 	}
 
 	public int getX() {

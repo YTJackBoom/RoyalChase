@@ -20,18 +20,18 @@ public class PreLoader {
 
     public void preLoadAnimators() {
 //        System.out.println( variables.Enemies.getNumberOfIntDeclarations());
-        for(int i = 0; i < variables.Enemies.getNumberOfIntDeclarations();i++) {
+        for(int i = variables.Enemies.getLowestInt(); i < variables.Enemies.getNumberOfIntDeclarations();i++) {
             enemyActiveAnimators.add(new Animator(variables.Enemies.getEnemyActiveGifPath(i)));
             enemyPassiveAnimators.add(new Animator(variables.Enemies.getEnemyPassiveGifPath(i)));
         }
-        for(int i =0 ; i < variables.Towers.getNumberOfIntDeclarations();i++) {
+        for(int i =variables.Towers.getLowestInt() ; i < variables.Towers.getNumberOfIntDeclarations();i++) {
             towerActiveAnimators.add(new Animator(variables.Towers.getTowerActiveGifPath(i)));
             towerPassiveAnimators.add(new Animator(variables.Towers.getTowerPassiveGifPath(i)));
         }
-        for(int i = 0; i < variables.Projectiles.getNumberOfIntDeclarations();i++) {
+        for(int i = variables.Projectiles.getLowestInt(); i < variables.Projectiles.getNumberOfIntDeclarations();i++) {
             projectileAnimators.add(new Animator(variables.Projectiles.getProjectileGifPath(i)));
         }
-        for(int i = 0; i <variables.Buildings.getNumberOfIntDeclarations();i++) {
+        for(int i = variables.Buildings.getLowestInt(); i <variables.Buildings.getNumberOfIntDeclarations();i++) {
             buildingsAnimators.add(new Animator(variables.Buildings.getBuidingGifFile(i)));
         }
     }

@@ -30,7 +30,7 @@ public class Building extends GameObject{
 
 	public void initVariables() {
 		PreLoader preLoader = buildingsController.getTown().getGame().getPreLoader();
-		animator = preLoader.getBuildingAnimator(type*-1);
+		animator = preLoader.getBuildingAnimator(type);
 		bounds = new Rectangle(x,y,animator.getWidth(),animator.getHeight());
 
 		playerValues = buildingsController.getTown().getGame().getPlayerValues();

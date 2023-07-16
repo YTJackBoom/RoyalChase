@@ -84,8 +84,8 @@ public class BuildingsController implements ControllerMethods{
 //		System.out.println("s");
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
-			if (building.getBounds().contains(x, y) && (building.getType() > WOOD && building.getType() <= WOODORE)) {
-				if (town.getSelectedBuilding() == (building.getType() + 4) && building.getType()!=0) {
+			if (building.getBounds().contains(x, y) && (building.getType() >= MANAORE && building.getType() <= WOODORE)) {
+				if (town.getSelectedBuilding() == (building.getType()+4) && building.getType()!=0) {
 					Values cost = variables.Buildings.getCost(town.getSelectedBuilding());
 					if (playerValues.canAfford(cost)) {
 						playerValues.decrease(cost);
