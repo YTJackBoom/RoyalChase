@@ -57,7 +57,7 @@ public class TowerController implements ControllerMethods{
                 }
             }
 
-             if (!enemyList.contains(tower.getTarget())) {
+             if (!enemyList.contains(tower.getTarget())||!math.TowerMath.checkRange(tower,tower.getTarget())) {
                 tower.setStatus(false);
                 tower.setTarget(null);
 //              if (tower.getType() == 1) System.out.println("towerTarget reset");

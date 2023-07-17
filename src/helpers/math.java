@@ -14,7 +14,9 @@ public  class math {
                 Coordinate object2Pos = object2.getPos();
                 double distance = math.GeneralMath.calculateDistance(towerPos,object2Pos);
 
-                return distance <= towerRange;
+                if (distance <= towerRange) {
+                     return true;
+                } else return false;
 
             } else return false;
         }
