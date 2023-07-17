@@ -1,7 +1,6 @@
 package controllers;
 
 import gameObjects.Enemy;
-import gameObjects.ObjectType;
 import helpers.Coordinate;
 import helpers.Values;
 import helpers.math;
@@ -73,11 +72,35 @@ public class TowerController implements ControllerMethods{
             for (Tower tower : towerEntityList) {
                 int width = tower.getWidth();
                 int height = tower.getHeight();
+                int towerX = tower.getPos().getX()-width/2;
+                int towerY = tower.getPos().getY()-height/2;
+                int baseX  = towerX + tower.getAnimatorBase().getWidth()/2;
+                int baseY = towerY + tower.getAnimatorBase().getHeight()/2;
                 if(tower.isActive()) {
-                    g.drawImage(tower.getActiveAnimator().getCurrentImage(), tower.getPos().getX()-width/2, tower.getPos().getY()-height/2, null);
+                    // Retrieve the current image of the active animator
+                    Image turretImage = tower.getActiveAnimatorTurret().getCurrentImage();
+
+                    // Calculate the angle between the tower and its target
+                    double angle = math.GeneralMath.calculateAngle(tower.getPos(), tower.getTarget().getPos());
+
+                    // Create a new Graphics2D object
+                    Graphics2D g2d = (Graphics2D) g.create();
+
+                    // Translate the graphics origin to the center of the tower
+                    g2d.translate(towerX + width / 2, towerY + height / 2);
+
+                    // Rotate the graphics by the calculated angle
+                    g2d.rotate(angle);
+
+                    // Draw the rotated turret image
+                    g2d.drawImage(turretImage, -width / 2, -height / 2, null);
+
+                    // Dispose of the Graphics2D object
+                    g2d.dispose();
                 } else {
-                    g.drawImage(tower.getPassiveAnimator().getCurrentImage(), tower.getPos().getX()-width/2, tower.getPos().getY()-height/2, null);
+                    g.drawImage(tower.getPassiveAnimator().getCurrentImage(), towerX,towerY, null);
                 }
+                g.drawImage(tower.getAnimatorBase().getCurrentImage(),baseX,baseY,null);
             }
         }
     }

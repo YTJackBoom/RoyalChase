@@ -3,7 +3,7 @@ package helpers;
 import java.util.ArrayList;
 
 public class PreLoader {
-    public ArrayList<Animator> enemyActiveAnimators,enemyPassiveAnimators,towerActiveAnimators,towerPassiveAnimators,projectileAnimators,buildingsAnimators;
+    public ArrayList<Animator> enemyActiveAnimators,enemyPassiveAnimators, towerActiveTurretAnimators, towerPassiveTurretAnimators,towerBaseAnimators, projectileAnimators,buildingsAnimators;
     public PreLoader() {
         initVars();
         preLoadAnimators();
@@ -11,8 +11,10 @@ public class PreLoader {
     public void initVars() {
         enemyActiveAnimators = new ArrayList<Animator>();
         enemyPassiveAnimators = new ArrayList<Animator>();
-        towerActiveAnimators = new ArrayList<Animator>();
-        towerPassiveAnimators = new ArrayList<Animator>();
+        towerActiveTurretAnimators = new ArrayList<Animator>();
+        towerPassiveTurretAnimators = new ArrayList<Animator>();
+        towerBaseAnimators = new ArrayList<Animator>();
+
         projectileAnimators = new ArrayList<Animator>();
         buildingsAnimators = new ArrayList<Animator>();
 
@@ -25,8 +27,9 @@ public class PreLoader {
             enemyPassiveAnimators.add(new Animator(variables.Enemies.getEnemyPassiveGifPath(i)));
         }
         for(int i =variables.Towers.getLowestInt() ; i < variables.Towers.getNumberOfIntDeclarations();i++) {
-            towerActiveAnimators.add(new Animator(variables.Towers.getTowerActiveGifPath(i)));
-            towerPassiveAnimators.add(new Animator(variables.Towers.getTowerPassiveGifPath(i)));
+            towerActiveTurretAnimators.add(new Animator(variables.Towers.getTowerActiveGifPath(i)));
+            towerPassiveTurretAnimators.add(new Animator(variables.Towers.getTowerPassiveGifPath(i)));
+            towerBaseAnimators.add(new Animator(variables.Towers.getTowerBaseGifFile(i)));
         }
         for(int i = variables.Projectiles.getLowestInt(); i < variables.Projectiles.getNumberOfIntDeclarations();i++) {
             projectileAnimators.add(new Animator(variables.Projectiles.getProjectileGifPath(i)));
@@ -43,11 +46,12 @@ public class PreLoader {
     	return enemyPassiveAnimators.get(index);
     }
     public Animator getTowerActiveAnimator(int index) {
-    	return towerActiveAnimators.get(index);
+    	return towerActiveTurretAnimators.get(index);
     }
     public Animator getTowerPassiveAnimator(int index) {
-    	return towerPassiveAnimators.get(index);
+    	return towerPassiveTurretAnimators.get(index);
     }
+    public Animator getTowerBaseAnimator(int index) {return towerBaseAnimators.get(index);}
     public Animator getProjectileAnimator(int index) {
     	return projectileAnimators.get(index);
     }

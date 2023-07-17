@@ -11,6 +11,7 @@ import scenes.Playing;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static helpers.math.GeneralMath.calculateAngle;
 import static helpers.variables.Projectiles.ROCKET;
 
 public class ProjectileController implements ControllerMethods {
@@ -33,8 +34,32 @@ public class ProjectileController implements ControllerMethods {
             for (Projectile projectile : projectileList) {
                 int width = projectile.getAnimator().getWidth();
                 int height = projectile.getAnimator().getHeight();
-                g.drawImage(projectile.getAnimator().getCurrentImage(), projectile.getPos().getX()-width/2, projectile.getPos().getY()-height/2, null);
+                int projectileX = projectile.getPos().getX()-width/2;
+                int projectileY = projectile.getPos().getY()-height/2;
+
+                // Retrieve the current image of the active animator
+                Image pImage = projectile.getAnimator().getCurrentImage();
+
+                // Calculate the angle between the tower and its target
+                double angle = calculateAngle(projectile.getPos(), projectile.getTarget().getPos());
+
+                // Create a new Graphics2D object
+                Graphics2D g2d = (Graphics2D) g.create();
+
+                // Translate the graphics origin to the center of the tower
+                g2d.translate(projectileX + width / 2, projectileY + height / 2);
+
+                // Rotate the graphics by the calculated angle
+                g2d.rotate(angle);
+
+                // Draw the rotated turret image
+                g2d.drawImage(pImage, -width / 2, -height / 2, null);
+
+                // Dispose of the Graphics2D object
+                g2d.dispose();
                 }
+
+
             //System.out.println("daw");
             }
         }

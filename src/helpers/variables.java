@@ -1,6 +1,7 @@
 package helpers;
 
 import javax.imageio.ImageIO;
+import javax.lang.model.util.SimpleAnnotationValueVisitor6;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Field;
@@ -213,6 +214,11 @@ public class variables { //class to define different variables for thing
 
             };
         }
+        public static File getTowerBaseGifFile(int i) {
+            return switch (i) {
+                default -> new File("res/images/towers/bases/rocket_t_base.gif");
+            };
+        }
 
         public static int getTowerRange(int towerType) {
             return switch (towerType) {
@@ -253,11 +259,11 @@ public class variables { //class to define different variables for thing
             };
         }
 
-
         public static int getNumberOfIntDeclarations() {
             return variables.getHighestInt(Towers.class);
         }
         public static int getLowestInt(){return variables.getLowestInt(Towers.class);}
+
 
     }
 
@@ -270,7 +276,7 @@ public class variables { //class to define different variables for thing
 
         public static double getProjectileSpeed(int projectileType) {
             return switch (projectileType) {
-                case ARROW -> 1;
+                case ARROW -> 25;
                 case ROCKET -> 20;
                 default -> throw new IllegalStateException("variables: getProjectileSpeed: Unexpected value:  " + projectileType);
             };

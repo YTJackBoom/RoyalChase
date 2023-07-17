@@ -7,7 +7,9 @@ import controllers.TowerController;
 import java.awt.*;
 
 public class Tower extends GameObject {
-	protected Animator passiveAnimator, activeAnimator;
+	private Animator passiveAnimator, activeAnimatorTurret;
+	private Animator animatorBase;
+
 	private final Coordinate pos;
 	protected int counter;
 	private Enemy target;
@@ -66,11 +68,12 @@ public class Tower extends GameObject {
 	public void initAnimators() {
 		PreLoader preLoader = towerController.getPlaying().getGame().getPreLoader();
 		passiveAnimator = preLoader.getTowerPassiveAnimator(type);
-		activeAnimator = preLoader.getTowerActiveAnimator(type);
+		activeAnimatorTurret = preLoader.getTowerActiveAnimator(type);
+		animatorBase = preLoader.getTowerBaseAnimator(type);
 	}
 	public void initVariables() {
-		this.height = activeAnimator.getHeight();
-		this.width = activeAnimator.getWidth();
+		this.height = activeAnimatorTurret.getHeight();
+		this.width = activeAnimatorTurret.getWidth();
 		projectileController = towerController.getPlaying().getProjectileController();
 		isLoaded = true;
 		worth = variables.Towers.getCost(type);
@@ -119,11 +122,15 @@ public class Tower extends GameObject {
 		return isFiring;
 	}
 
-	public Animator getActiveAnimator() {
-		return activeAnimator;
+	public Animator getActiveAnimatorTurret() {
+		return activeAnimatorTurret;
 	}
 	public Animator getPassiveAnimator() {
 		return passiveAnimator;
+	}
+
+	public Animator getAnimatorBase() {
+		return animatorBase;
 	}
 
 	public int getType() {

@@ -12,12 +12,9 @@ public  class math {
                 int towerRange = variables.Towers.getTowerRange(tower.getType());
                 Coordinate towerPos = tower.getPos();
                 Coordinate object2Pos = object2.getPos();
-                //System.out.println("towerPos"+towerPos.getX()+"enemyPos"+enemyPos.getX()+"towerRange"+towerRange);
-                //System.out.println(Math.abs(object2.getPos().getY()-tower.getPos().getY()))
-                if (Math.abs(object2Pos.getY() - towerPos.getY()) <= towerRange && Math.abs(object2Pos.getX() - towerPos.getX()) <= towerRange) {
-                    // System.out.println("true");
-                    return true;
-                } else return false;
+                double distance = math.GeneralMath.calculateDistance(towerPos,object2Pos);
+
+                return distance <= towerRange;
 
             } else return false;
         }
@@ -117,8 +114,18 @@ public  class math {
     }
 
 
-    public static class PlayerMath {
+    public static class GeneralMath {
 
+        public static double calculateAngle(Coordinate pos1, Coordinate pos2) {
+            double dx = pos2.getX() - pos1.getX();
+            double dy = pos2.getY() - pos1.getY();
+            return Math.atan2(dy, dx);
+        }
+        public static double calculateDistance(Coordinate pos1,Coordinate pos2){
+            double dx = pos2.getX() - pos1.getX();
+            double dy = pos2.getY() - pos1.getY();
+            return Math.sqrt(dx*dx+dy*dy);
+        }
     }
 }
 
