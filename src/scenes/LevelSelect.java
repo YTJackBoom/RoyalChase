@@ -1,6 +1,7 @@
 package scenes;
 
 import basics.Game;
+import helpers.Coordinate;
 import helpers.Values;
 import uiElements.MyButton;
 
@@ -35,9 +36,9 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         for(int i = 0; i < buttonsAmount; i++){
             int x = buttonXStart + (i%buttonsPerLine)*buttonXOffset;
             int y = buttonYStart + (i/buttonsPerLine)*buttonYOffset;
-            buttons.add(new MyButton("Level "+(i+1),x,y,buttonWidth,buttonHeight));
+            buttons.add(new MyButton((i+1),new Coordinate(x,y),buttonWidth,buttonHeight));
         }
-        buttons.add(new MyButton("Tutorial",buttonXStart-buttonXOffset,buttonYStart,buttonWidth,buttonHeight));
+        buttons.add(new MyButton(0,new Coordinate(buttonXStart-buttonXOffset,buttonYStart),buttonWidth,buttonHeight));
         buttons.add(new MyButton("Back",buttonXStart-(buttonXOffset+buttonXOffset/2),buttonYStart-buttonYOffset/2,buttonWidth/2,buttonHeight/2));
     }
 
@@ -98,6 +99,8 @@ public class LevelSelect extends GameScenes implements SceneMethods{
                 } else {
                     playerValues.setRewardmultiplyer(1);
                 }
+                playerValues.setLevel(button.getLevel());
+
                 System.out.println("Level " + button.getText());
                 game.getPlaying().reset();
                 GameStates.gameState = GameStates.PLAYING;

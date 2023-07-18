@@ -1,5 +1,6 @@
 package uiElements;
 
+import helpers.Coordinate;
 import helpers.variables;
 
 import javax.imageio.ImageIO;
@@ -19,6 +20,7 @@ public class MyButton {
 	private int type;
 	private Rectangle bounds;
 	private int x,y,width,height;
+	private int level;
 	private BufferedImage ButtonImage;
 	public MyButton(String text, int x, int y, int width, int height) {
 		this.text = text;
@@ -38,6 +40,21 @@ public class MyButton {
 		initBounds();
 		initButtonImage();
 	}
+	public MyButton(int level, Coordinate pos, int width, int height) {
+		this.level = level;
+		this.x = pos.getX();
+		this.y = pos.getY();
+		this.width = width;
+		this.height = height;
+		isTextButton = true;
+		if(level ==0) {
+			text = "Tutorial";
+		}else {
+			text = "Level "+level;
+		}
+		initBounds();
+	}
+
 
 
 	private void initBounds() {
@@ -138,5 +155,9 @@ public class MyButton {
 
 	public boolean isChecked() {
 		return checked;
+	}
+
+	public int getLevel() {
+		return level;
 	}
 }
