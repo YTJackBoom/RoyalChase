@@ -88,9 +88,11 @@ public class Tower extends GameObject {
 		int range = variables.Towers.getTowerRange(type);
 		circles = new Circle[Constants.UIConstants.NUMBEROFRANGECIRCLES];
 
+
 		for(int i = 0; i<circles.length; i++) {
 			circles[i] = new Circle(pos,range-circles.length+i);
 		}
+		circles[0] = new Circle(pos,range);
 	}
 
 	public double getReloadTime() {
@@ -151,7 +153,9 @@ public class Tower extends GameObject {
 	public void upgrade() {level ++;}
 	public int getLevel() {return level;}
 
-
+	public Circle getRange() {
+		return circles[0];
+	}
 	public Values getWorth() {
 		return worth;
 	}

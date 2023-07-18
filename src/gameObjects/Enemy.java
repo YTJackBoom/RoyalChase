@@ -18,7 +18,7 @@ public class Enemy extends GameObject{
 	private boolean isActive;
 	private Animator activeAnimator,passiveAnimator;
 	private EnemyController enemyController;
-	
+
 	
 	public Enemy(EnemyController enemyController, Coordinate pos, int type) {
 		this.pos = pos;
@@ -41,7 +41,6 @@ public class Enemy extends GameObject{
 		health = variables.Enemies.getEnemyHealth(type);
 		width = activeAnimator.getWidth();
 		height = activeAnimator.getHeight();
-
 	}
 	public void renderHealthBar(Graphics g) {
 		int t = variables.Enemies.getEnemyHealth(type);
@@ -123,5 +122,8 @@ public class Enemy extends GameObject{
 	}
 	public int getHeight() {
 		return height;
+	}
+	public Rectangle getHitBox() {
+		return new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
 	}
 }

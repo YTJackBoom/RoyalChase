@@ -222,7 +222,7 @@ public class variables { //class to define different variables for thing
 
         public static int getTowerRange(int towerType) {
             return switch (towerType) {
-                case Foundation_T -> 100;
+                case Foundation_T -> 0;
                 case ARROW_T -> 500;
                 case MAGE_T -> 0;
                 case ROCKET_T -> 500;

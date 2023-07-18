@@ -50,14 +50,14 @@ public class TowerController implements ControllerMethods{
     }
     public void checkTELStatus(Tower tower) {
             for (Enemy enemy : enemyList) {
-                if (math.TowerMath.checkRange(tower, enemy) && tower.getTarget() == null) {
+                if (tower.getRange().contains(enemy.getHitBox()) && tower.getTarget() == null) {
                     tower.setStatus(true);
                     tower.setTarget(enemy);
 //                    if (tower.getType() == 1) System.out.println("tower target set");
                 }
             }
 
-             if (!enemyList.contains(tower.getTarget())||!math.TowerMath.checkRange(tower,tower.getTarget())) {
+             if (!enemyList.contains(tower.getTarget())||!tower.getRange().contains(tower.getTarget().getHitBox())) {
                 tower.setStatus(false);
                 tower.setTarget(null);
 //              if (tower.getType() == 1) System.out.println("towerTarget reset");
