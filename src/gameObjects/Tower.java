@@ -10,7 +10,7 @@ public class Tower extends GameObject {
 //	private Animator passiveAnimator, activeAnimatorTurret;
 //	private Animator animatorBase;
 
-	private final Coordinate pos;
+//	private final Coordinate pos;
 	protected int counter;
 	private Enemy target;
 	private boolean isFiring,isLoaded;
@@ -24,7 +24,7 @@ public class Tower extends GameObject {
 	private Values worth;
 			
 	public Tower(TowerController towerController, Coordinate pos, int type) {
-		super(towerController.getPlaying().getGame().getPreLoader(),ObjectType.TOWER,type);
+		super(pos,towerController.getPlaying().getGame().getPreLoader(),ObjectType.TOWER,type);
 		this.type = type;
 		this.pos = pos;
 		this.towerController = towerController;

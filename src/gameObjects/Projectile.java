@@ -9,7 +9,7 @@ import static helpers.variables.Projectiles.ROCKET;
 
 
 public class Projectile extends GameObject{
-	private Coordinate pos;
+//	private Coordinate pos;
 	private int type;
 //	private Animator animator;
 	private Enemy target;
@@ -21,7 +21,7 @@ public class Projectile extends GameObject{
 
 
 	public Projectile(ProjectileController projectileController,Tower tower, Enemy target, int type) {  // TODO: eine "animaion" pro richtung, prob in animation selber. wie enemys und towers verbessern
-		super(projectileController.getPlaying().getGame().getPreLoader(),ObjectType.PROJECTILE,type);
+		super(new Coordinate(tower.getPos().getX(),tower.getPos().getY()),projectileController.getPlaying().getGame().getPreLoader(),ObjectType.PROJECTILE,type);
 		this.pos = new Coordinate(tower.getPos().getX(),tower.getPos().getY());
 		this.type = type;
 		this.target = target;
@@ -103,5 +103,5 @@ public class Projectile extends GameObject{
 	public int getHeight() {
 		return height;
 	}
-	public Hitbox getHitBox() {return new Hitbox(pos.getX()-width/2,pos.getY()-height/2,width,height);}
+//	public Hitbox getHitBox() {return new Hitbox(pos.getX()-width/2,pos.getY()-height/2,width,height);}
 }

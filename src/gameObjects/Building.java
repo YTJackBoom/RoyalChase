@@ -1,10 +1,7 @@
 package gameObjects;
 
 import controllers.BuildingsController;
-import helpers.Animator;
-import helpers.PreLoader;
-import helpers.Values;
-import helpers.variables;
+import helpers.*;
 
 import java.awt.*;
 
@@ -21,7 +18,7 @@ public class Building extends GameObject{
 	private Rectangle bounds;
 	private Values playerValues;
 	public Building(BuildingsController buildingsController, int x, int y, int type ) {
-		super(buildingsController.getTown().getGame().getPreLoader(), ObjectType.BUILDING,type);
+		super(new Coordinate(x,y),buildingsController.getTown().getGame().getPreLoader(), ObjectType.BUILDING,type);
 		this.x = x;
 		this.y = y;
 		this.type = type;

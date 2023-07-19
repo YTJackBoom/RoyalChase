@@ -1,6 +1,8 @@
 package gameObjects;
 
 import helpers.Animator;
+import helpers.Coordinate;
+import helpers.HitBox;
 import helpers.PreLoader;
 
 import static gameObjects.ObjectType.*;
@@ -9,11 +11,16 @@ public abstract class GameObject {
 	protected Animator activeAnimator,passiveAnimator,animatorTowerBase;
 	protected ObjectType objectType;
 	protected int type;
+	protected Coordinate pos;
 
-	public GameObject(PreLoader preLoader,ObjectType oType, int type) {
+	protected HitBox hitBox;
+
+	public GameObject(Coordinate pos,PreLoader preLoader, ObjectType oType, int type) {
 		objectType = oType;
 		this.type = type;
+		this.pos = pos;
 		initAnimators(preLoader);
+		hitBox = new HitBox(this);
 	}
 
 
@@ -56,5 +63,15 @@ public abstract class GameObject {
 	}
 	public int getType() {
 		return type;
+	}
+	public Coordinate getPos() {
+		return pos;
+	}
+	public void setPos(Coordinate pos) {
+		this.pos = pos;
+	}
+
+	public HitBox getHitBox() {
+		return hitBox;
 	}
 }

@@ -6,7 +6,7 @@ import helpers.*;
 import java.awt.*;
 
 public class Enemy extends GameObject{
-	private Coordinate pos;
+//	private Coordinate pos;
 	private int pathIndex;
 	private int speed;
 	private double health;
@@ -18,8 +18,8 @@ public class Enemy extends GameObject{
 
 	
 	public Enemy(EnemyController enemyController, Coordinate pos, int type) {
-		super(enemyController.getPlaying().getGame().getPreLoader(),ObjectType.ENEMY,type);
-		this.pos = pos;
+		super(pos,enemyController.getPlaying().getGame().getPreLoader(),ObjectType.ENEMY,type);
+//		this.pos = pos;
 		this.enemyController = enemyController;
 		pathIndex = 1;
 		this.type = type;
@@ -61,14 +61,14 @@ public class Enemy extends GameObject{
 	public void setPathIndex(int i) {
 		pathIndex =i;
 	}
-	public void setPos(Coordinate pos) {
-	//	System.out.println(pos.getX()+" "+pos.getY());
-		this.pos = pos;
-	}
+//	public void setPos(Coordinate pos) {
+//	//	System.out.println(pos.getX()+" "+pos.getY());
+//		this.pos = pos;
+//	}
 
-	public Coordinate getPos() {
-		return pos;
-	}
+//	public Coordinate getPos() {
+//		return pos;
+//	}
 
 	public int getType() {
 		return type;
@@ -107,8 +107,8 @@ public class Enemy extends GameObject{
 	public int getHeight() {
 		return height;
 	}
-	public Hitbox getHitBox() {
-		return new Hitbox(pos.getX()-width/2,pos.getY()-height/2,width,height);
+//	public Hitbox getHitBox() {
+//		return new Hitbox(pos.getX()-width/2,pos.getY()-height/2,width,height);
 //		return new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
-	}
+//	}
 }
