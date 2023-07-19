@@ -7,8 +7,8 @@ import controllers.TowerController;
 import java.awt.*;
 
 public class Tower extends GameObject {
-	private Animator passiveAnimator, activeAnimatorTurret;
-	private Animator animatorBase;
+//	private Animator passiveAnimator, activeAnimatorTurret;
+//	private Animator animatorBase;
 
 	private final Coordinate pos;
 	protected int counter;
@@ -24,11 +24,12 @@ public class Tower extends GameObject {
 	private Values worth;
 			
 	public Tower(TowerController towerController, Coordinate pos, int type) {
+		super(towerController.getPlaying().getGame().getPreLoader(),ObjectType.TOWER,type);
 		this.type = type;
 		this.pos = pos;
 		this.towerController = towerController;
 
-		initAnimators();
+//		initAnimators();
 		initVariables();
 		initBounds();
 		initRange();
@@ -65,15 +66,15 @@ public class Tower extends GameObject {
 	}
 
 
-	public void initAnimators() {
-		PreLoader preLoader = towerController.getPlaying().getGame().getPreLoader();
-		passiveAnimator = preLoader.getTowerPassiveAnimator(type);
-		activeAnimatorTurret = preLoader.getTowerActiveAnimator(type);
-		animatorBase = preLoader.getTowerBaseAnimator(type);
-	}
+//	public void initAnimators() {
+//		PreLoader preLoader = towerController.getPlaying().getGame().getPreLoader();
+//		passiveAnimator = preLoader.getTowerPassiveAnimator(type);
+//		activeAnimatorTurret = preLoader.getTowerActiveAnimator(type);
+//		animatorBase = preLoader.getTowerBaseAnimator(type);
+//	}
 	public void initVariables() {
-		this.height = activeAnimatorTurret.getHeight();
-		this.width = activeAnimatorTurret.getWidth();
+		this.height = activeAnimator.getHeight();
+		this.width = activeAnimator.getWidth();
 		projectileController = towerController.getPlaying().getProjectileController();
 		isLoaded = true;
 		worth = variables.Towers.getCost(type);
@@ -124,16 +125,16 @@ public class Tower extends GameObject {
 		return isFiring;
 	}
 
-	public Animator getActiveAnimatorTurret() {
-		return activeAnimatorTurret;
-	}
-	public Animator getPassiveAnimator() {
-		return passiveAnimator;
-	}
+//	public Animator getActiveAnimatorTurret() {
+//		return activeAnimatorTurret;
+//	}
+//	public Animator getPassiveAnimator() {
+//		return passiveAnimator;
+//	}
 
-	public Animator getAnimatorBase() {
-		return animatorBase;
-	}
+//	public Animator getAnimatorBase() {
+//		return animatorBase;
+//	}
 
 	public int getType() {
 		return type;

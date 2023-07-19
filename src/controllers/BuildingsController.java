@@ -65,7 +65,7 @@ public class BuildingsController implements ControllerMethods{
 	@Override
 	public void render(Graphics g) {
 		for (Building building : buildingsList) {
-			g.drawImage(building.getAnimator().getCurrentImage(), building.getX(), building.getY(), null);
+			g.drawImage(building.getActiveAnimator().getCurrentImage(), building.getX(), building.getY(), null);
 		}
 	}
 	@Override

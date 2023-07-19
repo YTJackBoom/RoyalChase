@@ -74,11 +74,11 @@ public class TowerController implements ControllerMethods{
                 int height = tower.getHeight();
                 int towerX = tower.getPos().getX()-width/2;
                 int towerY = tower.getPos().getY()-height/2;
-                int baseX  = towerX + tower.getAnimatorBase().getWidth()/2;
-                int baseY = towerY + tower.getAnimatorBase().getHeight()/2;
+                int baseX  = towerX + tower.getAnimatorTowerBase().getWidth()/2;
+                int baseY = towerY + tower.getAnimatorTowerBase().getHeight()/2;
                 if(tower.isActive()) {
                     // Retrieve the current image of the active animator
-                    Image turretImage = tower.getActiveAnimatorTurret().getCurrentImage();
+                    Image turretImage = tower.getActiveAnimator().getCurrentImage();
 
                     // Calculate the angle between the tower and its target
                     double angle = math.GeneralMath.calculateAngle(tower.getPos(), tower.getTarget().getPos());
@@ -100,7 +100,7 @@ public class TowerController implements ControllerMethods{
                 } else {
                     g.drawImage(tower.getPassiveAnimator().getCurrentImage(), towerX,towerY, null);
                 }
-                g.drawImage(tower.getAnimatorBase().getCurrentImage(),baseX,baseY,null);
+                g.drawImage(tower.getAnimatorTowerBase().getCurrentImage(),baseX,baseY,null);
             }
         }
     }

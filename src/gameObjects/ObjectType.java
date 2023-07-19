@@ -1,5 +1,5 @@
 package gameObjects;
 
 public enum ObjectType {
-	BUILDING,TOWER,ENEMY,UI;
+	BUILDING,TOWER,ENEMY,PROJECTILE,UI;
 }

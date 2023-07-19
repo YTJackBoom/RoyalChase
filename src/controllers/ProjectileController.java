@@ -32,13 +32,13 @@ public class ProjectileController implements ControllerMethods {
     public void render(Graphics g) {
         if (projectileList != null) {
             for (Projectile projectile : projectileList) {
-                int width = projectile.getAnimator().getWidth();
-                int height = projectile.getAnimator().getHeight();
+                int width = projectile.getActiveAnimator().getWidth();
+                int height = projectile.getActiveAnimator().getHeight();
                 int projectileX = projectile.getPos().getX()-width/2;
                 int projectileY = projectile.getPos().getY()-height/2;
 
                 // Retrieve the current image of the active animator
-                Image pImage = projectile.getAnimator().getCurrentImage();
+                Image pImage = projectile.getActiveAnimator().getCurrentImage();
 
                 // Calculate the angle between the tower and its target
                 double angle = calculateAngle(projectile.getPos(), projectile.getTarget().getPos());
@@ -88,9 +88,10 @@ public class ProjectileController implements ControllerMethods {
 
 
    public void checkCollision(Projectile projectile, Enemy target) { // Collisionscheck kugel u. gegner + löschen u damage
-       int distanceY = target.getPos().getY() - projectile.getPos().getY();
-       int distanceX = target.getPos().getX() - projectile.getPos().getX();
-       if (Math.abs(distanceX) <= target.getWidth()/2+projectile.getWidth()/2&& Math.abs(distanceY) <= target.getHeight()/2+projectile.getHeight()/2) {
+//       int distanceY = target.getPos().getY() - projectile.getPos().getY();
+//       int distanceX = target.getPos().getX() - projectile.getPos().getX();
+//       if (Math.abs(distanceX) <= target.getWidth()/2+projectile.getWidth()/2&& Math.abs(distanceY) <= target.getHeight()/2+projectile.getHeight()/2) {
+       if(projectile.getHitBox().overlaps(target.getHitBox())){
            removeQueue.add(projectile);
            playing.getEnemyController().damageEnemy(target, projectile.getDamage());
 //            System.out.println("hit");

@@ -1,10 +1,7 @@
 package gameObjects;
 
 import controllers.EnemyController;
-import helpers.Coordinate;
-import helpers.Animator;
-import helpers.PreLoader;
-import helpers.variables;
+import helpers.*;
 
 import java.awt.*;
 
@@ -16,26 +13,21 @@ public class Enemy extends GameObject{
 	private int type;
 	private int width, height;
 	private boolean isActive;
-	private Animator activeAnimator,passiveAnimator;
+//	private Animator activeAnimator,passiveAnimator;
 	private EnemyController enemyController;
 
 	
 	public Enemy(EnemyController enemyController, Coordinate pos, int type) {
+		super(enemyController.getPlaying().getGame().getPreLoader(),ObjectType.ENEMY,type);
 		this.pos = pos;
 		this.enemyController = enemyController;
 		pathIndex = 1;
 		this.type = type;
 		isActive = true;
-		initAnimators();
+	//	initAnimators();
 		initVariables();
 	}
 
-
-	public void initAnimators() {
-		PreLoader preLoader = enemyController.getPlaying().getGame().getPreLoader();
-		activeAnimator  =  preLoader.getEnemyActiveAnimator(type);
-		passiveAnimator = preLoader.getEnemyPassiveAnimator(type);
-	}
 	public void initVariables() {
 		speed = variables.Enemies.getEnemySpeed(type);
 		health = variables.Enemies.getEnemyHealth(type);
@@ -85,12 +77,12 @@ public class Enemy extends GameObject{
 		return health;
 	}
 
-	public Animator getActiveAnimator() {
-		return activeAnimator;
-	}
-	public Animator getPassiveAnimator() {
-		return passiveAnimator;
-	}
+//	public Animator getActiveAnimator() {
+//		return super.activeAnimator;
+//	}
+//	public Animator getPassiveAnimator() {
+//		return super.passiveAnimator;
+//	}
 	public boolean isActive() {
 		return isActive;
 	}
@@ -104,17 +96,9 @@ public class Enemy extends GameObject{
 	public boolean equals(Object obj) {
 		if (obj instanceof Enemy) {
 			Enemy enemy = (Enemy) obj;
-			if (enemy.getPos().equals(pos)) {
-				return true;
-			}
+			return enemy.getPos().equals(pos);
 		}
 		return false;
-	}
-
-
-	public void removeAnimators() {
-		activeAnimator = null;
-		passiveAnimator = null;
 	}
 
 	public int getWidth() {
@@ -123,7 +107,8 @@ public class Enemy extends GameObject{
 	public int getHeight() {
 		return height;
 	}
-	public Rectangle getHitBox() {
-		return new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
+	public Hitbox getHitBox() {
+		return new Hitbox(pos.getX()-width/2,pos.getY()-height/2,width,height);
+//		return new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
 	}
 }
