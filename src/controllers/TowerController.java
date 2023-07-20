@@ -39,7 +39,7 @@ public class TowerController implements ControllerMethods{
             }
             tower.update();
             if(tower.getType() == ARROW_T) {
-                System.out.println(tower.getPos().getX()+ "  "+tower.getPos().getY());
+//                System.out.println(tower.getPos().getX()+ "  "+tower.getPos().getY());
             }
         }
     }
@@ -113,10 +113,10 @@ public class TowerController implements ControllerMethods{
             selectedTower.getWorth().increase(upgradeCost);
 
             selectedTower.upgrade();
-            System.out.println("d");
+//            System.out.println("d");
         } else {
             playing.setCantAfford(true);
-            System.out.println("$");
+//            System.out.println("$");
         }
     }
 

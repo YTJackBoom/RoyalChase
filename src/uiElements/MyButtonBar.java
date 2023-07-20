@@ -145,11 +145,11 @@ public class MyButtonBar {
 					} else if(button.getText().equals("Upgrade")) {
 						Playing playing = (Playing)  scene;
 						playing.getTowerController().upgradeTower();
-						System.out.println("d");
+//						System.out.println("d");
 					}else if (button.getText().equals("Sell")) {
 						Playing playing = (Playing)  scene;
 						playing.getTowerController().sellTower();
-						System.out.println("da");
+//						System.out.println("da");
 
 					}
 				}

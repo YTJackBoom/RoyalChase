@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.lang.invoke.VarHandle;
 import java.util.Collection;
 
+import static helpers.variables.Buttons.Foundation_T_B;
+import static helpers.variables.Buttons.SNIP_T_B;
+
 public class MyButton {
 	private boolean checked = false;
 	private boolean isTextButton = false;
@@ -130,10 +133,10 @@ public class MyButton {
 	}
 	public boolean isTowerButton() {
 		//TODO: Change this to a better way of checking if it is a tower button
-		return type < 40 && !isTextButton && type >= -6;
+		return type >= Foundation_T_B && !isTextButton && type <= SNIP_T_B;
 	}
 	public boolean isBuildingButton() {
-		return type > variables.Buttons.SNIP_T_B && !isTextButton;
+		return type > SNIP_T_B && !isTextButton;
 	}
 
 	public int getX() {

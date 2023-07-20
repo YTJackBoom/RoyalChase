@@ -15,6 +15,8 @@ public class Game extends JFrame  {
 
         public final static int fps = 15;
         public static final int ups = 120; //updates per second, for the game logic
+        private volatile int currentUPS = 0;
+        private int currentFPS = 0;
         private boolean isPaused = false;
         private GameScreen gameScreen;
 
@@ -35,6 +37,7 @@ public class Game extends JFrame  {
         private Timer RenderTimer, GameTimer;
         private PreLoader preLoader;
 
+
         public Game() {
             initClasses();
             initVariables();
@@ -47,6 +50,7 @@ public class Game extends JFrame  {
             pack();
             setVisible(true);
          // GameStates.gameState = PLAYING;
+//            System.out.println(" ");
         }
 
 
@@ -83,24 +87,31 @@ public class Game extends JFrame  {
         }
         private void start() {//initialises and starts two timers: one for the game and one for the render(in 60fps)
 
+
             RenderTimer = new Timer((int)(1000/fps), new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     repaint();
-                    fpsCounter();
+                    currentFPS++;
+
                 }
             });
             RenderTimer.start();
 
-            GameTimer = new Timer((int)(1000/ups), new ActionListener() {
+            GameLogicUpdater logicUpdater = new GameLogicUpdater(this);
+            Thread gameLogicThread = new Thread(logicUpdater);
+            gameLogicThread.start();
+
+            Timer statsTimer = new Timer(1000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    updateGame();
-                    //upsCounter();
+                    System.out.println("Current UPS: " + currentUPS + ", Current FPS: " + currentFPS);
+                    currentUPS = 0; // Reset UPS count
+                    currentFPS = 0; // Reset FPS count
                 }
             });
-            GameTimer.start();
+            statsTimer.start();
         }
 
-        private void updateGame() {
+        protected void updateGame() {
             switch (GameStates.gameState) {
                 case MENU ->menu.update();
                 case PLAYING -> {playing.update();
@@ -134,6 +145,9 @@ public class Game extends JFrame  {
 
         }
         // Getters and setters
+        protected synchronized void incrementUPS() {
+            currentUPS++;
+        }
         public Render getRender() {
             return render;
         }

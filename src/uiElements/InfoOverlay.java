@@ -124,7 +124,7 @@ public class InfoOverlay {
                         stoneCost = (int) upgradeCost.getStone();
 
                         g.setFont(Constants.UIConstants.TOWERCOSTFONT);
-                        System.out.println("f");
+//                        System.out.println("f");
                     } else if (hoveredButton.getText().equals("Sell")) {
                         Values worth  = towerPointer.getWorth();
                         manaCost = (int) worth.getMana();

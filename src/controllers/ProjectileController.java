@@ -6,6 +6,7 @@ import helpers.Constants;
 import helpers.Coordinate;
 import gameObjects.Projectile;
 import helpers.Circle;
+import helpers.variables;
 import scenes.Playing;
 
 import java.awt.*;
@@ -95,6 +96,13 @@ public class ProjectileController implements ControllerMethods {
            removeQueue.add(projectile);
            playing.getEnemyController().damageEnemy(target, projectile.getDamage());
 //            System.out.println("hit");
+       } else {
+           for(Enemy enemy : playing.getEnemyController().getEnemyList()) {
+               if (projectile.getHitBox().collidesWith(enemy.getHitBox())) {
+                   removeQueue.add(projectile);
+                   playing.getEnemyController().damageEnemy(enemy, projectile.getDamage());
+               }
+           }
        }
    }
     public void checkRocketCollision(Projectile projectile, Enemy target) {
@@ -106,6 +114,14 @@ public class ProjectileController implements ControllerMethods {
             removeQueue.add(projectile);
 
             System.out.println("hit");
+        }else {
+            for(Enemy enemy : playing.getEnemyController().getEnemyList()) {
+                if (projectile.getHitBox().collidesWith(enemy.getHitBox())) {
+                    Circle explosion = new Circle(projectile.getPos(), Constants.ObjectConstants.EXPLOSIONRADIUS);
+                    playing.getEnemyController().damageEnemiesInRadius(explosion, projectile.getDamage());
+                    removeQueue.add(projectile);
+                }
+            }
         }
     }
 
