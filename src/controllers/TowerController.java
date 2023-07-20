@@ -22,7 +22,6 @@ public class TowerController implements ControllerMethods{
     private Values playerValues;
     public TowerController(Playing playing) {
         towerEntityList = new ArrayList<Tower>();
-        enemyList = playing.getEnemyController().getEnemyList();
         this.playing = playing;
         playerValues = playing.getGame().getPlayerValues();
 
@@ -49,7 +48,8 @@ public class TowerController implements ControllerMethods{
         }
     }
     public void checkTELStatus(Tower tower) {
-            for (Enemy enemy : enemyList) {
+        enemyList = playing.getEnemyController().getEnemyList();
+        for (Enemy enemy : enemyList) {
                 if (tower.getRange().contains(enemy.getHitBox()) && tower.getTarget() == null) {
                     tower.setStatus(true);
                     tower.setTarget(enemy);

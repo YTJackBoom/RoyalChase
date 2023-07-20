@@ -1,10 +1,15 @@
 package playerinputs;
 
 import basics.Game;
+
+import static basics.GameScreen.fHEIGHT;
+import static basics.GameScreen.fWIDTH;
 import static scenes.GameStates.*;
 import scenes.GameStates;
 
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -33,18 +38,48 @@ public class KListener implements KeyListener {
             case TOWN -> game.getTown().keyPressed(e);
 
         }
-        if(e.getKeyCode() == KeyEvent.VK_A) {
+        if (e.getKeyCode() == KeyEvent.VK_A) {
             GameStates.gameState = MENU;
         }
-        if(e.getKeyCode() == KeyEvent.VK_S) {
+        if (e.getKeyCode() == KeyEvent.VK_S) {
             GameStates.gameState = PLAYING;
         }
-        if(e.getKeyCode() == KeyEvent.VK_D) {
+        if (e.getKeyCode() == KeyEvent.VK_D) {
             GameStates.gameState = SETTINGS;
             game.resetAll();
         }
+        if (e.getKeyCode() == KeyEvent.VK_F11) {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
 
+            // Get the screen's resolution
+            DisplayMode displayMode = defaultScreen.getDisplayMode();
+            int screenWidth = displayMode.getWidth();
+            int screenHeight = displayMode.getHeight();
+
+            if (game.isFullScreen()) {
+                // Switch back to decorated mode
+                game.dispose();
+                game.setUndecorated(false);
+                game.setVisible(true);
+                game.setSize(new Dimension(fWIDTH, fHEIGHT));
+                // Center the frame if desired
+                game.setLocationRelativeTo(null);
+            } else {
+                // Switch to fullscreen mode
+                game.dispose();
+                game.setUndecorated(true);
+                game.setVisible(true);
+                game.setSize(new Dimension(screenWidth,screenHeight));
+                game.setLocation(0,0 );
+
+            }
+            game.toggleFullscreen();
+        }
+        game.getGameScreen().requestFocusInWindow();
     }
+
+
 
     @Override
     public void keyReleased(KeyEvent e) {

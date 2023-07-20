@@ -18,6 +18,7 @@ public class Game extends JFrame  {
         private volatile int currentUPS = 0;
         private int currentFPS = 0;
         private boolean isPaused = false;
+        protected boolean isFullScreen =false;
         private GameScreen gameScreen;
 
         // Classes
@@ -45,11 +46,13 @@ public class Game extends JFrame  {
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
             setResizable(false);
+
             setTitle("Bang Bang");
             add(gameScreen);
             pack();
             setVisible(true);
-         // GameStates.gameState = PLAYING;
+
+            // GameStates.gameState = PLAYING;
 //            System.out.println(" ");
         }
 
@@ -177,6 +180,7 @@ public class Game extends JFrame  {
         }
         public int getUps() {return ups;}
 
+
          public LevelCleared getLevelCleared() {
             return levelCleared;
         }
@@ -193,12 +197,23 @@ public class Game extends JFrame  {
             return isPaused;
         }
 
+        public GameScreen getGameScreen() {
+            return gameScreen;
+        }
+
         public void resetAll() {
-        playing.reset();
-        levelSelect.reset();
-        tutorial.reset();
-        town.reset();
-        playerValues.reset();
+            playing.reset();
+            levelSelect.reset();
+            tutorial.reset();
+              town.reset();
+            playerValues.reset();
+         }
+
+        public boolean isFullScreen() {
+            return isFullScreen;
+        }
+        public void toggleFullscreen(){
+            isFullScreen = !isFullScreen;
         }
 }
 

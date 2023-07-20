@@ -94,7 +94,7 @@ public class EnemyController implements ControllerMethods{
 		}
    }
    public void render(Graphics g) {
-	   if (enemyList != null) {
+	   if (enemyList != null&&!enemyList.isEmpty()) {
 		   for (Enemy enemy : enemyList) {
 			   if (enemy != null) {
 				   int width = enemy.getActiveAnimator().getWidth();
