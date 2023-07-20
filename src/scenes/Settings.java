@@ -25,7 +25,7 @@ public class Settings extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mouseMoved(int x, int y) {
+    public void mouseMoved(MouseEvent e) {
 
     }
 
@@ -40,7 +40,7 @@ public class Settings extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mouseDragged(int x, int y) {
+    public void mouseDragged(MouseEvent e) {
 
     }
 

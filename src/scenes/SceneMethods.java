@@ -10,13 +10,13 @@ public interface SceneMethods {
 
     public void mouseClicked(MouseEvent e);
 
-    public void mouseMoved(int x, int y);
+    public void mouseMoved(MouseEvent e);
 
     public void mousePressed(MouseEvent e);
 
     public void mouseReleased(MouseEvent e);
 
-    public void mouseDragged(int x, int y);
+    public void mouseDragged(MouseEvent e);
 
     public void reset();
     // public void keyPressed(int keyCode);

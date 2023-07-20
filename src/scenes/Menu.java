@@ -66,7 +66,9 @@ public class Menu extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mouseMoved(int x, int y) {
+    public void mouseMoved(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
         for(MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 button.setHovered(true);
@@ -91,11 +93,25 @@ public class Menu extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+
+        for (MyButton button: buttons){
+            if(button.getBounds().contains(x,y)){
+                if(button.getText().equals("Play")){
+                    GameStates.gameState = GameStates.LEVELSELECT;
+                }else if(button.getText().equals("Settings")){
+                    GameStates.gameState = GameStates.SETTINGS;
+                }else if(button.getText().equals("Exit")){
+                    System.exit(0);
+                }
+            }
+        }
         resetButtons();
     }
 
     @Override
-    public void mouseDragged(int x, int y) {
+    public void mouseDragged(MouseEvent e) {
 
     }
 

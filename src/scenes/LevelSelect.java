@@ -110,7 +110,9 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseMoved(int x, int y) {
+    public void mouseMoved(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
         for(MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 button.setHovered(true);
@@ -136,12 +138,30 @@ public class LevelSelect extends GameScenes implements SceneMethods{
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        for (MyButton button: buttons){
+            if(button.getBounds().contains(x,y)) {
+                if (button.isChecked()) {
+//                helpers.Values.LEVEL = button.getType();
+                    playerValues.setRewardmultiplyer(0);
+                } else {
+                    playerValues.setRewardmultiplyer(1);
+                }
+                playerValues.setLevel(button.getLevel());
+
+                System.out.println("Level " + button.getText());
+                game.getPlaying().reset();
+                GameStates.gameState = GameStates.PLAYING;
+
+            }
+        }
         resetButtons();
 
     }
 
     @Override
-    public void mouseDragged(int x, int y) {
+    public void mouseDragged(MouseEvent e) {
 
     }
 

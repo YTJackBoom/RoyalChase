@@ -3,11 +3,12 @@ package playerinputs;
 import basics.Game;
 import scenes.GameStates;
 
+import javax.swing.event.MouseInputListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class MListener implements MouseListener, MouseMotionListener {
+public class MListener implements MouseInputListener {
     private Game game;
     public MListener(Game game) {
         this.game = game;
@@ -74,14 +75,14 @@ public class MListener implements MouseListener, MouseMotionListener {
     @Override
     public void mouseDragged(MouseEvent e) {
         switch (GameStates.gameState) {
-            case MENU -> game.getMenu().mouseDragged(e.getX(), e.getY());
-            case PLAYING -> game.getPlaying().mouseDragged(e.getX(), e.getY());
-            case SETTINGS -> game.getSettings().mouseDragged(e.getX(), e.getY());
-            case GAMEOVER -> game.getGameOver().mouseDragged(e.getX(), e.getY());
-            case LEVELCLEARED -> game.getLevelCleared().mouseDragged(e.getX(), e.getY());
-            case LEVELSELECT -> game.getLevelSelect().mouseDragged(e.getX(), e.getY());
-            case TUTORIAL -> game.getTutorial().mouseDragged(e.getX(), e.getY());
-            case TOWN -> game.getTown().mouseDragged(e.getX(), e.getY());
+            case MENU -> game.getMenu().mouseDragged(e);
+            case PLAYING -> game.getPlaying().mouseDragged(e);
+            case SETTINGS -> game.getSettings().mouseDragged(e);
+            case GAMEOVER -> game.getGameOver().mouseDragged(e);
+            case LEVELCLEARED -> game.getLevelCleared().mouseDragged(e);
+            case LEVELSELECT -> game.getLevelSelect().mouseDragged(e);
+            case TUTORIAL -> game.getTutorial().mouseDragged(e);
+            case TOWN -> game.getTown().mouseDragged(e);
 
 
         }
@@ -90,14 +91,14 @@ public class MListener implements MouseListener, MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent e) {
         switch (GameStates.gameState) {
-            case MENU -> game.getMenu().mouseMoved(e.getX(), e.getY());
-            case PLAYING -> game.getPlaying().mouseMoved(e.getX(), e.getY());
-            case SETTINGS -> game.getSettings().mouseMoved(e.getX(), e.getY());
-            case GAMEOVER -> game.getGameOver().mouseMoved(e.getX(), e.getY());
-            case LEVELCLEARED -> game.getLevelCleared().mouseMoved(e.getX(), e.getY());
-            case LEVELSELECT -> game.getLevelSelect().mouseMoved(e.getX(), e.getY());
-            case TUTORIAL -> game.getTutorial().mouseMoved(e.getX(), e.getY());
-            case TOWN -> game.getTown().mouseMoved(e.getX(), e.getY());
+            case MENU -> game.getMenu().mouseMoved(e);
+            case PLAYING -> game.getPlaying().mouseMoved(e);
+            case SETTINGS -> game.getSettings().mouseMoved(e);
+            case GAMEOVER -> game.getGameOver().mouseMoved(e);
+            case LEVELCLEARED -> game.getLevelCleared().mouseMoved(e);
+            case LEVELSELECT -> game.getLevelSelect().mouseMoved(e);
+            case TUTORIAL -> game.getTutorial().mouseMoved(e);
+            case TOWN -> game.getTown().mouseMoved(e);
 
         }
     }

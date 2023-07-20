@@ -89,7 +89,9 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mouseMoved(int x, int y) {
+    public void mouseMoved(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
         for (MyButton button: buttons){
             if(button.getBounds().contains(x,y)){
                 button.setHovered(true);
@@ -120,7 +122,7 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
     }
 
     @Override
-    public void mouseDragged(int x, int y) {
+    public void mouseDragged(MouseEvent e) {
 
     }
 

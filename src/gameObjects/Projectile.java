@@ -4,8 +4,7 @@ package gameObjects;
 import helpers.*;
 import controllers.ProjectileController;
 
-import static helpers.variables.Projectiles.ARROW;
-import static helpers.variables.Projectiles.ROCKET;
+import static helpers.variables.Projectiles.*;
 
 
 public class Projectile extends GameObject{
@@ -52,13 +51,14 @@ public class Projectile extends GameObject{
 	public void move() { //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
 		switch (type) {
 			case ARROW -> {
-				int[] tempArray = math.ProjectileMath.calculateArrowChange(pos, target.getPos(),getSpeed());
-				pos.setX(pos.getX() + tempArray[0]);
-				pos.setY(pos.getY() + tempArray[1]);
+				pos = math.ProjectileMath.calculateArrowPos(pos,target.getPos(),getSpeed());
 			}
 			case ROCKET -> {
 				numberForTrajectory += variables.Projectiles.getProjectileSpeed(variables.Projectiles.ROCKET);
 				pos = math.ProjectileMath.calculateRocketPos(pos, target.getPos(), numberForTrajectory, getSpeed());
+			}
+			case LIGHTNINGBALL -> {
+				pos = math.ProjectileMath.calculateLightningBallPos(pos,target.getPos(),getSpeed(),17);
 			}
 		}
 

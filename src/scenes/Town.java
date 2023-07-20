@@ -119,7 +119,9 @@ public class Town extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseMoved(int x, int y) {
+    public void mouseMoved(MouseEvent e) {
+        int x =e.getX();
+        int y =e.getY();
         if(buttonBar.getBounds().contains(x,y)){
             buttonBar.setVisible(true);
             buttonBar.mouseMoved(x,y);
@@ -156,9 +158,9 @@ public class Town extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseDragged(int x, int y) {
-        mouseX = x;
-        mouseY = y;
+    public void mouseDragged(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
 
     }
 

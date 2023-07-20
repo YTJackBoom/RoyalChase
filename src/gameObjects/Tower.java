@@ -6,6 +6,8 @@ import controllers.TowerController;
 
 import java.awt.*;
 
+import static helpers.variables.Projectiles.LIGHTNINGBALL;
+
 public class Tower extends GameObject {
 //	private Animator passiveAnimator, activeAnimatorTurret;
 //	private Animator animatorBase;

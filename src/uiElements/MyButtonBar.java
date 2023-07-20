@@ -54,9 +54,11 @@ public class MyButtonBar {
 
 		buttons.add(new MyButton(ARROW_T_B,startX+xOffset*3, startY+yOffset*3, width, height));
 		buttons.add(new MyButton(ROCKET_T_B,startX+xOffset*4, startY+yOffset*4,width,height));
+		buttons.add(new MyButton(MAGE_T_B,startX+xOffset*5,startY+yOffset*5,width,height));
+		buttons.add(new MyButton(SNIP_T_B,startX+xOffset*6,startY+yOffset*6,width,height));
 
 
-		buttons.add(new MyButton("Menu",startX+xOffset*5, startY+yOffset*5, width, height));
+		buttons.add(new MyButton("Menu",startX+xOffset*7, startY+yOffset*7, width, height));
 
 	}
 

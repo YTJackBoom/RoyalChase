@@ -4,6 +4,8 @@ import gameObjects.Enemy;
 import gameObjects.ObjectType;
 import gameObjects.Tower;
 
+import java.util.Random;
+
 public  class math {
 
     public static class TowerMath {
@@ -24,8 +26,8 @@ public  class math {
 
     public static class ProjectileMath {
         private static long previousTime;
-        public static int[] calculateArrowChange(Coordinate pos1, Coordinate pos2, double speed) { // int[0] = x ; 1 = y //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
-            int[] returnArray = new int[2];
+        public static Coordinate calculateArrowPos(Coordinate pos1, Coordinate pos2, double speed) { // int[0] = x ; 1 = y //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
+            Coordinate pos = pos1;
 
             double xMultiplyer;
             double yMultiplyer;
@@ -47,26 +49,24 @@ public  class math {
 
             //Berechnung x
             if (xDistance != 0 && pos2.getX() - pos1.getX() > 0) {
-                returnArray[0] = (int) Math.round(Math.cos(angel) * speed * xMultiplyer);
-//                pos.setX((pos.getX()+(int)Math.round(Math.cos(angel)*pSpeed*xMultiplyer)));
+//                returnArray[0] = (int) Math.round(Math.cos(angel) * speed * xMultiplyer);
+                pos.setX((pos.getX()+(int)Math.round(Math.cos(angel)*speed*xMultiplyer)));
             } else if (xDistance != 0) {
-                returnArray[0] = (int) Math.round(-Math.cos(angel) * speed * xMultiplyer);
-//                pos.setX((pos.getX()+(int)Math.round(-Math.cos(angel)*pSpeed*xMultiplyer)));
-            } else {
-                returnArray[0] = 0;
+//                returnArray[0] = (int) Math.round(-Math.cos(angel) * speed * xMultiplyer);
+                pos.setX((pos.getX()+(int)Math.round(-Math.cos(angel)*speed*xMultiplyer)));
             }
 
             //Berechnung y
             if (yDistance != 0 && pos2.getY() - pos1.getY() > 0) {
-                returnArray[1] = (int) Math.round(Math.sin(angel) * speed * yMultiplyer);
+//                returnArray[1] = (int) Math.round(Math.sin(angel) * speed * yMultiplyer);
+                pos.setY((pos.getY()+ (int) Math.round(Math.sin(angel) * speed * yMultiplyer) ));
             } else if (yDistance != 0) {
-                returnArray[1] = (int) Math.round(-Math.sin(angel) * speed * yMultiplyer);
-            } else {
-                returnArray[1] = 0;
+//                returnArray[1] = (int) Math.round(-Math.sin(angel) * speed * yMultiplyer);
+                pos.setY((pos.getY()+ (int) Math.round(-Math.sin(angel)*speed*yMultiplyer)));
             }
 
 //            System.out.println(returnArray[0]+ " "+ returnArray[1]);
-            return returnArray;
+            return pos;
         }
 
         public static Coordinate calculateRocketPos(Coordinate rocketPosition, Coordinate targetPosition,double sineX,double speed) {
@@ -110,6 +110,33 @@ public  class math {
             double finalY = newY + (sineY*Math.sin(180-90-angleC));
 
             return new Coordinate((int)finalX, (int)finalY+5);
+        }
+        public static Coordinate calculateLightningBallPos(Coordinate ballPosition, Coordinate targetPosition, double speed, double maxRandomDisplacement) {
+            double newX;
+            double newY;
+
+            double xDiff = targetPosition.getX() - ballPosition.getX();
+            double yDiff = targetPosition.getY() - ballPosition.getY();
+            double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+
+            // If the ball has reached the target, return the target position
+            if (distance <= speed) {
+                return targetPosition;
+            }
+
+            // Calculate the angle in radians between the ball and target
+            double angleToTarget = Math.atan2(yDiff, xDiff);
+
+            // Introduce some randomness to the movement by applying random displacements
+            Random random = new Random();
+            double randomDisplacementX = random.nextDouble() * maxRandomDisplacement;
+            double randomDisplacementY = random.nextDouble() * maxRandomDisplacement;
+
+            // Calculate the new position of the ball with random displacements
+            newX = ballPosition.getX() + (speed * Math.cos(angleToTarget)) + randomDisplacementX;
+            newY = ballPosition.getY() + (speed * Math.sin(angleToTarget)) + randomDisplacementY;
+
+            return new Coordinate((int) newX, (int) newY);
         }
 
 

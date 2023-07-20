@@ -1,7 +1,6 @@
 package helpers;
 
 import javax.imageio.ImageIO;
-import javax.lang.model.util.SimpleAnnotationValueVisitor6;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Field;
@@ -39,7 +38,7 @@ public class variables { //class to define different variables for thing
 
         public static int getEnemyHealth(int enemyType) {
             return switch (enemyType) {
-                case SLIME -> 100;
+                case SLIME -> 50;
                 case SKELETON -> 100;
                 case ZOMBIE -> 100;
                 case WITCH -> 100;
@@ -195,7 +194,7 @@ public class variables { //class to define different variables for thing
             return switch (towerType) {
                 case Foundation_T -> "res/images/towers/passive/foundation_t_passive/";
                 case ARROW_T -> "res/images/towers/passive/arrow_t_passive/";
-                case MAGE_T -> "res/images/towers/passive/foundation_t_passive/";
+                case MAGE_T -> "res/images/towers/passive/arrow_t_passive/";
                 case ROCKET_T -> "res/images/towers/passive/rocket_t_passive/";
                 case SNIP_T -> "res/images/towers/passive/foundation_t_passive/";
                 default -> throw new IllegalStateException("variables: getTowerPassiveGifFile: Unexpected value:  " + towerType);
@@ -207,7 +206,7 @@ public class variables { //class to define different variables for thing
             return switch (towerType) {
                 case Foundation_T -> "res/images/towers/active/foundation_t_active/";
                 case ARROW_T -> "res/images/towers/active/arrow_t_active/";
-                case MAGE_T -> "res/images/towers/active/foundation_t_active/";
+                case MAGE_T -> "res/images/towers/active/arrow_t_active/";
                 case ROCKET_T -> "res/images/towers/active/rocket_t_active/";
                 case SNIP_T -> "res/images/towers/active/foundation_t_active/";
                 default -> throw new IllegalStateException("variables: getTowerActiveGifFile: Unexpected value:  " + towerType);
@@ -224,7 +223,7 @@ public class variables { //class to define different variables for thing
             return switch (towerType) {
                 case Foundation_T -> 0;
                 case ARROW_T -> 500;
-                case MAGE_T -> 0;
+                case MAGE_T -> 350;
                 case ROCKET_T -> 500;
                 case SNIP_T -> 0;
                 default -> throw new IllegalStateException("variables: getRange: Unexpected value:  " + towerType);
@@ -270,7 +269,7 @@ public class variables { //class to define different variables for thing
     public static class Projectiles {
         public static final int EMPTY = Towers.Foundation_T; //preloader can only start at 0
         public static final int ARROW = Towers.ARROW_T;
-        public static final int FIREBALL = Towers.MAGE_T;
+        public static final int LIGHTNINGBALL = Towers.MAGE_T;
         public static final int ROCKET = Towers.ROCKET_T;
         public static final int BULLET = Towers.SNIP_T;
 
@@ -278,6 +277,7 @@ public class variables { //class to define different variables for thing
             return switch (projectileType) {
                 case ARROW -> 25;
                 case ROCKET -> 20;
+                case LIGHTNINGBALL -> 15;
                 default -> throw new IllegalStateException("variables: getProjectileSpeed: Unexpected value:  " + projectileType);
             };
         }
@@ -286,6 +286,7 @@ public class variables { //class to define different variables for thing
             return switch (projectileType) {
                 case ARROW -> 5;
                 case ROCKET -> 70;
+                case LIGHTNINGBALL -> 90;
                 default -> throw new IllegalStateException("variables: getProjectileDamage: Unexpected value:  " + projectileType);
             };
         }
@@ -294,7 +295,7 @@ public class variables { //class to define different variables for thing
             return switch (projectileType) {
                 case EMPTY -> null;
                 case ARROW -> "res/images/projectiles/active/arrow_p_active/";
-                case FIREBALL -> null;
+                case LIGHTNINGBALL -> "res/images/projectiles/active/lightningball_p_active/";
                 case ROCKET -> "res/images/projectiles/active/rocket_P_active/";
                 case BULLET -> null;
 
@@ -323,7 +324,9 @@ public class variables { //class to define different variables for thing
             return switch (buttonType) {
                 case Foundation_T_B -> new File("res/images/buttons/blue_square.png");
                 case ARROW_T_B -> new File("res/images/buttons/green_square.png");
+                case MAGE_T_B -> new File("res/images/buttons/purple_square.png");
                 case ROCKET_T_B -> new File("res/images/buttons/red_square.png");
+                case SNIP_T_B -> new File("res/images/buttons/cyan_square.png");
                 case MANA_B_B -> new File("res/images/buttons/blue_square.png");
 
                 default -> throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);

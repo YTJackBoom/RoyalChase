@@ -181,7 +181,9 @@ public class Playing extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseMoved(int x, int y) {
+    public void mouseMoved(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
         if(buttonBarRight.getBounds().contains(x,y)){
             buttonBarRight.setVisible(true);
             buttonBarRight.mouseMoved(x,y);
@@ -227,10 +229,10 @@ public class Playing extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseDragged(int x, int y) {
-        mouseX = x;
-        mouseY = y;
-        infoOverlay.mouseDragged(x,y);
+    public void mouseDragged(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+        infoOverlay.mouseDragged(mouseX,mouseY);
     }
 
     public void resetBools() {
