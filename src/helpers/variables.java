@@ -201,6 +201,17 @@ public class variables { //class to define different variables for thing
 
             };
         }
+        public static File getTowerPassiveGifFile(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> new File("res/images/towers/passive/foundation_t_passive/normal.gif");
+                case ARROW_T -> new File("res/images/towers/passive/arrow_t_passive/normal.gif");
+                case MAGE_T -> new File("res/images/towers/passive/arrow_t_passive/normal.gif");
+                case ROCKET_T -> new File("res/images/towers/passive/rocket_t_passive/normal.gif");
+                case SNIP_T -> new File("res/images/towers/passive/foundation_t_passive/normal.gif");
+                default -> throw new IllegalStateException("variables: getTowerPassiveGifFile: Unexpected value:  " + towerType);
+
+            };
+        }
 
         public static String getTowerActiveGifPath(int towerType) {
             return switch (towerType) {
@@ -264,6 +275,7 @@ public class variables { //class to define different variables for thing
         public static int getLowestInt(){return variables.getLowestInt(Towers.class);}
 
 
+
     }
 
     public static class Projectiles {
@@ -291,12 +303,12 @@ public class variables { //class to define different variables for thing
             };
         }
 
-        public static String getProjectileGifPath(int projectileType) {
+        public static File getProjectileGifFile(int projectileType) {
             return switch (projectileType) {
                 case EMPTY -> null;
-                case ARROW -> "res/images/projectiles/active/arrow_p_active/";
-                case LIGHTNINGBALL -> "res/images/projectiles/active/lightningball_p_active/";
-                case ROCKET -> "res/images/projectiles/active/rocket_P_active/";
+                case ARROW -> new File("res/images/projectiles/active/arrow_p_active/normal.gif");
+                case LIGHTNINGBALL -> new File("res/images/projectiles/active/lightningball_p_active/normal.gif");
+                case ROCKET -> new File("res/images/projectiles/active/rocket_P_active/normal.gif");
                 case BULLET -> null;
 
                 default -> throw new IllegalStateException("variables: getProjectileGifPath: Unexpected value:  " + projectileType);

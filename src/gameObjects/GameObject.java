@@ -1,9 +1,7 @@
 package gameObjects;
 
-import helpers.Animator;
-import helpers.Coordinate;
-import helpers.HitBox;
-import helpers.PreLoader;
+import basics.Direction;
+import helpers.*;
 
 import static gameObjects.ObjectType.*;
 
@@ -28,19 +26,19 @@ public abstract class GameObject {
 	private void initAnimators(PreLoader preLoader){
 		switch (objectType) {
 			case ENEMY -> {
-				activeAnimator = preLoader.getEnemyActiveAnimator(type);
-				passiveAnimator = preLoader.getEnemyPassiveAnimator(type);
+				activeAnimator = preLoader.getEnemyActiveAnimator(type).clone();
+				passiveAnimator = preLoader.getEnemyPassiveAnimator(type).clone();
 			}
 			case TOWER -> {
-				activeAnimator = preLoader.getTowerActiveAnimator(type);
-				passiveAnimator = preLoader.getTowerPassiveAnimator(type);
-				animatorTowerBase = preLoader.getTowerBaseAnimator(type);
+				activeAnimator = preLoader.getTowerActiveAnimator(type).clone();
+				passiveAnimator = preLoader.getTowerPassiveAnimator(type).clone();
+				animatorTowerBase = preLoader.getTowerBaseAnimator(type).clone();
 			}
 			case BUILDING -> {
-				activeAnimator = preLoader.getBuildingAnimator(type);
+				activeAnimator = preLoader.getBuildingAnimator(type).clone();
 			}
 			case PROJECTILE -> {
-				activeAnimator = preLoader.getProjectileAnimator(type);
+				activeAnimator = preLoader.getProjectileAnimator(type).clone();
 			}
 		}
 	}
@@ -68,6 +66,21 @@ public abstract class GameObject {
 		return pos;
 	}
 	public void setPos(Coordinate pos) {
+		Coordinate prePos = this.pos;
+		Direction dir = Direction.NORMAL;
+		if(prePos.getX() < pos.getX()&&prePos.getY() > pos.getY()) {
+			dir = Direction.NORMAL;
+		}
+		if(prePos.getX() > pos.getX()&&prePos.getY() < pos.getY()) {
+			dir = Direction.DOWN;
+		}
+		if(prePos.getX() < pos.getX()&&Math.abs(prePos.getY() - pos.getY()) < Constants.ObjectConstants.MAXYCHANGEFORRIGHTORLEFTMOVEMENT) {
+			dir = Direction.RIGHT;
+		}
+		if(prePos.getX() > pos.getX()&&Math.abs(prePos.getY() - pos.getY()) < Constants.ObjectConstants.MAXYCHANGEFORRIGHTORLEFTMOVEMENT) {
+			dir = Direction.LEFT;
+		}
+		activeAnimator.setDirection(dir);
 		this.pos = pos;
 	}
 

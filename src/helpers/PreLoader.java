@@ -28,11 +28,11 @@ public class PreLoader {
         }
         for(int i =variables.Towers.getLowestInt() ; i < variables.Towers.getNumberOfIntDeclarations();i++) {
             towerActiveTurretAnimators.add(new Animator(variables.Towers.getTowerActiveGifPath(i)));
-            towerPassiveTurretAnimators.add(new Animator(variables.Towers.getTowerPassiveGifPath(i)));
+            towerPassiveTurretAnimators.add(new Animator(variables.Towers.getTowerPassiveGifFile(i)));
             towerBaseAnimators.add(new Animator(variables.Towers.getTowerBaseGifFile(i)));
         }
         for(int i = variables.Projectiles.getLowestInt(); i < variables.Projectiles.getNumberOfIntDeclarations();i++) {
-            projectileAnimators.add(new Animator(variables.Projectiles.getProjectileGifPath(i)));
+            projectileAnimators.add(new Animator(variables.Projectiles.getProjectileGifFile(i)));
         }
         for(int i = variables.Buildings.getLowestInt(); i <variables.Buildings.getNumberOfIntDeclarations();i++) {
             buildingsAnimators.add(new Animator(variables.Buildings.getBuidingGifFile(i)));

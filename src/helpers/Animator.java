@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static basics.Direction.NORMAL;
 
-public class Animator {
+public class Animator implements Cloneable{
     private int currentImageIndex;
     private BufferedImage[] imageArray,imageArrayUp, imageArrayDown, imageArrayLeft, imageArrayRight;
     private File gifFile, gifFileUp, gifFileDown, gifFileLeft, gifFileRight;
@@ -24,9 +24,9 @@ public class Animator {
             try {
                 imageArray = splitGifIntoFrames(gifFile);
 //                imageArrayUp = splitGifIntoFrames(gifFileUp);
-//                imageArrayDown = splitGifIntoFrames(gifFileDown);
-//                imageArrayLeft = splitGifIntoFrames(gifFileLeft);
-//                imageArrayRight = splitGifIntoFrames(gifFileRight);
+                imageArrayDown = splitGifIntoFrames(gifFileDown);
+                imageArrayLeft = splitGifIntoFrames(gifFileLeft);
+                imageArrayRight = splitGifIntoFrames(gifFileRight);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -48,9 +48,9 @@ public class Animator {
     public void initGifs(String gifFilesPath) {
         gifFile = new File(gifFilesPath + "normal.gif");
 //        gifFileUp = new File(gifFilesPath + "up.gif");
-//        gifFileDown = new File(gifFilesPath + "down.gif");
-//        gifFileLeft = new File(gifFilesPath + "left.gif");
-//        gifFileRight = new File(gifFilesPath + "right.gif");
+        gifFileDown = new File(gifFilesPath + "down.gif");
+        gifFileLeft = new File(gifFilesPath + "left.gif");
+        gifFileRight = new File(gifFilesPath + "right.gif");
     }
 
     public BufferedImage[] splitGifIntoFrames(File tgifFile) throws IOException {
@@ -86,13 +86,42 @@ public class Animator {
             currentImageIndex = 0;
         }
        // System.out.println(currentImageIndex);
-        return switch (direction) {
-            case NORMAL -> imageArray[currentImageIndex];
-            case UP -> imageArrayUp[currentImageIndex];
-            case DOWN -> imageArrayDown[currentImageIndex];
-            case LEFT -> imageArrayLeft[currentImageIndex];
-            case RIGHT -> imageArrayRight[currentImageIndex];
+         switch (direction) {
+            case NORMAL -> {
+                if (!(currentImageIndex >=imageArray.length-1)) {
+                    currentImageIndex++;
+                } else {
+                    currentImageIndex = 0;
+                }
+                return imageArray[currentImageIndex];
+
+            }
+            case DOWN -> {
+                if (!(currentImageIndex >=imageArrayDown.length-1)) {
+                    currentImageIndex++;
+                } else {
+                    currentImageIndex = 0;
+                }
+                return imageArrayDown[currentImageIndex];
+            }
+            case LEFT -> {
+                if (!(currentImageIndex >=imageArrayLeft.length-1)) {
+                    currentImageIndex++;
+                } else {
+                    currentImageIndex = 0;
+                }
+                return imageArrayLeft[currentImageIndex];
+            }
+            case RIGHT -> {
+                if (!(currentImageIndex >=imageArrayRight.length-1)) {
+                    currentImageIndex++;
+                } else {
+                    currentImageIndex = 0;
+                }
+                return imageArrayRight[currentImageIndex];
+            }
         };
+        return null;
     }
 
     public int getWidth(){
@@ -104,5 +133,16 @@ public class Animator {
     }
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    @Override
+    public Animator clone() {
+        try {
+            Animator clone = (Animator) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
