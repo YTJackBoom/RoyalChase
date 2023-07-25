@@ -27,7 +27,7 @@ public class Constants {
 		public static final double SPEEDUPGRADE = 0.15;
 
 		public static final double LOWESTRELOADSPEED = 300;
-		public static final int MAXYCHANGEFORRIGHTORLEFTMOVEMENT = 13;
+		public static final int MAXYCHANGEFORRIGHTORLEFTMOVEMENT = 16;
 
 
 	}

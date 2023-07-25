@@ -330,6 +330,9 @@ public class variables { //class to define different variables for thing
         public static final int ROCKET_T_B = 3;
         public static final int SNIP_T_B = 4;
         public static final int MANA_B_B = 5;
+        public static final int IRON_B_B = 6;
+        public static final int WOOD_B_B = 7;
+        public static final int STONE_B_B = 8;
 
 
         public static File getButtonImageFile(int buttonType) {

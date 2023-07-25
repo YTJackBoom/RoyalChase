@@ -177,13 +177,11 @@ public class MyButtonBar {
 		for(MyButton button: buttons){
 			if(button.getBounds().contains(x,y)){
 				button.setPressed(true);
-				if(button.isTowerButton()){
-					if(scene.getClass() == Playing.class) {
+					if(scene.getClass() == Playing.class&&button.isTowerButton()) {
 						Playing playing = (Playing) scene;
 						playing.setDragingTower(true);
 						playing.setDraggedTower(button.getType());
-					}
-					if(scene.getClass() == Town.class) {
+					}else if(scene.getClass() == Town.class&&button.isBuildingButton()) {
 						Town town = (Town) scene;
 						town.setDragingBuilding(true);
 						town.setSelectedBuilding(button.getType());
@@ -192,7 +190,6 @@ public class MyButtonBar {
 			}
 		}
 
-	}
 
 	public void mouseReleased(int x, int y) {
 		resetButtons();

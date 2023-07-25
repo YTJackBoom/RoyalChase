@@ -39,7 +39,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
             buttons.add(new MyButton((i+1),new Coordinate(x,y),buttonWidth,buttonHeight));
         }
         buttons.add(new MyButton(0,new Coordinate(buttonXStart-buttonXOffset,buttonYStart),buttonWidth,buttonHeight));
-        buttons.add(new MyButton("Back",buttonXStart-(buttonXOffset+buttonXOffset/2),buttonYStart-buttonYOffset/2,buttonWidth/2,buttonHeight/2));
+        buttons.add(new MyButton("Zurück",buttonXStart-(buttonXOffset+buttonXOffset/2),buttonYStart-buttonYOffset/2,buttonWidth/2,buttonHeight/2));
     }
 
     @Override
@@ -91,22 +91,22 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         int x = e.getX();
         int y = e.getY();
 
-        for (MyButton button: buttons){
-            if(button.getBounds().contains(x,y)) {
-                if (button.isChecked()) {
-//                helpers.Values.LEVEL = button.getType();
-                    playerValues.setRewardmultiplyer(0);
-                } else {
-                    playerValues.setRewardmultiplyer(1);
-                }
-                playerValues.setLevel(button.getLevel());
-
-                System.out.println("Level " + button.getText());
-                game.getPlaying().reset();
-                GameStates.gameState = GameStates.PLAYING;
-
-            }
-        }
+//        for (MyButton button: buttons){
+//            if(button.getBounds().contains(x,y)) {
+//                if (button.isChecked()) {
+////                helpers.Values.LEVEL = button.getType();
+//                    playerValues.setRewardmultiplyer(0);
+//                } else {
+//                    playerValues.setRewardmultiplyer(1);
+//                }
+//                playerValues.setLevel(button.getLevel());
+//
+//                System.out.println("Level " + button.getText());
+//                game.getPlaying().reset();
+//                GameStates.gameState = GameStates.PLAYING;
+//
+//            }
+//        }
     }
 
     @Override
@@ -142,18 +142,21 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         int y = e.getY();
         for (MyButton button: buttons){
             if(button.getBounds().contains(x,y)) {
-                if (button.isChecked()) {
+                if(button.getLevel()>=0) {
+                    if (button.isChecked()) {
 //                helpers.Values.LEVEL = button.getType();
-                    playerValues.setRewardmultiplyer(0);
-                } else {
-                    playerValues.setRewardmultiplyer(1);
+                        playerValues.setRewardmultiplyer(0);
+                    } else {
+                        playerValues.setRewardmultiplyer(1);
+                    }
+                    playerValues.setLevel(button.getLevel());
+
+                    System.out.println("Level " + button.getText());
+                    game.getPlaying().reset();
+                    GameStates.gameState = GameStates.PLAYING;
+                }else {
+                    releasedOnTextButton(button);
                 }
-                playerValues.setLevel(button.getLevel());
-
-                System.out.println("Level " + button.getText());
-                game.getPlaying().reset();
-                GameStates.gameState = GameStates.PLAYING;
-
             }
         }
         resetButtons();
@@ -169,6 +172,13 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     public void reset() {
         for (MyButton b  : buttons) {
             b.setChecked(false);
+        }
+    }
+
+    public void releasedOnTextButton(MyButton b){
+        switch (b.getText()) {
+            case "Zurück" -> GameStates.gameState = GameStates.MENU;
+            default -> System.out.println("THis Button should not exist: "+b.getText());
         }
     }
 

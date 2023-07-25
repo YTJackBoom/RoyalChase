@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.lang.invoke.VarHandle;
 import java.util.Collection;
 
-import static helpers.variables.Buttons.Foundation_T_B;
-import static helpers.variables.Buttons.SNIP_T_B;
+import static helpers.variables.Buttons.*;
 
 public class MyButton {
 	private boolean checked = false;
@@ -23,7 +22,7 @@ public class MyButton {
 	private int type;
 	private Rectangle bounds;
 	private int x,y,width,height;
-	private int level;
+	private int level = -1;
 	private BufferedImage ButtonImage;
 	public MyButton(String text, int x, int y, int width, int height) {
 		this.text = text;
@@ -136,9 +135,8 @@ public class MyButton {
 		return type >= Foundation_T_B && !isTextButton && type <= SNIP_T_B;
 	}
 	public boolean isBuildingButton() {
-		return type > SNIP_T_B && !isTextButton;
+		return type >= MANA_B_B && !isTextButton && type <= STONE_B_B;
 	}
-
 	public int getX() {
 		return x;
 	}
