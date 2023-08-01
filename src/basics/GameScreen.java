@@ -1,8 +1,7 @@
 package basics;
 
 
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 
 import playerinputs.KListener;
 import playerinputs.MListener;
@@ -19,6 +18,7 @@ public class GameScreen extends JPanel {
 
 	public static final int fWIDTH = 1920;
 	public static final int fHEIGHT = 1080;
+	public static final Rectangle fBOUNDS = new Rectangle(fWIDTH,fHEIGHT);
 
 
 

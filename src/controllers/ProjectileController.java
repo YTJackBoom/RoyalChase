@@ -12,7 +12,9 @@ import scenes.Playing;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static basics.GameScreen.fBOUNDS;
 import static helpers.math.GeneralMath.calculateAngle;
+import static helpers.variables.Projectiles.BULLET;
 import static helpers.variables.Projectiles.ROCKET;
 
 public class ProjectileController implements ControllerMethods {
@@ -67,19 +69,18 @@ public class ProjectileController implements ControllerMethods {
 
 
     public void update() {
-        if (projectileList != null&&!playing.isPaused()) {
+        if (projectileList != null&&!playing.isPaused()) {  //checksCollsions, all targets only iterated in the methods themselfs, first check with original target,
             for (Projectile projectile : projectileList) {
-                if(playing.getEnemyController().contains(projectile.getTarget())) {
+                if(playing.getEnemyController().contains(projectile.getTarget())||projectile.getType()==BULLET) { //BULLET is der einzige type, welcher sich unabhängig von seinem ziel beweegt
                     projectile.update();
-                    if(projectile.getType()!=ROCKET) {
-                        checkCollision(projectile, projectile.getTarget());
-                    }else {
-                        checkRocketCollision(projectile,projectile.getTarget());
+                    switch (projectile.getType()) {
+                        case ROCKET -> checkRocketCollision(projectile,projectile.getTarget());
+                        case BULLET -> checkBulletCollision(projectile,projectile.getTarget());
+                        default -> checkCollision(projectile,projectile.getTarget());
                     }
                 } else {
                     removeQueue.add(projectile);
                     System.out.println("removed");
-
                 }
             }
         }
@@ -121,6 +122,17 @@ public class ProjectileController implements ControllerMethods {
                     playing.getEnemyController().damageEnemiesInRadius(explosion, projectile.getDamage());
                     removeQueue.add(projectile);
                 }
+            }
+        }
+    }
+    public void checkBulletCollision(Projectile projectile, Enemy target) {
+        if(!fBOUNDS.contains(projectile.getPos().getX(),projectile.getPos().getY())){ //chekc ob projectile im spiel ist, nur für bullet da diese sich unnabhängig vom ziel bewegt
+            removeQueue.add(projectile);
+            System.out.println("out of bounds");
+        }
+        for (Enemy enemy : playing.getEnemyController().getEnemyList()) {
+            if(projectile.getHitBox().collidesWith(enemy.getHitBox())){
+                playing.getEnemyController().damageEnemy(enemy,projectile.getDamage());
             }
         }
     }

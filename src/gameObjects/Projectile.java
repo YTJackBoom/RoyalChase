@@ -16,6 +16,7 @@ public class Projectile extends GameObject{
 	private ProjectileController projectileController;
 	private int counter;
 	private double numberForTrajectory;
+	private double towerAngleToTarget;
 	private int height,width;
 
 
@@ -26,6 +27,7 @@ public class Projectile extends GameObject{
 		this.target = target;
 		this.projectileController = projectileController;
 		origin = tower;
+		towerAngleToTarget = math.GeneralMath.calculateAngle(target.getPos(),tower.getPos());
 //		initAnimator();
 		height = activeAnimator.getHeight();
 		width = activeAnimator.getWidth();
@@ -59,6 +61,9 @@ public class Projectile extends GameObject{
 			}
 			case LIGHTNINGBALL -> {
 				pos = math.ProjectileMath.calculateLightningBallPos(pos,target.getPos(),getSpeed(),17);
+			}
+			case BULLET -> {
+				pos = math.ProjectileMath.calculateBulletPos(pos,towerAngleToTarget,getSpeed());
 			}
 		}
 

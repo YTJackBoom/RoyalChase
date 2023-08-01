@@ -115,9 +115,8 @@ public  class math {
             double newX;
             double newY;
 
-            double xDiff = targetPosition.getX() - ballPosition.getX();
-            double yDiff = targetPosition.getY() - ballPosition.getY();
-            double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+
+            double distance = GeneralMath.calculateDistance(ballPosition,targetPosition);
 
             // If the ball has reached the target, return the target position
             if (distance <= speed) {
@@ -125,7 +124,7 @@ public  class math {
             }
 
             // Calculate the angle in radians between the ball and target
-            double angleToTarget = Math.atan2(yDiff, xDiff);
+            double angleToTarget = GeneralMath.calculateAngle(ballPosition,targetPosition);
 
             // Introduce some randomness to the movement by applying random displacements
             Random random = new Random();
@@ -139,7 +138,16 @@ public  class math {
             return new Coordinate((int) newX, (int) newY);
         }
 
+        public static Coordinate calculateBulletPos(Coordinate bulletPos, double angleInRadians, double speed) {
+            // Convert angle to radians if it is in degrees
+//            double angleInRadians = Math.toRadians(angle);
 
+            // Calculate new position
+            double newX = bulletPos.x + speed * -Math.cos(angleInRadians);
+            double newY = bulletPos.y + speed * -Math.sin(angleInRadians);
+
+            return new Coordinate((int)newX, (int)newY);
+        }
     }
 
 
@@ -148,7 +156,17 @@ public  class math {
         public static double calculateAngle(Coordinate pos1, Coordinate pos2) {
             double dx = pos2.getX() - pos1.getX();
             double dy = pos2.getY() - pos1.getY();
-            return Math.atan2(dy, dx);
+            double angleInRadians = Math.atan2(dy,dx);
+
+//            angleInRadians = -angleInRadians;
+//
+//            // Ensure the angle is within the range of -π to π
+//            if (angleInRadians < -Math.PI) {
+//                angleInRadians += 2 * Math.PI;
+//            } else if (angleInRadians > Math.PI) {
+//                angleInRadians -= 2 * Math.PI;
+//            }
+            return angleInRadians;
         }
         public static double calculateDistance(Coordinate pos1,Coordinate pos2){
             double dx = pos2.getX() - pos1.getX();
