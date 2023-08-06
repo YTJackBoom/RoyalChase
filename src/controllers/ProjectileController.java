@@ -79,6 +79,12 @@ public class ProjectileController implements ControllerMethods {
                         default -> checkCollision(projectile,projectile.getTarget());
                     }
                 } else {
+                    if(projectile.getType()==ROCKET) {
+                        Circle explosion = new Circle(projectile.getPos(), Constants.ObjectConstants.EXPLOSIONRADIUS);
+                        playing.getEnemyController().damageEnemiesInRadius(explosion,projectile.getDamage());
+                        removeQueue.add(projectile);
+                        System.out.println("removed");
+                    }
                     removeQueue.add(projectile);
                     System.out.println("removed");
                 }
