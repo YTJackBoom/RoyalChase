@@ -1,6 +1,7 @@
 package scenes;
 
 import basics.Game;
+import helpers.Constants;
 import uiElements.MyButton;
 
 import java.awt.*;
@@ -31,7 +32,7 @@ public class Menu extends GameScenes implements SceneMethods {
         int buttonY = 500;
         int offsetX = 200;
     buttons.add(new MyButton("Play",buttonX,buttonY,buttonWidth,buttonHeight));
-    buttons.add(new MyButton("Settings",buttonX+offsetX,buttonY,buttonWidth,buttonHeight));
+    buttons.add(new MyButton("Load Game",buttonX+offsetX,buttonY,buttonWidth,buttonHeight));
     buttons.add(new MyButton("Exit",buttonX+2*offsetX,buttonY,buttonWidth,buttonHeight));
     }
 
@@ -56,8 +57,8 @@ public class Menu extends GameScenes implements SceneMethods {
             if(button.getBounds().contains(x,y)){
                 if(button.getText().equals("Play")){
                     GameStates.gameState = GameStates.LEVELSELECT;
-                }else if(button.getText().equals("Settings")){
-                    GameStates.gameState = GameStates.SETTINGS;
+                }else if(button.getText().equals("Load Game")){
+                     game.loadGame(Constants.OtherConstants.SAVEGAMELOCATION);
                 }else if(button.getText().equals("Exit")){
                     System.exit(0);
                 }
@@ -100,8 +101,8 @@ public class Menu extends GameScenes implements SceneMethods {
             if(button.getBounds().contains(x,y)){
                 if(button.getText().equals("Play")){
                     GameStates.gameState = GameStates.LEVELSELECT;
-                }else if(button.getText().equals("Settings")){
-                    GameStates.gameState = GameStates.SETTINGS;
+                }else if(button.getText().equals("Load Game")){
+                    game.loadGame(Constants.OtherConstants.SAVEGAMELOCATION);
                 }else if(button.getText().equals("Exit")){
                     System.exit(0);
                 }

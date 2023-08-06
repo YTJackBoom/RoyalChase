@@ -1,6 +1,8 @@
 package helpers;
 
-public class Values {
+import java.io.Serializable;
+
+public class Values implements Serializable {
 
 
     public enum VALUES {

@@ -31,4 +31,8 @@ public class Constants {
 
 
 	}
+	public static class OtherConstants {
+		public static final String SAVEGAMELOCATION ="res/savegame";
+
+	}
 }

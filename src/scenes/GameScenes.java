@@ -5,7 +5,7 @@ import basics.Game;
 import java.awt.event.KeyEvent;
 
 public class GameScenes {
-    private Game game;
+    protected Game game;
     public GameScenes(Game game){
         this.game = game;
     }

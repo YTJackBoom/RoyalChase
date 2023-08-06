@@ -195,4 +195,7 @@ public class Town extends GameScenes implements SceneMethods{
     public void setCantAfford(boolean b) {
         cantAfford = b;
     }
+    public BuildingsController getBuildingsController() {
+        return buildingsController;
+    }
 }

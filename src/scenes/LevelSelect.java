@@ -187,4 +187,8 @@ public class LevelSelect extends GameScenes implements SceneMethods{
             button.resetBools();
         }
     }
+
+    public void setPlayerValues(Values playerValues) {
+        this.playerValues = playerValues;
+    }
 }

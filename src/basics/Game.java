@@ -3,6 +3,10 @@ package basics;
 import javax.swing.*;
 
 
+import controllers.BuildingsController;
+import gameObjects.Building;
+import helpers.BuildingSaveState;
+import helpers.Coordinate;
 import helpers.PreLoader;
 import helpers.Values;
 import scenes.*;
@@ -10,8 +14,9 @@ import uiElements.InfoOverlay;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
-public class Game extends JFrame  {
+public class Game extends JFrame implements Serializable {
 
         public final static int fps = 15;
         public static final int ups = 120; //updates per second, for the game logic
@@ -32,10 +37,10 @@ public class Game extends JFrame  {
         private Tutorial tutorial;
         private Town town;
         private InfoOverlay infoOverlay;
-        private Values playerValues;
+        private GameState gameState;
 
 
-        private Timer RenderTimer, GameTimer;
+        private Timer RenderTimer;
         private PreLoader preLoader;
 
 
@@ -58,8 +63,7 @@ public class Game extends JFrame  {
 
 
         private void initClasses() {
-            playerValues = new Values();
-
+            gameState = new GameState(this);
             preLoader = new PreLoader();
 
             infoOverlay = new InfoOverlay(this);
@@ -143,9 +147,50 @@ public class Game extends JFrame  {
                 tutorial.resume();
             }
         }
+        public void saveGame( String filePath) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(gameState);
+            out.close();
+            fileOut.close();
+            System.out.println("Game saved");
+         } catch (IOException i) {
+            i.printStackTrace();
+         }
+        }
+    public void loadGame(String filePath) {
+        GameState gameState = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(filePath);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            gameState = (GameState) in.readObject();
+            in.close();
+            fileIn.close();
+            this.gameState = gameState;
+            loadTownBuildings();
+            levelSelect.setPlayerValues(getPlayerValues());
+            infoOverlay.setPlayerValues(getPlayerValues());
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("GameState class not found");
+            c.printStackTrace();
+        }
 
-        public void fpsCounter() { //calculates refreshes per second  and  prints them
+    }
 
+
+
+
+        private void loadTownBuildings() {
+            int i=0;
+            BuildingsController buildingsController = town.getBuildingsController();
+            for(BuildingSaveState b: gameState.getTownBuildingsSave()) {
+                Coordinate pos = b.getPos();
+                buildingsController.getBuildingsList().set(i,new Building(buildingsController,pos.getX(),pos.getY(),b.getType()));
+                i++;
+            }
         }
         // Getters and setters
         protected synchronized void incrementUPS() {
@@ -184,7 +229,7 @@ public class Game extends JFrame  {
          public LevelCleared getLevelCleared() {
             return levelCleared;
         }
-        public Values getPlayerValues() {return playerValues;}
+        public Values getPlayerValues() {return gameState.getPlayerValues();}
         @Override
         public int getHeight() {
             return gameScreen.getHeight();
@@ -196,6 +241,8 @@ public class Game extends JFrame  {
         public boolean isPaused() {
             return isPaused;
         }
+        public GameState getGameState(){return gameState;}
+        public void setGameState(GameState g){gameState = g;}
 
         public GameScreen getGameScreen() {
             return gameScreen;
@@ -206,7 +253,7 @@ public class Game extends JFrame  {
             levelSelect.reset();
             tutorial.reset();
               town.reset();
-            playerValues.reset();
+            getPlayerValues().reset();
          }
 
         public boolean isFullScreen() {

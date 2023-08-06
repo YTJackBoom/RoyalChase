@@ -27,6 +27,8 @@ public class BuildingsController implements ControllerMethods{
 		initBuildings();
 	}
 
+
+
 	public void initVariables() {
 		buildingsList = new ArrayList<Building>();
 		playerValues = town.getGame().getPlayerValues();
@@ -97,5 +99,8 @@ public class BuildingsController implements ControllerMethods{
 				}
 			}
 		}
+		}
+		public ArrayList<Building> getBuildingsList() {
+		return buildingsList;
 		}
 	}

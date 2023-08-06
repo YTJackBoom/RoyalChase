@@ -1,6 +1,7 @@
 package scenes;
 
 import basics.Game;
+import helpers.Constants;
 import helpers.Values;
 import uiElements.MyButton;
 
@@ -66,25 +67,25 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getButton() == 1) {
-            int x = e.getX();
-            int y = e.getY();
-            for (MyButton button : buttons) {
-                if (button.getBounds().contains(x, y)) {
-                    if (playerValues.getRewardmultiplyer() == 1) {
-                        playerValues.setLevelscleared(playerValues.getLevelscleared()+1);
-                    }
-                    if (button.getText().equals("Continue")) {
-                        GameStates.gameState = GameStates.LEVELSELECT;
-                        System.out.println("Continue");
-                    } else if (button.getText().equals("Save")) {
-//                    GameStates.gameState = GameStates.SAVE;
-                    } else if (button.getText().equals("Main Menu")) {
-                        GameStates.gameState = GameStates.MENU;
-                    }
-                }
-            }
-        }
+//        if(e.getButton() == 1) {
+//            int x = e.getX();
+//            int y = e.getY();
+//            for (MyButton button : buttons) {
+//                if (button.getBounds().contains(x, y)) {
+//                    if (playerValues.getRewardmultiplyer() == 1) {
+//                        playerValues.setLevelscleared(playerValues.getLevelscleared()+1);
+//                    }
+//                    if (button.getText().equals("Continue")) {
+//                        GameStates.gameState = GameStates.LEVELSELECT;
+//                        System.out.println("Continue");
+//                    } else if (button.getText().equals("Save")) {
+//                        game.saveGame(Constants.OtherConstants.SAVEGAMELOCATION);
+//                    } else if (button.getText().equals("Main Menu")) {
+//                        GameStates.gameState = GameStates.MENU;
+//                    }
+//                }
+//            }
+//        }
 
     }
 
@@ -117,6 +118,25 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(e.getButton() == 1) {
+            int x = e.getX();
+            int y = e.getY();
+            for (MyButton button : buttons) {
+                if (button.getBounds().contains(x, y)) {
+                    if (playerValues.getRewardmultiplyer() == 1) {
+                        playerValues.setLevelscleared(playerValues.getLevelscleared()+1);
+                    }
+                    if (button.getText().equals("Continue")) {
+                        GameStates.gameState = GameStates.LEVELSELECT;
+                        System.out.println("Continue");
+                    } else if (button.getText().equals("Save")) {
+                        game.saveGame(Constants.OtherConstants.SAVEGAMELOCATION);
+                    } else if (button.getText().equals("Main Menu")) {
+                        GameStates.gameState = GameStates.MENU;
+                    }
+                }
+            }
+        }
         resetButtons();
 
     }

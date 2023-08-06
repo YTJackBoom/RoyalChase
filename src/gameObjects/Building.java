@@ -4,12 +4,13 @@ import controllers.BuildingsController;
 import helpers.*;
 
 import java.awt.*;
+import java.io.Serializable;
 
 import static basics.Game.fps;
 import static basics.Game.ups;
 import static helpers.Values.*;
 
-public class Building extends GameObject{
+public class Building extends GameObject {
 	private int x,y;
 	private int counter;
 	private int type;

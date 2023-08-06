@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static helpers.variables.Towers.ARROW_T;
+import static helpers.variables.Towers.ROCKET_T;
 
 public class TowerController implements ControllerMethods{
     private ArrayList<Tower> towerEntityList;
@@ -79,28 +80,34 @@ public class TowerController implements ControllerMethods{
                 if(tower.isActive()) {
                     // Retrieve the current image of the active animator
                     Image turretImage = tower.getActiveAnimator().getCurrentImage();
+                    if (tower.getType() == ROCKET_T) {
 
-                    // Calculate the angle between the tower and its target
-                    double angle = math.GeneralMath.calculateAngle(tower.getPos(), tower.getTarget().getPos());
 
-                    // Create a new Graphics2D object
-                    Graphics2D g2d = (Graphics2D) g.create();
+                        // Calculate the angle between the tower and its target
+                        double angle = math.GeneralMath.calculateAngle(tower.getPos(), tower.getTarget().getPos());
 
-                    // Translate the graphics origin to the center of the tower
-                    g2d.translate(towerX + width / 2, towerY + height / 2);
+                        // Create a new Graphics2D object
+                        Graphics2D g2d = (Graphics2D) g.create();
 
-                    // Rotate the graphics by the calculated angle
-                    g2d.rotate(angle);
+                        // Translate the graphics origin to the center of the tower
+                        g2d.translate(towerX + width / 2, towerY + height / 2);
 
-                    // Draw the rotated turret image
-                    g2d.drawImage(turretImage, -width / 2, -height / 2, null);
+                        // Rotate the graphics by the calculated angle
+                        g2d.rotate(angle);
 
-                    // Dispose of the Graphics2D object
-                    g2d.dispose();
+                        // Draw the rotated turret image
+                        g2d.drawImage(turretImage, -width / 2, -height / 2, null);
+                        g.drawImage(tower.getAnimatorTowerBase().getCurrentImage(),baseX,baseY,null);
+
+
+                        // Dispose of the Graphics2D object
+                        g2d.dispose();
+                    } else {
+                        g.drawImage(turretImage,towerX,towerY,null);
+                    }
                 } else {
                     g.drawImage(tower.getPassiveAnimator().getCurrentImage(), towerX,towerY, null);
                 }
-                g.drawImage(tower.getAnimatorTowerBase().getCurrentImage(),baseX,baseY,null);
             }
         }
     }

@@ -192,4 +192,7 @@ public class InfoOverlay {
     public void setHoveredButton(MyButton hoveredButton) {
         this.hoveredButton = hoveredButton;
     }
+    public void setPlayerValues(Values playerValues) {
+        this.playerValues = playerValues;
+    }
 }
