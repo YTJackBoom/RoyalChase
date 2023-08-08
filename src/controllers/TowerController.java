@@ -1,10 +1,7 @@
 package controllers;
 
 import gameObjects.Enemy;
-import helpers.Coordinate;
-import helpers.Values;
-import helpers.math;
-import helpers.variables;
+import helpers.*;
 import scenes.Playing;
 import gameObjects.Tower;
 import towers.TowerFoundation;
@@ -12,8 +9,7 @@ import towers.TowerFoundation;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static helpers.variables.Towers.ARROW_T;
-import static helpers.variables.Towers.ROCKET_T;
+import static helpers.variables.Towers.*;
 
 public class TowerController implements ControllerMethods{
     private ArrayList<Tower> towerEntityList;
@@ -69,44 +65,24 @@ public class TowerController implements ControllerMethods{
 
 
     public void render(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
         if (towerEntityList != null) {
             for (Tower tower : towerEntityList) {
-                int width = tower.getWidth();
-                int height = tower.getHeight();
-                int towerX = tower.getPos().getX()-width/2;
-                int towerY = tower.getPos().getY()-height/2;
-                int baseX  = towerX + tower.getAnimatorTowerBase().getWidth()/2;
-                int baseY = towerY + tower.getAnimatorTowerBase().getHeight()/2;
-                if(tower.isActive()) {
-                    // Retrieve the current image of the active animator
+                int width = tower.getWidth() * Constants.UIConstants.TOWERSCALEFACTOR;
+                int height = tower.getHeight() * Constants.UIConstants.TOWERSCALEFACTOR;
+                int towerX = tower.getPos().getX() - width / 2;
+                int towerY = tower.getPos().getY() - height / 2;
+
+                if (tower.isActive()) {
                     Image turretImage = tower.getActiveAnimator().getCurrentImage();
-                    if (tower.getType() == ROCKET_T) {
-
-
-                        // Calculate the angle between the tower and its target
-                        double angle = math.GeneralMath.calculateAngle(tower.getPos(), tower.getTarget().getPos());
-
-                        // Create a new Graphics2D object
-                        Graphics2D g2d = (Graphics2D) g.create();
-
-                        // Translate the graphics origin to the center of the tower
-                        g2d.translate(towerX + width / 2, towerY + height / 2);
-
-                        // Rotate the graphics by the calculated angle
-                        g2d.rotate(angle);
-
-                        // Draw the rotated turret image
-                        g2d.drawImage(turretImage, -width / 2, -height / 2, null);
-                        g.drawImage(tower.getAnimatorTowerBase().getCurrentImage(),baseX,baseY,null);
-
-
-                        // Dispose of the Graphics2D object
-                        g2d.dispose();
-                    } else {
-                        g.drawImage(turretImage,towerX,towerY,null);
-                    }
+                    g2d.drawImage(turretImage, towerX, towerY, width, height, null);
+                    tower.getActiveAnimator().incrementFrame();
                 } else {
-                    g.drawImage(tower.getPassiveAnimator().getCurrentImage(), towerX,towerY, null);
+                    Image turretImage = tower.getPassiveAnimator().getCurrentImage();
+                    g2d.drawImage(turretImage, towerX, towerY, width, height, null);
+                    tower.getPassiveAnimator().incrementFrame();
                 }
             }
         }

@@ -18,7 +18,7 @@ import java.io.*;
 
 public class Game extends JFrame implements Serializable {
 
-        public final static int fps = 15;
+        public final static int fps = 2;
         public static final int ups = 120; //updates per second, for the game logic
         private volatile int currentUPS = 0;
         private int currentFPS = 0;

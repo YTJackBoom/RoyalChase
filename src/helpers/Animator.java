@@ -13,7 +13,7 @@ import static basics.Direction.NORMAL;
 
 public class Animator implements Cloneable{
     private int currentImageIndex;
-    private BufferedImage[] imageArray,imageArrayUp, imageArrayDown, imageArrayLeft, imageArrayRight;
+    private BufferedImage[] currentImageArray, imageArray, imageArrayDown, imageArrayLeft, imageArrayRight;
     private File gifFile, gifFileUp, gifFileDown, gifFileLeft, gifFileRight;
     private Direction direction;
     public Animator(String gifFilesPath) {
@@ -23,7 +23,6 @@ public class Animator implements Cloneable{
             initGifs(gifFilesPath);
             try {
                 imageArray = splitGifIntoFrames(gifFile);
-//                imageArrayUp = splitGifIntoFrames(gifFileUp);
                 imageArrayDown = splitGifIntoFrames(gifFileDown);
                 imageArrayLeft = splitGifIntoFrames(gifFileLeft);
                 imageArrayRight = splitGifIntoFrames(gifFileRight);
@@ -47,7 +46,6 @@ public class Animator implements Cloneable{
     }
     public void initGifs(String gifFilesPath) {
         gifFile = new File(gifFilesPath + "normal.gif");
-//        gifFileUp = new File(gifFilesPath + "up.gif");
         gifFileDown = new File(gifFilesPath + "down.gif");
         gifFileLeft = new File(gifFilesPath + "left.gif");
         gifFileRight = new File(gifFilesPath + "right.gif");
@@ -80,50 +78,24 @@ public class Animator implements Cloneable{
     }
 
     public BufferedImage getCurrentImage() {
-        if (!(currentImageIndex ==imageArray.length-1)) {
+
+        switch (direction) {
+            case NORMAL -> currentImageArray = imageArray;
+            case DOWN -> currentImageArray = imageArrayDown;
+            case LEFT -> currentImageArray = imageArrayLeft;
+            case RIGHT -> currentImageArray = imageArrayRight;
+            default -> throw new IllegalStateException("Unexpected direction value: " + direction);
+        }
+        return currentImageArray[currentImageIndex];
+    }
+
+    public void incrementFrame() {
+        if (currentImageIndex < currentImageArray.length ) {
             currentImageIndex++;
         } else {
             currentImageIndex = 0;
         }
-       // System.out.println(currentImageIndex);
-         switch (direction) {
-            case NORMAL -> {
-                if (!(currentImageIndex >=imageArray.length-1)) {
-                    currentImageIndex++;
-                } else {
-                    currentImageIndex = 0;
-                }
-                return imageArray[currentImageIndex];
-
-            }
-            case DOWN -> {
-                if (!(currentImageIndex >=imageArrayDown.length-1)) {
-                    currentImageIndex++;
-                } else {
-                    currentImageIndex = 0;
-                }
-                return imageArrayDown[currentImageIndex];
-            }
-            case LEFT -> {
-                if (!(currentImageIndex >=imageArrayLeft.length-1)) {
-                    currentImageIndex++;
-                } else {
-                    currentImageIndex = 0;
-                }
-                return imageArrayLeft[currentImageIndex];
-            }
-            case RIGHT -> {
-                if (!(currentImageIndex >=imageArrayRight.length-1)) {
-                    currentImageIndex++;
-                } else {
-                    currentImageIndex = 0;
-                }
-                return imageArrayRight[currentImageIndex];
-            }
-        };
-        return null;
     }
-
     public int getWidth(){
         return imageArray[0].getWidth();
     }

@@ -14,6 +14,7 @@ public class Constants {
 		//Colors
 		public static final Color TOWERCANTAFFORDCOLOR = new Color(Color.RED.getRGB());
 		public static final Color TOWERCANAFFORDCOLOR = new Color(Color.GREEN.getRGB());
+		public static final int TOWERSCALEFACTOR = 2;
 
 
 

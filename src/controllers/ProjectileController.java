@@ -60,6 +60,8 @@ public class ProjectileController implements ControllerMethods {
 
                 // Dispose of the Graphics2D object
                 g2d.dispose();
+
+                projectile.getActiveAnimator().incrementFrame();
                 }
 
 

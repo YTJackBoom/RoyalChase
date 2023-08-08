@@ -31,7 +31,6 @@ public class Tower extends GameObject {
 		this.pos = pos;
 		this.towerController = towerController;
 
-//		initAnimators();
 		initVariables();
 		initBounds();
 		initRange();
@@ -47,10 +46,7 @@ public class Tower extends GameObject {
 				counter = 0;
 			} else counter++;
 			fire();
-			;
-			;
-			//System.out.println("sdfe");
-		}
+			}
 	}
 	public void fire() {
 		//System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
@@ -67,13 +63,6 @@ public class Tower extends GameObject {
 		}
 	}
 
-
-//	public void initAnimators() {
-//		PreLoader preLoader = towerController.getPlaying().getGame().getPreLoader();
-//		passiveAnimator = preLoader.getTowerPassiveAnimator(type);
-//		activeAnimatorTurret = preLoader.getTowerActiveAnimator(type);
-//		animatorBase = preLoader.getTowerBaseAnimator(type);
-//	}
 	public void initVariables() {
 		this.height = activeAnimator.getHeight();
 		this.width = activeAnimator.getWidth();
@@ -127,17 +116,6 @@ public class Tower extends GameObject {
 		return isFiring;
 	}
 
-//	public Animator getActiveAnimatorTurret() {
-//		return activeAnimatorTurret;
-//	}
-//	public Animator getPassiveAnimator() {
-//		return passiveAnimator;
-//	}
-
-//	public Animator getAnimatorBase() {
-//		return animatorBase;
-//	}
-
 	public int getType() {
 		return type;
 	}
@@ -148,10 +126,10 @@ public class Tower extends GameObject {
 		return target;
 	}
 	public int getHeight() {
-		return height;
+		return activeAnimator.getHeight();
 	}
 	public int getWidth() {
-		return width;
+		return activeAnimator.getWidth();
 	}
 	public void upgrade() {level ++;}
 	public int getLevel() {return level;}

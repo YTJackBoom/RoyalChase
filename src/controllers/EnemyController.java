@@ -101,8 +101,10 @@ public class EnemyController implements ControllerMethods{
 				   int height = enemy.getActiveAnimator().getHeight();
 				   if (enemy.isActive()) {
 					   g.drawImage(enemy.getActiveAnimator().getCurrentImage(), enemy.getPos().getX()-width/2, enemy.getPos().getY()-height/2, null);
+					   enemy.getActiveAnimator().incrementFrame();
 				   } else {
 					   g.drawImage(enemy.getPassiveAnimator().getCurrentImage(), enemy.getPos().getX()-width/2, enemy.getPos().getY()-height/2, null);
+					   enemy.getPassiveAnimator().incrementFrame();
 				   }
 				   enemy.renderHealthBar(g);
 

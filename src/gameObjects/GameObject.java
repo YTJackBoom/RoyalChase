@@ -3,10 +3,12 @@ package gameObjects;
 import basics.Direction;
 import helpers.*;
 
+import java.io.File;
+
 import static gameObjects.ObjectType.*;
 
 public abstract class GameObject {
-	protected Animator activeAnimator,passiveAnimator,animatorTowerBase;
+	protected Animator activeAnimator,passiveAnimator;
 	protected ObjectType objectType;
 	protected int type;
 	protected Coordinate pos;
@@ -31,8 +33,8 @@ public abstract class GameObject {
 			}
 			case TOWER -> {
 				activeAnimator = preLoader.getTowerActiveAnimator(type).clone();
+//				activeAnimator = new Animator(new File("res/images/towers/active/mage_t_active/normal.gif"));
 				passiveAnimator = preLoader.getTowerPassiveAnimator(type).clone();
-				animatorTowerBase = preLoader.getTowerBaseAnimator(type).clone();
 			}
 			case BUILDING -> {
 				activeAnimator = preLoader.getBuildingAnimator(type).clone();
@@ -48,9 +50,6 @@ public abstract class GameObject {
 	}
 	public Animator getPassiveAnimator() {
 		return passiveAnimator;
-	}
-	public Animator getAnimatorTowerBase(){
-		return animatorTowerBase;
 	}
 	public void removeAnimators() {
 		activeAnimator = null;
