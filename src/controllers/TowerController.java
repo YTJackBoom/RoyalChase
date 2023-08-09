@@ -34,9 +34,6 @@ public class TowerController implements ControllerMethods{
                 checkTELStatus(tower);
             }
             tower.update();
-            if(tower.getType() == ARROW_T) {
-//                System.out.println(tower.getPos().getX()+ "  "+tower.getPos().getY());
-            }
         }
     }
     public void initTowers(ArrayList<Coordinate> foundList) {
@@ -73,14 +70,14 @@ public class TowerController implements ControllerMethods{
                 int width = tower.getWidth() * Constants.UIConstants.TOWERSCALEFACTOR;
                 int height = tower.getHeight() * Constants.UIConstants.TOWERSCALEFACTOR;
                 int towerX = tower.getPos().getX() - width / 2;
-                int towerY = tower.getPos().getY() - height / 2;
+                int towerY = tower.getPos().getY() - height/2;
 
                 if (tower.isActive()) {
-                    Image turretImage = tower.getActiveAnimator().getCurrentImage();
+                    Image turretImage = tower.getActiveAnimator().getCurrentFrame();
                     g2d.drawImage(turretImage, towerX, towerY, width, height, null);
                     tower.getActiveAnimator().incrementFrame();
                 } else {
-                    Image turretImage = tower.getPassiveAnimator().getCurrentImage();
+                    Image turretImage = tower.getPassiveAnimator().getCurrentFrame();
                     g2d.drawImage(turretImage, towerX, towerY, width, height, null);
                     tower.getPassiveAnimator().incrementFrame();
                 }

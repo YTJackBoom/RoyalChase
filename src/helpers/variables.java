@@ -203,11 +203,11 @@ public class variables { //class to define different variables for thing
         }
         public static File getTowerPassiveGifFile(int towerType) {
             return switch (towerType) {
-                case Foundation_T -> new File("res/images/towers/passive/foundation_t_passive/normal.gif");
-                case ARROW_T -> new File("res/images/towers/passive/arrow_t_passive/normal.gif");
-                case MAGE_T -> new File("res/images/towers/passive/mage_t_passive/normal.gif");
-                case ROCKET_T -> new File("res/images/towers/passive/rocket_t_passive/normal.gif");
-                case SNIP_T -> new File("res/images/towers/passive/mage_t_passive/normal.gif");
+                case Foundation_T -> new File("res/images/towers/passive/foundation_t_passive/up.gif");
+                case ARROW_T -> new File("res/images/towers/passive/arrow_t_passive/up.gif");
+                case MAGE_T -> new File("res/images/towers/passive/mage_t_passive/up.gif");
+                case ROCKET_T -> new File("res/images/towers/passive/rocket_t_passive/up.gif");
+                case SNIP_T -> new File("res/images/towers/passive/mage_t_passive/up.gif");
                 default -> throw new IllegalStateException("variables: getTowerPassiveGifFile: Unexpected value:  " + towerType);
 
             };

@@ -1,6 +1,7 @@
 package helpers;
 
 import basics.Direction;
+import basics.Game;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -10,22 +11,29 @@ import java.io.File;
 import java.io.IOException;
 
 import static basics.Direction.NORMAL;
+import static basics.Direction.UP;
 
 public class Animator implements Cloneable{
     private int currentImageIndex;
-    private BufferedImage[] currentImageArray, imageArray, imageArrayDown, imageArrayLeft, imageArrayRight;
-    private File gifFile, gifFileUp, gifFileDown, gifFileLeft, gifFileRight;
+    private BufferedImage[] currentImageArray, imageArrayUp, imageArrayDown, imageArrayLeft, imageArrayRight;
+    private File gifFileUp, gifFileDown, gifFileLeft, gifFileRight;
     private Direction direction;
+    private int updateCounter = 0; //to scale down the fps to accomaedate lower frames(4) of the gifs
+
+    private String path; //just for potential errors
     public Animator(String gifFilesPath) {
-        direction = NORMAL;
+        path = gifFilesPath;
+        direction = UP;
         currentImageIndex = 0;
         if (gifFilesPath != null) {
             initGifs(gifFilesPath);
             try {
-                imageArray = splitGifIntoFrames(gifFile);
+                imageArrayUp = splitGifIntoFrames(gifFileUp);
                 imageArrayDown = splitGifIntoFrames(gifFileDown);
                 imageArrayLeft = splitGifIntoFrames(gifFileLeft);
                 imageArrayRight = splitGifIntoFrames(gifFileRight);
+
+                currentImageArray = imageArrayUp;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -33,19 +41,22 @@ public class Animator implements Cloneable{
         }
     }
     public Animator (File gifFile) {
-        direction = NORMAL;
+        path = "nopath";
+        direction = UP;
         currentImageIndex = 0;
         if(gifFile != null) {
-            this.gifFile = gifFile;
+            this.gifFileUp = gifFile;
             try {
-                imageArray = splitGifIntoFrames(gifFile);
+                imageArrayUp = splitGifIntoFrames(gifFile);
+
+                currentImageArray = imageArrayUp;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
     public void initGifs(String gifFilesPath) {
-        gifFile = new File(gifFilesPath + "normal.gif");
+        gifFileUp = new File(gifFilesPath + "up.gif");
         gifFileDown = new File(gifFilesPath + "down.gif");
         gifFileLeft = new File(gifFilesPath + "left.gif");
         gifFileRight = new File(gifFilesPath + "right.gif");
@@ -66,6 +77,9 @@ public class Animator implements Cloneable{
             for (int i = 0; i < frameCount; i++) {
                 tempArray[i] = reader.read(i);
             }
+        } catch (IOException | IllegalStateException e) {
+            // Append file name to the exception and re-throw
+            throw new IOException("Error processing GIF file: " + tgifFile.getName()+ " in "+path, e);
         } finally {
             if (reader != null) {
                 reader.dispose();
@@ -77,10 +91,11 @@ public class Animator implements Cloneable{
         return tempArray;
     }
 
-    public BufferedImage getCurrentImage() {
+
+    public BufferedImage getCurrentFrame() {
 
         switch (direction) {
-            case NORMAL -> currentImageArray = imageArray;
+            case UP -> currentImageArray = imageArrayUp;
             case DOWN -> currentImageArray = imageArrayDown;
             case LEFT -> currentImageArray = imageArrayLeft;
             case RIGHT -> currentImageArray = imageArrayRight;
@@ -90,21 +105,29 @@ public class Animator implements Cloneable{
     }
 
     public void incrementFrame() {
-        if (currentImageIndex < currentImageArray.length ) {
-            currentImageIndex++;
-        } else {
-            currentImageIndex = 0;
+        updateCounter++;
+
+        if (updateCounter >= Game.fps/currentImageArray.length) {
+            if (currentImageIndex < currentImageArray.length - 1) {
+                currentImageIndex++;
+            } else {
+                currentImageIndex = 0;
+            }
+            updateCounter = 0; // reset the counter after switching to the next frame
         }
     }
     public int getWidth(){
-        return imageArray[0].getWidth();
+        return currentImageArray[currentImageIndex].getWidth();
     }
 
     public int getHeight() {
-        return imageArray[0].getHeight();
+        return currentImageArray[currentImageIndex].getHeight();
     }
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+    public Direction getDirection() {
+        return direction;
     }
 
     @Override
@@ -117,4 +140,6 @@ public class Animator implements Cloneable{
             throw new AssertionError();
         }
     }
+
+
 }

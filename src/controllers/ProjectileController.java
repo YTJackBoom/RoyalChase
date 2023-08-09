@@ -3,10 +3,8 @@ package controllers;
 import gameObjects.Enemy;
 import gameObjects.Tower;
 import helpers.Constants;
-import helpers.Coordinate;
 import gameObjects.Projectile;
 import helpers.Circle;
-import helpers.variables;
 import scenes.Playing;
 
 import java.awt.*;
@@ -41,7 +39,7 @@ public class ProjectileController implements ControllerMethods {
                 int projectileY = projectile.getPos().getY()-height/2;
 
                 // Retrieve the current image of the active animator
-                Image pImage = projectile.getActiveAnimator().getCurrentImage();
+                Image pImage = projectile.getActiveAnimator().getCurrentFrame();
 
                 // Calculate the angle between the tower and its target
                 double angle = calculateAngle(projectile.getPos(), projectile.getTarget().getPos());

@@ -18,7 +18,7 @@ import java.io.*;
 
 public class Game extends JFrame implements Serializable {
 
-        public final static int fps = 2;
+        public final static int fps = 60;
         public static final int ups = 120; //updates per second, for the game logic
         private volatile int currentUPS = 0;
         private int currentFPS = 0;
@@ -102,11 +102,12 @@ public class Game extends JFrame implements Serializable {
 
                 }
             });
-            RenderTimer.start();
 
             GameLogicUpdater logicUpdater = new GameLogicUpdater(this);
             Thread gameLogicThread = new Thread(logicUpdater);
             gameLogicThread.start();
+            RenderTimer.start();
+
 
             Timer statsTimer = new Timer(1000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {

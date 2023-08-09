@@ -1,18 +1,13 @@
 package controllers;
 
 import gameObjects.Building;
-import gameObjects.ObjectType;
 import helpers.Values;
-import helpers.math;
 import helpers.variables;
 import scenes.Town;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-import static basics.Game.fps;
-import static basics.GameScreen.fHEIGHT;
-import static basics.GameScreen.fWIDTH;
 import static helpers.variables.Buildings.*;
 
 public class BuildingsController implements ControllerMethods{
@@ -67,7 +62,7 @@ public class BuildingsController implements ControllerMethods{
 	@Override
 	public void render(Graphics g) {
 		for (Building building : buildingsList) {
-			g.drawImage(building.getActiveAnimator().getCurrentImage(), building.getX(), building.getY(), null);
+			g.drawImage(building.getActiveAnimator().getCurrentFrame(), building.getX(), building.getY(), null);
 		}
 	}
 	@Override

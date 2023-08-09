@@ -14,10 +14,10 @@ public class HitBox {
 
 	public boolean collidesWith(HitBox other) {
 		Animator animator = gameObject.getActiveAnimator();
-		BufferedImage thisImage = animator.getCurrentImage();
+		BufferedImage thisImage = animator.getCurrentFrame();
 
 		Animator otherAnimator = other.getGameObject().getActiveAnimator();
-		BufferedImage otherImage = otherAnimator.getCurrentImage();
+		BufferedImage otherImage = otherAnimator.getCurrentFrame();
 
 		Coordinate thisPos = gameObject.getPos();
 		Coordinate otherPos = other.getGameObject().getPos();

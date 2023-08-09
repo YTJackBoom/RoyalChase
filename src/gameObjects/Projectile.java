@@ -22,21 +22,16 @@ public class Projectile extends GameObject{
 
 	public Projectile(ProjectileController projectileController,Tower tower, Enemy target, int type) {  // TODO: eine "animaion" pro richtung, prob in animation selber. wie enemys und towers verbessern
 		super(new Coordinate(tower.getPos().getX(),tower.getPos().getY()),projectileController.getPlaying().getGame().getPreLoader(),ObjectType.PROJECTILE,type);
-		this.pos = new Coordinate(tower.getPos().getX(),tower.getPos().getY());
+		this.pos = new Coordinate(tower.getPos().getX(),tower.getPos().getY()-tower.getHeight()/2);
 		this.type = type;
 		this.target = target;
 		this.projectileController = projectileController;
 		origin = tower;
 		towerAngleToTarget = math.GeneralMath.calculateAngle(target.getPos(),tower.getPos());
-//		initAnimator();
 		height = activeAnimator.getHeight();
 		width = activeAnimator.getWidth();
 	}
 
-//	private void initAnimator() {
-//		animator = projectileController.getPlaying().getGame().getPreLoader().getProjectileAnimator(type);
-//
-//	}
 	public Coordinate getPos() {
 		return pos;
 	}

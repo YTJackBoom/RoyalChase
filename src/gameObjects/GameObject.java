@@ -66,11 +66,11 @@ public abstract class GameObject {
 	}
 	public void setPos(Coordinate pos) {
 		Coordinate prePos = this.pos;
-		Direction dir = Direction.NORMAL;
-		if(prePos.getX() < pos.getX()&&prePos.getY() > pos.getY()) {
-			dir = Direction.NORMAL;
+		Direction dir = activeAnimator.getDirection();
+		if(prePos.getX() <= pos.getX()&&prePos.getY() > pos.getY()) {
+			dir = Direction.UP;
 		}
-		if(prePos.getX() > pos.getX()&&prePos.getY() < pos.getY()) {
+		if(prePos.getX() >= pos.getX()&&prePos.getY() < pos.getY()) {
 			dir = Direction.DOWN;
 		}
 		if(prePos.getX() < pos.getX()&&Math.abs(prePos.getY() - pos.getY()) < Constants.ObjectConstants.MAXYCHANGEFORRIGHTORLEFTMOVEMENT) {
