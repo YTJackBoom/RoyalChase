@@ -33,8 +33,10 @@ public abstract class GameObject {
 			}
 			case TOWER -> {
 				activeAnimator = preLoader.getTowerActiveAnimator(type).clone();
+				activeAnimator.scaleImages(Constants.UIConstants.TOWERSCALEFACTOR);
 //				activeAnimator = new Animator(new File("res/images/towers/active/mage_t_active/normal.gif"));
 				passiveAnimator = preLoader.getTowerPassiveAnimator(type).clone();
+				passiveAnimator.scaleImages(Constants.UIConstants.TOWERSCALEFACTOR);
 			}
 			case BUILDING -> {
 				activeAnimator = preLoader.getBuildingAnimator(type).clone();

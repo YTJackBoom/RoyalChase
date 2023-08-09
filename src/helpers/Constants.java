@@ -5,8 +5,11 @@ import java.awt.*;
 public class Constants {
 	public static class UIConstants {
 		public static final int CANTAFFORDTIMEONSCREEN = 5; //in seconds
+		public static final int SUCCESFULLSAVETIMEONSCREEN = 5; //in seconds
+
 		public static final Font CANTAFFORDFONT = new Font("TimesRoman", Font.PLAIN, 50);
 		public static final Font TOWERCOSTFONT = new Font("TimesRoman", Font.PLAIN, 20);
+		public static final Font SUCCESFULLSAVEFONT = new Font("TimesRoman", Font.PLAIN, 50);
 
 		public static final int NUMBEROFRANGECIRCLES = 5;
 

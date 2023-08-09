@@ -62,23 +62,20 @@ public class TowerController implements ControllerMethods{
 
 
     public void render(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-
         if (towerEntityList != null) {
             for (Tower tower : towerEntityList) {
-                int width = tower.getWidth() * Constants.UIConstants.TOWERSCALEFACTOR;
-                int height = tower.getHeight() * Constants.UIConstants.TOWERSCALEFACTOR;
+                int width = tower.getWidth() ;
+                int height = tower.getHeight() ;
                 int towerX = tower.getPos().getX() - width / 2;
                 int towerY = tower.getPos().getY() - height/2;
 
                 if (tower.isActive()) {
                     Image turretImage = tower.getActiveAnimator().getCurrentFrame();
-                    g2d.drawImage(turretImage, towerX, towerY, width, height, null);
+                    g.drawImage(turretImage, towerX, towerY, width, height, null);
                     tower.getActiveAnimator().incrementFrame();
                 } else {
                     Image turretImage = tower.getPassiveAnimator().getCurrentFrame();
-                    g2d.drawImage(turretImage, towerX, towerY, width, height, null);
+                    g.drawImage(turretImage, towerX, towerY, width, height, null);
                     tower.getPassiveAnimator().incrementFrame();
                 }
             }
@@ -113,7 +110,7 @@ public class TowerController implements ControllerMethods{
     public void mouseReleased(int x, int y) {
         for (int i = 0; i < towerEntityList.size(); i++) {
             Tower tower = towerEntityList.get(i);
-            if (tower.getBounds().contains(x, y)) {
+            if (tower.getHitBox().contains(x, y)) {
                 Values cost = variables.Towers.getCost(playing.getDraggedTower());
                 if(playerValues.canAfford(cost)){
                     playerValues.decrease(cost);

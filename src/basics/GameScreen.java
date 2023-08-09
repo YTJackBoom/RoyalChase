@@ -48,7 +48,7 @@ public class GameScreen extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		game.getRender().render(g);
+		game.getRenderUpdater().render(g);
 	}
 	@Override
 	public int getWidth() {

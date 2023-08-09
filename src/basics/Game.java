@@ -27,7 +27,6 @@ public class Game extends JFrame implements Serializable {
         private GameScreen gameScreen;
 
         // Classes
-        private Render render;
         private Menu menu;
         private Playing playing;
         private Settings settings;
@@ -40,7 +39,7 @@ public class Game extends JFrame implements Serializable {
         private GameState gameState;
 
 
-        private Timer RenderTimer;
+        private GameRenderUpdater renderUpdater;
         private PreLoader preLoader;
 
 
@@ -70,7 +69,6 @@ public class Game extends JFrame implements Serializable {
 
 
             gameScreen = new GameScreen(this);
-            render = new Render(this);
             menu = new Menu(this);
             playing = new Playing(this);
             settings = new Settings(this);
@@ -95,18 +93,22 @@ public class Game extends JFrame implements Serializable {
         private void start() {//initialises and starts two timers: one for the game and one for the render(in 60fps)
 
 
-            RenderTimer = new Timer((int)(1000/fps), new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    repaint();
-                    currentFPS++;
+//            RenderTimer = new Timer((int)(1000/fps), new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    repaint();
+//                    currentFPS++;
+//
+//                }
+//            });
+//            RenderTimer.start();
 
-                }
-            });
+            renderUpdater = new GameRenderUpdater(this);
+            Thread gameRederThread = new Thread(renderUpdater);
+            gameRederThread.start();
 
             GameLogicUpdater logicUpdater = new GameLogicUpdater(this);
             Thread gameLogicThread = new Thread(logicUpdater);
             gameLogicThread.start();
-            RenderTimer.start();
 
 
             Timer statsTimer = new Timer(1000, new ActionListener() {
@@ -194,13 +196,10 @@ public class Game extends JFrame implements Serializable {
             }
         }
         // Getters and setters
-        protected synchronized void incrementUPS() {
+        protected void incrementUPS() {
             currentUPS++;
         }
-        public Render getRender() {
-            return render;
-        }
-
+        protected void incrementFPS() {currentFPS++;};
         public Menu getMenu() {
             return menu;
         }
@@ -263,5 +262,9 @@ public class Game extends JFrame implements Serializable {
         public void toggleFullscreen(){
             isFullScreen = !isFullScreen;
         }
+
+    public GameRenderUpdater getRenderUpdater() {
+            return renderUpdater;
+    }
 }
 

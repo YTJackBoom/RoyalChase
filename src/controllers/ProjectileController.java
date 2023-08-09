@@ -30,7 +30,7 @@ public class ProjectileController implements ControllerMethods {
 
 
 
-    public void render(Graphics g) {
+    public synchronized void render(Graphics g) {
         if (projectileList != null) {
             for (Projectile projectile : projectileList) {
                 int width = projectile.getActiveAnimator().getWidth();
@@ -144,7 +144,7 @@ public class ProjectileController implements ControllerMethods {
     }
 
     @Override
-    public void workRemoveQueue() {
+    public synchronized void workRemoveQueue() {
         for (Projectile projectile : removeQueue) {
             projectile.removeAnimators();
             projectileList.remove(projectile);
@@ -152,14 +152,10 @@ public class ProjectileController implements ControllerMethods {
         removeQueue.clear();
     }
     @Override
-    public void workAddQueue() {
+    public synchronized void workAddQueue() {
         projectileList.addAll(addQueue);
         addQueue.clear();
     }
-        public void removeProjectile (Projectile projectile) {
-        removeQueue.add(projectile);
-    }
-
 
     public void spawnProjectile(Tower tower, Enemy ziel, int type) {
         addQueue.add(new Projectile(this,tower,ziel,type));
@@ -170,7 +166,7 @@ public class ProjectileController implements ControllerMethods {
         return playing;
     }
 
-    public void clearProjectiles() {
+    public synchronized void clearProjectiles() {
         for (Projectile projectile : projectileList) {
             projectile.removeAnimators();
         }

@@ -58,7 +58,8 @@ public class Menu extends GameScenes implements SceneMethods {
                 if(button.getText().equals("Play")){
                     GameStates.gameState = GameStates.LEVELSELECT;
                 }else if(button.getText().equals("Load Game")){
-                     game.loadGame(Constants.OtherConstants.SAVEGAMELOCATION);
+                    game.loadGame(Constants.OtherConstants.SAVEGAMELOCATION);
+                    GameStates.gameState = GameStates.LEVELSELECT;
                 }else if(button.getText().equals("Exit")){
                     System.exit(0);
                 }

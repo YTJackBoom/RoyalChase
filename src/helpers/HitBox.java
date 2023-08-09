@@ -45,6 +45,27 @@ public class HitBox {
 
 		return false;
 	}
+	public boolean contains(int x, int y) {
+		Animator animator = gameObject.getActiveAnimator();
+		BufferedImage thisImage = animator.getCurrentFrame();
+		Coordinate thisPos = gameObject.getPos();
+		int thisX = thisPos.getX() - animator.getWidth() / 2;
+		int thisY = thisPos.getY() - animator.getHeight() / 2;
+
+		Rectangle thisRect = new Rectangle(thisX, thisY, thisImage.getWidth(), thisImage.getHeight());
+
+		// Step 1: Check if (x, y) is inside the HitBox's rectangle
+		if (thisRect.contains(x, y)) {
+			// Step 2: Check pixel transparency
+			int pixel = thisImage.getRGB(x - thisX, y - thisY);
+			if ((pixel & 0xFF000000) != 0x00) { // Checking if alpha is not 0 (transparent)
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 
 	public GameObject getGameObject() {
 		return gameObject;

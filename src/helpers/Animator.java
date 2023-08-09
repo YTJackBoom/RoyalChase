@@ -6,6 +6,8 @@ import basics.Game;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -116,6 +118,46 @@ public class Animator implements Cloneable{
             updateCounter = 0; // reset the counter after switching to the next frame
         }
     }
+    public void scaleImages(double scale) {
+        // Using nearest-neighbor interpolation for scaling
+        AffineTransform at = new AffineTransform();
+        at.scale(scale, scale);
+
+        AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+
+        imageArrayUp = scaleImageArray(imageArrayUp, scaleOp);
+        imageArrayDown = scaleImageArray(imageArrayDown, scaleOp);
+        imageArrayLeft = scaleImageArray(imageArrayLeft, scaleOp);
+        imageArrayRight = scaleImageArray(imageArrayRight, scaleOp);
+
+        // Update the currentImageArray to reflect the direction currently set
+        switch (direction) {
+            case UP -> currentImageArray = imageArrayUp;
+            case DOWN -> currentImageArray = imageArrayDown;
+            case LEFT -> currentImageArray = imageArrayLeft;
+            case RIGHT -> currentImageArray = imageArrayRight;
+            default -> throw new IllegalStateException("Unexpected direction value: " + direction);
+        }
+    }
+
+    private BufferedImage[] scaleImageArray(BufferedImage[] originalArray, AffineTransformOp op) {
+        if (originalArray == null) return null;
+
+        BufferedImage[] scaledArray = new BufferedImage[originalArray.length];
+        for (int i = 0; i < originalArray.length; i++) {
+            BufferedImage originalImage = originalArray[i];
+            BufferedImage scaledImage = new BufferedImage((int) (originalImage.getWidth() * op.getTransform().getScaleX()),
+                    (int) (originalImage.getHeight() * op.getTransform().getScaleY()),
+                    BufferedImage.TYPE_INT_ARGB);
+            op.filter(originalImage, scaledImage);
+            scaledArray[i] = scaledImage;
+        }
+        return scaledArray;
+    }
+
+
+
+
     public int getWidth(){
         return currentImageArray[currentImageIndex].getWidth();
     }

@@ -9,11 +9,17 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import static basics.Game.fps;
+import static basics.GameScreen.fHEIGHT;
+import static basics.GameScreen.fWIDTH;
+
 
 public class LevelCleared  extends GameScenes implements SceneMethods {
     private Game game;
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
     private Values playerValues;
+    private int succesfullSaveCounter;
+    private boolean succesfullSave;
     public LevelCleared(Game game) {
         super(game);
         this.game = game;
@@ -29,35 +35,57 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
     @Override
     public void render(Graphics g) {
         game.getPlaying().render(g);
-        renderLevelCleared(g);
+        renderLevelClearedText(g);
+        renderLevelClearedButtons(g);
+        renderSuccesfullSave(g);
     }
 
     @Override
     public void update() {
 
     }
-    public void renderLevelCleared(Graphics g){
-        renderLevelClearedText(g);
-        renderLevelClearedButtons(g);
-    }
 
     public void renderLevelClearedText(Graphics g){
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
-        String text = "Level Cleared";
+        if(!succesfullSave) {
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
+            String text = "Level Cleared";
 
-        FontMetrics fontMetrics = g.getFontMetrics();
-        int textWidth = fontMetrics.stringWidth(text);
+            FontMetrics fontMetrics = g.getFontMetrics();
+            int textWidth = fontMetrics.stringWidth(text);
 
-        int x = (game.getWidth() - textWidth) / 2;
-        int y = game.getHeight() / 2 + 50 / 2;
+            int x = (game.getWidth() - textWidth) / 2;
+            int y = game.getHeight() / 2 + 50 / 2;
 
-        g.drawString(text, x, y);
+            g.drawString(text, x, y);
+        }
     }
     public void renderLevelClearedButtons(Graphics g) {
         for (MyButton button : buttons) {
             button.render(g);
         }
+    }
+    public void renderSuccesfullSave(Graphics g) {
+            if (succesfullSave) {
+                g.setFont(Constants.UIConstants.SUCCESFULLSAVEFONT);
+                g.setColor(Color.BLACK);
+                String text = "Erfolgreich Gespeichert!";
+
+                FontMetrics fontMetrics = g.getFontMetrics();
+                int textWidth = fontMetrics.stringWidth(text);
+
+                int x = (game.getWidth() - textWidth) / 2;
+                int y = game.getHeight() / 2 + 50 / 2;
+
+                g.drawString(text, x, y);
+                succesfullSaveCounter++;
+//			System.out.println("s ");
+//			System.out.print(fWIDTH+" "+fHEIGHT);
+                if (succesfullSaveCounter >= fps * Constants.UIConstants.CANTAFFORDTIMEONSCREEN) {
+                    succesfullSave = false;
+                    succesfullSaveCounter = 0;
+                }
+            }
     }
 
     private void resetButtons(){
@@ -131,6 +159,7 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
                         System.out.println("Continue");
                     } else if (button.getText().equals("Save")) {
                         game.saveGame(Constants.OtherConstants.SAVEGAMELOCATION);
+                        succesfullSave = true;
                     } else if (button.getText().equals("Main Menu")) {
                         GameStates.gameState = GameStates.MENU;
                     }

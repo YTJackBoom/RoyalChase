@@ -28,7 +28,6 @@ public class EnemyController implements ControllerMethods{
 	}
 	public void update() {
 		workAddQueue();
-		workRemoveQueue();
 		if (!playing.isPaused()) {
 			if (i >= Constants.ObjectConstants.SPEEDOFFSET) { //TODO: potentially find a better way to do this
 				updateEnemyMovement();
@@ -36,6 +35,7 @@ public class EnemyController implements ControllerMethods{
 			} else i++;
 		}
 		checkEnemyHealth();
+		workRemoveQueue();
 	}
 
 	public void updateEnemyMovement() {
@@ -67,7 +67,7 @@ public class EnemyController implements ControllerMethods{
 		}
 	}
 	@Override
-	public void workRemoveQueue() {
+	public synchronized void workRemoveQueue() {
 			for (Enemy enemy : removeQue) {
 				enemy.removeAnimators();
 				enemyList.remove(enemy);
@@ -75,7 +75,7 @@ public class EnemyController implements ControllerMethods{
 			removeQue.clear();
 	}
 	@Override
-	public void workAddQueue() {
+	public synchronized void workAddQueue() {
 		enemyList.addAll(addQue);
 		addQue.clear();
 	}
@@ -93,7 +93,8 @@ public class EnemyController implements ControllerMethods{
 
 		}
    }
-   public void render(Graphics g) {
+   public synchronized void render(Graphics g) {
+
 	   if (enemyList != null&&!enemyList.isEmpty()) {
 		   for (Enemy enemy : enemyList) {
 			   if (enemy != null) {
@@ -132,7 +133,7 @@ public class EnemyController implements ControllerMethods{
 		return enemyList;
 	}
 
-	public boolean contains(Enemy enemy) {
+	public synchronized boolean contains(Enemy enemy) {
 		for (Enemy enemy1 : enemyList) {
 			if (enemy1 != null) {
 				if (enemy1.equals(enemy)) {
