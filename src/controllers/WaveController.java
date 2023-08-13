@@ -4,7 +4,7 @@ import basics.Direction;
 import basics.Game;
 import helpers.Values;
 import scenes.GameStates;
-import basics.Wave;
+import helpers.Wave;
 import helpers.WaveFileAnalyser;
 import scenes.Playing;
 
@@ -98,6 +98,13 @@ public class WaveController implements ControllerMethods {
     }
     public Playing getPlaying() {
         return playing;
+    }
+    public int getRemainingWaves() {
+        return waves.size()-currentWave;
+    }
+    public int getCurrentWaveNotSpawnedEnemies() {
+        int notSpawnedEnemies = waves.get(currentWave).getSize()-waves.get(currentWave).getCurrentIndex();
+        return notSpawnedEnemies;
     }
 
     @Override

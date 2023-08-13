@@ -62,16 +62,8 @@ public class Projectile extends GameObject{
 			}
 		}
 
-//		int[] tempArray = math.ProjectileMath.calculateArrowChange(pos, target.getPos());
-//		pos.setX(pos.getX()+tempArray[0]);
-//		pos.setY(pos.getY()+tempArray[1]);
-//		numberForTrajectory+=variables.Projectiles.getProjectileSpeed(variables.Projectiles.ROCKET);
-//		pos = math.ProjectileMath.calculateRocketPos(pos,target.getPos(),numberForTrajectory,getSpeed());
-	}
 
-//	public Animator getAnimator() {
-//		return animator;
-//	}
+	}
 	public Enemy getTarget() {return target;}
 	public int getType() {return type;}
 
@@ -85,6 +77,9 @@ public class Projectile extends GameObject{
 		}
 		return dmg;
 	}
+	public double getStun() {
+		return variables.Projectiles.getStun(type);
+	}
 
 	public double getSpeed() {
 		//		int tLevel = origin.getLevel();
@@ -94,9 +89,7 @@ public class Projectile extends GameObject{
 //		}
 		return variables.Projectiles.getProjectileSpeed(type);
 	}
-//	public void removeAnimators() {
-//		animator = null;
-//	}
+
 	public int getWidth() {
 		return width;
 	}

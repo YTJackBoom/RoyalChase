@@ -52,4 +52,5 @@ public class Coordinate implements Serializable {
 
 		return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 	}
+
 }

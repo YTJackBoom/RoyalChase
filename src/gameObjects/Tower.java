@@ -1,5 +1,6 @@
 package gameObjects;
 
+import basics.Direction;
 import controllers.ProjectileController;
 import helpers.*;
 import controllers.TowerController;
@@ -41,6 +42,7 @@ public class Tower extends GameObject {
 
 	public void update() {
 		if (!towerController.getPlaying().isPaused()) {
+			updateDirection();
 			if (counter - getReloadTime() >= 0) {
 				isLoaded = true;
 				counter = 0;
@@ -57,6 +59,37 @@ public class Tower extends GameObject {
 			isLoaded = false;
 		}
 	}
+	public void updateDirection() {
+		if(!(target==null&&!towerController.getPlaying().getEnemyController().contains(target))) {
+			Coordinate towerPos = this.getPos();
+			Coordinate targetPos = this.getTarget().getPos();
+
+			int deltaX = targetPos.getX() - towerPos.getX();
+			int deltaY = targetPos.getY() - towerPos.getY();
+
+			Direction newDir;
+
+			// Calculate angle in radians
+			double angle = Math.atan2(deltaY, deltaX);
+
+			// Convert angle to degrees for easier handling
+			double angleDeg = Math.toDegrees(angle);
+
+			// Determine direction based on angle
+			if (angleDeg >= -45 && angleDeg < 45) {
+				newDir = Direction.RIGHT;
+			} else if (angleDeg >= 45 && angleDeg < 135) {
+				newDir = Direction.UP;
+			} else if (angleDeg >= -135 && angleDeg < -45) {
+				newDir = Direction.DOWN;
+			} else {
+				newDir = Direction.LEFT;
+			}
+
+			this.activeAnimator.setDirection(newDir);
+		}
+	}
+
 	public void renderRange(Graphics g) {
 		for(Circle circle: circles) {
 			circle.render(g);

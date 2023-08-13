@@ -83,9 +83,9 @@ public class variables { //class to define different variables for thing
             };
         }
 
-        public static int getEnemySpeed(int enemyType) {
+        public static double getEnemySpeed(int enemyType) {
             return switch (enemyType) {
-                case SLIME -> 2;
+                case SLIME -> 0.5;
                 case SKELETON -> 5;
                 case ZOMBIE -> 2;
                 case WITCH -> 5;
@@ -299,8 +299,17 @@ public class variables { //class to define different variables for thing
             return switch (projectileType) {
                 case ARROW -> 5;
                 case ROCKET -> 70;
-                case LIGHTNINGBALL -> 90;
+                case LIGHTNINGBALL -> 0;
                 case BULLET -> 110;
+                default -> throw new IllegalStateException("variables: getProjectileDamage: Unexpected value:  " + projectileType);
+            };
+        }
+        public static double getStun(int projectileType) { //Stun in seconds
+            return switch (projectileType) {
+                case ARROW -> 0;
+                case ROCKET -> 5;
+                case LIGHTNINGBALL -> 10;
+                case BULLET -> 0;
                 default -> throw new IllegalStateException("variables: getProjectileDamage: Unexpected value:  " + projectileType);
             };
         }
@@ -322,7 +331,6 @@ public class variables { //class to define different variables for thing
             return variables.getHighestInt(Projectiles.class);
         }
         public static int getLowestInt(){return variables.getLowestInt(Projectiles.class);}
-
     }
 
     public static class Buttons {

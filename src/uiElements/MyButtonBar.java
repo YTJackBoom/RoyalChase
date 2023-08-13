@@ -127,34 +127,7 @@ public class MyButtonBar {
 
 	//Mouse Listeners
 	public void mouseClicked(int x, int y) {
-		for (MyButton button : buttons) {
-			if (button.getBounds().contains(x, y)) {
-				if (button.getText() != null) {
-					if (button.getText().equals("Play")) {
-						GameStates.gameState = GameStates.PLAYING;
-					} else if (button.getText().equals("Town")) {
-						Playing playing = (Playing) scene;
-						playing.resetBools();
-						GameStates.gameState = GameStates.TOWN;
-					} else if (button.getText().equals("Exit")) {
-						System.exit(0);
-					} else if (button.getText().equals("Menu")) {
-						GameStates.gameState = GameStates.MENU;
-					} else if (button.getText().equals("Battle!")) {
-						GameStates.gameState = GameStates.PLAYING;
-					} else if(button.getText().equals("Upgrade")) {
-						Playing playing = (Playing)  scene;
-						playing.getTowerController().upgradeTower();
-//						System.out.println("d");
-					}else if (button.getText().equals("Sell")) {
-						Playing playing = (Playing)  scene;
-						playing.getTowerController().sellTower();
-//						System.out.println("da");
 
-					}
-				}
-			}
-		}
 	}
 
 
@@ -192,6 +165,34 @@ public class MyButtonBar {
 
 
 	public void mouseReleased(int x, int y) {
+		for (MyButton button : buttons) {
+			if (button.getBounds().contains(x, y)) {
+				if (button.getText() != null) {
+					if (button.getText().equals("Play")) {
+						GameStates.gameState = GameStates.PLAYING;
+					} else if (button.getText().equals("Town")) {
+						Playing playing = (Playing) scene;
+						playing.resetBools();
+						GameStates.gameState = GameStates.TOWN;
+					} else if (button.getText().equals("Exit")) {
+						System.exit(0);
+					} else if (button.getText().equals("Menu")) {
+						GameStates.gameState = GameStates.MENU;
+					} else if (button.getText().equals("Battle!")) {
+						GameStates.gameState = GameStates.PLAYING;
+					} else if(button.getText().equals("Upgrade")) {
+						Playing playing = (Playing)  scene;
+						playing.getTowerController().upgradeTower();
+//						System.out.println("d");
+					}else if (button.getText().equals("Sell")) {
+						Playing playing = (Playing)  scene;
+						playing.getTowerController().sellTower();
+//						System.out.println("da");
+
+					}
+				}
+			}
+		}
 		resetButtons();
 		hoveredButton = null;
 	}

@@ -119,6 +119,7 @@ public class Animator implements Cloneable{
         }
     }
     public void scaleImages(double scale) {
+
         // Using nearest-neighbor interpolation for scaling
         AffineTransform at = new AffineTransform();
         at.scale(scale, scale);
@@ -159,11 +160,19 @@ public class Animator implements Cloneable{
 
 
     public int getWidth(){
-        return currentImageArray[currentImageIndex].getWidth();
+        if (currentImageIndex < currentImageArray.length && currentImageIndex >= 0) {
+            return currentImageArray[currentImageIndex].getWidth();
+        }
+        System.out.println("Animators Width check failed");
+        return currentImageArray[0].getWidth();
     }
 
     public int getHeight() {
-        return currentImageArray[currentImageIndex].getHeight();
+        if (currentImageIndex < currentImageArray.length && currentImageIndex >= 0) {
+            return currentImageArray[currentImageIndex].getWidth();
+        }
+        System.out.println("Animators Height check failed");
+        return currentImageArray[0].getWidth();
     }
     public void setDirection(Direction direction) {
         this.direction = direction;

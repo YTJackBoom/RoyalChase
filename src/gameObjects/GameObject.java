@@ -15,6 +15,8 @@ public abstract class GameObject {
 
 	protected HitBox hitBox;
 
+	protected double currentStun =0;
+
 	public GameObject(Coordinate pos,PreLoader preLoader, ObjectType oType, int type) {
 		objectType = oType;
 		this.type = type;
@@ -68,24 +70,38 @@ public abstract class GameObject {
 	}
 	public void setPos(Coordinate pos) {
 		Coordinate prePos = this.pos;
+		int deltaX = pos.getX() - prePos.getX();
+		int deltaY = pos.getY() - prePos.getY();
+
 		Direction dir = activeAnimator.getDirection();
-		if(prePos.getX() <= pos.getX()&&prePos.getY() > pos.getY()) {
-			dir = Direction.UP;
+
+		if (Math.abs(deltaX) > Math.abs(deltaY)) {
+			if (deltaX > 0) {
+				dir = Direction.RIGHT;
+			} else if (deltaX < 0) {
+				dir = Direction.LEFT;
+			} // If deltaX is 0, it means the object hasn't moved horizontally.
+		} else {
+			if (deltaY > 0) {
+				dir = Direction.DOWN;
+			} else if (deltaY < 0) {
+				dir = Direction.UP;
+			} // If deltaY is 0, it means the object hasn't moved vertically.
 		}
-		if(prePos.getX() >= pos.getX()&&prePos.getY() < pos.getY()) {
-			dir = Direction.DOWN;
-		}
-		if(prePos.getX() < pos.getX()&&Math.abs(prePos.getY() - pos.getY()) < Constants.ObjectConstants.MAXYCHANGEFORRIGHTORLEFTMOVEMENT) {
-			dir = Direction.RIGHT;
-		}
-		if(prePos.getX() > pos.getX()&&Math.abs(prePos.getY() - pos.getY()) < Constants.ObjectConstants.MAXYCHANGEFORRIGHTORLEFTMOVEMENT) {
-			dir = Direction.LEFT;
-		}
+
 		activeAnimator.setDirection(dir);
 		this.pos = pos;
 	}
 
 	public HitBox getHitBox() {
 		return hitBox;
+	}
+
+    public void setStun(double stun) {
+		currentStun = stun;
+    }
+
+	public double getStun() {
+		return currentStun;
 	}
 }

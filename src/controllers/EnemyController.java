@@ -8,6 +8,8 @@ import gameObjects.Enemy;
 import helpers.*;
 import scenes.Playing;
 
+import static basics.Game.ups;
+
 
 public class EnemyController implements ControllerMethods{
 	private ArrayList<Enemy> enemyList,removeQue,addQue;
@@ -29,10 +31,7 @@ public class EnemyController implements ControllerMethods{
 	public void update() {
 		workAddQueue();
 		if (!playing.isPaused()) {
-			if (i >= Constants.ObjectConstants.SPEEDOFFSET) { //TODO: potentially find a better way to do this
-				updateEnemyMovement();
-				i = 0;
-			} else i++;
+			updateEnemyMovement();
 		}
 		checkEnemyHealth();
 		workRemoveQueue();
@@ -41,20 +40,22 @@ public class EnemyController implements ControllerMethods{
 	public void updateEnemyMovement() {
 		for (Enemy enemy : enemyList) {
 			if(enemy != null) {
-				if (!((pathCoordinates.size() - enemy.getPathIndex()) <= enemy.getSpeed())) {
-					enemy.setPathIndex(enemy.getPathIndex() + enemy.getSpeed());
-					enemy.setPos(pathCoordinates.get(enemy.getPathIndex()));
-					//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
-					//System.out.println(enemyList.get(a).getPos().getX());
-				} else {//Enemy hat das tor erreicht --> verschiedene verhalten //TODO: damage player
-					playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
-					removeQue.add(enemy);
-					System.out.println("Enemy reached the end");
-				}
+				if(enemy.getStun()<=0) {
+						if (!((pathCoordinates.size() - enemy.getPathIndex()) <= enemy.getSpeed())) {
+							enemy.setPathIndex(enemy.getPathIndex() + enemy.getSpeed());
+							enemy.setPos(pathCoordinates.get((int)Math.round(enemy.getPathIndex())));
+							//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
+							//System.out.println(enemyList.get(a).getPos().getX());
+						} else {//Enemy hat das tor erreicht --> verschiedene verhalten //TODO: damage player
+							playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
+							removeQue.add(enemy);
+							System.out.println("Enemy reached the end");
+						}
+				}else { enemy.setStun(enemy.getStun()-1);}//					System.out.println("                                                           "+enemy.getStun());
 			}
 		}
-//		System.out.println(enemyList.size());
 	}
+//		System.out.println(enemyList.size());
 	public void checkEnemyHealth() {
 		for (Enemy enemy : enemyList) {
 			if (enemy != null) {
@@ -113,18 +114,28 @@ public class EnemyController implements ControllerMethods{
 		   }
 	   }
    }
-   public void damageEnemy(Enemy enemy, double damage) {
-		enemyList.get(enemyList.indexOf(enemy)).damage(damage);
+   public void damageEnemy(Enemy enemy, double damage,double stun) {
+		enemy.damage(damage);
+		enemy.setStun(stun*ups);
+//		enemyList.get(enemyList.indexOf(enemy)).damage(damage);
    }
-	public void damageEnemiesInRadius(Circle explosion, double damage) {
+	public void damageEnemiesInRadius(Circle explosion, double maxDamage,double maxStun) {
 		for(Enemy enemy : enemyList) {
 			if(explosion.contains(enemy.getPos())) {
-				enemy.damage(damage);
+				double distanceToCenter = explosion.getCenter().distanceTo(enemy.getPos());
+				double radius = explosion.getRadius();
+				double damageFactor = (radius - distanceToCenter) / radius;
+				double finalDamage = maxDamage * damageFactor;
+				double finalStun = (maxStun * damageFactor);
+
+				enemy.damage(finalDamage);
+				enemy.setStun(finalStun*ups);
 			}
 		}
 	}
 
-   //Getters and Setters
+
+	//Getters and Setters
    public void setPathCoordinates(ArrayList<Coordinate> newPathCoordinates) {
 		pathCoordinates = newPathCoordinates;
    }

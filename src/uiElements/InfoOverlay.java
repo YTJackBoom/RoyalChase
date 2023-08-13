@@ -59,8 +59,9 @@ public class InfoOverlay {
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Gold: " + playerValues.getGold(), startX, startY);
-        g.drawString("Wave: " + game.getPlaying().getWaveController().getCurrentWave()+1, startX+xOffset, startY+yOffset);
-        g.drawString("Enemies: " + game.getPlaying().getEnemyController().getEnemyList().size(), startX+xOffset*2, startY+yOffset*2);
+        g.drawString("Wave: " + game.getPlaying().getWaveController().getRemainingWaves(), startX+xOffset, startY+yOffset);
+        int remainingEnemies =  game.getPlaying().getWaveController().getCurrentWaveNotSpawnedEnemies()+game.getPlaying().getEnemyController().getEnemyList().size();
+        g.drawString("Enemies: " + remainingEnemies, startX+xOffset*2, startY+yOffset*2);
         g.drawString("Health: " + playerValues.getHealth(), startX+xOffset*3, startY+yOffset*3);
         g.drawString("Mana: " + playerValues.getMana(),startX+xOffset*4,startY+yOffset*4);
         g.drawString("Iron: " + playerValues.getIron(),startX+xOffset*5,startY+yOffset*5);
