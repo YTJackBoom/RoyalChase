@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import static helpers.variables.Buildings.*;
 
 public class BuildingsController implements ControllerMethods{
-	private int cantAffordCounter;
 	private Town town;
-	private boolean cantAfford;
 	private ArrayList<Building> buildingsList;
 	private Values playerValues;
 	public BuildingsController(Town town) {

@@ -1,13 +1,11 @@
 package gameObjects;
 
-import basics.Direction;
+import helpers.Direction;
 import controllers.ProjectileController;
 import helpers.*;
 import controllers.TowerController;
 
 import java.awt.*;
-
-import static helpers.variables.Projectiles.LIGHTNINGBALL;
 
 public class Tower extends GameObject {
 //	private Animator passiveAnimator, activeAnimatorTurret;
@@ -51,10 +49,8 @@ public class Tower extends GameObject {
 			}
 	}
 	public void fire() {
-		//System.out.println("isLoaded "+isLoaded+"   "+"isfiring  "+isFiring);
 		if (isLoaded && isFiring&&target != null) {
 			projectileController.spawnProjectile(this, target,type); // target mitgabe, um target zu damagen
-//			System.out.println("ürpjectile sdpawnes");
 
 			isLoaded = false;
 		}

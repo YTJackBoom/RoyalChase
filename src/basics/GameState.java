@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameState implements Serializable {
+public class GameState implements Serializable { //diese klasse ist zum speichern des spielstandes nötig, ier werden die spielerwerte soiwe stadt-gebäude(in extra Klssen) abgespeichert
     private Game game;
     private Values playerValues;
     private ArrayList<BuildingSaveState> townBuildingsSave;
@@ -27,7 +27,7 @@ public class GameState implements Serializable {
         townBuildingsSave = new ArrayList<BuildingSaveState>();
     }
 
-    private void writeObject(ObjectOutputStream oos) throws IOException {
+    private void writeObject(ObjectOutputStream oos) throws IOException { //speichert spieler werte und schreib die Buildings in BuildingSaveState um
         oos.writeObject(playerValues);
         for(Building b : game.getTown().getBuildingsController().getBuildingsList()) {
             townBuildingsSave.add(new BuildingSaveState(b.getPos(),b.getType()));
@@ -35,18 +35,10 @@ public class GameState implements Serializable {
         oos.writeObject(townBuildingsSave);
     }
 
-    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException { //liest die spielerwerte und buildings aus der datei
         playerValues =(Values) ois.readObject();
         townBuildingsSave = (ArrayList<BuildingSaveState>) ois.readObject();
 
-//        ois.defaultReadObject(); // This will deserialize the fields as usual
-        // Handle the `nonSerializableData` field manually
-//        BuildingsController buildingsController = this.game.getTown().getBuildingsController();
-//        int i = 0;
-//        for (BuildingSaveState b : townBuildingsSave) {
-//            Town.buildingsList.setBuilding(i,new Building(buildingsController,b.getPos().getX(), b.getPos().getY(),b.getType()));
-//            i++;
-//        }
     }
 
 

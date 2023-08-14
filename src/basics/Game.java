@@ -18,15 +18,15 @@ import java.io.*;
 
 public class Game extends JFrame implements Serializable {
 
-        public final static int fps = 60;
-        public static final int ups = 120; //updates per second, for the game logic
+        public final static int fps = 60; // frames pro sekunde, zum rendern
+        public static final int ups = 120; //updates pro sekunde, für game logic
         private volatile int currentUPS = 0;
         private int currentFPS = 0;
         private boolean isPaused = false;
         protected boolean isFullScreen =false;
-        private GameScreen gameScreen;
 
         // Classes
+        private GameScreen gameScreen;
         private Menu menu;
         private Playing playing;
         private Settings settings;
@@ -37,15 +37,12 @@ public class Game extends JFrame implements Serializable {
         private Town town;
         private InfoOverlay infoOverlay;
         private GameState gameState;
-
-
         private GameRenderUpdater renderUpdater;
         private PreLoader preLoader;
 
 
-        public Game() {
+        public Game() { //Initialisieren des Fensters
             initClasses();
-            initVariables();
 
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
@@ -55,13 +52,10 @@ public class Game extends JFrame implements Serializable {
             add(gameScreen);
             pack();
             setVisible(true);
-
-            // GameStates.gameState = PLAYING;
-//            System.out.println(" ");
         }
 
 
-        private void initClasses() {
+        private void initClasses() { //Initialisieren der Klassen
             gameState = new GameState(this);
             preLoader = new PreLoader();
 
@@ -80,27 +74,15 @@ public class Game extends JFrame implements Serializable {
 
 
         }
-        private void initVariables(){
-
-        }
-
         public static void main(String[] args) {
             Game game = new Game();
             game.gameScreen.initInputs();
             game.start();
 
         }
-        private void start() {//initialises and starts two timers: one for the game and one for the render(in 60fps)
+        private void start() {//Initialisiert zwei threaths, einen für spiel-logic und einen für spiel-grafik(sowie einen timer zur ausgabe der fps und ups)
 
 
-//            RenderTimer = new Timer((int)(1000/fps), new ActionListener() {
-//                public void actionPerformed(ActionEvent e) {
-//                    repaint();
-//                    currentFPS++;
-//
-//                }
-//            });
-//            RenderTimer.start();
 
             renderUpdater = new GameRenderUpdater(this);
             Thread gameRederThread = new Thread(renderUpdater);
@@ -121,7 +103,7 @@ public class Game extends JFrame implements Serializable {
             statsTimer.start();
         }
 
-        protected void updateGame() {
+        protected void updateGame() { //zum updaten der game logic, town erhält soft-updates zum aktualisieren der produzierten resourcen
             switch (GameStates.gameState) {
                 case MENU ->menu.update();
                 case PLAYING -> {playing.update();
@@ -150,7 +132,7 @@ public class Game extends JFrame implements Serializable {
                 tutorial.resume();
             }
         }
-        public void saveGame( String filePath) {
+        public void saveGame( String filePath) { //speicher den spielstand der ressourcen des spielers sowie der gebäude in der stadt,hierfür werden die klassen von java.io  benutzt
         try {
             FileOutputStream fileOut = new FileOutputStream(filePath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -162,7 +144,7 @@ public class Game extends JFrame implements Serializable {
             i.printStackTrace();
          }
         }
-    public void loadGame(String filePath) {
+    public void loadGame(String filePath) { //lädt den spielstand aus dem pfad und setzt die speielrwerte in den benötigten klassen neu
         GameState gameState = null;
         try {
             FileInputStream fileIn = new FileInputStream(filePath);
@@ -182,19 +164,23 @@ public class Game extends JFrame implements Serializable {
         }
 
     }
-
-
-
-
-        private void loadTownBuildings() {
-            int i=0;
+    private void loadTownBuildings() { //schreibt die geladenen stadt gebäude in die town klasse
+           int i=0;
             BuildingsController buildingsController = town.getBuildingsController();
             for(BuildingSaveState b: gameState.getTownBuildingsSave()) {
                 Coordinate pos = b.getPos();
                 buildingsController.getBuildingsList().set(i,new Building(buildingsController,pos.getX(),pos.getY(),b.getType()));
                 i++;
             }
-        }
+    }
+
+    public void resetAll() { //zum reseten beim "tod"
+        playing.reset();
+        levelSelect.reset();
+        tutorial.reset();
+        town.reset();
+        getPlayerValues().reset();
+    }
         // Getters and setters
         protected void incrementUPS() {
             currentUPS++;
@@ -247,23 +233,13 @@ public class Game extends JFrame implements Serializable {
         public GameScreen getGameScreen() {
             return gameScreen;
         }
-
-        public void resetAll() {
-            playing.reset();
-            levelSelect.reset();
-            tutorial.reset();
-              town.reset();
-            getPlayerValues().reset();
-         }
-
         public boolean isFullScreen() {
             return isFullScreen;
         }
         public void toggleFullscreen(){
             isFullScreen = !isFullScreen;
         }
-
-    public GameRenderUpdater getRenderUpdater() {
+        public GameRenderUpdater getRenderUpdater() {
             return renderUpdater;
     }
 }

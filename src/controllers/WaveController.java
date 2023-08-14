@@ -1,6 +1,6 @@
 package controllers;
 
-import basics.Direction;
+import helpers.Direction;
 import basics.Game;
 import helpers.Values;
 import scenes.GameStates;
@@ -24,7 +24,7 @@ public class WaveController implements ControllerMethods {
 
 
 
-    public WaveController(Playing playing) { //TODO: prob needs changes
+    public WaveController(Playing playing) {
         this.playing = playing;
         playerValues = playing.getGame().getPlayerValues();
         enemyController = playing.getEnemyController();

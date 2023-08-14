@@ -14,8 +14,6 @@ public class GameScreen extends JPanel {
 
 	private Game game;
 
-	private Map map;
-
 	public static final int fWIDTH = 1920;
 	public static final int fHEIGHT = 1080;
 	public static final Rectangle fBOUNDS = new Rectangle(fWIDTH,fHEIGHT);
@@ -35,7 +33,7 @@ public class GameScreen extends JPanel {
 		//setVisible(true);
 	}
 
-	public void initInputs() {
+	public void initInputs() { //Initialiesieren der Spieler Inputs auf den Gamescreen
 		MListener mListener = new MListener(game);
 		KListener kListener = new KListener(game);
 
@@ -43,7 +41,7 @@ public class GameScreen extends JPanel {
 		addMouseMotionListener(mListener);
 		addKeyListener(kListener);
 
-		requestFocus();
+		requestFocus(); //focus auf den gamescreen setzten
 	}
 	@Override
 	public void paintComponent(Graphics g) {

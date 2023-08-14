@@ -1,6 +1,5 @@
 package helpers;
 
-import basics.Direction;
 import basics.Game;
 
 import javax.imageio.ImageIO;
@@ -12,8 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static basics.Direction.NORMAL;
-import static basics.Direction.UP;
+import static helpers.Direction.UP;
 
 public class Animator implements Cloneable{
     private int currentImageIndex;

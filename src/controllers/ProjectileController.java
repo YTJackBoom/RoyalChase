@@ -4,8 +4,8 @@ import gameObjects.Enemy;
 import gameObjects.Tower;
 import helpers.Constants;
 import gameObjects.Projectile;
-import helpers.Circle;
 import scenes.Playing;
+import uiElements.Explosion;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,10 +20,12 @@ public class ProjectileController implements ControllerMethods {
     private ArrayList<Projectile> projectileList, removeQueue ,addQueue ;
 
 
+
     public ProjectileController(Playing playing) {
         projectileList = new ArrayList<Projectile>();
         removeQueue  = new ArrayList<Projectile>();
         addQueue  = new ArrayList<Projectile>();
+
         this.playing = playing;
     }
 
@@ -60,12 +62,13 @@ public class ProjectileController implements ControllerMethods {
                 g2d.dispose();
 
                 projectile.getActiveAnimator().incrementFrame();
-                }
+            }
 
 
             //System.out.println("daw");
-            }
         }
+
+    }
 
 
     public void update() {
@@ -110,20 +113,22 @@ public class ProjectileController implements ControllerMethods {
        }
    }
     public void checkRocketCollision(Projectile projectile, Enemy target) {
-//        int distanceY = target.getPos().getY() - projectile.getPos().getY();
-//        int distanceX = target.getPos().getX() - projectile.getPos().getX();
         if (projectile.getHitBox().collidesWith(target.getHitBox())) {
-            Circle explosion = new Circle(projectile.getPos(), Constants.ObjectConstants.EXPLOSIONRADIUS);
-            playing.getEnemyController().damageEnemiesInRadius(explosion, projectile.getDamage(),projectile.getStun());
+
+            playing.getEnemyController().addExplosion(new Explosion(projectile.getTarget().getPos(),Constants.ObjectConstants.EXPLOSIONLIFETIME,Constants.ObjectConstants.EXPLOSIONRADIUS,projectile.getDamage(),projectile.getStun()));
+
             removeQueue.add(projectile);
 
             System.out.println("hit");
         }else {
             for(Enemy enemy : playing.getEnemyController().getEnemyList()) {
                 if (projectile.getHitBox().collidesWith(enemy.getHitBox())) {
-                    Circle explosion = new Circle(projectile.getPos(), Constants.ObjectConstants.EXPLOSIONRADIUS);
-                    playing.getEnemyController().damageEnemiesInRadius(explosion, projectile.getDamage(),projectile.getStun());
+
+                    playing.getEnemyController().addExplosion(new Explosion(enemy.getPos(),Constants.ObjectConstants.EXPLOSIONLIFETIME,Constants.ObjectConstants.EXPLOSIONRADIUS,projectile.getDamage(),projectile.getStun()));
+
                     removeQueue.add(projectile);
+
+
                 }
             }
         }
@@ -140,8 +145,9 @@ public class ProjectileController implements ControllerMethods {
         }
     }
     public void rocketNoTarget(Projectile projectile) {
-        Circle explosion = new Circle(projectile.getPos(), Constants.ObjectConstants.EXPLOSIONRADIUS);
-        playing.getEnemyController().damageEnemiesInRadius(explosion,projectile.getDamage(),projectile.getStun());
+
+        playing.getEnemyController().addExplosion(new Explosion(projectile.getPos(),Constants.ObjectConstants.EXPLOSIONLIFETIME,Constants.ObjectConstants.EXPLOSIONRADIUS,projectile.getDamage(),projectile.getStun()));
+
         removeQueue.add(projectile);
         System.out.println("removed");
     }
@@ -160,8 +166,8 @@ public class ProjectileController implements ControllerMethods {
         addQueue.clear();
     }
 
-    public void spawnProjectile(Tower tower, Enemy ziel, int type) {
-        addQueue.add(new Projectile(this,tower,ziel,type));
+    public void spawnProjectile(Tower tower, Enemy target, int type) {
+        addQueue.add(new Projectile(this,tower,target,type));
     }
 
 

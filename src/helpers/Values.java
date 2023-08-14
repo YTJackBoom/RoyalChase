@@ -9,7 +9,7 @@ public class Values implements Serializable {
         MANA,IRON,WOOD,STONE;
     }
     private int gold = 100;
-    private int health = 100;
+    private double health = 100;
     private int score = 0;
     private int level = 1;
     private double mana = 100;
@@ -61,17 +61,6 @@ public class Values implements Serializable {
     public boolean canAfford(Values v){
         return mana >= v.getMana()&& iron >= v.getIron()&&wood >=v.getWood() && stone >=v.getStone();
     }
-
-
-
-
-
-
-
-
-
-
-
     public int getGold() {
         return gold;
     }
@@ -80,11 +69,11 @@ public class Values implements Serializable {
         this.gold = gold;
     }
 
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(double health) {
         this.health = health;
     }
 

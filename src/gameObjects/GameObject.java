@@ -1,11 +1,7 @@
 package gameObjects;
 
-import basics.Direction;
+import helpers.Direction;
 import helpers.*;
-
-import java.io.File;
-
-import static gameObjects.ObjectType.*;
 
 public abstract class GameObject {
 	protected Animator activeAnimator,passiveAnimator;
@@ -80,13 +76,13 @@ public abstract class GameObject {
 				dir = Direction.RIGHT;
 			} else if (deltaX < 0) {
 				dir = Direction.LEFT;
-			} // If deltaX is 0, it means the object hasn't moved horizontally.
+			}
 		} else {
 			if (deltaY > 0) {
 				dir = Direction.DOWN;
 			} else if (deltaY < 0) {
 				dir = Direction.UP;
-			} // If deltaY is 0, it means the object hasn't moved vertically.
+			}
 		}
 
 		activeAnimator.setDirection(dir);

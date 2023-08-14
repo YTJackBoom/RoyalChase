@@ -24,15 +24,16 @@ public class Constants {
 	}
 	public static class ObjectConstants {
 		public static final int SPEEDOFFSET = 1; //delay for certasin speed adjustments
-		public static final int EXPLOSIONRADIUS = 500;
+		public static final int EXPLOSIONRADIUS = 75;
+		public static final double EXPLOSIONLIFETIME = 1;
+		public static final double EXPLOSIONBORDERDAMAGEPERCET = 0.75;
+
 		public static final double UPGRADEMULTIPLYER = 0.5;
 
 		public static final double DMGUPGRADE = 0.15;
 		public static final double SPEEDUPGRADE = 0.15;
 
 		public static final double LOWESTRELOADSPEED = 300;
-		public static final int MAXYCHANGEFORRIGHTORLEFTMOVEMENT = 16;
-
 
 	}
 	public static class OtherConstants {

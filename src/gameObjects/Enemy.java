@@ -13,18 +13,15 @@ public class Enemy extends GameObject{
 	private int type;
 	private int width, height;
 	private boolean isActive;
-//	private Animator activeAnimator,passiveAnimator;
 	private EnemyController enemyController;
 
 	
 	public Enemy(EnemyController enemyController, Coordinate pos, int type) {
 		super(pos,enemyController.getPlaying().getGame().getPreLoader(),ObjectType.ENEMY,type);
-//		this.pos = pos;
 		this.enemyController = enemyController;
 		pathIndex = 1;
 		this.type = type;
 		isActive = true;
-	//	initAnimators();
 		initVariables();
 	}
 
@@ -61,28 +58,12 @@ public class Enemy extends GameObject{
 	public void setPathIndex(double i) {
 		pathIndex =i;
 	}
-//	public void setPos(Coordinate pos) {
-//	//	System.out.println(pos.getX()+" "+pos.getY());
-//		this.pos = pos;
-//	}
-
-//	public Coordinate getPos() {
-//		return pos;
-//	}
-
 	public int getType() {
 		return type;
 	}
 	public double getHealth() {
 		return health;
 	}
-
-//	public Animator getActiveAnimator() {
-//		return super.activeAnimator;
-//	}
-//	public Animator getPassiveAnimator() {
-//		return super.passiveAnimator;
-//	}
 	public boolean isActive() {
 		return isActive;
 	}
@@ -107,10 +88,4 @@ public class Enemy extends GameObject{
 	public int getHeight() {
 		return height;
 	}
-
-
-//	public Hitbox getHitBox() {
-//		return new Hitbox(pos.getX()-width/2,pos.getY()-height/2,width,height);
-//		return new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
-//	}
 }

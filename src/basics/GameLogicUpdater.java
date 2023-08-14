@@ -2,7 +2,7 @@ package basics;
 
 import static basics.Game.ups;
 
-public class GameLogicUpdater implements Runnable {
+public class GameLogicUpdater implements Runnable { //der threat zum updaten der spiel logic
 	private Game game;
 
 	public GameLogicUpdater(Game game) {
@@ -13,8 +13,7 @@ public class GameLogicUpdater implements Runnable {
 	public void run() {
 		while (true) {
 			game.updateGame();
-			game.incrementUPS();
-			// Adjust the delay to control the update rate
+			game.incrementUPS(); //zum anzeigen der ups
 			try {
 				Thread.sleep(1000 / ups);
 			} catch (InterruptedException e) {

@@ -2,28 +2,31 @@ package controllers;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import enemy.*;
 import gameObjects.Enemy;
 import helpers.*;
 import scenes.Playing;
+import uiElements.Explosion;
 
 import static basics.Game.ups;
 
 
 public class EnemyController implements ControllerMethods{
 	private ArrayList<Enemy> enemyList,removeQue,addQue;
+	private ArrayList<Explosion> explosionsList;
 
 	private ArrayList<Coordinate> pathCoordinates;//pathCoordinates
 
 	private Playing playing;
 	private Values playerValues;
-	private int i ;
 
 	public EnemyController(Playing playing, ArrayList<Coordinate> pathCoordinates) {
 		this.playing = playing;
 		this.pathCoordinates = pathCoordinates;
 		enemyList = new ArrayList<Enemy>();
+		explosionsList = new ArrayList<Explosion>();
 		removeQue = new ArrayList<Enemy>();
 		addQue = new ArrayList<Enemy>();
 		playerValues = playing.getGame().getPlayerValues();
@@ -32,6 +35,8 @@ public class EnemyController implements ControllerMethods{
 		workAddQueue();
 		if (!playing.isPaused()) {
 			updateEnemyMovement();
+			updateExplosions();
+
 		}
 		checkEnemyHealth();
 		workRemoveQueue();
@@ -46,16 +51,15 @@ public class EnemyController implements ControllerMethods{
 							enemy.setPos(pathCoordinates.get((int)Math.round(enemy.getPathIndex())));
 							//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
 							//System.out.println(enemyList.get(a).getPos().getX());
-						} else {//Enemy hat das tor erreicht --> verschiedene verhalten //TODO: damage player
+						} else {//Enemy hat das tor erreicht --> verschiedene verhalten
 							playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
 							removeQue.add(enemy);
 							System.out.println("Enemy reached the end");
 						}
-				}else { enemy.setStun(enemy.getStun()-1);}//					System.out.println("                                                           "+enemy.getStun());
+				}else { enemy.setStun(enemy.getStun()-1);}
 			}
 		}
 	}
-//		System.out.println(enemyList.size());
 	public void checkEnemyHealth() {
 		for (Enemy enemy : enemyList) {
 			if (enemy != null) {
@@ -65,6 +69,11 @@ public class EnemyController implements ControllerMethods{
 					System.out.println("Nemy killed for " + enemy.getReward() + " gold");
 				}
 			}
+		}
+	}
+	public void updateExplosions() {
+		for(Explosion e : explosionsList) {
+			e.updateAndDamage(this);
 		}
 	}
 	@Override
@@ -94,47 +103,66 @@ public class EnemyController implements ControllerMethods{
 
 		}
    }
-   public synchronized void render(Graphics g) {
+   public void render(Graphics g) {
+	   if (enemyList != null && !enemyList.isEmpty()) {
+		   renderEnemies(g);
+		   renderHealthBars(g);
+	   }
+	   renderExplosions(g);
+   }
 
-	   if (enemyList != null&&!enemyList.isEmpty()) {
-		   for (Enemy enemy : enemyList) {
-			   if (enemy != null) {
-				   int width = enemy.getActiveAnimator().getWidth();
-				   int height = enemy.getActiveAnimator().getHeight();
-				   if (enemy.isActive()) {
-					   g.drawImage(enemy.getActiveAnimator().getCurrentFrame(), enemy.getPos().getX()-width/2, enemy.getPos().getY()-height/2, null);
-					   enemy.getActiveAnimator().incrementFrame();
-				   } else {
-					   g.drawImage(enemy.getPassiveAnimator().getCurrentFrame(), enemy.getPos().getX()-width/2, enemy.getPos().getY()-height/2, null);
-					   enemy.getPassiveAnimator().incrementFrame();
-				   }
-				   enemy.renderHealthBar(g);
 
+   public synchronized void renderEnemies(Graphics g) {
+	   for (Enemy enemy : enemyList) {
+		   if (enemy != null) {
+			   int width = enemy.getActiveAnimator().getWidth();
+			   int height = enemy.getActiveAnimator().getHeight();
+			   if (enemy.isActive()) {
+				   g.drawImage(enemy.getActiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height / 2, null);
+				   enemy.getActiveAnimator().incrementFrame();
+			   } else {
+				   g.drawImage(enemy.getPassiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height / 2, null);
+				   enemy.getPassiveAnimator().incrementFrame();
 			   }
+
+		   }
+	   }
+   }
+   public synchronized void renderHealthBars(Graphics g) {
+		for (Enemy enemy : enemyList) {
+			enemy.renderHealthBar(g);
+		}
+   }
+   public void renderExplosions(Graphics g){
+	   Iterator<Explosion> iterator = explosionsList.iterator();
+	   while (iterator.hasNext()) {
+		   Explosion e = iterator.next();
+		   e.render(g);
+		   if (e.isFinished()) {
+			   iterator.remove();
 		   }
 	   }
    }
    public void damageEnemy(Enemy enemy, double damage,double stun) {
 		enemy.damage(damage);
 		enemy.setStun(stun*ups);
-//		enemyList.get(enemyList.indexOf(enemy)).damage(damage);
    }
-	public void damageEnemiesInRadius(Circle explosion, double maxDamage,double maxStun) {
-		for(Enemy enemy : enemyList) {
-			if(explosion.contains(enemy.getPos())) {
+	public void damageEnemiesInRadius(Circle explosion, double maxDamage, double maxStun, ArrayList<Enemy> damagedEnemies) {
+		for (Enemy enemy : enemyList) {
+			if (explosion.contains(enemy.getPos()) && (damagedEnemies.isEmpty() || !damagedEnemies.contains(enemy))) {
 				double distanceToCenter = explosion.getCenter().distanceTo(enemy.getPos());
 				double radius = explosion.getRadius();
-				double damageFactor = (radius - distanceToCenter) / radius;
+
+				double damageFactor = Constants.ObjectConstants.EXPLOSIONBORDERDAMAGEPERCET + (1 - Constants.ObjectConstants.EXPLOSIONBORDERDAMAGEPERCET) * (1 - Math.pow(distanceToCenter / radius, 2));
 				double finalDamage = maxDamage * damageFactor;
-				double finalStun = (maxStun * damageFactor);
+				double finalStun = maxStun * damageFactor;
 
 				enemy.damage(finalDamage);
-				enemy.setStun(finalStun*ups);
+				enemy.setStun(finalStun * ups);
+				damagedEnemies.add(enemy);
 			}
 		}
 	}
-
-
 	//Getters and Setters
    public void setPathCoordinates(ArrayList<Coordinate> newPathCoordinates) {
 		pathCoordinates = newPathCoordinates;
@@ -152,14 +180,15 @@ public class EnemyController implements ControllerMethods{
 				}
 			}
 		}
-
-//		System.out.println(enemyList.indexOf(enemy)+" "+removeQue.indexOf(enemy));
-		//return enemyList.contains(enemy);
 		return false;
 	}
 
 	public Playing getPlaying() {
 		return playing;
+	}
+
+	public void addExplosion(Explosion e) {
+		explosionsList.add(e);
 	}
 
 

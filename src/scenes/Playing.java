@@ -1,6 +1,6 @@
 package scenes;
 
-import basics.Direction;
+import helpers.Direction;
 import basics.Game;
 import controllers.*;
 import gameObjects.Tower;

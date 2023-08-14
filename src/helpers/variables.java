@@ -98,7 +98,7 @@ public class variables { //class to define different variables for thing
             };
         }
 
-        public static int getEnemyDamage(int enemyType) {
+        public static double getEnemyDamage(int enemyType) {
             return switch (enemyType) {
                 case SLIME -> 100;
                 case SKELETON -> 5;

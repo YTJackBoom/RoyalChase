@@ -6,15 +6,14 @@ import java.awt.*;
 
 import static basics.Game.fps;
 
-public class GameRenderUpdater implements Runnable{
+public class GameRenderUpdater implements Runnable{ //der threat zum rendern der grafik
     private Game game;
     public GameRenderUpdater(Game game){this.game = game;};
     @Override
     public void run() {
         while (true) {
-            game.repaint();
+            game.repaint(); //hier wird repaint() auf dass fenster gecalled, welches repaint() auf den gamescreen called, welcher die render() klasse called
             game.incrementFPS();
-            // Adjust the delay to control the update rate
             try {
                 Thread.sleep(1000 / fps);
             } catch (InterruptedException e) {
@@ -23,7 +22,7 @@ public class GameRenderUpdater implements Runnable{
         }
     }
 
-    public void render (Graphics g) {
+    public void render (Graphics g) { //von gamescreen gecalled
         switch (GameStates.gameState) {
             case MENU -> game.getMenu().render(g);
             case PLAYING -> {

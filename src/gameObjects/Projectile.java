@@ -20,7 +20,7 @@ public class Projectile extends GameObject{
 	private int height,width;
 
 
-	public Projectile(ProjectileController projectileController,Tower tower, Enemy target, int type) {  // TODO: eine "animaion" pro richtung, prob in animation selber. wie enemys und towers verbessern
+	public Projectile(ProjectileController projectileController,Tower tower, Enemy target, int type) {
 		super(new Coordinate(tower.getPos().getX(),tower.getPos().getY()),projectileController.getPlaying().getGame().getPreLoader(),ObjectType.PROJECTILE,type);
 		this.pos = new Coordinate(tower.getPos().getX(),tower.getPos().getY()-tower.getHeight()/2);
 		this.type = type;
@@ -30,10 +30,6 @@ public class Projectile extends GameObject{
 		towerAngleToTarget = math.GeneralMath.calculateAngle(target.getPos(),tower.getPos());
 		height = activeAnimator.getHeight();
 		width = activeAnimator.getWidth();
-	}
-
-	public Coordinate getPos() {
-		return pos;
 	}
 
 	public void update() {
@@ -96,5 +92,4 @@ public class Projectile extends GameObject{
 	public int getHeight() {
 		return height;
 	}
-//	public Hitbox getHitBox() {return new Hitbox(pos.getX()-width/2,pos.getY()-height/2,width,height);}
 }

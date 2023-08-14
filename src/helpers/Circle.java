@@ -1,12 +1,11 @@
 package helpers;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class Circle {
 	private int x,y;
-	private int radius;
-	public Circle(Coordinate pos, int radius) {
+	private double radius;
+	public Circle(Coordinate pos, double radius) {
 		x = pos.getX();
 		y = pos.getY();
 		this.radius = radius;
@@ -18,7 +17,7 @@ public class Circle {
 	}
 
 	public void render(Graphics g) {
-		g.drawOval(x - radius, y - radius, 2 * radius, 2 * radius);
+		g.drawOval((int)Math.round(x - radius), (int)Math.round(y - radius), (int)Math.round(2 * radius), (int)Math.round(2 * radius));
 	}
 
 	public boolean contains(HitBox hitbox) {
@@ -35,7 +34,7 @@ public class Circle {
 	int hitBoxX = hitbox.getGameObject().getPos().getX()-hitBoxWidth/2;
 	int hitBoxY = hitbox.getGameObject().getPos().getY()-hitBoxHeight/2;
 
-	int circleRadiusSquared = radius * radius;
+	double circleRadiusSquared = radius * radius;
 
 	for (int y = hitBoxY; y < hitBoxY + hitBoxHeight; y++) {
 		for (int x = hitBoxX; x < hitBoxX + hitBoxWidth; x++) {
@@ -58,7 +57,7 @@ public class Circle {
 		return new Coordinate(x,y);
 	}
 
-	public int getRadius() {
+	public double getRadius() {
 		return radius;
 	}
 }
