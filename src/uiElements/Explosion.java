@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static basics.Game.fps;
@@ -33,34 +34,55 @@ public class Explosion {
     }
 
     public void render(Graphics g) {
-        if(elapsedTime !=0) {
+        if (elapsedTime != 0) {
             Graphics2D g2d = (Graphics2D) g;
 
             float fraction = (float) (elapsedTime / lifespan);
-
-            // Calculate current explosion radius based on elapsed time
             double currentRadius = fraction * radius;
 
-            // We'll create a radial gradient that goes from red at the center to yellow at the edge
-            Point2D center = new Point2D.Double(pos.getX(), pos.getY());
+            int pixelSize = 3; // Change this value to adjust the granularity of the pixelation.
+
+            // Calculate dimensions of pixelated explosion
+            int width = (int) (2 * currentRadius);
+            int height = (int) (2 * currentRadius);
+
+            // Create an offscreen image for pixelation
+            BufferedImage offscreen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D offscreenG = offscreen.createGraphics();
+
+            Point2D center = new Point2D.Double(width / 2.0, height / 2.0);
             float[] dist = {0.0f, 1.0f};
             Color[] colors = {Color.RED, Color.YELLOW};
-
             RadialGradientPaint paint = new RadialGradientPaint(center, (float) currentRadius, dist, colors);
-            g2d.setPaint(paint);
-            g2d.fillOval((int) (pos.getX() - currentRadius), (int) (pos.getY() - currentRadius),
-                    (int) (2 * currentRadius), (int) (2 * currentRadius));
 
-            // update elapsed time
+            offscreenG.setPaint(paint);
+            offscreenG.fillOval(0, 0, width, height);
+
+            // Pixelate the offscreen image
+            for (int y = 0; y < height; y += pixelSize) {
+                for (int x = 0; x < width; x += pixelSize) {
+                    int avgColor = offscreen.getRGB(x, y);
+                    for (int yy = y; yy < y + pixelSize && yy < height; yy++) {
+                        for (int xx = x; xx < x + pixelSize && xx < width; xx++) {
+                            offscreen.setRGB(xx, yy, avgColor);
+                        }
+                    }
+                }
+            }
+
+            // Draw the pixelated explosion on screen
+            g2d.drawImage(offscreen, (int) (pos.getX() - currentRadius), (int) (pos.getY() - currentRadius), null);
+            offscreenG.dispose();
         }
     }
+
 
     public boolean isFinished() {
         return elapsedTime >= lifespan;
     }
 
     // Call this method on each frame update
-    public void updateAndDamage(EnemyController enemyController) {
+    public void update(EnemyController enemyController) {
         elapsedTime += 1.0 / fps;
 
         double currentRadius = (elapsedTime / lifespan) * radius;

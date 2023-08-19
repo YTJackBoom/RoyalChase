@@ -9,6 +9,9 @@ import towers.TowerFoundation;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static basics.Game.ups;
+import static basics.GameScreen.fHEIGHT;
+import static basics.GameScreen.fWIDTH;
 import static helpers.variables.Towers.*;
 
 public class TowerController implements ControllerMethods{
@@ -17,6 +20,8 @@ public class TowerController implements ControllerMethods{
     private ArrayList<Enemy> enemyList;
     private Tower selectedTower;
     private Values playerValues;
+
+    private int towerSoldCounter; //Wenn turm kürzlich verkauft wurde, um nicht sofort einen weiteren verkaufen zu könnnen
     public TowerController(Playing playing) {
         towerEntityList = new ArrayList<Tower>();
         this.playing = playing;
@@ -34,6 +39,7 @@ public class TowerController implements ControllerMethods{
                 checkTELStatus(tower);
             }
             tower.update();
+
         }
     }
     public void initTowers(ArrayList<Coordinate> foundList) {
@@ -63,26 +69,48 @@ public class TowerController implements ControllerMethods{
 
     public void render(Graphics g) {
         if (towerEntityList != null) {
-            for (Tower tower : towerEntityList) {
-                int width = tower.getWidth() ;
-                int height = tower.getHeight() ;
-                int towerX = tower.getPos().getX() - width / 2;
-                int towerY = tower.getPos().getY() - height/2;
-
-                if (tower.isActive()) {
-                    Image turretImage = tower.getActiveAnimator().getCurrentFrame();
-                    g.drawImage(turretImage, towerX, towerY, width, height, null);
-                    tower.getActiveAnimator().incrementFrame();
-                } else {
-                    Image turretImage = tower.getPassiveAnimator().getCurrentFrame();
-                    g.drawImage(turretImage, towerX, towerY, width, height, null);
-                    tower.getPassiveAnimator().incrementFrame();
-                }
-            }
+            renderTowers(g);
+            renderTowerLevels(g);
         }
     }
 
 
+    public void renderTowers(Graphics g){
+        for(Tower tower : towerEntityList) {
+            int width = tower.getWidth();
+            int height = tower.getHeight();
+            int towerX = tower.getPos().getX() - width / 2;
+            int towerY = tower.getPos().getY() - height / 2;
+
+            if (tower.isActive()) {
+                Image turretImage = tower.getActiveAnimator().getCurrentFrame();
+                g.drawImage(turretImage, towerX, towerY, width, height, null);
+                tower.getActiveAnimator().incrementFrame();
+            } else {
+                Image turretImage = tower.getPassiveAnimator().getCurrentFrame();
+                g.drawImage(turretImage, towerX, towerY, width, height, null);
+                tower.getPassiveAnimator().incrementFrame();
+            }
+        }
+    }
+    public void renderTowerLevels(Graphics g) {
+        for(Tower tower : towerEntityList) {
+            if(tower.getLevel()>1) {
+                int width = tower.getWidth();
+                int height = tower.getHeight();
+                int levelX = tower.getPos().getX() + width / 2;
+                int levelY = tower.getPos().getY() - height / 2;
+                g.setFont(Constants.UIConstants.TOWERLEVELFONT);
+                if(tower.isMaxedLevel()){
+                    g.setColor(Constants.UIConstants.TOWERMAXEDLEVELCOLOR);
+                }else {
+                    g.setColor(Constants.UIConstants.TOWERLEVELCOLOR);
+                }
+                g.drawString(String.valueOf(tower.getLevel()), levelX, levelY);
+            }
+
+        }
+    }
      public void upgradeTower() {
         Values upgradeCost = selectedTower.getWorth().getUpgradeCost();
         if(playerValues.canAfford(upgradeCost)) {
@@ -98,13 +126,17 @@ public class TowerController implements ControllerMethods{
     }
 
     public void sellTower() {
-        playerValues.increase(selectedTower.getWorth());
+        if(!playing.getRecentlySold()) {
+            playerValues.increase(selectedTower.getWorth());
 
-        int towerIndex = towerEntityList.indexOf(selectedTower);
-        towerEntityList.set(towerIndex,new TowerFoundation(this, selectedTower.getPos()));
-        selectedTower = null;
-        playing.setSelectedTower(null);
-
+            int towerIndex = towerEntityList.indexOf(selectedTower);
+            towerEntityList.set(towerIndex, new TowerFoundation(this, selectedTower.getPos()));
+            selectedTower = null;
+            playing.setSelectedTower(null);
+            playing.setRecentlySold(true);
+        }else {
+            playing.setRecentlySoldRender(true);
+        }
     }
 
     public void mouseReleased(int x, int y) {

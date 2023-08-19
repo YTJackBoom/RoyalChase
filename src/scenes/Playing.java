@@ -37,8 +37,8 @@ public class Playing extends GameScenes implements SceneMethods{
     private int draggedTower;
     private int mouseX, mouseY;
     private boolean dragingTower;
-    private boolean cantAfford;
-    private int cantAffordCounter;
+    private boolean cantAfford,recentlySold,recentlySoldRender;
+    private int cantAffordCounter,recentlySoldCounter;
     private boolean isPaused = false;
     private Tower selectedTower;
     private Game game;
@@ -72,6 +72,7 @@ public class Playing extends GameScenes implements SceneMethods{
         buttonBarRight.render(g);
 
         renderCantAfford(g);
+        renderRecentlySold(g);
         waveController.render(g);
         if (dragingTower) {
             renderDraggedButton(g);
@@ -127,13 +128,28 @@ public class Playing extends GameScenes implements SceneMethods{
         if (cantAfford) {
             g.setFont(Constants.UIConstants.CANTAFFORDFONT);
             g.setColor(Color.BLACK);
-            g.drawString("Cant Afford!", fWIDTH / 2, fHEIGHT / 2);
+            g.drawString("Zu Teuer!", fWIDTH / 2, fHEIGHT / 2);
             cantAffordCounter++;
-//			System.out.println("s ");
-//			System.out.print(fWIDTH+" "+fHEIGHT);
+
             if (cantAffordCounter >= fps * Constants.UIConstants.CANTAFFORDTIMEONSCREEN) {
                 cantAfford = false;
                 cantAffordCounter = 0;
+            }
+        }
+    }
+    public void renderRecentlySold(Graphics g) {
+        if (recentlySold) {
+            if(recentlySoldRender) {
+                g.setFont(Constants.UIConstants.RECENTLYSOLDFONT);
+                g.setColor(Color.RED);
+                g.drawString("Du hast kürzlich einen Turm verkauft!", fWIDTH / 2, fHEIGHT / 2);
+                recentlySoldCounter++;
+            }
+
+            if (recentlySoldCounter >= fps * Constants.UIConstants.RECENTLYSOLDTIMEONSCREEN) {
+                recentlySold = false;
+                recentlySoldRender = false;
+                recentlySoldCounter = 0;
             }
         }
     }
@@ -296,4 +312,15 @@ public class Playing extends GameScenes implements SceneMethods{
     }
     public void setCantAfford(boolean b) {cantAfford=b;}
     public void setSelectedTower(Tower t) {selectedTower = t;}
+
+    public boolean getRecentlySold() {
+        return recentlySold;
+    }
+    public void setRecentlySold(boolean b) {
+        recentlySold = b;
+    }
+
+    public void setRecentlySoldRender(boolean b) {
+        recentlySoldRender = b;
+    }
 }

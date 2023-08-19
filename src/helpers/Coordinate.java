@@ -1,11 +1,12 @@
 package helpers;
 
 import java.io.Serializable;
+import java.awt.Point;
 
 public class Coordinate implements Serializable {
 	protected int x;
 	protected int y;
-	
+
 	public Coordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -40,7 +41,7 @@ public class Coordinate implements Serializable {
         if(x!=other.getX()) {
         	return false;
         }
-        
+
         if(y!=other.getY()) {
         	return false;
         }

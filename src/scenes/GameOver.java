@@ -29,8 +29,8 @@ public class GameOver extends GameScenes implements SceneMethods{
 //        System.out.println(startX);
 //        System.out.println(xOffset);
 //        System.out.println(startY);
-    	buttons.add(new MyButton( "Try Again", startX, startY, width, height));
-    	buttons.add(new MyButton("Main Menu", startX+xOffset, startY, width, height));
+    	buttons.add(new MyButton( "Try Again", startX, startY, width, height,true));
+    	buttons.add(new MyButton("Main Menu", startX+xOffset, startY, width, height,true));
     }
     @Override
     public void render(Graphics g) {

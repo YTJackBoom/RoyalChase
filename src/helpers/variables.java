@@ -3,6 +3,7 @@ package helpers;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 public class variables { //class to define different variables for thing
@@ -184,30 +185,20 @@ public class variables { //class to define different variables for thing
     }
 
     public static class Towers {
+        private static final String standardpath = "res/images/towers/";
         public static final int Foundation_T = Buttons.Foundation_T_B;
         public static final int ARROW_T = Buttons.ARROW_T_B;
         public static final int MAGE_T = Buttons.MAGE_T_B;
         public static final int ROCKET_T = Buttons.ROCKET_T_B;
         public static final int SNIP_T = Buttons.SNIP_T_B;
 
-        public static String getTowerPassiveGifPath(int towerType) {
-            return switch (towerType) {
-                case Foundation_T -> "res/images/towers/passive/foundation_t_passive/";
-                case ARROW_T -> "res/images/towers/passive/arrow_t_passive/";
-                case MAGE_T -> "res/images/towers/passive/mage_t_passive/";
-                case ROCKET_T -> "res/images/towers/passive/rocket_t_passive/";
-                case SNIP_T -> "res/images/towers/passive/mage_t_passive/";
-                default -> throw new IllegalStateException("variables: getTowerPassiveGifFile: Unexpected value:  " + towerType);
-
-            };
-        }
         public static File getTowerPassiveGifFile(int towerType) {
             return switch (towerType) {
-                case Foundation_T -> new File("res/images/towers/passive/foundation_t_passive/up.gif");
-                case ARROW_T -> new File("res/images/towers/passive/arrow_t_passive/up.gif");
-                case MAGE_T -> new File("res/images/towers/passive/mage_t_passive/up.gif");
-                case ROCKET_T -> new File("res/images/towers/passive/rocket_t_passive/up.gif");
-                case SNIP_T -> new File("res/images/towers/passive/mage_t_passive/up.gif");
+                case Foundation_T -> new File(standardpath + "foundation_t/passive.gif");
+                case ARROW_T -> new File(standardpath + "arrow_t/passive.gif");
+                case MAGE_T -> new File(standardpath+ "mage_t/passive.gif");
+                case ROCKET_T -> new File(standardpath + "rocket_t/passive.gif");
+                case SNIP_T -> new File(standardpath+ "snip_t/passive.gif");
                 default -> throw new IllegalStateException("variables: getTowerPassiveGifFile: Unexpected value:  " + towerType);
 
             };
@@ -215,21 +206,15 @@ public class variables { //class to define different variables for thing
 
         public static String getTowerActiveGifPath(int towerType) {
             return switch (towerType) {
-                case Foundation_T -> "res/images/towers/active/foundation_t_active/";
-                case ARROW_T -> "res/images/towers/active/arrow_t_active/";
-                case MAGE_T -> "res/images/towers/active/mage_t_active/";
-                case ROCKET_T -> "res/images/towers/active/rocket_t_active/";
-                case SNIP_T -> "res/images/towers/active/mage_t_active/";
+                case Foundation_T -> standardpath+ "foundation_t/";
+                case ARROW_T -> standardpath + "arrow_t/";
+                case MAGE_T -> standardpath + "mage_t/";
+                case ROCKET_T -> standardpath + "rocket_t/";
+                case SNIP_T -> standardpath + "snip_t/";
                 default -> throw new IllegalStateException("variables: getTowerActiveGifFile: Unexpected value:  " + towerType);
 
             };
         }
-        public static File getTowerBaseGifFile(int i) {
-            return switch (i) {
-                default -> new File("res/images/towers/bases/rocket_t_base.gif");
-            };
-        }
-
         public static int getTowerRange(int towerType) {
             return switch (towerType) {
                 case Foundation_T -> 0;
@@ -279,7 +264,6 @@ public class variables { //class to define different variables for thing
     }
 
     public static class Projectiles {
-        public static final int EMPTY = Towers.Foundation_T; //preloader can only start at 0
         public static final int ARROW = Towers.ARROW_T;
         public static final int LIGHTNINGBALL = Towers.MAGE_T;
         public static final int ROCKET = Towers.ROCKET_T;
@@ -299,7 +283,7 @@ public class variables { //class to define different variables for thing
             return switch (projectileType) {
                 case ARROW -> 5;
                 case ROCKET -> 70;
-                case LIGHTNINGBALL -> 0;
+                case LIGHTNINGBALL -> 50;
                 case BULLET -> 110;
                 default -> throw new IllegalStateException("variables: getProjectileDamage: Unexpected value:  " + projectileType);
             };
@@ -316,7 +300,6 @@ public class variables { //class to define different variables for thing
 
         public static File getProjectileGifFile(int projectileType) {
             return switch (projectileType) {
-                case EMPTY -> null;
                 case ARROW -> new File("res/images/projectiles/active/arrow_p_active/normal.gif");
                 case LIGHTNINGBALL -> new File("res/images/projectiles/active/lightningball_p_active/normal.gif");
                 case ROCKET -> new File("res/images/projectiles/active/rocket_p_active/normal.gif");
@@ -332,33 +315,6 @@ public class variables { //class to define different variables for thing
         }
         public static int getLowestInt(){return variables.getLowestInt(Projectiles.class);}
     }
-
-    public static class Buttons {
-        public static final int Foundation_T_B = 0;
-        public static final int ARROW_T_B = 1;
-        public static final int MAGE_T_B = 2;
-        public static final int ROCKET_T_B = 3;
-        public static final int SNIP_T_B = 4;
-        public static final int MANA_B_B = 5;
-        public static final int IRON_B_B = 6;
-        public static final int WOOD_B_B = 7;
-        public static final int STONE_B_B = 8;
-
-
-        public static File getButtonImageFile(int buttonType) {
-            return switch (buttonType) {
-                case Foundation_T_B -> new File("res/images/buttons/blue_square.png");
-                case ARROW_T_B -> new File("res/images/buttons/green_square.png");
-                case MAGE_T_B -> new File("res/images/buttons/purple_square.png");
-                case ROCKET_T_B -> new File("res/images/buttons/red_square.png");
-                case SNIP_T_B -> new File("res/images/buttons/cyan_square.png");
-                case MANA_B_B -> new File("res/images/buttons/blue_square.png");
-
-                default -> throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);
-            };
-        }
-    }
-
     public static class Town {
         public static BufferedImage getBackgroundImage() {
             File mapFile = new File("res/images/town/town_background.jpg");
@@ -375,10 +331,10 @@ public class variables { //class to define different variables for thing
 
     public static class Buildings {
         public static final int PLACEHOLDER = 0;
-        public static final int MANA = 5;
-        public static final int IRON = 6;
-        public static final int STONE = 7;
-        public static final int WOOD = 8;
+        public static final int MANA = Buttons.MANA_B_B;
+        public static final int IRON = Buttons.IRON_B_B;
+        public static final int STONE = Buttons.STONE_B_B;
+        public static final int WOOD = Buttons.WOOD_B_B;
         public static final int MANAORE = 1;
         public static final int IRONORE = 2;
         public static final int STONEORE = 3;
@@ -388,15 +344,15 @@ public class variables { //class to define different variables for thing
 
         public static File getBuidingGifFile(int buildingType) {
             return switch (buildingType) {
-                case PLACEHOLDER -> new File("res/images/towers/active/foundation_t_active/down.gif");
-                case MANA -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case IRON -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case STONE -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case WOOD -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case MANAORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case IRONORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case STONEORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
-                case WOODORE -> new File("res/images/towers/active/arrow_t_active/down.gif");
+                case PLACEHOLDER -> new File("res/images/towers/foundation_t/passive.gif");
+                case MANA -> new File("res/images/towers/arrow_t/passive.gif");
+                case IRON -> new File("res/images/towers/arrow_t/passive.gif");
+                case STONE -> new File("res/images/towers/arrow_t/passive.gif");
+                case WOOD -> new File("res/images/towers/arrow_t/passive.gif");
+                case MANAORE -> new File("res/images/towers/arrow_t/passive.gif");
+                case IRONORE -> new File("res/images/towers/arrow_t/passive.gif");
+                case STONEORE -> new File("res/images/towers/arrow_t/passive.gif");
+                case WOODORE -> new File("res/images/towers/arrow_t/passive.gif");
 //                case 9 -> new File("res/text/waveFiles/waves9.txt");
                 default -> throw new IllegalStateException("Evariables: rrropr when trying to read buildingGifFile "+buildingType);
             };
@@ -428,6 +384,64 @@ public class variables { //class to define different variables for thing
             return variables.getHighestInt(Buildings.class);
         }
         public static int getLowestInt(){return variables.getLowestInt(Buildings.class);}
+
+
+    }
+
+    public static class Buttons {
+        private static final String standartpath = "res/images/icons/interactables/";
+        public static final int Foundation_T_B = 0;
+        public static final int ARROW_T_B = 1;
+        public static final int MAGE_T_B = 2;
+        public static final int ROCKET_T_B = 3;
+        public static final int SNIP_T_B = 4;
+        public static final int MANA_B_B = 5;
+        public static final int IRON_B_B = 6;
+        public static final int WOOD_B_B = 7;
+        public static final int STONE_B_B = 8;
+
+
+        public static File getButtonImageFile(int buttonType) {
+            return switch (buttonType) {
+                case Foundation_T_B -> new File("res/images/buttons/blue_square.png");
+                case ARROW_T_B -> new File(standartpath + "arrow_t_icon.png");
+                case MAGE_T_B -> new File(standartpath+ "mage_t_icon.png");
+                case ROCKET_T_B -> new File(standartpath+"rocket_t_icon.png");
+                case SNIP_T_B -> new File(standartpath+"snip_t_icon.png");
+                case MANA_B_B -> new File("res/images/buttons/blue_square.png");
+
+                default -> throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);
+            };
+        }
+    }
+    public static class Icons {
+        private static final String standartpath = "res/images/icons/";
+        public static final int RESUME = 0;
+        public static final int PAUSE = 1;
+        public static final int ENEMIES = 2;
+        public static final int WAVES = 3;
+        public static final int HEART = 4;
+        public static final int GOLD = 5;
+        public static final int WOOD = 6;
+        public static final int IRON = 7;
+        public static final int MANA = 8;
+        public static final int STONE = 9;
+
+        public static File getIconImageFile(int IconType) {
+            return switch (IconType) {
+                case RESUME -> new File(standartpath + "infooverlay/resume_icon.png");
+                case PAUSE -> new File(standartpath + "infooverlay/pause_icon.png");
+                case ENEMIES -> new File(standartpath + "infooverlay/enemies_icon.png");
+                case WAVES -> new File(standartpath + "infooverlay/waves_icon.png");
+                case HEART -> new File(standartpath + "infooverlay/heart_icon.png");
+                case GOLD -> new File(standartpath + "infooverlay/gold_icon.png");
+                case WOOD -> new File(standartpath + "infooverlay/wood_icon.png");
+                case IRON -> new File(standartpath + "infooverlay/iron_icon.png");
+                case MANA -> new File(standartpath + "infooverlay/mana_icon.png");
+                case STONE -> new File(standartpath + "infooverlay/stone_icon.png");
+                default -> throw new IllegalStateException("IconType does not exist");
+            };
+        }
 
 
     }

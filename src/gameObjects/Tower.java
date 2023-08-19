@@ -127,6 +127,9 @@ public class Tower extends GameObject {
 		return r;
 	}
 
+	public boolean isMaxedLevel() {
+		return level >= Constants.ObjectConstants.TOWERMAXLEVEL;
+	}
 
 	//Getters n setter
 	public void setStatus(boolean status) {

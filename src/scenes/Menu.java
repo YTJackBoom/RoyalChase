@@ -31,9 +31,9 @@ public class Menu extends GameScenes implements SceneMethods {
         int buttonX = 300;
         int buttonY = 500;
         int offsetX = 200;
-    buttons.add(new MyButton("Play",buttonX,buttonY,buttonWidth,buttonHeight));
-    buttons.add(new MyButton("Load Game",buttonX+offsetX,buttonY,buttonWidth,buttonHeight));
-    buttons.add(new MyButton("Exit",buttonX+2*offsetX,buttonY,buttonWidth,buttonHeight));
+    buttons.add(new MyButton("Play",buttonX,buttonY,buttonWidth,buttonHeight,true));
+    buttons.add(new MyButton("Load Game",buttonX+offsetX,buttonY,buttonWidth,buttonHeight,true));
+    buttons.add(new MyButton("Exit",buttonX+2*offsetX,buttonY,buttonWidth,buttonHeight,true));
     }
 
     public void renderButtons(Graphics g){

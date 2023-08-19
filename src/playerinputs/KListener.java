@@ -5,6 +5,8 @@ import basics.Game;
 import static basics.GameScreen.fHEIGHT;
 import static basics.GameScreen.fWIDTH;
 import static scenes.GameStates.*;
+
+import helpers.Values;
 import scenes.GameStates;
 
 
@@ -47,6 +49,9 @@ public class KListener implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_D) {
             GameStates.gameState = SETTINGS;
             game.resetAll();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_M) {
+            game.getPlayerValues().increase(new Values(10000,10000,10000,10000));
         }
         if (e.getKeyCode() == KeyEvent.VK_F11) {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

@@ -1,6 +1,7 @@
 package uiElements;
 
 import gameObjects.GameObject;
+import gameObjects.Tower;
 import helpers.variables;
 import scenes.GameScenes;
 import scenes.GameStates;
@@ -12,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static helpers.variables.Buttons.*;
+import static uiElements.UIPos.PLAYINGDOWN;
 
 public class MyButtonBar {
 	private Coordinate pos;
@@ -23,9 +25,9 @@ public class MyButtonBar {
 	private boolean isVisible = false;
 	private GameObject pointer;
 	private MyButton hoveredButton;
-	private UIPos upos;
+	private UIPos uipos;
 	public MyButtonBar(GameScenes scene, Coordinate pos, int width, int height, UIPos uiPos){
-		upos = uiPos;
+		this.uipos = uiPos;
 		buttons = new ArrayList<MyButton>();
 		this.pos = pos;
 		this.width = width;
@@ -48,17 +50,17 @@ public class MyButtonBar {
 		int width = 100;
 		int height = 80;
 
-		buttons.add(new MyButton("Town",startX, startY , width, height));
-		buttons.add(new MyButton("Sell",startX+xOffset, startY+yOffset, width, height));
-		buttons.add(new MyButton("Upgrade",startX+xOffset*2, startY+yOffset*2, width, height));
+		buttons.add(new MyButton("Town",startX, startY , width, height,true));
+		buttons.add(new MyButton("Sell",startX+xOffset, startY+yOffset, width, height,true));
+		buttons.add(new MyButton("Upgrade",startX+xOffset*2, startY+yOffset*2, width, height,true));
 
-		buttons.add(new MyButton(ARROW_T_B,startX+xOffset*3, startY+yOffset*3, width, height));
-		buttons.add(new MyButton(ROCKET_T_B,startX+xOffset*4, startY+yOffset*4,width,height));
-		buttons.add(new MyButton(MAGE_T_B,startX+xOffset*5,startY+yOffset*5,width,height));
-		buttons.add(new MyButton(SNIP_T_B,startX+xOffset*6,startY+yOffset*6,width,height));
+		buttons.add(new MyButton(ARROW_T_B,startX+xOffset*3, startY+yOffset*3, width, height,true));
+		buttons.add(new MyButton(ROCKET_T_B,startX+xOffset*4, startY+yOffset*4,width,height,true));
+		buttons.add(new MyButton(MAGE_T_B,startX+xOffset*5,startY+yOffset*5,width,height,true));
+		buttons.add(new MyButton(SNIP_T_B,startX+xOffset*6,startY+yOffset*6,width,height,true));
 
 
-		buttons.add(new MyButton("Menu",startX+xOffset*7, startY+yOffset*7, width, height));
+		buttons.add(new MyButton("Menu",startX+xOffset*7, startY+yOffset*7, width, height,true));
 
 	}
 
@@ -70,8 +72,8 @@ public class MyButtonBar {
 		int width = 100;
 		int height = 80;
 
-		buttons.add(new MyButton("Sell",startX, startY, width, height));
-		buttons.add(new MyButton("Upgrade",startX+xOffset, startY+yOffset, width, height));
+		buttons.add(new MyButton("Sell",startX, startY, width, height,true));
+		buttons.add(new MyButton("Upgrade",startX+xOffset, startY+yOffset, width, height,true));
 	}
 
 	public void initTownButtons() {
@@ -82,14 +84,14 @@ public class MyButtonBar {
 		int width = 100;
 		int height = 80;
 
-		buttons.add(new MyButton("Battle!",startX, startY , width, height));
-		buttons.add(new MyButton("Back",startX+xOffset, startY+yOffset, width, height));
-		buttons.add(new MyButton("Sell",startX+xOffset*2, startY+yOffset*2, width, height));
+		buttons.add(new MyButton("Battle!",startX, startY , width, height,true));
+		buttons.add(new MyButton("Back",startX+xOffset, startY+yOffset, width, height,true));
+		buttons.add(new MyButton("Sell",startX+xOffset*2, startY+yOffset*2, width, height,true));
 
-		buttons.add(new MyButton(MANA_B_B,startX+xOffset*3, startY+yOffset*3, width, height));
+		buttons.add(new MyButton(MANA_B_B,startX+xOffset*3, startY+yOffset*3, width, height,true));
 
-		buttons.add(new MyButton("Next",startX+xOffset*4, startY+yOffset*4 , width, height));
-		buttons.add(new MyButton("Menu",startX+xOffset*5, startY+yOffset*5, width, height));
+		buttons.add(new MyButton("Next",startX+xOffset*4, startY+yOffset*4 , width,height, true));
+		buttons.add(new MyButton("Menu",startX+xOffset*5, startY+yOffset*5, width,height, true));
 	}
 	public void initBounds() {
 		bounds = new Rectangle(pos.getX(), pos.getY(), width, height);
@@ -104,13 +106,30 @@ public class MyButtonBar {
 
 	}
 	public void renderButtons(Graphics g) {
-		for (MyButton button : buttons) {
-			button.render(g);
+		if(!(uipos == UIPos.PLAYINGDOWN)) {
+			renderButtonsList(g);
+		}else {
+			Tower tower = (Tower) pointer;
+			if (!tower.isMaxedLevel()) {
+				buttons.get(0).setPos(new Coordinate(pos.getX()+10,pos.getY()+10));
+				setButtonsVisibility(true);
+				renderButtonsList(g);
+			}else {
+				buttons.get(1).setVisible(false);
+				int x = pos.getX()+width/2-buttons.get(0).getWidth()/2;
+				int y = pos.getY();
+				buttons.get(0).setPos(new Coordinate(x,y));
+				renderButtonsList(g);
+			}
 		}
 	}
 
 
-
+	public void renderButtonsList(Graphics g) {
+		for (MyButton button : buttons) {
+			button.render(g);
+		}
+	}
 	public void resetButtons() {
 		for (MyButton button : buttons) {
 			button.resetBools();
@@ -134,7 +153,7 @@ public class MyButtonBar {
 
 	public void mouseMoved(int x, int y) {
 		for(MyButton button: buttons){
-			if(button.getBounds().contains(x,y)){
+			if(button.getBounds().contains(x,y)&& button.isVisible()){
 				button.setHovered(true);
 				hoveredButton = button;
 				break;
@@ -148,7 +167,7 @@ public class MyButtonBar {
 	}
 	public void mousePressed(int x, int y) {
 		for(MyButton button: buttons){
-			if(button.getBounds().contains(x,y)){
+			if(button.getBounds().contains(x,y)&& button.isVisible()){
 				button.setPressed(true);
 					if(scene.getClass() == Playing.class&&button.isTowerButton()) {
 						Playing playing = (Playing) scene;
@@ -166,7 +185,7 @@ public class MyButtonBar {
 
 	public void mouseReleased(int x, int y) {
 		for (MyButton button : buttons) {
-			if (button.getBounds().contains(x, y)) {
+			if (button.getBounds().contains(x, y)&&button.isVisible()) {
 				if (button.getText() != null) {
 					if (button.getText().equals("Play")) {
 						GameStates.gameState = GameStates.PLAYING;
@@ -202,6 +221,11 @@ public class MyButtonBar {
 	}
 	public void setVisible(boolean b) {
 		isVisible = b;
+	}
+	public void setButtonsVisibility(boolean b) {
+		for (MyButton button : buttons) {
+			button.setVisible(b);
+		}
 	}
 
 	public Rectangle getBounds() {

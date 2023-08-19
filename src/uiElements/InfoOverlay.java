@@ -10,19 +10,20 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
-import static helpers.Values.*;
+import static helpers.variables.Icons.*;
 
 public class InfoOverlay {
     private Game game;
     private Playing playing;
     private Town town;
-    private BufferedImage pausedImage,resumeImage;
     private Tower towerPointer;
     private int draggedTowerType;
     private int mouseY,mouseX;
     private MyButton hoveredButton;
     private Values playerValues;
+    private ArrayList<BufferedImage> iconImages;
     public InfoOverlay(Game game) {
         this.game = game;
         playerValues = game.getPlayerValues();
@@ -30,11 +31,16 @@ public class InfoOverlay {
         initVariables();
     }
     private void initVariables(){
-        File pausedFile = new File("res\\images\\infos\\paused.jpg");
-        File resumeFile = new File("res\\images\\infos\\resume.jpg");
+        ArrayList<File> iconFiles = new ArrayList<File>();
+        iconImages = new ArrayList<BufferedImage>();
+        for (int i = 0; i<=9;i++) {
+            iconFiles.add(variables.Icons.getIconImageFile(i));
+        }
+
         try {
-            pausedImage = ImageIO.read(pausedFile);
-            resumeImage = ImageIO.read(resumeFile);
+            for (File file : iconFiles) {
+                iconImages.add(ImageIO.read(file));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,26 +58,50 @@ public class InfoOverlay {
     }
 
     public void renderPlayerInfos(Graphics g) {
-        int startX = 10;
+        int startX = 100;
         int startY = 50;
-        int xOffset = 0;
-        int yOffset = 20;
+        int xOffset = 200;
+
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Gold: " + playerValues.getGold(), startX, startY);
-        g.drawString("Wave: " + game.getPlaying().getWaveController().getRemainingWaves(), startX+xOffset, startY+yOffset);
-        int remainingEnemies =  game.getPlaying().getWaveController().getCurrentWaveNotSpawnedEnemies()+game.getPlaying().getEnemyController().getEnemyList().size();
-        g.drawString("Enemies: " + remainingEnemies, startX+xOffset*2, startY+yOffset*2);
-        g.drawString("Health: " + playerValues.getHealth(), startX+xOffset*3, startY+yOffset*3);
-        g.drawString("Mana: " + playerValues.getMana(),startX+xOffset*4,startY+yOffset*4);
-        g.drawString("Iron: " + playerValues.getIron(),startX+xOffset*5,startY+yOffset*5);
-        g.drawString("Wood: " + playerValues.getWood(),startX+xOffset*6,startY+yOffset*6);
-        g.drawString("Stone: " + playerValues.getStone(),startX+xOffset*7,startY+yOffset*7);
-        if(game.isPaused()){
-            g.drawImage(pausedImage, 10, 0, null);
-        }else {
-            g.drawImage(resumeImage, 10, 0, null);
+        FontMetrics fm = g.getFontMetrics();
+        int textHeight = fm.getAscent() - fm.getDescent();
+
+        int[] icons = { WAVES, ENEMIES, HEART, GOLD, MANA, IRON, WOOD, STONE };
+        int[] values = {
+                game.getPlaying().getWaveController().getRemainingWaves(),
+                game.getPlaying().getWaveController().getCurrentWaveNotSpawnedEnemies() + game.getPlaying().getEnemyController().getEnemyList().size(),
+                (int) playerValues.getHealth(),
+                (int) playerValues.getGold(),
+                (int) playerValues.getMana(),
+                (int) playerValues.getIron(),
+                (int) playerValues.getWood(),
+                (int) playerValues.getStone()
+        };
+
+        for (int i = 0; i < icons.length; i++) {
+            BufferedImage img = iconImages.get(icons[i]);
+
+            int imageCenterX = startX + i * xOffset;
+            int imageCenterY = startY;
+
+            g.drawImage(img, imageCenterX - img.getWidth() / 2, imageCenterY - img.getHeight() / 2, null);
+
+            int textCenterX = imageCenterX + img.getWidth() + 10;
+            int textCenterY = imageCenterY + textHeight / 2 ;
+
+            g.drawString(Integer.toString(values[i]), textCenterX, textCenterY);
         }
+
+        BufferedImage img;
+        if(game.isPaused()) {
+            img = iconImages.get(0);
+        } else {
+            img = iconImages.get(1);
+        }
+        g.drawImage(img,25,startY-img.getHeight()/2,null);
+
+
     }
 
     public void renderTowerRanges(Graphics g) {
@@ -91,81 +121,45 @@ public class InfoOverlay {
     }
 
     public void renderTowerCosts(Graphics g) {
-        if (hoveredButton != null) {
-            if ((hoveredButton.getText()!=null && !hoveredButton.getText().isBlank()) || hoveredButton.isTowerButton() || hoveredButton.isBuildingButton()) {
-                int x = hoveredButton.getX() - hoveredButton.getWidth() / 2;
-                int y = hoveredButton.getY() + hoveredButton.getHeight() / 3;
+        if (hoveredButton == null) return;
 
-                int manaCost=0, ironCost=0, woodCost=0, stoneCost=0;
+        String buttonText = hoveredButton.getText();
+        boolean isSellText = "Sell".equals(buttonText);
 
-                if (hoveredButton.isTowerButton()) {
-                    int type = hoveredButton.getType();
-                    Values cost = variables.Towers.getCost(type);
+        if (buttonText != null && buttonText.isBlank()) return;
+        if (!hoveredButton.isTowerButton() && !hoveredButton.isBuildingButton() && buttonText == null) return;
 
-                    manaCost = (int)cost.getMana();
-                    ironCost = (int)cost.getIron();
-                    woodCost = (int)cost.getWood();
-                    stoneCost = (int)cost.getStone();
-                }else if (hoveredButton.isBuildingButton()) {
-                    int type = hoveredButton.getType();
-                    Values cost = variables.Buildings.getCost(type);
+        int x = hoveredButton.getX() - hoveredButton.getWidth() / 2;
+        int y = hoveredButton.getY() + hoveredButton.getHeight() / 3;
 
-                    manaCost = (int)cost.getMana();
-                    ironCost = (int)cost.getIron();
-                    woodCost = (int)cost.getWood();
-                    stoneCost = (int)cost.getStone();
-                }else if(hoveredButton.getText()!=null&&towerPointer!=null) {
-                    if (hoveredButton.getText().equals("Upgrade")) {
-                        Values upgradeCost = towerPointer.getWorth().getUpgradeCost();
-                        manaCost = (int) upgradeCost.getMana();
-                        ironCost = (int) upgradeCost.getIron();
-                        woodCost = (int) upgradeCost.getWood();
-                        stoneCost = (int) upgradeCost.getStone();
+        Values costValues = null;
 
-                        g.setFont(Constants.UIConstants.TOWERCOSTFONT);
-//                        System.out.println("f");
-                    } else if (hoveredButton.getText().equals("Sell")) {
-                        Values worth  = towerPointer.getWorth();
-                        manaCost = (int) worth.getMana();
-                        ironCost = (int) worth.getIron();
-                        woodCost = (int) worth.getWood();
-                        stoneCost = (int) worth.getStone();
-                    } else {
-                        return;
-                    }
-                }else {
-                    return;
-                }
-
-                if (manaCost > playerValues.getMana()) {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                } else {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
-                }
-                g.drawString(String.valueOf(manaCost), x, y);
-
-                if (ironCost > playerValues.getIron()) {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                } else {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
-                }
-                g.drawString(String.valueOf(ironCost), x, y + (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D());
-
-                if (woodCost > playerValues.getWood()) {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                } else {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
-                }
-                g.drawString(String.valueOf(woodCost), x, y + (int) (2 * Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
-
-                if (stoneCost > playerValues.getStone()) {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                } else {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
-                }
-                g.drawString(String.valueOf(stoneCost), x, y + (int) (3 * Constants.UIConstants.TOWERCOSTFONT.getSize2D()));
+        if (hoveredButton.isTowerButton() || hoveredButton.isBuildingButton()) {
+            int type = hoveredButton.getType();
+            costValues = hoveredButton.isTowerButton() ? variables.Towers.getCost(type) : variables.Buildings.getCost(type);
+        } else if (buttonText != null && towerPointer != null) {
+            if ("Upgrade".equals(buttonText)) {
+                costValues = towerPointer.getWorth().getUpgradeCost();
+                g.setFont(Constants.UIConstants.TOWERCOSTFONT);
+            } else if (isSellText) {
+                costValues = towerPointer.getWorth();
             }
-       }
+        }
+
+        if (costValues == null) return;
+
+        double[] costs = {costValues.getMana(), costValues.getIron(), costValues.getWood(), costValues.getStone()};
+        double[] playerResources = {playerValues.getMana(), playerValues.getIron(), playerValues.getWood(), playerValues.getStone()};
+
+        for (int i = 0; i < costs.length; i++) {
+            if (costs[i] <= playerResources[i] || isSellText) {
+                g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+            } else {
+                g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+            }
+            g.drawString(String.valueOf((int) costs[i]), x, y + i * (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D());
+        }
+
 
     }
 

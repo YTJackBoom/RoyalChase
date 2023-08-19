@@ -73,7 +73,7 @@ public class EnemyController implements ControllerMethods{
 	}
 	public void updateExplosions() {
 		for(Explosion e : explosionsList) {
-			e.updateAndDamage(this);
+			e.update(this);
 		}
 	}
 	@Override

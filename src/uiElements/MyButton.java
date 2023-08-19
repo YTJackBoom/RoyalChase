@@ -18,13 +18,15 @@ public class MyButton {
 	private boolean isTextButton = false;
 	private boolean mouseHover = false;
 	private boolean mousePressed = false;
+	private boolean isVisible = false;
 	private String text = null;
 	private int type;
 	private Rectangle bounds;
 	private int x,y,width,height;
 	private int level = -1;
 	private BufferedImage ButtonImage;
-	public MyButton(String text, int x, int y, int width, int height) {
+	public MyButton(String text, int x, int y, int width, int height,boolean visibility) {
+		isVisible = visibility;
 		this.text = text;
 		this.x = x;
 		this.y = y;
@@ -33,7 +35,8 @@ public class MyButton {
 		isTextButton = true;
 		initBounds();
 	}
-	public MyButton(int ButtonType, int x, int y, int width, int height) {
+	public MyButton(int ButtonType, int x, int y, int width, int height,boolean visibility) {
+		isVisible = visibility;
 		this.type = ButtonType;
 		this.x = x;
 		this.y = y;
@@ -42,7 +45,8 @@ public class MyButton {
 		initBounds();
 		initButtonImage();
 	}
-	public MyButton(int level, Coordinate pos, int width, int height) {
+	public MyButton(int level, Coordinate pos, int width, int height,boolean visibility) {
+		isVisible = visibility;
 		this.level = level;
 		this.x = pos.getX();
 		this.y = pos.getY();
@@ -71,13 +75,15 @@ public class MyButton {
 	}
 
 	public void render(Graphics g) {
-		if (isTextButton) {
-			renderButtonBody(g);
-			renderButtonBox(g);
-			renderButtonText(g);
-		}else {
-			renderButtonImage(g);
-			renderButtonBox(g);
+		if (isVisible) {
+			if (isTextButton) {
+				renderButtonBody(g);
+				renderButtonBox(g);
+				renderButtonText(g);
+			} else {
+				renderButtonImage(g);
+				renderButtonBox(g);
+			}
 		}
 	}
 
@@ -160,5 +166,18 @@ public class MyButton {
 
 	public int getLevel() {
 		return level;
+	}
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean visible) {
+		isVisible = visible;
+	}
+
+	public void setPos(Coordinate pos) {
+		x= pos.getX();
+		y= pos.getY();
+		initBounds();
 	}
 }

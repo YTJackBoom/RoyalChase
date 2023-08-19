@@ -36,10 +36,10 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         for(int i = 0; i < buttonsAmount; i++){
             int x = buttonXStart + (i%buttonsPerLine)*buttonXOffset;
             int y = buttonYStart + (i/buttonsPerLine)*buttonYOffset;
-            buttons.add(new MyButton((i+1),new Coordinate(x,y),buttonWidth,buttonHeight));
+            buttons.add(new MyButton((i+1),new Coordinate(x,y),buttonWidth,buttonHeight,true));
         }
-        buttons.add(new MyButton(0,new Coordinate(buttonXStart-buttonXOffset,buttonYStart),buttonWidth,buttonHeight));
-        buttons.add(new MyButton("Zurück",buttonXStart-(buttonXOffset+buttonXOffset/2),buttonYStart-buttonYOffset/2,buttonWidth/2,buttonHeight/2));
+        buttons.add(new MyButton(0,new Coordinate(buttonXStart-buttonXOffset,buttonYStart),buttonWidth,buttonHeight,true)); //Tutorial
+        buttons.add(new MyButton("Zurück",buttonXStart-(buttonXOffset+buttonXOffset/2),buttonYStart-buttonYOffset/2,buttonWidth/2,buttonHeight/2,true));
     }
 
     @Override

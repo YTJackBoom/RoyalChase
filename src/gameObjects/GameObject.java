@@ -40,7 +40,7 @@ public abstract class GameObject {
 				activeAnimator = preLoader.getBuildingAnimator(type).clone();
 			}
 			case PROJECTILE -> {
-				activeAnimator = preLoader.getProjectileAnimator(type).clone();
+				activeAnimator = preLoader.getProjectileAnimator(type-1).clone();
 			}
 		}
 	}

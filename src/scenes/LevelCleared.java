@@ -27,9 +27,9 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
         initButtons();
     }
     public void initButtons() {
-        buttons.add(new MyButton( "Continue", 100, 100, 200, 100)); //continueButton
-        buttons.add(new MyButton( "Save", 100, 300, 200, 100)); //saveButton
-        buttons.add(new MyButton( "Main Menu", 100, 500, 200, 100)); //mainMenuButton
+        buttons.add(new MyButton( "Continue", 100, 100, 200, 100,true)); //continueButton
+        buttons.add(new MyButton( "Save", 100, 300, 200, 100,true)); //saveButton
+        buttons.add(new MyButton( "Main Menu", 100, 500, 200, 100,true)); //mainMenuButton
     }
 
     @Override
