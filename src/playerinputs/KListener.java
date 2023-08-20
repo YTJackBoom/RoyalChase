@@ -51,7 +51,7 @@ public class KListener implements KeyListener {
             game.resetAll();
         }
         if(e.getKeyCode() == KeyEvent.VK_M) {
-            game.getPlayerValues().increase(new Values(10000,10000,10000,10000));
+            game.getPlayerValues().increase(new Values(1000000,10000,10000,10000,10000,10000));
         }
         if (e.getKeyCode() == KeyEvent.VK_F11) {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

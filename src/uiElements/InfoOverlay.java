@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static helpers.variables.Icons.*;
@@ -33,7 +34,7 @@ public class InfoOverlay {
     private void initVariables(){
         ArrayList<File> iconFiles = new ArrayList<File>();
         iconImages = new ArrayList<BufferedImage>();
-        for (int i = 0; i<=9;i++) {
+        for (int i = 0; i<=10;i++) {
             iconFiles.add(variables.Icons.getIconImageFile(i));
         }
 
@@ -67,11 +68,12 @@ public class InfoOverlay {
         FontMetrics fm = g.getFontMetrics();
         int textHeight = fm.getAscent() - fm.getDescent();
 
-        int[] icons = { WAVES, ENEMIES, HEART, GOLD, MANA, IRON, WOOD, STONE };
+        int[] icons = { WAVES, ENEMIES, HEART, WORKERS,GOLD, MANA, IRON, WOOD, STONE };
         int[] values = {
                 game.getPlaying().getWaveController().getRemainingWaves(),
                 game.getPlaying().getWaveController().getCurrentWaveNotSpawnedEnemies() + game.getPlaying().getEnemyController().getEnemyList().size(),
                 (int) playerValues.getHealth(),
+                (int) playerValues.getWorkers(),
                 (int) playerValues.getGold(),
                 (int) playerValues.getMana(),
                 (int) playerValues.getIron(),
@@ -129,8 +131,9 @@ public class InfoOverlay {
         if (buttonText != null && buttonText.isBlank()) return;
         if (!hoveredButton.isTowerButton() && !hoveredButton.isBuildingButton() && buttonText == null) return;
 
+        FontMetrics fm = g.getFontMetrics();
         int x = hoveredButton.getX() - hoveredButton.getWidth() / 2;
-        int y = hoveredButton.getY() + hoveredButton.getHeight() / 3;
+        int y = hoveredButton.getY() + fm.getHeight()/2;
 
         Values costValues = null;
 
@@ -148,20 +151,44 @@ public class InfoOverlay {
 
         if (costValues == null) return;
 
-        double[] costs = {costValues.getMana(), costValues.getIron(), costValues.getWood(), costValues.getStone()};
-        double[] playerResources = {playerValues.getMana(), playerValues.getIron(), playerValues.getWood(), playerValues.getStone()};
+        double[] costs = {costValues.getWorkers(), costValues.getGold(), costValues.getMana(), costValues.getIron(), costValues.getWood(), costValues.getStone()};
+        double[] playerResources = {playerValues.getWorkers(), playerValues.getGold(), playerValues.getMana(), playerValues.getIron(), playerValues.getWood(), playerValues.getStone()};
 
         for (int i = 0; i < costs.length; i++) {
-            if (costs[i] <= playerResources[i] || isSellText) {
-                g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
-            } else {
-                g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+            try {
+                BufferedImage img = ImageIO.read(variables.Icons.getIconImageFile(i + 5));
+                int imagePadding = 5;  // gap between image and number
+
+                int textHeight = (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D();
+                int imgHeight = img.getHeight();
+
+                // Calculate the y-position of the top of the text and image block for center alignment.
+                int blockHeight = textHeight + imgHeight + imagePadding;
+                int blockY = y + i * textHeight + (textHeight - blockHeight) / 2;
+
+                // Draw the image.
+                g.drawImage(img, x, blockY, null);
+
+                if (costs[i] <= playerResources[i] || isSellText) {
+                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+                } else {
+                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
+                }
+
+                String costString = String.valueOf((int) costs[i]);
+                // Draw the text. The y position is adjusted to align it to the center of the image.
+                g.drawString(costString, x + img.getWidth() + imagePadding, blockY + imgHeight + (textHeight - imgHeight) / 2);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            g.drawString(String.valueOf((int) costs[i]), x, y + i * (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D());
         }
 
 
     }
+
+
+
 
 
     public void renderUpgradeCosts(Graphics g ) {}

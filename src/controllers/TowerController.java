@@ -70,6 +70,7 @@ public class TowerController implements ControllerMethods{
     public void render(Graphics g) {
         if (towerEntityList != null) {
             renderTowers(g);
+            renderTowersHealthBars(g);
             renderTowerLevels(g);
         }
     }
@@ -109,6 +110,11 @@ public class TowerController implements ControllerMethods{
                 g.drawString(String.valueOf(tower.getLevel()), levelX, levelY);
             }
 
+        }
+    }
+    public void renderTowersHealthBars(Graphics g) {
+        for (Tower tower : towerEntityList) {
+            tower.renderHealthBar(g);
         }
     }
      public void upgradeTower() {

@@ -3,13 +3,17 @@ package gameObjects;
 import helpers.Direction;
 import helpers.*;
 
+import java.awt.*;
+
 public abstract class GameObject {
 	protected Animator activeAnimator,passiveAnimator;
 	protected ObjectType objectType;
 	protected int type;
 	protected Coordinate pos;
+	protected double health;
 
 	protected HitBox hitBox;
+	protected int height,width;
 
 	protected double currentStun =0;
 
@@ -19,6 +23,11 @@ public abstract class GameObject {
 		this.pos = pos;
 		initAnimators(preLoader);
 		hitBox = new HitBox(this);
+
+		width = activeAnimator.getWidth();
+		height = activeAnimator.getHeight();
+
+		health = getMaxHealth();
 	}
 
 
@@ -45,25 +54,19 @@ public abstract class GameObject {
 		}
 	}
 
-	public Animator getActiveAnimator(){
-		return activeAnimator;
+	public void renderHealthBar(Graphics g) {
+		double t = getMaxHealth();
+		if (health < t) {
+			int hpbarx = (int)Math.round(pos.getX() - t / 2);
+			g.setColor(Color.RED);
+			g.fillRect(hpbarx, pos.getY() - 10 - height / 2, (int)t, 5);
+
+			g.setColor(Color.GREEN);
+			g.fillRect(hpbarx, pos.getY() - 10 - height / 2, (int) (t * ((double) health / t)), 5);
+		}
 	}
-	public Animator getPassiveAnimator() {
-		return passiveAnimator;
-	}
-	public void removeAnimators() {
-		activeAnimator = null;
-		passiveAnimator = null;
-	}
-	public ObjectType getObjectType() {
-		return objectType;
-	}
-	public int getType() {
-		return type;
-	}
-	public Coordinate getPos() {
-		return pos;
-	}
+
+
 	public void setPos(Coordinate pos) {
 		Coordinate prePos = this.pos;
 		int deltaX = pos.getX() - prePos.getX();
@@ -89,6 +92,26 @@ public abstract class GameObject {
 		this.pos = pos;
 	}
 
+
+	public Animator getActiveAnimator(){
+		return activeAnimator;
+	}
+	public Animator getPassiveAnimator() {
+		return passiveAnimator;
+	}
+	public void removeAnimators() {
+		activeAnimator = null;
+		passiveAnimator = null;
+	}
+	public ObjectType getObjectType() {
+		return objectType;
+	}
+	public int getType() {
+		return type;
+	}
+	public Coordinate getPos() {
+		return pos;
+	}
 	public HitBox getHitBox() {
 		return hitBox;
 	}
@@ -99,5 +122,23 @@ public abstract class GameObject {
 
 	public double getStun() {
 		return currentStun;
+	}
+	public void damage(double i) {
+		health -= i;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public int getHeight() {
+		return height;
+	}
+
+	public double getMaxHealth() {
+		return switch (objectType) {
+			case TOWER -> variables.Towers.getTowerHealth(type);
+			case ENEMY -> variables.Enemies.getEnemyHealth(type);
+			default -> 0.0;
+		};
+
 	}
 }

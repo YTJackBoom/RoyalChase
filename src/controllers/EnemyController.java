@@ -130,7 +130,7 @@ public class EnemyController implements ControllerMethods{
    }
    public synchronized void renderHealthBars(Graphics g) {
 		for (Enemy enemy : enemyList) {
-			enemy.renderHealthBar(g);
+				enemy.renderHealthBar(g);
 		}
    }
    public void renderExplosions(Graphics g){

@@ -1,11 +1,8 @@
 package controllers;
 
-import helpers.Direction;
+import helpers.*;
 import basics.Game;
-import helpers.Values;
 import scenes.GameStates;
-import helpers.Wave;
-import helpers.WaveFileAnalyser;
 import scenes.Playing;
 
 import java.awt.*;
@@ -15,7 +12,7 @@ import static scenes.GameStates.LEVELCLEARED;
 public class WaveController implements ControllerMethods {
     private Playing playing;
     private EnemyController enemyController;
-    private WaveFileAnalyser waveFileAnalyser;
+    private TextReader textReader;
     private int currentWave, counter, counter2;
     private int cooldown = 400;
     private ArrayList<Wave> waves;
@@ -34,13 +31,13 @@ public class WaveController implements ControllerMethods {
 
 
     public void initWaves() {
-        waveFileAnalyser = new WaveFileAnalyser(playerValues);
-        int wavesNum = waveFileAnalyser.getWavesNum();
+        textReader = new TextReader(playerValues);
+        int wavesNum = textReader.getWavesNum();
         waves = new ArrayList<Wave>();
         for(int i = 0; i < wavesNum; i++) {
-            waveFileAnalyser.initArrayLists(i);
+            textReader.initArrayLists(i);
 //            System.out.println(waveFileAnalyser.getSpawnList().size() + " " + waveFileAnalyser.getDelayList().size());
-            waves.add(new Wave(waveFileAnalyser.getSpawnList(),waveFileAnalyser.getDelayList()));
+            waves.add(new Wave(textReader.getSpawnList(),textReader.getDelayList()));
         }
 
     }

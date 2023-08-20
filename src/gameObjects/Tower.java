@@ -15,8 +15,6 @@ public class Tower extends GameObject {
 	protected int counter;
 	private Enemy target;
 	private boolean isFiring,isLoaded;
-	private int type;
-	private int width, height;
 	private int level;
 	private Rectangle bounds;
 	private TowerController towerController;
@@ -147,21 +145,11 @@ public class Tower extends GameObject {
 	public boolean isActive() {
 		return isFiring;
 	}
-
-	public int getType() {
-		return type;
-	}
 	public Rectangle getBounds() {
 		return bounds;
 	}
 	public Enemy getTarget() {
 		return target;
-	}
-	public int getHeight() {
-		return activeAnimator.getHeight();
-	}
-	public int getWidth() {
-		return activeAnimator.getWidth();
 	}
 	public void upgrade() {level ++;}
 	public int getLevel() {return level;}

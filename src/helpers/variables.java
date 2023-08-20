@@ -192,6 +192,16 @@ public class variables { //class to define different variables for thing
         public static final int ROCKET_T = Buttons.ROCKET_T_B;
         public static final int SNIP_T = Buttons.SNIP_T_B;
 
+
+        public static String getTowerName(int towerType) {
+            return switch (towerType) {
+                case ARROW_T -> "Armbrust Turm";
+                case MAGE_T -> "Magier Turm";
+                case ROCKET_T -> "Raketen Turm";
+                case SNIP_T -> "Artillery Turm";
+                default -> "Unbekannt";
+            };
+        }
         public static File getTowerPassiveGifFile(int towerType) {
             return switch (towerType) {
                 case Foundation_T -> new File(standardpath + "foundation_t/passive.gif");
@@ -243,14 +253,24 @@ public class variables { //class to define different variables for thing
 
         public static Values getCost(int towerType) {
             return switch (towerType) {
-                case Foundation_T -> new Values(0,0,0,0);
-                case ARROW_T -> new Values(0,5,30,20);
-                case MAGE_T -> new Values(10,0,20,30);
-                case ROCKET_T -> new Values(0,50,20,40);
-                case SNIP_T -> new Values(0,100,30,30);
-                default -> new Values(999,999,999,999);
+                case Foundation_T -> new Values(0,0,0,0,0,0);
+                case ARROW_T -> new Values(1,0,0,5,30,20);
+                case MAGE_T -> new Values(1,0,10,0,20,30);
+                case ROCKET_T -> new Values(2,0,0,50,20,40);
+                case SNIP_T -> new Values(2,0,0,100,30,30);
+                default -> new Values(999,999,999,999,999,999);
 
 
+            };
+        }
+        public static double getTowerHealth(int towerType) {
+            return switch (towerType) {
+                case Foundation_T -> 9999;
+                case ARROW_T -> 100;
+                case MAGE_T -> 100;
+                case ROCKET_T -> 100;
+                case SNIP_T -> 100;
+                default -> 0;
             };
         }
 
@@ -335,6 +355,7 @@ public class variables { //class to define different variables for thing
         public static final int IRON = Buttons.IRON_B_B;
         public static final int STONE = Buttons.STONE_B_B;
         public static final int WOOD = Buttons.WOOD_B_B;
+        public static final int HOUSE = Buttons.HOUSE_B_B;
         public static final int MANAORE = 1;
         public static final int IRONORE = 2;
         public static final int STONEORE = 3;
@@ -342,6 +363,16 @@ public class variables { //class to define different variables for thing
 
 
 
+
+        public static String getBuildingName(int buildingType) {
+            return switch (buildingType) {
+                case MANA -> "Mana Mine";
+                case IRON -> "Eisen Mine";
+                case STONE -> "Stein Mine";
+                case WOOD -> "Holzfäller Hütte";
+                default -> "Unbekannt";
+            };
+        }
         public static File getBuidingGifFile(int buildingType) {
             return switch (buildingType) {
                 case PLACEHOLDER -> new File("res/images/towers/foundation_t/passive.gif");
@@ -353,33 +384,32 @@ public class variables { //class to define different variables for thing
                 case IRONORE -> new File("res/images/towers/arrow_t/passive.gif");
                 case STONEORE -> new File("res/images/towers/arrow_t/passive.gif");
                 case WOODORE -> new File("res/images/towers/arrow_t/passive.gif");
-//                case 9 -> new File("res/text/waveFiles/waves9.txt");
+                case HOUSE -> new File("res/images/towers/arrow_t/passive.gif");
                 default -> throw new IllegalStateException("Evariables: rrropr when trying to read buildingGifFile "+buildingType);
             };
 
         }
-
-
         public static Values getProduction(int type) {
             return switch (type) {
-                case PLACEHOLDER -> new Values(0,0,0,0);
-                case MANA -> new Values(5,0,0,0);
-                case IRON -> new Values(0,5,0,0);
-                case WOOD -> new Values(0,0,5,0);
-                case STONE -> new Values(0,0,0,5);
-                default -> new Values(0,0,0,0);
+                case PLACEHOLDER -> new Values(0,0,0,0,0,0);
+                case MANA -> new Values(0,0,5,0,0,0);
+                case IRON -> new Values(0,0,0,5,0,0);
+                case WOOD -> new Values(0,0,0,0,5,0);
+                case STONE -> new Values(0,0,0,0,0,5);
+                case HOUSE -> new Values(0,0,0,0,0,0);
+                default -> new Values(0,0,0,0,0,0);
             };
         }
         public static Values getCost(int buildingType) {
             return switch (buildingType) {
-                case MANA -> new Values(0,10,10,25);
-                case IRON -> new Values(0,0,25,10);
-                case STONE -> new Values(0,5,25,0);
-                case WOOD -> new Values(5,5,5,10);
-                default -> new Values(999,999,999,999);
+                case MANA -> new Values(1,10,0,10,10,25);
+                case IRON -> new Values(1,10,0,0,25,10);
+                case STONE -> new Values(1,10,0,5,25,0);
+                case WOOD -> new Values(1,10,5,5,5,10);
+                default -> new Values(999,999,999,999,999,999);
             };
-        }
 
+        }
         public static int getNumberOfIntDeclarations() {
             return variables.getHighestInt(Buildings.class);
         }
@@ -390,6 +420,7 @@ public class variables { //class to define different variables for thing
 
     public static class Buttons {
         private static final String standartpath = "res/images/icons/interactables/";
+        private static final String standartpathttips = "res/text/tooltips/";
         public static final int Foundation_T_B = 0;
         public static final int ARROW_T_B = 1;
         public static final int MAGE_T_B = 2;
@@ -399,6 +430,7 @@ public class variables { //class to define different variables for thing
         public static final int IRON_B_B = 6;
         public static final int WOOD_B_B = 7;
         public static final int STONE_B_B = 8;
+        public static final int HOUSE_B_B = 9;
 
 
         public static File getButtonImageFile(int buttonType) {
@@ -413,6 +445,20 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);
             };
         }
+
+        public static File getTooltipTextFile(int buttonType) {
+            return switch (buttonType) {
+                case ARROW_T_B -> new File(standartpathttips+"arrow_t.txt");
+                case MAGE_T_B -> new File(standartpathttips+"mage_t.txt");
+                case ROCKET_T_B -> new File(standartpathttips+"rocket_t.txt");
+                case SNIP_T_B -> new File(standartpathttips+"snip_t.txt");
+                case MANA_B_B -> new File(standartpathttips+"mana_b.txt");
+                case IRON_B_B -> new File(standartpathttips+"iron_b.txt");
+                case WOOD_B_B -> new File(standartpathttips+"wood_b.txt");
+                case STONE_B_B -> new File(standartpathttips+"stone_b.txt");
+                default -> new File(standartpathttips+"wrong.txt");
+            };
+        }
     }
     public static class Icons {
         private static final String standartpath = "res/images/icons/";
@@ -421,11 +467,12 @@ public class variables { //class to define different variables for thing
         public static final int ENEMIES = 2;
         public static final int WAVES = 3;
         public static final int HEART = 4;
-        public static final int GOLD = 5;
-        public static final int WOOD = 6;
-        public static final int IRON = 7;
-        public static final int MANA = 8;
-        public static final int STONE = 9;
+        public static final int WORKERS = 5;
+        public static final int GOLD = 6;
+        public static final int MANA = 7;
+        public static final int IRON = 8;
+        public static final int WOOD = 9;
+        public static final int STONE = 10;
 
         public static File getIconImageFile(int IconType) {
             return switch (IconType) {
@@ -439,6 +486,7 @@ public class variables { //class to define different variables for thing
                 case IRON -> new File(standartpath + "infooverlay/iron_icon.png");
                 case MANA -> new File(standartpath + "infooverlay/mana_icon.png");
                 case STONE -> new File(standartpath + "infooverlay/stone_icon.png");
+                case WORKERS -> new File(standartpath + "infooverlay/stone_icon.png");
                 default -> throw new IllegalStateException("IconType does not exist");
             };
         }

@@ -1,6 +1,7 @@
 package uiElements;
 
 import helpers.Coordinate;
+import helpers.TextReader;
 import helpers.variables;
 
 import javax.imageio.ImageIO;
@@ -25,6 +26,7 @@ public class MyButton {
 	private int x,y,width,height;
 	private int level = -1;
 	private BufferedImage ButtonImage;
+	private Tooltip tooltip;
 	public MyButton(String text, int x, int y, int width, int height,boolean visibility) {
 		isVisible = visibility;
 		this.text = text;
@@ -44,6 +46,7 @@ public class MyButton {
 		this.height = height;
 		initBounds();
 		initButtonImage();
+		initButtonTooltip();
 	}
 	public MyButton(int level, Coordinate pos, int width, int height,boolean visibility) {
 		isVisible = visibility;
@@ -73,6 +76,19 @@ public class MyButton {
 			throw new RuntimeException(e);
 		}
 	}
+	private void initButtonTooltip() {
+		File tooltipText;
+		if ((tooltipText = variables.Buttons.getTooltipTextFile(type)) == null) return;
+		TextReader textReader = new TextReader(tooltipText);
+		String[] texts;
+		try {
+			texts = textReader.readLines();
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+		tooltip = new Tooltip(texts, 1700, 900);
+
+	}
 
 	public void render(Graphics g) {
 		if (isVisible) {
@@ -83,6 +99,8 @@ public class MyButton {
 			} else {
 				renderButtonImage(g);
 				renderButtonBox(g);
+				if(tooltip != null)	tooltip.render(g);
+
 			}
 		}
 	}
@@ -120,6 +138,7 @@ public class MyButton {
 
 	public void setHovered(boolean mouseHover) {
 		this.mouseHover = mouseHover;
+		if(tooltip != null) tooltip.setVisible(mouseHover);
 	}
 	public void setPressed(boolean mousePressed) {
 		this.mousePressed = mousePressed;
