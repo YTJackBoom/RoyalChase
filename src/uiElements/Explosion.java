@@ -1,6 +1,9 @@
 package uiElements;
 
+import controllers.ObjectsController;
+import controllers.TowerController;
 import gameObjects.Enemy;
+import gameObjects.GameObject;
 import helpers.Circle;
 import helpers.Coordinate;
 import controllers.EnemyController;
@@ -19,7 +22,7 @@ public class Explosion {
 
     private Coordinate pos;
     private double lifespan,radius,maxDamage,maxStun;
-    private ArrayList<Enemy> damagedEnemies;
+    private ArrayList<GameObject> damagedObjects;
 
     private double elapsedTime; // time since explosion started (in seconds)
 
@@ -30,7 +33,7 @@ public class Explosion {
         this.maxDamage = maxDamage;
         this.maxStun = maxStun;
         this.elapsedTime = 0.0;
-        damagedEnemies = new ArrayList<Enemy>();
+        damagedObjects = new ArrayList<GameObject>();
     }
 
     public void render(Graphics g) {
@@ -82,11 +85,17 @@ public class Explosion {
     }
 
     // Call this method on each frame update
-    public void update(EnemyController enemyController) {
+    public void update(ObjectsController objectsController) {
         elapsedTime += 1.0 / fps;
 
         double currentRadius = (elapsedTime / lifespan) * radius;
         Circle currentExplosionArea = new Circle(pos, currentRadius);
-        enemyController.damageEnemiesInRadius(currentExplosionArea, maxDamage, maxStun, damagedEnemies);
+        if (objectsController instanceof EnemyController) {
+            EnemyController enemyController = (EnemyController) objectsController;
+            enemyController.damageEnemiesInRadius(currentExplosionArea, maxDamage, maxStun, damagedObjects);
+        } else if (objectsController instanceof TowerController) {
+            TowerController towerController = (TowerController) objectsController;
+            towerController.damageTowersInRadius(currentExplosionArea, maxDamage, maxStun, damagedObjects);
+        }
     }
 }

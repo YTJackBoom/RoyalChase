@@ -4,13 +4,16 @@ import controllers.EnemyController;
 import helpers.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Enemy extends GameObject{
 //	private Coordinate pos;
 	private double pathIndex;
 	private double speed;
-	private boolean isActive;
-	private EnemyController enemyController;
+	protected boolean isActive;
+	protected EnemyController enemyController;
+	protected GameObject target;
+	protected Circle range;
 
 	
 	public Enemy(EnemyController enemyController, Coordinate pos, int type) {
@@ -21,8 +24,43 @@ public class Enemy extends GameObject{
 		initVariables();
 	}
 
+	public void update(ArrayList<Coordinate> pathCoordinates) {
+		if(!enemyController.getPlaying().isPaused()) {
+			if (getStun() <= 0) {
+				move(pathCoordinates);
+				fire();
+
+			} else {
+				currentStun--;
+			}
+		}
+	}
+
+	public void move(ArrayList<Coordinate> pathCoordinates) {
+		if(!getRange().contains(enemyController.getPlaying().getTowerController().getGate().getHitBox())) {
+			if (!((pathCoordinates.size() - getPathIndex()) <= getSpeed())) {
+				setPathIndex(getPathIndex() + getSpeed());
+				setPos(pathCoordinates.get((int) Math.round(getPathIndex())));
+				range.setPos(pos);
+				//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
+				//System.out.println(enemyList.get(a).getPos().getX());
+			} else {//Enemy hat das tor erreicht --> verschiedene verhalten
+				enemyController.enemyReachedGate(this);
+			}
+		}else {
+			target = enemyController.getPlaying().getTowerController().getGate();
+			setStatus(true);
+		}
+	}
+	public void fire() {
+
+	}
+
+
+
 	public void initVariables() {
 		speed = variables.Enemies.getEnemySpeed(type);
+		range = new Circle(pos,variables.Enemies.getEnemyRange(type));
 	}
 
 	public double getPathIndex() {
@@ -30,6 +68,9 @@ public class Enemy extends GameObject{
 	}
 	public double getSpeed() {
 		return speed;
+	}
+	public double getReloadTime() {
+		return variables.Enemies.getEnemyReloadTime(type);
 	}
 	public void setPathIndex(double i) {
 		pathIndex =i;
@@ -39,6 +80,15 @@ public class Enemy extends GameObject{
 	}
 	public boolean isActive() {
 		return isActive;
+	}
+	public void setStatus(boolean b) {
+	isActive = b;
+	}
+	public void setTarget(GameObject obj) {
+		target = obj;
+	}
+	public GameObject getTarget() {
+		return target;
 	}
 
 	public int getReward() {
@@ -54,6 +104,7 @@ public class Enemy extends GameObject{
 		}
 		return false;
 	}
-
-
+	public Circle getRange() {
+		return range;
+	}
 }

@@ -60,4 +60,9 @@ public class Circle {
 	public double getRadius() {
 		return radius;
 	}
+
+    public void setPos(Coordinate pos) {
+		x= pos.getX();
+		y=pos.getY();
+    }
 }

@@ -152,28 +152,31 @@ public class MyButtonBar {
 
 
 	public void mouseMoved(int x, int y) {
-		for(MyButton button: buttons){
-			if(button.getBounds().contains(x,y)&& button.isVisible()){
-				button.setHovered(true);
-				hoveredButton = button;
-				break;
-			}else{
-				button.setHovered(false);
-				hoveredButton = null;
+		if(isVisible) {
+			for (MyButton button : buttons) {
+				if (button.getBounds().contains(x, y) ) {
+					button.setHovered(true);
+					hoveredButton = button;
+					break;
+				} else {
+					button.setHovered(false);
+					hoveredButton = null;
+				}
 			}
 		}
 
 
 	}
 	public void mousePressed(int x, int y) {
-		for(MyButton button: buttons){
-			if(button.getBounds().contains(x,y)&& button.isVisible()){
-				button.setPressed(true);
-					if(scene.getClass() == Playing.class&&button.isTowerButton()) {
+		if (isVisible) {
+			for (MyButton button : buttons) {
+				if (button.getBounds().contains(x, y) ) {
+					button.setPressed(true);
+					if (scene.getClass() == Playing.class && button.isTowerButton()) {
 						Playing playing = (Playing) scene;
 						playing.setDragingTower(true);
 						playing.setDraggedTower(button.getType());
-					}else if(scene.getClass() == Town.class&&button.isBuildingButton()) {
+					} else if (scene.getClass() == Town.class && button.isBuildingButton()) {
 						Town town = (Town) scene;
 						town.setDragingBuilding(true);
 						town.setSelectedBuilding(button.getType());
@@ -181,33 +184,36 @@ public class MyButtonBar {
 				}
 			}
 		}
+		}
 
 
 	public void mouseReleased(int x, int y) {
-		for (MyButton button : buttons) {
-			if (button.getBounds().contains(x, y)&&button.isVisible()) {
-				if (button.getText() != null) {
-					if (button.getText().equals("Play")) {
-						GameStates.gameState = GameStates.PLAYING;
-					} else if (button.getText().equals("Town")) {
-						Playing playing = (Playing) scene;
-						playing.resetBools();
-						GameStates.gameState = GameStates.TOWN;
-					} else if (button.getText().equals("Exit")) {
-						System.exit(0);
-					} else if (button.getText().equals("Menu")) {
-						GameStates.gameState = GameStates.MENU;
-					} else if (button.getText().equals("Battle!")) {
-						GameStates.gameState = GameStates.PLAYING;
-					} else if(button.getText().equals("Upgrade")) {
-						Playing playing = (Playing)  scene;
-						playing.getTowerController().upgradeTower();
+		if(isVisible) {
+			for (MyButton button : buttons) {
+				if (button.getBounds().contains(x, y)) {
+					if (button.getText() != null) {
+						if (button.getText().equals("Play")) {
+							GameStates.gameState = GameStates.PLAYING;
+						} else if (button.getText().equals("Town")) {
+							Playing playing = (Playing) scene;
+							playing.resetBools();
+							GameStates.gameState = GameStates.TOWN;
+						} else if (button.getText().equals("Exit")) {
+							System.exit(0);
+						} else if (button.getText().equals("Menu")) {
+							GameStates.gameState = GameStates.MENU;
+						} else if (button.getText().equals("Battle!")) {
+							GameStates.gameState = GameStates.PLAYING;
+						} else if (button.getText().equals("Upgrade")) {
+							Playing playing = (Playing) scene;
+							playing.getTowerController().upgradeTower();
 //						System.out.println("d");
-					}else if (button.getText().equals("Sell")) {
-						Playing playing = (Playing)  scene;
-						playing.getTowerController().sellTower();
+						} else if (button.getText().equals("Sell")) {
+							Playing playing = (Playing) scene;
+							playing.getTowerController().sellTower();
 //						System.out.println("da");
 
+						}
 					}
 				}
 			}

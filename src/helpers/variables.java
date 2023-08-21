@@ -54,7 +54,7 @@ public class variables { //class to define different variables for thing
 
         public static String getEnemyPassiveGifPath(int enemyType) {
             return switch (enemyType) {
-                case SLIME -> "res/images/enemies/passive/skull_e_passive/";
+                case SLIME ->  "res/images/enemies/active/slime_e_active/";
                 case SKELETON -> "res/images/enemies/passive/skeleton_e_passive/";
                 case ZOMBIE -> "res/images/enemies/passive/zombie_e_passive/";
                 case WITCH -> "res/images/enemies/passive/witch_e_passive/";
@@ -87,7 +87,7 @@ public class variables { //class to define different variables for thing
         public static double getEnemySpeed(int enemyType) {
             return switch (enemyType) {
                 case SLIME -> 0.5;
-                case SKELETON -> 5;
+                case SKELETON -> 2.5;
                 case ZOMBIE -> 2;
                 case WITCH -> 5;
                 case WIZARD -> 5;
@@ -113,11 +113,41 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("variables: getEnemyDamage: Unexpected value:  " + enemyType);
             };
         }
+        public static double getEnemyReloadTime(int enemyType) {
+            return switch (enemyType) {
+                case SLIME -> 0;
+                case SKELETON -> 100;
+                case ZOMBIE -> 0;
+                case WITCH -> 400;
+                case WIZARD -> 400;
+                case SKELETON_KING -> 800;
+                case ZOMBIE_KING -> 0;
+                case WITCH_QUEEN -> 1600;
+                case WIZARD_KING -> 1600;
+                default -> throw new IllegalStateException("variables: getEnemyRelaodTime: Unexpected value: "+ enemyType);
+            };
+        }
+        public static double getEnemyRange(int enemyType) {
+            return switch (enemyType) {
+                case SLIME -> 0;
+                case SKELETON -> 250;
+                case ZOMBIE -> 1;
+                case WITCH -> 50;
+                case WIZARD -> 50;
+                case SKELETON_KING -> 100;
+                case ZOMBIE_KING -> 1;
+                case WITCH_QUEEN -> 100;
+                case WIZARD_KING -> 100;
+                default -> throw new IllegalStateException("variables: getEnemyRange: Unexpected value: "+ enemyType);
+            };
+        }
 
         public static int getNumberOfIntDeclarations() {
             return variables.getHighestInt(Enemies.class);
         }
         public static int getLowestInt(){return variables.getLowestInt(Enemies.class);}
+
+
 
     }
 
@@ -182,6 +212,21 @@ public class variables { //class to define different variables for thing
             };
         }
 
+        public static Coordinate getGatePos(int level) {
+            return switch (level) {
+                case 0 -> new Coordinate(1300,450);
+                case 1 -> new Coordinate(1300,450);
+                case 2 -> new Coordinate(1300,450);
+                case 3 -> new Coordinate(1300,450);
+                case 4 -> new Coordinate(1300,450);
+                case 5 -> new Coordinate(1300,450);
+                case 6 -> new Coordinate(1300,450);
+                case 7 -> new Coordinate(1300,450);
+                case 8 -> new Coordinate(1300,450);
+                case 9 -> new Coordinate(1300,450);
+                default -> throw new IllegalStateException("variables: getGatePos: Unexpected value:  " + level);
+            };
+        }
     }
 
     public static class Towers {

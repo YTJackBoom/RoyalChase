@@ -11,8 +11,8 @@ public class Projectile extends GameObject{
 //	private Coordinate pos;
 	private int type;
 //	private Animator animator;
-	private Enemy target;
-	private Tower origin;
+	private GameObject target;
+	private GameObject origin;
 	private ProjectileController projectileController;
 	private int counter;
 	private double numberForTrajectory;
@@ -20,14 +20,13 @@ public class Projectile extends GameObject{
 	private int height,width;
 
 
-	public Projectile(ProjectileController projectileController,Tower tower, Enemy target, int type) {
-		super(new Coordinate(tower.getPos().getX(),tower.getPos().getY()),projectileController.getPlaying().getGame().getPreLoader(),ObjectType.PROJECTILE,type);
-		this.pos = new Coordinate(tower.getPos().getX(),tower.getPos().getY()-tower.getHeight()/2);
+	public Projectile(ProjectileController projectileController,GameObject origin, GameObject target, int type) {
+		super(new Coordinate(origin.getPos().getX(),origin.getPos().getY()),projectileController.getPlaying().getGame().getPreLoader(),ObjectType.PROJECTILE,type);
 		this.type = type;
 		this.target = target;
 		this.projectileController = projectileController;
-		origin = tower;
-		towerAngleToTarget = math.GeneralMath.calculateAngle(target.getPos(),tower.getPos());
+		this.origin = origin;
+		towerAngleToTarget = math.GeneralMath.calculateAngle(target.getPos(),origin.getPos());
 		height = activeAnimator.getHeight();
 		width = activeAnimator.getWidth();
 	}
@@ -60,16 +59,19 @@ public class Projectile extends GameObject{
 
 
 	}
-	public Enemy getTarget() {return target;}
+	public GameObject getTarget() {return target;}
 	public int getType() {return type;}
 
 
 	public double getDamage() {
 		double dmg = variables.Projectiles.getProjectileDamage(type);
-		int tLevel = origin.getLevel();
+		if (origin instanceof Tower) {
+			Tower temp = (Tower) origin;
+			int tLevel = temp.getLevel();
 
-		for(int i =1 ; i<tLevel;i++) {
-			dmg += dmg*Constants.ObjectConstants.DMGUPGRADE;
+			for (int i = 1; i < tLevel; i++) {
+				dmg += dmg * Constants.ObjectConstants.DMGUPGRADE;
+			}
 		}
 		return dmg;
 	}

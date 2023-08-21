@@ -6,14 +6,18 @@ import java.util.Iterator;
 
 import enemy.*;
 import gameObjects.Enemy;
+import gameObjects.GameObject;
+import gameObjects.Tower;
 import helpers.*;
 import scenes.Playing;
 import uiElements.Explosion;
 
 import static basics.Game.ups;
+import static helpers.variables.Projectiles.ROCKET;
+import static helpers.variables.Towers.Foundation_T;
 
 
-public class EnemyController implements ControllerMethods{
+public class EnemyController extends ObjectsController implements ControllerMethods {
 	private ArrayList<Enemy> enemyList,removeQue,addQue;
 	private ArrayList<Explosion> explosionsList;
 
@@ -34,7 +38,7 @@ public class EnemyController implements ControllerMethods{
 	public void update() {
 		workAddQueue();
 		if (!playing.isPaused()) {
-			updateEnemyMovement();
+			updateEnemies();
 			updateExplosions();
 
 		}
@@ -42,21 +46,31 @@ public class EnemyController implements ControllerMethods{
 		workRemoveQueue();
 	}
 
-	public void updateEnemyMovement() {
+	public void updateEnemies() {
 		for (Enemy enemy : enemyList) {
 			if(enemy != null) {
-				if(enemy.getStun()<=0) {
-						if (!((pathCoordinates.size() - enemy.getPathIndex()) <= enemy.getSpeed())) {
-							enemy.setPathIndex(enemy.getPathIndex() + enemy.getSpeed());
-							enemy.setPos(pathCoordinates.get((int)Math.round(enemy.getPathIndex())));
-							//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
-							//System.out.println(enemyList.get(a).getPos().getX());
-						} else {//Enemy hat das tor erreicht --> verschiedene verhalten
-							playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
-							removeQue.add(enemy);
-							System.out.println("Enemy reached the end");
-						}
-				}else { enemy.setStun(enemy.getStun()-1);}
+				checkEnemyRange(enemy);
+				enemy.update(pathCoordinates);
+			}
+		}
+	}
+	public void checkEnemyRange(Enemy enemy) {
+		if (enemy.getRange().getRadius() > 0) {
+			ArrayList<Tower> towerList = playing.getTowerController().getTowerList();
+			for (Tower tower : towerList) {
+				if (tower.getType() != Foundation_T) {
+					if (enemy.getRange().contains(tower.getHitBox()) && enemy.getTarget() == null) {
+						enemy.setStatus(true);
+						enemy.setTarget(tower);
+						break;
+					}
+				}
+			}
+
+
+			if (!towerList.contains(enemy.getTarget()) || !enemy.getRange().contains(enemy.getTarget().getHitBox())) {
+				enemy.setStatus(false);
+				enemy.setTarget(null);
 			}
 		}
 	}
@@ -71,7 +85,12 @@ public class EnemyController implements ControllerMethods{
 			}
 		}
 	}
-	public void updateExplosions() {
+	public void enemyReachedGate(Enemy enemy) {
+		playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
+		removeQue.add(enemy);
+		System.out.println("Enemy reached the end");
+	}
+	public synchronized void updateExplosions() {
 		for(Explosion e : explosionsList) {
 			e.update(this);
 		}
@@ -109,6 +128,10 @@ public class EnemyController implements ControllerMethods{
 		   renderHealthBars(g);
 	   }
 	   renderExplosions(g);
+
+	   for (Enemy enemy :enemyList) {
+		   enemy.getRange().render(g);
+	   }
    }
 
 
@@ -133,7 +156,7 @@ public class EnemyController implements ControllerMethods{
 				enemy.renderHealthBar(g);
 		}
    }
-   public void renderExplosions(Graphics g){
+   public synchronized void renderExplosions(Graphics g){
 	   Iterator<Explosion> iterator = explosionsList.iterator();
 	   while (iterator.hasNext()) {
 		   Explosion e = iterator.next();
@@ -147,7 +170,7 @@ public class EnemyController implements ControllerMethods{
 		enemy.damage(damage);
 		enemy.setStun(stun*ups);
    }
-	public void damageEnemiesInRadius(Circle explosion, double maxDamage, double maxStun, ArrayList<Enemy> damagedEnemies) {
+	public void damageEnemiesInRadius(Circle explosion, double maxDamage, double maxStun, ArrayList<GameObject> damagedEnemies) {
 		for (Enemy enemy : enemyList) {
 			if (explosion.contains(enemy.getPos()) && (damagedEnemies.isEmpty() || !damagedEnemies.contains(enemy))) {
 				double distanceToCenter = explosion.getCenter().distanceTo(enemy.getPos());
@@ -172,13 +195,9 @@ public class EnemyController implements ControllerMethods{
 		return enemyList;
 	}
 
-	public synchronized boolean contains(Enemy enemy) {
-		for (Enemy enemy1 : enemyList) {
-			if (enemy1 != null) {
-				if (enemy1.equals(enemy)) {
-					return true;
-				}
-			}
+	public synchronized boolean contains(GameObject enemy) {
+		if(enemy instanceof Enemy) {
+			return enemyList.contains((Enemy) enemy);
 		}
 		return false;
 	}
@@ -187,9 +206,10 @@ public class EnemyController implements ControllerMethods{
 		return playing;
 	}
 
-	public void addExplosion(Explosion e) {
+	public synchronized void addExplosion(Explosion e) {
 		explosionsList.add(e);
 	}
+
 
 
 
