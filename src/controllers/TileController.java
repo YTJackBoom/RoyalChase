@@ -59,23 +59,14 @@ public class TileController extends ObjectsController implements ControllerMetho
 
     }
 
-    public boolean isBuildable(int x, int y) {
+    public Tile getTile(int x, int y) {
         for (Tile tile : tileList) {
             if (tile.getBounds().contains(x, y)) {
-                return tile.isBuildable();
+                return tile;
             }
         }
-        return false;
+        return null;
     }
 
-    public boolean isPath(int x, int y) {
-        for (Tile tile : tileList) {
-            if (tile.getBounds().contains(x, y)) {
-                return tile.isPath();
-            }
-        }
-        return false;
 
-
-    }
 }

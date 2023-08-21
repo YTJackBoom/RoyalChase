@@ -264,6 +264,9 @@ public class Playing extends GameScenes implements SceneMethods{
 
 
     //Getters and Setters
+    public TileController getTileController() {
+        return tileController;
+    }
     public MyButtonBar getButtonBar(Direction dir) {
         return switch (dir) {
             case RIGHT -> buttonBarRight;

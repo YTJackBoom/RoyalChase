@@ -2,6 +2,7 @@ package controllers;
 
 import gameObjects.Enemy;
 import gameObjects.GameObject;
+import gameObjects.Tile;
 import helpers.*;
 import scenes.Playing;
 import gameObjects.Tower;
@@ -155,8 +156,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
         if(!playing.getRecentlySold()) {
             playerValues.increase(selectedTower.getWorth());
 
-            int towerIndex = towerEntityList.indexOf(selectedTower);
-            towerEntityList.set(towerIndex, new TowerFoundation(this, selectedTower.getPos()));
+            towerEntityList.remove(selectedTower);
             selectedTower = null;
             playing.setSelectedTower(null);
             playing.setRecentlySold(true);
@@ -190,20 +190,47 @@ public class TowerController extends ObjectsController implements ControllerMeth
         explosionsList.add(explosion);
     }
     public void mouseReleased(int x, int y) {
-        for (int i = 0; i < towerEntityList.size(); i++) {
-            Tower tower = towerEntityList.get(i);
-            if (tower.getHitBox().contains(x, y)) {
+        Tower t;
+        if((t = towerOn(x,y))!=null) {
+            replaceTower(t);
+        }else {
+            Tile tile;
+            if ((tile = playing.getTileController().getTile(x, y))!=null&&tile.isBuildable()) {
                 Values cost = variables.Towers.getCost(playing.getDraggedTower());
-                if(playerValues.canAfford(cost)){
+                if (playerValues.canAfford(cost)) {
                     playerValues.decrease(cost);
-                    towerEntityList.set(i, new Tower(this, tower.getPos(), playing.getDraggedTower()));
+                    towerEntityList.add(new Tower(this, tile.getPos(), playing.getDraggedTower()));
                     playing.setSelectedTower(null);
                     System.out.println("Tower placed");
-                }else {
+                } else {
                     playing.setCantAfford(true);
                 }
+
             }
         }
+    }
+    public void replaceTower(Tower t) {
+        if(t.getType() != variables.Towers.Foundation_T) {
+                playerValues.increase(t.getWorth());
+                towerEntityList.set(towerEntityList.indexOf(t), new Tower(this, t.getPos(), playing.getDraggedTower()));
+                playing.setSelectedTower(null);
+       }
+    }
+    public Tower towerOn(int x, int y) {
+        for(Tower tower : towerEntityList) {
+            if(tower.getBounds().contains(x, y)) {
+                return tower;
+            }
+        }
+        return null;
+    }
+    public void sellAllTowers() {
+        for(Tower tower : towerEntityList) {
+            if(tower.getType() != variables.Towers.Foundation_T) {
+                playerValues.increase(tower.getWorth());
+            }
+        }
+        towerEntityList.clear();
     }
     public void mouseClicked(int x, int y) {
         for(Tower tower : towerEntityList) {

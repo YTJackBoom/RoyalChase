@@ -190,7 +190,7 @@ public class MyButtonBar {
 	public void mouseReleased(int x, int y) {
 		if(isVisible) {
 			for (MyButton button : buttons) {
-				if (button.getBounds().contains(x, y)) {
+				if (button.getBounds().contains(x, y)&&button.isVisible()) {
 					if (button.getText() != null) {
 						if (button.getText().equals("Play")) {
 							GameStates.gameState = GameStates.PLAYING;

@@ -130,6 +130,7 @@ public class InfoOverlay {
 
         if (buttonText != null && buttonText.isBlank()) return;
         if (!hoveredButton.isTowerButton() && !hoveredButton.isBuildingButton() && buttonText == null) return;
+        if (!hoveredButton.isVisible()) return;
 
         FontMetrics fm = g.getFontMetrics();
         int x = hoveredButton.getX() - hoveredButton.getWidth() / 2;

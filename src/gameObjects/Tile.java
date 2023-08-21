@@ -58,4 +58,8 @@ public class Tile {
     public Rectangle getBounds() {
         return bounds;
     }
+
+    public Coordinate getPos() {
+        return pos;
+    }
 }
