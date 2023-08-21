@@ -40,6 +40,29 @@ public class TextReader {
         return linesList.toArray(new String[0]);
     }
 
+    public int[][] readTileData() throws IOException {
+        List<int[]> dataList = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] split = line.split(",");
+                int[] data = new int[split.length];
+                for (int i = 0; i < split.length; i++) {
+                    data[i] = Integer.parseInt(split[i].trim());
+                }
+                dataList.add(data);
+            }
+        }
+
+        int[][] dataArray = new int[dataList.size()][];
+        for (int i = 0; i < dataList.size(); i++) {
+            dataArray[i] = dataList.get(i);
+        }
+
+        return dataArray;
+    }
+
     public void initWaveFileAnalyser(int i) {
         try {
             reader = new BufferedReader(new FileReader(variables.Maps.getMapWaveFile(i)));

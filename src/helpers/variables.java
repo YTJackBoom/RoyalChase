@@ -1,5 +1,7 @@
 package helpers;
 
+import gameObjects.Tile;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -214,17 +216,66 @@ public class variables { //class to define different variables for thing
 
         public static Coordinate getGatePos(int level) {
             return switch (level) {
-                case 0 -> new Coordinate(1300,450);
-                case 1 -> new Coordinate(1300,450);
-                case 2 -> new Coordinate(1300,450);
-                case 3 -> new Coordinate(1300,450);
-                case 4 -> new Coordinate(1300,450);
-                case 5 -> new Coordinate(1300,450);
-                case 6 -> new Coordinate(1300,450);
-                case 7 -> new Coordinate(1300,450);
-                case 8 -> new Coordinate(1300,450);
-                case 9 -> new Coordinate(1300,450);
+                case 0 -> new Coordinate(1300, 450);
+                case 1 -> new Coordinate(1300, 450);
+                case 2 -> new Coordinate(1300, 450);
+                case 3 -> new Coordinate(1300, 450);
+                case 4 -> new Coordinate(1300, 450);
+                case 5 -> new Coordinate(1300, 450);
+                case 6 -> new Coordinate(1300, 450);
+                case 7 -> new Coordinate(1300, 450);
+                case 8 -> new Coordinate(1300, 450);
+                case 9 -> new Coordinate(1300, 450);
                 default -> throw new IllegalStateException("variables: getGatePos: Unexpected value:  " + level);
+            };
+        }
+
+        public static Tile getRawTile(int i) {
+            return switch (i) {
+                case 0 -> new Tile(0, false, false);
+                case 1 -> new Tile(1, true, false);
+                case 2 -> new Tile(2, false, false);
+                case 3 -> new Tile(3, false, false);
+                case 4 -> new Tile(4, false, false);
+                case 5 -> new Tile(5, false, false);
+                case 6 -> new Tile(6, false, false);
+                case 7 -> new Tile(7, false, false);
+                case 8 -> new Tile(8, false, false);
+                case 9 -> new Tile(9, false, false);
+                case 10 -> new Tile(10, false, false);
+                default -> throw new IllegalStateException("variables: getRawTile: Unexpected value:  " + i);
+            };
+        }
+
+        public static File getTileFile(int tileType) {
+            return switch (tileType) {
+                case 0 -> new File("res/images/tiles/0.png");
+                case 1 -> new File("res/images/tiles/1.png");
+                case 2 -> new File("res/images/tiles/2.png");
+                case 3 -> new File("res/images/tiles/3.png");
+                case 4 -> new File("res/images/tiles/4.png");
+                case 5 -> new File("res/images/tiles/5.png");
+                case 6 -> new File("res/images/tiles/6.png");
+                case 7 -> new File("res/images/tiles/7.png");
+                case 8 -> new File("res/images/tiles/8.png");
+                case 9 -> new File("res/images/tiles/9.png");
+                case 10 -> new File("res/images/tiles/10.png");
+                default -> throw new IllegalStateException("variables: getTileFile: Unexpected value:  " + tileType);
+            };
+        }
+        public static File getTileTextFile(int level) {
+            return switch (level) {
+                case 0 -> new File("res/text/tileFiles/tiles0.txt");
+                case 1 -> new File("res/text/tileFiles/tiles1.txt");
+                case 2 -> new File("res/text/tileFiles/tiles2.txt");
+                case 3 -> new File("res/text/tileFiles/tiles3.txt");
+                case 4 -> new File("res/text/tileFiles/tiles4.txt");
+                case 5 -> new File("res/text/tileFiles/tiles5.txt");
+                case 6 -> new File("res/text/tileFiles/tiles6.txt");
+                case 7 -> new File("res/text/tileFiles/tiles7.txt");
+                case 8 -> new File("res/text/tileFiles/tiles8.txt");
+                case 9 -> new File("res/text/tileFiles/tiles9.txt");
+                default -> throw new IllegalStateException("variables: getTileTextFile: Unexpected value:  " + level);
             };
         }
     }

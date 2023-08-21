@@ -29,6 +29,7 @@ public class Playing extends GameScenes implements SceneMethods{
     private EnemyController enemyController;
     private TowerController towerController;
     private WaveController waveController;
+    private TileController tileController;
     private ProjectileController projectileController;
     private ImageAnalyser imageAnalyser;
     private MyButtonBar buttonBarRight,buttonBarDown;
@@ -49,11 +50,13 @@ public class Playing extends GameScenes implements SceneMethods{
         playerValues = game.getPlayerValues();
         this.infoOverlay = game.getInfoOverlay();
         imageAnalyser = new ImageAnalyser(getCurrentPMapFile());
+        tileController = new TileController(this);
 
         enemyController = new EnemyController(this, imageAnalyser.imgToPath());
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
+
 
 
 
@@ -64,7 +67,8 @@ public class Playing extends GameScenes implements SceneMethods{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(variables.Maps.getMapBufferedImage(playerValues.getLevel()), 0, 0, null);
+        tileController.render(g);
+//        g.drawImage(variables.Maps.getMapBufferedImage(playerValues.getLevel()), 0, 0, null);
         enemyController.render(g);
         towerController.render(g);
         projectileController.render(g);
