@@ -17,7 +17,7 @@ public class Tower extends GameObject {
 	private boolean isFiring,isLoaded;
 	private int level;
 	private Rectangle bounds;
-	private TowerController towerController;
+	protected TowerController towerController;
 	private ProjectileController projectileController;
 	private Circle[] circles;
 	private Values worth;
@@ -160,4 +160,5 @@ public class Tower extends GameObject {
 	public Values getWorth() {
 		return worth;
 	}
+
 }

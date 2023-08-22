@@ -10,8 +10,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import static basics.Game.fps;
-import static basics.GameScreen.fHEIGHT;
-import static basics.GameScreen.fWIDTH;
 
 
 public class LevelCleared  extends GameScenes implements SceneMethods {

@@ -19,9 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static basics.Game.fps;
-import static basics.GameScreen.fHEIGHT;
-import static basics.GameScreen.fWIDTH;
+import static basics.Game.*;
 import static scenes.GameStates.GAMEOVER;
 import static scenes.GameStates.gameState;
 
@@ -98,13 +96,13 @@ public class Playing extends GameScenes implements SceneMethods{
         //the right bar
         int widthr = 120;
         int heightr = 1000;
-        int xr = fWIDTH - widthr - 20;
-        int yr = fHEIGHT - heightr - 20;
+        int xr = Game.initGameWidth - widthr - 20;
+        int yr = Game.initGameHeight - heightr - 20;
         //the buttom bar
         int widthd = 260;
         int heightd = 100;
-        int xd = fWIDTH/2-widthd;
-        int yd = fHEIGHT-10-heightd;
+        int xd = initGameWidth/2-widthd;
+        int yd = initGameHeight-10-heightd;
 
         buttonBarRight = new MyButtonBar(this, new helpers.Coordinate(xr, yr), widthr, heightr, UIPos.PLAYINGRIGHT);
         buttonBarDown = new MyButtonBar(this,new helpers.Coordinate(xd, yd),widthd,heightd,UIPos.PLAYINGDOWN);
@@ -132,7 +130,7 @@ public class Playing extends GameScenes implements SceneMethods{
         if (cantAfford) {
             g.setFont(Constants.UIConstants.CANTAFFORDFONT);
             g.setColor(Color.BLACK);
-            g.drawString("Zu Teuer!", fWIDTH / 2, fHEIGHT / 2);
+            g.drawString("Zu Teuer!", Game.initGameWidth / 2, initGameHeight / 2);
             cantAffordCounter++;
 
             if (cantAffordCounter >= fps * Constants.UIConstants.CANTAFFORDTIMEONSCREEN) {
@@ -146,7 +144,7 @@ public class Playing extends GameScenes implements SceneMethods{
             if(recentlySoldRender) {
                 g.setFont(Constants.UIConstants.RECENTLYSOLDFONT);
                 g.setColor(Color.RED);
-                g.drawString("Du hast kürzlich einen Turm verkauft!", fWIDTH / 2, fHEIGHT / 2);
+                g.drawString("Du hast kürzlich einen Turm verkauft!", initGameWidth / 2, initGameHeight / 2);
                 recentlySoldCounter++;
             }
 

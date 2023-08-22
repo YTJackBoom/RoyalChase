@@ -20,9 +20,9 @@ public class GameOver extends GameScenes implements SceneMethods{
     }
 
     public void initButtons() {
-        int startX = game.getWidth()/4;
-        int startY = game.getHeight()/2;
-        int xOffset = game.getWidth()/2;
+        int startX = Game.initGameWidth/4;
+        int startY = Game.initGameHeight/2;
+        int xOffset = Game.initGameWidth/2;
         int yOffset = 0;
         int width = 100;
         int height = 100;
@@ -40,8 +40,9 @@ public class GameOver extends GameScenes implements SceneMethods{
     }
 
     public void renderBackground(Graphics g){
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0,game.getWidth(),game.getHeight());
+        game.getPlaying().render(g);
+//        g.setColor(Color.BLACK);
+//        g.fillRect(0,0,game.getWidth(),game.getHeight());
     }
 
     public void renderButtons(Graphics g){

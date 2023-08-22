@@ -14,9 +14,7 @@ public class GameScreen extends JPanel {
 
 	private Game game;
 
-	public static final int fWIDTH = 1920;
-	public static final int fHEIGHT = 1080;
-	public static final Rectangle fBOUNDS = new Rectangle(fWIDTH,fHEIGHT);
+	public static final Rectangle fBOUNDS = new Rectangle(Game.initGameWidth, Game.initGameHeight);
 
 
 
@@ -24,12 +22,11 @@ public class GameScreen extends JPanel {
 		this.game=game;
 //		initMap(1);
 		setPanelSize();
+		setLayout(null);
 	}
 	public void setPanelSize() {
-		Dimension prefSize = new Dimension(fWIDTH, fHEIGHT);
-		setPreferredSize(prefSize);
-		setMinimumSize(prefSize);
-		setMaximumSize(prefSize);
+		Dimension prefSize = new Dimension(Game.initGameWidth, Game.initGameHeight);
+		setSize(prefSize);
 		//setVisible(true);
 	}
 
@@ -39,8 +36,6 @@ public class GameScreen extends JPanel {
 
 		addMouseListener(mListener);
 		addMouseMotionListener(mListener);
-		addKeyListener(kListener);
-
 		requestFocus(); //focus auf den gamescreen setzten
 	}
 	@Override
@@ -48,13 +43,6 @@ public class GameScreen extends JPanel {
 		super.paintComponent(g);
 		game.getRenderUpdater().render(g);
 	}
-	@Override
-	public int getWidth() {
-		return fWIDTH;
-	}
-	@Override
-	public int getHeight() {
-		return fHEIGHT;
-	}
+
 }
 

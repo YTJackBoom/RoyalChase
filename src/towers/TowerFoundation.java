@@ -31,7 +31,12 @@ public class TowerFoundation extends Tower {
 
 
 	@Override
+	public void damage(double i) {
+		towerController.getPlaying().getGame().getPlayerValues().setHealth(towerController.getPlaying().getGame().getPlayerValues().getHealth()-i);
+	}
+	@Override
 	public void update() {
+		
 	}
 }
 

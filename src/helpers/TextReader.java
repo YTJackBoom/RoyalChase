@@ -55,13 +55,19 @@ public class TextReader {
             }
         }
 
-        int[][] dataArray = new int[dataList.size()][];
-        for (int i = 0; i < dataList.size(); i++) {
-            dataArray[i] = dataList.get(i);
+        int rows = dataList.size();
+        int cols = dataList.get(0).length;
+        int[][] dataArray = new int[cols][rows];
+
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                dataArray[i][j] = dataList.get(j)[i];
+            }
         }
 
         return dataArray;
     }
+
 
     public void initWaveFileAnalyser(int i) {
         try {

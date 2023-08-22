@@ -15,8 +15,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static basics.Game.fps;
-import static basics.GameScreen.fHEIGHT;
-import static basics.GameScreen.fWIDTH;
+import static basics.Game.initGameHeight;
+import static basics.Game.initGameWidth;
 
 public class Town extends GameScenes implements SceneMethods{
     private Game game;
@@ -75,7 +75,7 @@ public class Town extends GameScenes implements SceneMethods{
         if (cantAfford) {
             g.setFont(Constants.UIConstants.CANTAFFORDFONT);
             g.setColor(Color.BLACK);
-            g.drawString("Cant Afford!", fWIDTH / 2, fHEIGHT / 2);
+            g.drawString("Cant Afford!", initGameWidth / 2, initGameHeight / 2);
             cantAffordCounter++;
 //			System.out.println("s ");
 //			System.out.print(fWIDTH+" "+fHEIGHT);

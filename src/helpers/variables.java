@@ -237,7 +237,7 @@ public class variables { //class to define different variables for thing
                 case 2 -> new Tile(2, false, false);
                 case 3 -> new Tile(3, false, false);
                 case 4 -> new Tile(4, false, false);
-                case 5 -> new Tile(5, false, false);
+                case 5 -> new Tile(5, false, true);
                 case 6 -> new Tile(6, false, true);
                 case 7 -> new Tile(7, false, false);
                 case 8 -> new Tile(8, false, false);

@@ -152,20 +152,20 @@ public class MyButtonBar {
 
 
 	public void mouseMoved(int x, int y) {
-		if(isVisible) {
+		if (isVisible) {
 			for (MyButton button : buttons) {
-				if (button.getBounds().contains(x, y) ) {
+				button.setHovered(false); // zurücksetzten des Hovered-Status aller Buttons
+			}
+			for (MyButton button : buttons) {
+				if (button.getBounds().contains(x, y)) {
 					button.setHovered(true);
 					hoveredButton = button;
 					break;
-				} else {
-					button.setHovered(false);
-					hoveredButton = null;
 				}
 			}
+
+
 		}
-
-
 	}
 	public void mousePressed(int x, int y) {
 		if (isVisible) {

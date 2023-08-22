@@ -10,16 +10,21 @@ import helpers.Coordinate;
 import helpers.PreLoader;
 import helpers.Values;
 import scenes.*;
+import scenes.Menu;
 import uiElements.InfoOverlay;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
 public class Game extends JFrame implements Serializable {
 
+
         public final static int fps = 60; // frames pro sekunde, zum rendern
         public static final int ups = 120; //updates pro sekunde, für game logic
+        public static final int initGameWidth = 265*7;
+        public static final int initGameHeight = 256*4;
         private volatile int currentUPS = 0;
         private int currentFPS = 0;
         private boolean isPaused = false;
@@ -47,10 +52,11 @@ public class Game extends JFrame implements Serializable {
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
             setResizable(false);
+            setLayout(null);
 
             setTitle("Bang Bang");
             add(gameScreen);
-            pack();
+            setSize(new Dimension(initGameWidth, initGameHeight));
             setVisible(true);
         }
 
@@ -181,6 +187,49 @@ public class Game extends JFrame implements Serializable {
         town.reset();
         getPlayerValues().reset();
     }
+
+    public void toggleFullscreen(){
+        isFullScreen = !isFullScreen;
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+
+        // Get the screen's resolution
+        DisplayMode displayMode = defaultScreen.getDisplayMode();
+        int screenWidth = displayMode.getWidth();
+        int screenHeight = displayMode.getHeight();
+
+        GameScreen gameScreen = getGameScreen();
+
+        if (isFullScreen()) {
+            // Switch back to decorated mode
+            dispose();
+            setUndecorated(false);
+            setVisible(true);
+            setSize(new Dimension(initGameWidth, initGameHeight));
+            // Center the frame if desired
+            setLocationRelativeTo(null);
+
+            gameScreen.setPreferredSize(new Dimension(initGameWidth, initGameHeight));
+            gameScreen.setMinimumSize(new Dimension(initGameWidth, initGameHeight));
+            gameScreen.setMaximumSize(new Dimension(initGameWidth, initGameHeight));
+            gameScreen.revalidate();
+        } else {
+            // Switch to fullscreen mode
+            dispose();
+            setUndecorated(true);
+            setVisible(true);
+            getContentPane().setSize(screenWidth,screenHeight);
+            setSize(new Dimension(screenWidth,screenHeight));
+            setLocation(0,0 );
+
+            gameScreen.setPreferredSize(new Dimension(screenWidth, screenHeight));
+            gameScreen.setMaximumSize(new Dimension(screenWidth, screenHeight));
+            gameScreen.setMinimumSize(new Dimension(screenWidth, screenHeight));
+            gameScreen.revalidate();
+            getPlaying().getTileController().extendTiles(screenWidth,screenHeight);
+
+        }
+        }
         // Getters and setters
         protected void incrementUPS() {
             currentUPS++;
@@ -236,9 +285,7 @@ public class Game extends JFrame implements Serializable {
         public boolean isFullScreen() {
             return isFullScreen;
         }
-        public void toggleFullscreen(){
-            isFullScreen = !isFullScreen;
-        }
+
         public GameRenderUpdater getRenderUpdater() {
             return renderUpdater;
     }
