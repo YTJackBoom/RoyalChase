@@ -37,21 +37,28 @@ public class Enemy extends GameObject{
 	}
 
 	public void move(ArrayList<Coordinate> pathCoordinates) {
-		if(!getRange().contains(enemyController.getPlaying().getTowerController().getGate().getHitBox())) {
-			if (!((pathCoordinates.size() - getPathIndex()) <= getSpeed())) {
-				setPathIndex(getPathIndex() + getSpeed());
-				setPos(pathCoordinates.get((int) Math.round(getPathIndex())));
+		if (!getRange().contains(enemyController.getPlaying().getTowerController().getGate().getHitBox())) {
+
+			double remainingPath = pathCoordinates.size() - 1 - getPathIndex();
+			if (getSpeed() < remainingPath&&Math.ceil(getPathIndex())<pathCoordinates.size()-1) {
+				double index =  Math.round(getPathIndex() + getSpeed());
+
+				// Ensure index stays within the bounds of pathCoordinates.
+				index = Math.min(index, pathCoordinates.size() - 1);
+
+				setPathIndex(index);
+				setPos(pathCoordinates.get((int)Math.round(index)));
 				range.setPos(pos);
-				//	System.out.println(enemy.getPathIndex()+"  "+ pathCoordinates.get(enemy.getPathIndex()).getX()+" "+pathCoordinates.get(enemy.getPathIndex()).getY());
-				//System.out.println(enemyList.get(a).getPos().getX());
-			} else {//Enemy hat das tor erreicht --> verschiedene verhalten
+			} else { // Enemy has reached the gate, implement different behaviors.
 				enemyController.enemyReachedGate(this);
 			}
-		}else {
+
+		} else {
 			target = enemyController.getPlaying().getTowerController().getGate();
 			setStatus(true);
 		}
 	}
+
 	public void fire() {
 
 	}

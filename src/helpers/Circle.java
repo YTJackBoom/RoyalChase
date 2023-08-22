@@ -35,6 +35,7 @@ public class Circle {
 	int hitBoxY = hitbox.getGameObject().getPos().getY()-hitBoxHeight/2;
 
 	double circleRadiusSquared = radius * radius;
+	if (circleRadiusSquared <= 0) return false; //Wenn der radius 0 ist, wäre es eine pixel zu pixel detection, was für bestimmte gegner fernkampf verhalten erzwingen würde -> nicht gewollt
 
 	for (int y = hitBoxY; y < hitBoxY + hitBoxHeight; y++) {
 		for (int x = hitBoxX; x < hitBoxX + hitBoxWidth; x++) {
