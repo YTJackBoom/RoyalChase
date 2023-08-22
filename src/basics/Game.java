@@ -50,13 +50,14 @@ public class Game extends JFrame implements Serializable {
             initClasses();
 
             setDefaultCloseOperation(EXIT_ON_CLOSE);
-            setLocationRelativeTo(null);
             setResizable(false);
             setLayout(null);
 
             setTitle("Bang Bang");
             add(gameScreen);
             setSize(new Dimension(initGameWidth, initGameHeight));
+            setLocationRelativeTo(null);
+
             setVisible(true);
         }
 
@@ -189,7 +190,6 @@ public class Game extends JFrame implements Serializable {
     }
 
     public void toggleFullscreen(){
-        isFullScreen = !isFullScreen;
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
 
@@ -209,9 +209,8 @@ public class Game extends JFrame implements Serializable {
             // Center the frame if desired
             setLocationRelativeTo(null);
 
-            gameScreen.setPreferredSize(new Dimension(initGameWidth, initGameHeight));
-            gameScreen.setMinimumSize(new Dimension(initGameWidth, initGameHeight));
-            gameScreen.setMaximumSize(new Dimension(initGameWidth, initGameHeight));
+            gameScreen.setSize(new Dimension(initGameWidth, initGameHeight));
+
             gameScreen.revalidate();
         } else {
             // Switch to fullscreen mode
@@ -222,14 +221,14 @@ public class Game extends JFrame implements Serializable {
             setSize(new Dimension(screenWidth,screenHeight));
             setLocation(0,0 );
 
-            gameScreen.setPreferredSize(new Dimension(screenWidth, screenHeight));
-            gameScreen.setMaximumSize(new Dimension(screenWidth, screenHeight));
-            gameScreen.setMinimumSize(new Dimension(screenWidth, screenHeight));
+            gameScreen.setSize(new Dimension(screenWidth,screenHeight));
             gameScreen.revalidate();
+
             getPlaying().getTileController().extendTiles(screenWidth,screenHeight);
 
         }
-        }
+        isFullScreen = !isFullScreen;
+    }
         // Getters and setters
         protected void incrementUPS() {
             currentUPS++;

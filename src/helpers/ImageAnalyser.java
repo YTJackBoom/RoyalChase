@@ -14,19 +14,13 @@ public class ImageAnalyser {
 	private ArrayList<Coordinate> pathCoordinates;
 	private BufferedImage image;
 	
-	public ImageAnalyser(File PMapFile) {  
+	public ImageAnalyser(BufferedImage image) {
 		pathCoordinates = new ArrayList<Coordinate>();
-		try {
-		    image = ImageIO.read(PMapFile);
-		} catch (IOException e) {
-		    System.out.println("Error when reading PMapFile");
-		}
+		this.image = image;
 	}
-	
-	public ArrayList<Coordinate> imgToPath() {
-		if (image != null) {
-			Coordinate start = getStart(image);
 
+	public ArrayList<Coordinate> imgToPath(Coordinate start) {
+		if (image != null) {
 			ArrayList<Coordinate> visited = new ArrayList<>();
 			visited.add(start);
 			ArrayList<Coordinate> blacks = new ArrayList<>();
@@ -47,12 +41,14 @@ public class ImageAnalyser {
 					int nextX = currentX + dx[j];
 					int nextY = currentY + dy[j];
 					if (nextX >= 0 && nextX < width && nextY >= 0 && nextY < height) {
-						Color nextColor = new Color(image.getRGB(nextX, nextY));
+						Color nextColor = new Color(image.getRGB(nextX, nextY), true);
 						int intensity = (nextColor.getRed() + nextColor.getGreen() + nextColor.getBlue()) / 3;
-						if (intensity <= blackThreshold) {
+						int alpha = nextColor.getAlpha();
+
+						// Check for non-transparent pixels and if they are black
+						if (alpha != 0 && intensity <= blackThreshold) {
 							Coordinate nextCoordinate = new Coordinate(nextX, nextY);
 							if (!blacks.contains(nextCoordinate) && !visited.contains(nextCoordinate)) {
-//								System.out.println(nextX + " " + nextY + "   " + visited.size() + "  " + blacks.size());
 								visited.add(nextCoordinate);
 								blacks.add(nextCoordinate);
 							}
@@ -64,41 +60,4 @@ public class ImageAnalyser {
 		}
 		return null;
 	}
-	
-	public ArrayList<Coordinate> imgToFoundList() {
-		ArrayList<Coordinate> foundList = new ArrayList<Coordinate>();
-		if(image != null) {
-			int blueThreshold = 255;
-			for (int a = 0; a < image.getWidth(); a++) {
-				for (int b = 0; b < image.getHeight(); b++) {
-					int blueValue = new Color(image.getRGB(a, b)).getBlue();
-					int redValue = new Color(image.getRGB(a, b)).getRed();
-					if (blueValue >= blueThreshold && redValue < 100) {
-						foundList.add(new Coordinate(a, b));
-//						System.out.println("Found blue pixel at (" + a + ", " + b + ")");
-					}
-				}
-			}
-			return foundList;
-		}else {
-			foundList.add(new Coordinate(0,0));
-			return foundList;
-		}
-	}
-	
-	public Coordinate getStart(BufferedImage image) {
-		int redThreshold = 255; 
-		for(int a=0;a<image.getWidth();a++) {
-		    for(int b=0;b<image.getHeight();b++) {
-		        int blueValue = new Color(image.getRGB(a, b)).getBlue();
-		        int redValue = new Color(image.getRGB(a, b)).getRed();
-		        if(redValue >= redThreshold&&blueValue < 100) {
-//		            System.out.println("Found red pixel at (" + a + ", " + b + ")");
-
-		            return new Coordinate(a, b);
-		        }
-		    }
-		}
-		return new Coordinate(0, 0);
-	} 
 }

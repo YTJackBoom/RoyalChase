@@ -14,7 +14,7 @@ public class GameScreen extends JPanel {
 
 	private Game game;
 
-	public static final Rectangle fBOUNDS = new Rectangle(Game.initGameWidth, Game.initGameHeight);
+	public static final Rectangle fBOUNDS = new Rectangle(0,0,Game.initGameWidth, Game.initGameHeight);
 
 
 
@@ -27,6 +27,7 @@ public class GameScreen extends JPanel {
 	public void setPanelSize() {
 		Dimension prefSize = new Dimension(Game.initGameWidth, Game.initGameHeight);
 		setSize(prefSize);
+		setBounds(fBOUNDS);
 		//setVisible(true);
 	}
 

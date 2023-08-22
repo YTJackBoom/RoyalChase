@@ -25,10 +25,13 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 
 	private Playing playing;
 	private Values playerValues;
+	private PathFinder pathFinder;
 
-	public EnemyController(Playing playing, ArrayList<Coordinate> pathCoordinates) {
+	public EnemyController(Playing playing) {
+
 		this.playing = playing;
-		this.pathCoordinates = pathCoordinates;
+		pathFinder = new PathFinder(playing.getTileController());
+		pathCoordinates = pathFinder.getPath();
 		enemyList = new ArrayList<Enemy>();
 		explosionsList = new ArrayList<Explosion>();
 		removeQue = new ArrayList<Enemy>();

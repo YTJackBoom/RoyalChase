@@ -29,7 +29,6 @@ public class Playing extends GameScenes implements SceneMethods{
     private WaveController waveController;
     private TileController tileController;
     private ProjectileController projectileController;
-    private ImageAnalyser imageAnalyser;
     private MyButtonBar buttonBarRight,buttonBarDown;
     private InfoOverlay infoOverlay;
     private Values playerValues;
@@ -47,10 +46,9 @@ public class Playing extends GameScenes implements SceneMethods{
         this.game = game;
         playerValues = game.getPlayerValues();
         this.infoOverlay = game.getInfoOverlay();
-        imageAnalyser = new ImageAnalyser(getCurrentPMapFile());
         tileController = new TileController(this);
 
-        enemyController = new EnemyController(this, imageAnalyser.imgToPath());
+        enemyController = new EnemyController(this);
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
@@ -109,8 +107,7 @@ public class Playing extends GameScenes implements SceneMethods{
 
     }
     public void reset() {
-        imageAnalyser = new ImageAnalyser(getCurrentPMapFile());
-        enemyController = new EnemyController(this, imageAnalyser.imgToPath());
+        enemyController = new EnemyController(this);
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
@@ -286,7 +283,6 @@ public class Playing extends GameScenes implements SceneMethods{
     public WaveController getWaveController() {
         return waveController;
     }
-    public ImageAnalyser getImageAnalyser() {return imageAnalyser;}
 
 
     public void setDraggedTower(int draggedTower) {

@@ -110,4 +110,7 @@ public class TileController extends ObjectsController implements ControllerMetho
     }
 
 
+    public ArrayList<Tile> getTileList() {
+        return tileList;
+    }
 }

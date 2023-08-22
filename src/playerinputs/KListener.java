@@ -18,9 +18,17 @@ public class KListener {
     }
 
     private void setupKeyBindings() {
-        InputMap inputMap = game.getGameScreen().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = game.getGameScreen().getActionMap();
+        InputMap inputMap = game.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = game.getRootPane().getActionMap();
 
+        // VK_SPACE binding
+        inputMap.put(KeyStroke.getKeyStroke("released SPACE"), "pauseAction");
+actionMap.put("pauseAction", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.togglePause();
+            }
+        });
         // VK_A binding
         inputMap.put(KeyStroke.getKeyStroke("released A"), "menuAction");
         actionMap.put("menuAction", new AbstractAction() {

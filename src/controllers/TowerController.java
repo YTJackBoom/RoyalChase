@@ -29,8 +29,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
         explosionsList = new ArrayList<Explosion>();
         this.playing = playing;
         playerValues = playing.getGame().getPlayerValues();
-
-        initTowers(playing.getImageAnalyser().imgToFoundList());
+        initGate();
     }
 
 
@@ -45,11 +44,8 @@ public class TowerController extends ObjectsController implements ControllerMeth
         }
         updateExplosions();
     }
-    public void initTowers(ArrayList<Coordinate> foundList) {
+    public void initGate() {
         towerEntityList.add(new TowerFoundation(this, variables.Maps.getGatePos(playing.getGame().getGameState().getPlayerValues().getLevel())));
-        for (Coordinate coordinate : foundList) {
-            towerEntityList.add(new TowerFoundation(this, coordinate));
-        }
     }
     public void checkTowerRange(Tower tower) {
         enemyList = playing.getEnemyController().getEnemyList();
