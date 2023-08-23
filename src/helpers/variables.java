@@ -464,19 +464,6 @@ public class variables { //class to define different variables for thing
         public static final int IRONORE = 2;
         public static final int STONEORE = 3;
         public static final int WOODORE = 4;
-
-
-
-
-        public static String getBuildingName(int buildingType) {
-            return switch (buildingType) {
-                case MANA -> "Mana Mine";
-                case IRON -> "Eisen Mine";
-                case STONE -> "Stein Mine";
-                case WOOD -> "Holzfäller Hütte";
-                default -> "Unbekannt";
-            };
-        }
         public static File getBuidingGifFile(int buildingType) {
             return switch (buildingType) {
                 case PLACEHOLDER -> new File("res/images/towers/foundation_t/passive.gif");
@@ -500,7 +487,7 @@ public class variables { //class to define different variables for thing
                 case IRON -> new Values(0,0,0,5,0,0);
                 case WOOD -> new Values(0,0,0,0,5,0);
                 case STONE -> new Values(0,0,0,0,0,5);
-                case HOUSE -> new Values(0,0,0,0,0,0);
+                case HOUSE -> new Values(5,0,0,0,0,0);
                 default -> new Values(0,0,0,0,0,0);
             };
         }
@@ -510,6 +497,7 @@ public class variables { //class to define different variables for thing
                 case IRON -> new Values(1,10,0,0,25,10);
                 case STONE -> new Values(1,10,0,5,25,0);
                 case WOOD -> new Values(1,10,5,5,5,10);
+                case HOUSE -> new Values(2,10,10,10,10,10);
                 default -> new Values(999,999,999,999,999,999);
             };
 
@@ -545,6 +533,7 @@ public class variables { //class to define different variables for thing
                 case ROCKET_T_B -> new File(standartpath+"rocket_t_icon.png");
                 case SNIP_T_B -> new File(standartpath+"snip_t_icon.png");
                 case MANA_B_B -> new File("res/images/buttons/blue_square.png");
+                case HOUSE_B_B -> new File("res/images/buttons/red_square.png");
 
                 default -> throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);
             };
@@ -560,6 +549,7 @@ public class variables { //class to define different variables for thing
                 case IRON_B_B -> new File(standartpathttips+"iron_b.txt");
                 case WOOD_B_B -> new File(standartpathttips+"wood_b.txt");
                 case STONE_B_B -> new File(standartpathttips+"stone_b.txt");
+                case HOUSE_B_B -> new File(standartpathttips+"house_b.txt");
                 default -> new File(standartpathttips+"wrong.txt");
             };
         }

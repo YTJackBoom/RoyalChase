@@ -4,6 +4,7 @@ import gameObjects.Building;
 import helpers.Values;
 import helpers.variables;
 import scenes.Town;
+import specialBuildings.House;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -37,8 +38,9 @@ public class BuildingsController implements ControllerMethods{
 			for (int j = 0; j < buildingsPerLine; j++) {
 				buildingsList.add(new Building(this,startX + (i * (buildingSize + buildingSpacing)), startY + (j * (buildingSize + buildingSpacing)), type));
 			}
-			buildingsList.add(new Building(this, 800,800,MANAORE));
 		}
+		buildingsList.add(new Building(this, 900,900,MANAORE));
+
 
 
 
@@ -75,24 +77,50 @@ public class BuildingsController implements ControllerMethods{
 
 
 	public void mouseReleased(int x, int y) {
-
-//		System.out.println("s");
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
-			if (building.getBounds().contains(x, y) && (building.getType() >= MANAORE && building.getType() <= WOODORE)) {
-				if (town.getSelectedBuilding() == (building.getType()+4) && building.getType()!=0) {
-					Values cost = variables.Buildings.getCost(town.getSelectedBuilding());
-					if (playerValues.canAfford(cost)) {
-						playerValues.decrease(cost);
-						buildingsList.set(i, new Building(this, building.getX(), building.getY(), town.getSelectedBuilding()));
-						System.out.println("Building placed");
-					} else {
-						town.setCantAfford(true);
+
+			// Checks if the mouse was released within a building's bounds.
+			if (building.getBounds().contains(x, y)) {
+
+				// Check if the building is of type MANAORE to WOODORE
+				if (isValidOreType(building.getType())) {
+
+					// Check if the selected building matches the criteria for placement.
+					if (town.getSelectedBuilding() == (building.getType() + 4) && building.getType() != 0) {
+						handleBuildingPlacement(i);
 					}
+				}
+				// For any other building type, it should be placed on PLACEHOLDER
+				else if (building.getType() == PLACEHOLDER && !isValidMineType(town.getSelectedBuilding())) {
+					handleBuildingPlacement(i);
 				}
 			}
 		}
+	}
+
+	private boolean isValidMineType(int type) {
+		return type >= MANA && type <= WOOD;
+	}
+	private boolean isValidOreType(int type) {
+		return type >= MANAORE && type <= WOODORE;
+	}
+
+	private void handleBuildingPlacement(int index) {
+		Values cost = variables.Buildings.getCost(town.getSelectedBuilding());
+
+		if (playerValues.canAfford(cost)) {
+			playerValues.decrease(cost);
+			if (town.getSelectedBuilding() == HOUSE) {  //Seperater check für house da es keine konstante sondern einmalige produktion hat
+				buildingsList.set(index, new House(this, buildingsList.get(index).getX(), buildingsList.get(index).getY()));
+			}else {
+				buildingsList.set(index, new Building(this, buildingsList.get(index).getX(), buildingsList.get(index).getY(), town.getSelectedBuilding()));
+			}
+			System.out.println("Building placed");
+		} else {
+			town.setCantAfford(true);
 		}
+	}
 		public ArrayList<Building> getBuildingsList() {
 		return buildingsList;
 		}

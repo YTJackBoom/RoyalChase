@@ -86,9 +86,9 @@ public class MyButtonBar {
 
 		buttons.add(new MyButton("Battle!",startX, startY , width, height,true));
 		buttons.add(new MyButton("Back",startX+xOffset, startY+yOffset, width, height,true));
-		buttons.add(new MyButton("Sell",startX+xOffset*2, startY+yOffset*2, width, height,true));
 
-		buttons.add(new MyButton(MANA_B_B,startX+xOffset*3, startY+yOffset*3, width, height,true));
+		buttons.add(new MyButton(MANA_B_B,startX+xOffset*2, startY+yOffset*2, width, height,true));
+		buttons.add(new MyButton(HOUSE_B_B,startX+xOffset*3, startY+yOffset*3,width,height,true));
 
 		buttons.add(new MyButton("Next",startX+xOffset*4, startY+yOffset*4 , width,height, true));
 		buttons.add(new MyButton("Menu",startX+xOffset*5, startY+yOffset*5, width,height, true));

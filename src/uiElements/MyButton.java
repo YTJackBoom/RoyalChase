@@ -160,7 +160,7 @@ public class MyButton {
 		return type >= Foundation_T_B && !isTextButton && type <= SNIP_T_B;
 	}
 	public boolean isBuildingButton() {
-		return type >= MANA_B_B && !isTextButton && type <= STONE_B_B;
+		return type >= MANA_B_B && !isTextButton && type <= HOUSE_B_B;
 	}
 	public int getX() {
 		return x;
