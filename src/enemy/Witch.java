@@ -4,9 +4,11 @@ import controllers.EnemyController;
 import gameObjects.Enemy;
 import helpers.Coordinate;
 
+import static helpers.variables.Enemies.WITCH;
+
 public class Witch extends Enemy {
     public Witch(EnemyController enemyController, Coordinate pos) {
-        super(enemyController, pos, 3);
+        super(enemyController, pos, WITCH,EnemyType.RANGED);
     }
 
 }

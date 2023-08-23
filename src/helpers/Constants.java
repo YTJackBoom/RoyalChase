@@ -42,6 +42,7 @@ public class Constants {
 		public static final double LOWESTRELOADSPEED = 300;
 
 
+        public static final double MELEEATTACKDISTANCE = 15;
     }
 	public static class OtherConstants {
 		public static final String SAVEGAMELOCATION ="res/savegame";

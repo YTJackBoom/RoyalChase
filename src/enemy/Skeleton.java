@@ -4,13 +4,14 @@ import controllers.EnemyController;
 import gameObjects.Enemy;
 import helpers.Coordinate;
 
+import static helpers.variables.Enemies.SKELETON;
 import static helpers.variables.Projectiles.ARROW;
 
 public class Skeleton extends Enemy {
     private int counter;
     private boolean isLoaded;
     public Skeleton(EnemyController enemyController, Coordinate pos) {
-        super(enemyController, pos, 1);
+        super(enemyController, pos, SKELETON,EnemyType.RANGED);
     }
 
     @Override

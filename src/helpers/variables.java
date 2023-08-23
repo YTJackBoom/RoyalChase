@@ -115,11 +115,11 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("variables: getEnemyDamage: Unexpected value:  " + enemyType);
             };
         }
-        public static double getEnemyReloadTime(int enemyType) {
+        public static double getEnemyReloadTime(int enemyType) { //Entweder nachlade(range) oder angriffgeschwindigkeit(melee) beider in sekunden/angriff
             return switch (enemyType) {
                 case SLIME -> 0;
                 case SKELETON -> 100;
-                case ZOMBIE -> 0;
+                case ZOMBIE -> 5;
                 case WITCH -> 400;
                 case WIZARD -> 400;
                 case SKELETON_KING -> 800;

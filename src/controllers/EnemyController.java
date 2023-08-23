@@ -13,6 +13,7 @@ import scenes.Playing;
 import uiElements.Explosion;
 
 import static basics.Game.ups;
+import static helpers.variables.Enemies.*;
 import static helpers.variables.Projectiles.ROCKET;
 import static helpers.variables.Towers.Foundation_T;
 
@@ -57,8 +58,8 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 			}
 		}
 	}
-	public void checkEnemyRange(Enemy enemy) {
-		if (enemy.getRange().getRadius() > 0) {
+	public void checkEnemyRange(Enemy enemy) { //checkt ob ein turm in reichweite des gegners ist. check für gate in enemy
+		if (enemy.getEnemyType() == EnemyType.RANGED) {
 			ArrayList<Tower> towerList = playing.getTowerController().getTowerList();
 			for (Tower tower : towerList) {
 				if (tower.getType() != Foundation_T) {
@@ -88,10 +89,13 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 			}
 		}
 	}
-	public void enemyReachedGate(Enemy enemy) {
+	public void enemySacrificeOnGate(Enemy enemy) {
 		playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
 		removeQue.add(enemy);
 		System.out.println("Enemy reached the end");
+	}
+	public void enemyMeleeAttackOnGate(Enemy enemy) {
+		playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
 	}
 	public synchronized void updateExplosions() {
 		for(Explosion e : explosionsList) {
@@ -113,15 +117,15 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 	}
 	public void spawnEnemy(int enemyType) {
 		switch (enemyType) { //switch case for different enemy types from enum
-			case 0 -> addQue.add(new Skull(this, pathCoordinates.get(0)));
-			case 1 -> addQue.add(new Skeleton(this, pathCoordinates.get(0)));
-			case 2 -> addQue.add(new Zombie(this, pathCoordinates.get(0)));
-			case 3 -> addQue.add(new Witch(this, pathCoordinates.get(0)));
-			case 4 -> addQue.add(new Wizard(this, pathCoordinates.get(0)));
-			case 5 -> addQue.add(new Skeleton_King(this, pathCoordinates.get(0)));
-			case 6 -> addQue.add(new Zombie_King(this, pathCoordinates.get(0)));
-			case 7 -> addQue.add(new Witch_Queen(this, pathCoordinates.get(0)));
-			case 8 -> addQue.add(new Wizard_King(this, pathCoordinates.get(0)));
+			case SLIME -> addQue.add(new Slime(this, pathCoordinates.get(0)));
+			case SKELETON -> addQue.add(new Skeleton(this, pathCoordinates.get(0)));
+			case ZOMBIE -> addQue.add(new Zombie(this, pathCoordinates.get(0)));
+			case WITCH -> addQue.add(new Witch(this, pathCoordinates.get(0)));
+			case WIZARD -> addQue.add(new Wizard(this, pathCoordinates.get(0)));
+			case SKELETON_KING -> addQue.add(new Skeleton_King(this, pathCoordinates.get(0)));
+			case ZOMBIE_KING -> addQue.add(new Zombie_King(this, pathCoordinates.get(0)));
+			case WITCH_QUEEN -> addQue.add(new Witch_Queen(this, pathCoordinates.get(0)));
+			case WIZARD_KING -> addQue.add(new Wizard_King(this, pathCoordinates.get(0)));
 
 		}
    }
