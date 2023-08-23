@@ -64,14 +64,19 @@ public class Projectile extends GameObject{
 
 
 	public double getDamage() {
-		double dmg = variables.Projectiles.getProjectileDamage(type);
+		double dmg = 0;
 		if (origin instanceof Tower) {
+			dmg = variables.Towers.getTowerDamage(origin.type);
+
 			Tower temp = (Tower) origin;
 			int tLevel = temp.getLevel();
 
 			for (int i = 1; i < tLevel; i++) {
 				dmg += dmg * Constants.ObjectConstants.DMGUPGRADE;
 			}
+		} else if (origin instanceof Enemy) {
+			dmg = variables.Enemies.getEnemyDamage(origin.type);
+
 		}
 		return dmg;
 	}

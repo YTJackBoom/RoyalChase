@@ -104,7 +104,7 @@ public class variables { //class to define different variables for thing
         public static double getEnemyDamage(int enemyType) {
             return switch (enemyType) {
                 case SLIME -> 100;
-                case SKELETON -> 5;
+                case SKELETON -> 2.5;
                 case ZOMBIE -> 5;
                 case WITCH -> 5;
                 case WIZARD -> 5;
@@ -305,13 +305,15 @@ public class variables { //class to define different variables for thing
         public static final int SNIP_T = Buttons.SNIP_T_B;
 
 
-        public static String getTowerName(int towerType) {
+        public static double getTowerDamage(int towerType) {
             return switch (towerType) {
-                case ARROW_T -> "Armbrust Turm";
-                case MAGE_T -> "Magier Turm";
-                case ROCKET_T -> "Raketen Turm";
-                case SNIP_T -> "Artillery Turm";
-                default -> "Unbekannt";
+                case Foundation_T -> 0;
+                case ARROW_T -> 5;
+                case MAGE_T -> 70;
+                case ROCKET_T -> 50;
+                case SNIP_T -> 110;
+                default -> throw new IllegalStateException("variables: getTowerDamage: Unexpected value:  " + towerType);
+
             };
         }
         public static File getTowerPassiveGifFile(int towerType) {
@@ -408,16 +410,6 @@ public class variables { //class to define different variables for thing
                 case LIGHTNINGBALL -> 15;
                 case BULLET -> 50;
                 default -> throw new IllegalStateException("variables: getProjectileSpeed: Unexpected value:  " + projectileType);
-            };
-        }
-
-        public static int getProjectileDamage(int projectileType) {
-            return switch (projectileType) {
-                case ARROW -> 5;
-                case ROCKET -> 70;
-                case LIGHTNINGBALL -> 50;
-                case BULLET -> 110;
-                default -> throw new IllegalStateException("variables: getProjectileDamage: Unexpected value:  " + projectileType);
             };
         }
         public static double getStun(int projectileType) { //Stun in seconds
