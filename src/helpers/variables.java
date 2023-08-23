@@ -238,10 +238,10 @@ public class variables { //class to define different variables for thing
                 case 3 -> new Tile(3, true, false,true,false);
                 case 4 -> new Tile(4, true, false,false,false);
                 case 5 -> new Tile(5, false, true,false,false);
-                case 6 -> new Tile(6, false, true,false,false);
-                case 7 -> new Tile(7, false, false,false,false);
+                case 6 -> new Tile(6, true, true,false,false);
+                case 7 -> new Tile(7, true, false,false,false);
                 case 8 -> new Tile(8, true, false,false,true);
-                case 9 -> new Tile(9, false, false,false,false);
+                case 9 -> new Tile(9, true, false,false,false);
                 case 10 -> new Tile(10, false, false,false,false);
                 default -> throw new IllegalStateException("variables: getRawTile: Unexpected value:  " + i);
             };

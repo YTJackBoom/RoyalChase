@@ -41,7 +41,7 @@ public class Enemy extends GameObject{
 
 			double remainingPath = pathCoordinates.size() - 1 - getPathIndex();
 			if (getSpeed() < remainingPath&&Math.ceil(getPathIndex())<pathCoordinates.size()-1) {
-				double index =  Math.round(getPathIndex() + getSpeed());
+				double index =  getPathIndex() + getSpeed();
 
 				// Ensure index stays within the bounds of pathCoordinates.
 				index = Math.min(index, pathCoordinates.size() - 1);

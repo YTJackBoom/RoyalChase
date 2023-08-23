@@ -82,7 +82,11 @@ public class PathFinder {
                 {-tileSize, 0}, // Left
                 {tileSize, 0},  // Right
                 {0, -tileSize}, // Up
-                {0, tileSize}   // Down
+                {0, tileSize},   // Down
+                {tileSize, tileSize}, // Down-Right
+                {-tileSize, tileSize}, // Down-Left
+                {tileSize, -tileSize}, // Up-Right
+                {-tileSize, -tileSize} // Up-Left
         };
 
         for (int[] direction : directions) {

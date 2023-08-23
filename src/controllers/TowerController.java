@@ -22,9 +22,12 @@ public class TowerController extends ObjectsController implements ControllerMeth
     private ArrayList<Explosion> explosionsList;
     private Tower selectedTower;
     private Values playerValues;
+    private ArrayList<Tower> addQueue, removeQueue, changeQueue;
 
     private int towerSoldCounter; //Wenn turm kürzlich verkauft wurde, um nicht sofort einen weiteren verkaufen zu könnnen
     public TowerController(Playing playing) {
+        addQueue = new ArrayList<Tower>();
+        removeQueue = new ArrayList<Tower>();
         towerEntityList = new ArrayList<Tower>();
         explosionsList = new ArrayList<Explosion>();
         this.playing = playing;
@@ -36,6 +39,8 @@ public class TowerController extends ObjectsController implements ControllerMeth
 
 
     public void update() {
+        workAddQueue();
+        workRemoveQueue();
         for (Tower tower : towerEntityList) {
             if(!playing.isPaused()) {
                 checkTowerRange(tower);
@@ -45,7 +50,8 @@ public class TowerController extends ObjectsController implements ControllerMeth
         updateExplosions();
     }
     public void initGate() {
-        towerEntityList.add(new TowerFoundation(this, variables.Maps.getGatePos(playing.getGame().getGameState().getPlayerValues().getLevel())));
+        ArrayList<Coordinate> pathCoordinates = playing.getEnemyController().getPathFinder().getPath();
+        towerEntityList.add(new TowerFoundation(this, pathCoordinates.get(pathCoordinates.size()-1)));
     }
     public void checkTowerRange(Tower tower) {
         enemyList = playing.getEnemyController().getEnemyList();
@@ -83,7 +89,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
 
 
-    public void renderTowers(Graphics g){
+    public synchronized void renderTowers(Graphics g){
         for(Tower tower : towerEntityList) {
             int width = tower.getWidth();
             int height = tower.getHeight();
@@ -101,7 +107,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
             }
         }
     }
-    public void renderTowerLevels(Graphics g) {
+    public synchronized void renderTowerLevels(Graphics g) {
         for(Tower tower : towerEntityList) {
             if(tower.getLevel()>1) {
                 int width = tower.getWidth();
@@ -129,16 +135,16 @@ public class TowerController extends ObjectsController implements ControllerMeth
             }
         }
     }
-    public void renderTowersHealthBars(Graphics g) {
+    public synchronized void renderTowersHealthBars(Graphics g) {
         for (Tower tower : towerEntityList) {
             tower.renderHealthBar(g);
         }
     }
      public void upgradeTower() {
-        Values upgradeCost = selectedTower.getWorth().getUpgradeCost();
+        Values upgradeCost = selectedTower.getWorth(1).getUpgradeCost();
         if(playerValues.canAfford(upgradeCost)) {
             playerValues.decrease(upgradeCost);
-            selectedTower.getWorth().increase(upgradeCost);
+            selectedTower.getWorth(1).increase(upgradeCost);
 
             selectedTower.upgrade();
 //            System.out.println("d");
@@ -150,9 +156,9 @@ public class TowerController extends ObjectsController implements ControllerMeth
 
     public void sellTower() {
         if(!playing.getRecentlySold()) {
-            playerValues.increase(selectedTower.getWorth());
+            playerValues.increase(selectedTower.getWorth(1));
 
-            towerEntityList.remove(selectedTower);
+            removeQueue.add(selectedTower);
             selectedTower = null;
             playing.setSelectedTower(null);
             playing.setRecentlySold(true);
@@ -192,25 +198,33 @@ public class TowerController extends ObjectsController implements ControllerMeth
         }else {
             Tile tile;
             if ((tile = playing.getTileController().getTile(x, y))!=null&&tile.isBuildable()) {
-                Values cost = variables.Towers.getCost(playing.getDraggedTower());
-                if (playerValues.canAfford(cost)) {
-                    playerValues.decrease(cost);
-                    towerEntityList.add(new Tower(this, tile.getPos(), playing.getDraggedTower()));
-                    playing.setSelectedTower(null);
-                    System.out.println("Tower placed");
-                } else {
-                    playing.setCantAfford(true);
-                }
+                placeTower(tile.getPos());
 
             }
         }
     }
     public void replaceTower(Tower t) {
         if(t.getType() != variables.Towers.Foundation_T) {
-                playerValues.increase(t.getWorth());
-                towerEntityList.set(towerEntityList.indexOf(t), new Tower(this, t.getPos(), playing.getDraggedTower()));
+            if (placeTower(t.getPos())) {
+                playerValues.increase(t.getWorth(Constants.OtherConstants.REPLACETOWERPERCENT));
+                removeQueue.add(t);
+//                towerEntityList.set(towerEntityList.indexOf(t), new Tower(this, t.getPos(), playing.getDraggedTower()));
                 playing.setSelectedTower(null);
-       }
+            }
+        }
+    }
+    public boolean placeTower(Coordinate pos) {
+        Values cost = variables.Towers.getCost(playing.getDraggedTower());
+        if (playerValues.canAfford(cost)) {
+            playerValues.decrease(cost);
+            addQueue.add(new Tower(this, pos, playing.getDraggedTower()));
+            playing.setSelectedTower(null);
+            System.out.println("Tower placed");
+            return true;
+        } else {
+            playing.setCantAfford(true);
+            return false;
+        }
     }
     public Tower towerOn(int x, int y) {
         for(Tower tower : towerEntityList) {
@@ -223,7 +237,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     public void sellAllTowers() {
         for(Tower tower : towerEntityList) {
             if(tower.getType() != variables.Towers.Foundation_T) {
-                playerValues.increase(tower.getWorth());
+                playerValues.increase(tower.getWorth(Constants.OtherConstants.SELLALLTOWERSPERCENT));
             }
         }
         towerEntityList.clear();
@@ -247,13 +261,16 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
 
     @Override
-    public void workAddQueue() {
+    public synchronized void workAddQueue() {
+        towerEntityList.addAll(addQueue);
+        addQueue.clear();
 
     }
 
     @Override
-    public void workRemoveQueue() {
-
+    public synchronized void workRemoveQueue() {
+        towerEntityList.removeAll(removeQueue);
+        removeQueue.clear();
     }
 
 

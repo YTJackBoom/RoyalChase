@@ -190,7 +190,12 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		}
 	}
 	//Getters and Setters
-   public void setPathCoordinates(ArrayList<Coordinate> newPathCoordinates) {
+
+	public PathFinder getPathFinder() {
+		return pathFinder;
+	}
+
+	public void setPathCoordinates(ArrayList<Coordinate> newPathCoordinates) {
 		pathCoordinates = newPathCoordinates;
    }
 

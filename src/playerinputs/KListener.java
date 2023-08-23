@@ -23,7 +23,7 @@ public class KListener {
 
         // VK_SPACE binding
         inputMap.put(KeyStroke.getKeyStroke("released SPACE"), "pauseAction");
-actionMap.put("pauseAction", new AbstractAction() {
+        actionMap.put("pauseAction", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.togglePause();
@@ -58,7 +58,7 @@ actionMap.put("pauseAction", new AbstractAction() {
         });
 
         // VK_M binding
-        inputMap.put(KeyStroke.getKeyStroke("released M"), "increaseValuesAction");
+        inputMap.put(KeyStroke.getKeyStroke("M"), "increaseValuesAction");
         actionMap.put("increaseValuesAction", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

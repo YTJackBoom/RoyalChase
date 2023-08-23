@@ -157,8 +157,8 @@ public class Tower extends GameObject {
 	public Circle getRange() {
 		return circles[0];
 	}
-	public Values getWorth() {
-		return worth;
+	public Values getWorth(double percentage) {
+		return worth.cloneByPercent(percentage);
 	}
 
 }

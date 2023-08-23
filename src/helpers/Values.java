@@ -59,7 +59,7 @@ public class Values implements Serializable {
 
 
     public boolean canAfford(Values v){
-        return workers >= v.workers && mana >= v.getMana()&& iron >= v.getIron()&&wood >=v.getWood() && stone >=v.getStone();
+        return gold>=v.gold && workers >= v.workers && mana >= v.getMana()&& iron >= v.getIron()&&wood >=v.getWood() && stone >=v.getStone();
     }
     public double getWorkers() {
         return workers;
@@ -143,6 +143,7 @@ public class Values implements Serializable {
     public void setRewardmultiplyer(double rewardmultiplyer) {
         this.rewardmultiplyer = rewardmultiplyer;
     }
-
-
+    public Values cloneByPercent(double percentage) {
+        return new Values(workers,gold*percentage,mana*percentage,iron*percentage,wood*percentage,stone*percentage);
+    }
 }

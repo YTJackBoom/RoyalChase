@@ -143,10 +143,10 @@ public class InfoOverlay {
             costValues = hoveredButton.isTowerButton() ? variables.Towers.getCost(type) : variables.Buildings.getCost(type);
         } else if (buttonText != null && towerPointer != null) {
             if ("Upgrade".equals(buttonText)) {
-                costValues = towerPointer.getWorth().getUpgradeCost();
+                costValues = towerPointer.getWorth(1).getUpgradeCost();
                 g.setFont(Constants.UIConstants.TOWERCOSTFONT);
             } else if (isSellText) {
-                costValues = towerPointer.getWorth();
+                costValues = towerPointer.getWorth(1);
             }
         }
 
