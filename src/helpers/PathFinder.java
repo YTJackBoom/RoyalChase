@@ -2,7 +2,6 @@ package helpers;
 
 import controllers.TileController;
 import gameObjects.Tile;
-import helpers.Coordinate;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +28,9 @@ public class PathFinder {
 
         public ArrayList<Coordinate> getPath() {
             ArrayList<Coordinate> fullPath = new ArrayList<>();
-            Coordinate currentCoord = startTile.getPos();
+            int startX = startTile.getPos().getX();
+            int startY = startTile.getPos().getY() - 128 + 235;
+            Coordinate currentCoord = new Coordinate(startX, startY);
 
             // Calculate the sequence of tiles based on the path.
             ArrayList<Tile> tileSequence = determineTileSequence();

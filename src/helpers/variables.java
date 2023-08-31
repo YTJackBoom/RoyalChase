@@ -5,7 +5,6 @@ import gameObjects.Tile;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 
 public class variables { //class to define different variables for thing
@@ -154,50 +153,6 @@ public class variables { //class to define different variables for thing
     }
 
     public static class Maps {
-
-        public static File getPMapFile(int mapType) {
-            return switch (mapType) {
-                case 0 -> new File("res/images/maps/pathMaps/path0.bmp");
-                case 1 -> new File("res/images/maps/pathMaps/path1.bmp");
-                case 2 -> new File("res/images/maps/pathMaps/path2.bmp");
-                case 3 -> new File("res/images/maps/pathMaps/path3.bmp");
-                case 4 -> new File("res/images/maps/pathMaps/path4.bmp");
-                case 5 -> new File("res/images/maps/pathMaps/path5.bmp");
-                case 6 -> new File("res/images/maps/pathMaps/path6.bmp");
-                case 7 -> new File("res/images/maps/pathMaps/path7.bmp");
-                case 8 -> new File("res/images/maps/pathMaps/path8.bmp");
-                case 9 -> new File("res/images/maps/pathMaps/path9.bmp");
-                default -> throw new IllegalStateException("variables: getPMapFile: Unexpected value:  " + mapType);
-            };
-        }
-
-        public static BufferedImage getMapBufferedImage(int mapType) {
-            File mapFile;
-            BufferedImage mapImage;
-            switch (mapType) {
-                case 0 -> mapFile = new File("res/images/maps/backgroundMaps/map0.jpg");
-                case 1 -> mapFile = new File("res/images/maps/backgroundMaps/map1.jpg");
-                case 2 -> mapFile = new File("res/images/maps/backgroundMaps/map2.jpg");
-                case 3 -> mapFile = new File("res/images/maps/backgroundMaps/map3.jpg");
-                case 4 -> mapFile = new File("res/images/maps/backgroundMaps/map4.jpg");
-                case 5 -> mapFile = new File("res/images/maps/backgroundMaps/map5.jpg");
-                case 6 -> mapFile = new File("res/images/maps/backgroundMaps/map6.jpg");
-                case 7 -> mapFile = new File("res/images/maps/backgroundMaps/map7.jpg");
-                case 8 -> mapFile = new File("res/images/maps/backgroundMaps/map8.jpg");
-                case 9 -> mapFile = new File("res/images/maps/backgroundMaps/map9.jpg");
-                default -> throw new IllegalStateException("variables: getMapBufferedImage: Unexpected value:  " + mapType);
-            }
-            ;
-            try {
-                mapImage = javax.imageio.ImageIO.read(mapFile);
-                return mapImage;
-            } catch (Exception e) {
-                System.out.println("When reading MapBufferedImage " + mapType + ": " + e);
-                return null;
-            }
-
-        }
-
         public static File getMapWaveFile(int waveType) {
             return switch (waveType) {
                 case 0 -> new File("res/text/waveFiles/waves0.txt");
@@ -214,55 +169,7 @@ public class variables { //class to define different variables for thing
             };
         }
 
-        public static Coordinate getGatePos(int level) {
-            return switch (level) {
-                case 0 -> new Coordinate(1300, 450);
-                case 1 -> new Coordinate(128, 0);
-                case 2 -> new Coordinate(1300, 450);
-                case 3 -> new Coordinate(1300, 450);
-                case 4 -> new Coordinate(1300, 450);
-                case 5 -> new Coordinate(1300, 450);
-                case 6 -> new Coordinate(1300, 450);
-                case 7 -> new Coordinate(1300, 450);
-                case 8 -> new Coordinate(1300, 450);
-                case 9 -> new Coordinate(1300, 450);
-                default -> throw new IllegalStateException("variables: getGatePos: Unexpected value:  " + level);
-            };
-        }
 
-        public static Tile getRawTile(int i) {
-            return switch (i) {
-                case 0 -> new Tile(0, false, true,false,false);
-                case 1 -> new Tile(1, false, false,false,false);
-                case 2 -> new Tile(2, false, false,false,false);
-                case 3 -> new Tile(3, true, false,true,false);
-                case 4 -> new Tile(4, true, false,false,false);
-                case 5 -> new Tile(5, false, true,false,false);
-                case 6 -> new Tile(6, true, true,false,false);
-                case 7 -> new Tile(7, true, false,false,false);
-                case 8 -> new Tile(8, true, false,false,true);
-                case 9 -> new Tile(9, true, false,false,false);
-                case 10 -> new Tile(10, false, false,false,false);
-                default -> throw new IllegalStateException("variables: getRawTile: Unexpected value:  " + i);
-            };
-        }
-
-        public static File getTileFile(int tileType) {
-            return switch (tileType) {
-                case 0 -> new File("res/images/tiles/0.png");
-                case 1 -> new File("res/images/tiles/1.png");
-                case 2 -> new File("res/images/tiles/2.png");
-                case 3 -> new File("res/images/tiles/3.png");
-                case 4 -> new File("res/images/tiles/4.png");
-                case 5 -> new File("res/images/tiles/5.png");
-                case 6 -> new File("res/images/tiles/6.png");
-                case 7 -> new File("res/images/tiles/7.png");
-                case 8 -> new File("res/images/tiles/8.png");
-                case 9 -> new File("res/images/tiles/9.png");
-                case 10 -> new File("res/images/tiles/10.png");
-                default -> throw new IllegalStateException("variables: getTileFile: Unexpected value:  " + tileType);
-            };
-        }
         public static File getTileTextFile(int level) {
             return switch (level) {
                 case 0 -> new File("res/text/tileFiles/tiles0.txt");
@@ -278,21 +185,100 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("variables: getTileTextFile: Unexpected value:  " + level);
             };
         }
+    }
 
-        public static Coordinate getSpawnPos(int level) {
-            return switch (level) {
-                case 0 -> new Coordinate(100, 450);
-                case 1 -> new Coordinate(0, 896);
-                case 2 -> new Coordinate(100, 450);
-                case 3 -> new Coordinate(100, 450);
-                case 4 -> new Coordinate(100, 450);
-                case 5 -> new Coordinate(100, 450);
-                case 6 -> new Coordinate(100, 450);
-                case 7 -> new Coordinate(100, 450);
-                case 8 -> new Coordinate(100, 450);
-                case 9 -> new Coordinate(100, 450);
-                default -> throw new IllegalStateException("variables: getSpawnPos: Unexpected value:  " + level);
+    public static class Tiles {
+        public static final int grass = 0;
+        public static final int wood = 1;
+        public static final int path_buttom_to_topright_grass = 2;
+        public static final int path_buttom_to_topright_wood = 3;
+        public static final int path_buttomleft_to_topright_grass = 4;
+        public static final int path_buttomleft_to_topright_wood = 5;
+        public static final int path_left_to_right_grass = 6;
+        public static final int path_left_to_right_wood = 7;
+        public static final int path_top_to_right_grass = 8;
+        public static final int path_top_to_right_wood = 9;
+        public static final int spawn_to_buttom_grass = 10;
+        public static final int spawn_to_buttom_wood = 11;
+        public static final int gate_to_buttom_grass = 12;
+        public static final int gate_to_buttom_wood = 13;
+        public static final int path_buttom_to_right_grass = 14;
+        public static final int path_buttom_to_right_wood = 15;
+        public static final int path_topleft_to_buttom_grass = 16;
+        public static final int path_topleft_to_buttom_wood = 17;
+        public static final int path_buttomleft_to_top_grass = 18;
+        public static final int path_buttomleft_to_top_wood = 19;
+        public static final int path_buttomright_to_top_grass = 20;
+        public static final int path_buttomright_to_top_wood = 21;
+        public static final int path_topleft_to_buttomright_grass = 22;
+        public static final int path_topleft_to_buttomright_wood = 23;
+        public static final int path_left_to_top_grass = 24;
+        public static final int path_left_to_top_wood = 25;
+
+
+        public static Tile getRawTile(int i) {
+            return switch (i) {
+                case grass -> new Tile(0, false, true, false, false);
+                case wood -> new Tile(1, false, false, false, false);
+                case path_buttom_to_topright_grass -> new Tile(2, true, false, false, false);
+                case path_buttom_to_topright_wood -> new Tile(3, true, false, false, false);
+                case path_buttomleft_to_topright_grass -> new Tile(4, true, false, false, false);
+                case path_buttomleft_to_topright_wood -> new Tile(5, true, false, false, false);
+                case path_left_to_right_grass -> new Tile(6, true, false, false, false);
+                case path_left_to_right_wood -> new Tile(7, true, false, false, false);
+                case path_top_to_right_grass -> new Tile(8, true, false, false, false);
+                case path_top_to_right_wood -> new Tile(9, true, false, false, true);
+                case spawn_to_buttom_grass -> new Tile(10, true, false, true, false);
+                case spawn_to_buttom_wood -> new Tile(11, true, false, true, false);
+                case gate_to_buttom_grass -> new Tile(12, true, false, false, true);
+                case gate_to_buttom_wood -> new Tile(13, true, false, false, true);
+                case path_buttom_to_right_grass -> new Tile(14, true, false, false, false);
+                case path_buttom_to_right_wood -> new Tile(15, true, false, false, false);
+                case path_topleft_to_buttom_grass -> new Tile(16, true, false, false, false);
+                case path_topleft_to_buttom_wood -> new Tile(17, true, false, false, false);
+                case path_buttomleft_to_top_grass -> new Tile(18, true, false, false, false);
+                case path_buttomleft_to_top_wood -> new Tile(19, true, false, false, false);
+                case path_buttomright_to_top_grass -> new Tile(20, true, false, false, false);
+                case path_buttomright_to_top_wood -> new Tile(21, true, false, false, false);
+                case path_topleft_to_buttomright_grass -> new Tile(22, true, false, false, false);
+                case path_topleft_to_buttomright_wood -> new Tile(23, true, false, false, false);
+                case path_left_to_top_grass -> new Tile(24, true, false, false, false);
+                case path_left_to_top_wood -> new Tile(25, true, false, false, false);
+                default -> throw new IllegalStateException("variables: getRawTile: Unexpected value:  " + i);
             };
+        }
+
+        public static File getTileFile(int tileType) {
+            return new File("res/images/tiles/" + tileType + ".png");
+//            return switch (tileType) {
+//                case grass -> new File("res/images/tiles/"+grass+".png");
+//                case wood -> new File("res/images/tiles/"+wood+".png");
+//                case path_buttom_to_topright_grass -> new File("res/images/tiles/"+path_buttom_to_topright_grass+".png");
+//                case path_buttom_to_topright_wood -> new File("res/images/tiles/"+path_buttom_to_topright_wood+".png");
+//                case path_buttomleft_to_topright_grass -> new File("res/images/tiles/"+path_buttomleft_to_topright_grass+".png");
+//                case path_buttomleft_to_topright_wood -> new File("res/images/tiles/"+path_buttomleft_to_topright_wood+".png");
+//                case path_left_to_right_grass -> new File("res/images/tiles/"+path_left_to_right_grass+".png");
+//                case path_left_to_right_wood -> new File("res/images/tiles/"+path_left_to_right_wood+".png");
+//                case path_top_to_right_grass -> new File("res/images/tiles/"+path_top_to_right_grass+".png");
+//                case path_top_to_right_wood -> new File("res/images/tiles/"+path_top_to_right_wood+".png");
+//                case spawn_to_buttom_grass -> new File("res/images/tiles/"+spawn_to_buttom_grass+".png");
+//                case spawn_to_buttom_wood -> new File("res/images/tiles/"+spawn_to_buttom_wood+".png");
+//                case gate_to_buttom_grass -> new File("res/images/tiles/"+gate_to_buttom_grass+".png");
+//                case gate_to_buttom_wood -> new File("res/images/tiles/"+gate_to_buttom_wood+".png");
+//                case
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//                default -> throw new IllegalStateException("variables: getTileFile: Unexpected value:  " + tileType);
+//            };
         }
     }
 

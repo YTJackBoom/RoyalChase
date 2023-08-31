@@ -7,7 +7,6 @@ import helpers.variables;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -38,9 +37,9 @@ public class Tile {
         this.isBuildable = isBuildable;
         this.tileType = tileType;
         try {
-            tileImage = ImageIO.read(variables.Maps.getTileFile(tileType));
+            tileImage = ImageIO.read(variables.Tiles.getTileFile(tileType));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e + " Tile " + tileType + " not found");
         }
         imageAnalyser = new ImageAnalyser(tileImage);
 

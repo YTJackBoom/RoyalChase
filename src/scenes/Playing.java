@@ -1,13 +1,11 @@
 package scenes;
 
-import helpers.Direction;
 import basics.Game;
 import controllers.*;
 import gameObjects.Tower;
 import helpers.Constants;
-import helpers.ImageAnalyser;
+import helpers.Direction;
 import helpers.Values;
-import helpers.variables;
 import uiElements.InfoOverlay;
 import uiElements.MyButtonBar;
 import uiElements.UIPos;
@@ -16,7 +14,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import static basics.Game.*;
@@ -270,12 +267,6 @@ public class Playing extends GameScenes implements SceneMethods{
         };
     }
     public TowerController getTowerController() {return towerController;}
-    public File getCurrentPMapFile(){
-        return helpers.variables.Maps.getPMapFile(playerValues.getLevel());
-    }
-    public BufferedImage getCurrentMapFile(){
-        return helpers.variables.Maps.getMapBufferedImage(playerValues.getLevel());
-    }
     public EnemyController getEnemyController(){
         return enemyController;
     }

@@ -1,14 +1,8 @@
 package helpers;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
-import helpers.Coordinate;
 
 public class ImageAnalyser {
 	private ArrayList<Coordinate> pathCoordinates;
@@ -23,8 +17,8 @@ public class ImageAnalyser {
 		if (image != null) {
 			ArrayList<Coordinate> visited = new ArrayList<>();
 			visited.add(start);
-			ArrayList<Coordinate> blacks = new ArrayList<>();
-			blacks.add(start);
+			ArrayList<Coordinate> targetColorPoints = new ArrayList<>();
+			targetColorPoints.add(start);
 
 			int width = image.getWidth();
 			int height = image.getHeight();
@@ -32,7 +26,10 @@ public class ImageAnalyser {
 			int[] dx = {-1, -1, 0, 1, 1, 1, 0, -1};
 			int[] dy = {0, -1, -1, -1, 0, 1, 1, 1};
 
-			int blackThreshold = 50; // adjust this value to change the threshold
+			// Define target color and a tolerance
+			Color targetColor = new Color(58, 32, 19);  // Rounding the values
+			int tolerance = 5;  // Adjust as necessary for minor color deviations
+
 			while (!visited.isEmpty()) {
 				Coordinate currentCoordinate = visited.remove(0);
 				int currentX = currentCoordinate.getX();
@@ -42,22 +39,29 @@ public class ImageAnalyser {
 					int nextY = currentY + dy[j];
 					if (nextX >= 0 && nextX < width && nextY >= 0 && nextY < height) {
 						Color nextColor = new Color(image.getRGB(nextX, nextY), true);
-						int intensity = (nextColor.getRed() + nextColor.getGreen() + nextColor.getBlue()) / 3;
 						int alpha = nextColor.getAlpha();
 
-						// Check for non-transparent pixels and if they are black
-						if (alpha != 0 && intensity <= blackThreshold) {
+						// Check if the pixel matches the target color within the specified tolerance
+						if (alpha != 0 && colorMatches(nextColor, targetColor, tolerance)) {
 							Coordinate nextCoordinate = new Coordinate(nextX, nextY);
-							if (!blacks.contains(nextCoordinate) && !visited.contains(nextCoordinate)) {
+							if (!targetColorPoints.contains(nextCoordinate) && !visited.contains(nextCoordinate)) {
 								visited.add(nextCoordinate);
-								blacks.add(nextCoordinate);
+								targetColorPoints.add(nextCoordinate);
 							}
 						}
 					}
 				}
 			}
-			return blacks;
+			return targetColorPoints;
 		}
 		return null;
 	}
+
+	// Helper method to check if a color matches within a certain tolerance
+	private boolean colorMatches(Color c1, Color c2, int tolerance) {
+		return Math.abs(c1.getRed() - c2.getRed()) <= tolerance &&
+				Math.abs(c1.getGreen() - c2.getGreen()) <= tolerance &&
+				Math.abs(c1.getBlue() - c2.getBlue()) <= tolerance;
+	}
+
 }
