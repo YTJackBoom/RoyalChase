@@ -29,9 +29,7 @@ public class Playing extends GameScenes implements SceneMethods{
     private MyButtonBar buttonBarRight,buttonBarDown;
     private InfoOverlay infoOverlay;
     private Values playerValues;
-    private int draggedTower;
     private int mouseX, mouseY;
-    private boolean dragingTower;
     private boolean cantAfford,recentlySold,recentlySoldRender;
     private int cantAffordCounter,recentlySoldCounter;
     private boolean isPaused = false;
@@ -71,7 +69,7 @@ public class Playing extends GameScenes implements SceneMethods{
         renderCantAfford(g);
         renderRecentlySold(g);
         waveController.render(g);
-        if (dragingTower) {
+        if (dragingObject) {
             renderDraggedButton(g);
         }
 //        infoOverlay.render(g);
@@ -113,7 +111,7 @@ public class Playing extends GameScenes implements SceneMethods{
 
         BufferedImage draggedImage;
         try {
-            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(draggedTower));
+            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(draggedObjectType));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -166,7 +164,7 @@ public class Playing extends GameScenes implements SceneMethods{
     }
     public void updateInfoOverlay() {
         infoOverlay.setTowerPointer(selectedTower);
-        infoOverlay.setDraggedTowerType(draggedTower);
+        infoOverlay.setDraggedTowerType(draggedObjectType);
         infoOverlay.setHoveredButton(buttonBarRight.getHoveredButton() != null ? buttonBarRight.getHoveredButton() : buttonBarDown.getHoveredButton());
         if (buttonBarDown.getHoveredButton() == null && buttonBarRight.getHoveredButton() == null)
             infoOverlay.setHoveredButton(null);
@@ -230,12 +228,12 @@ public class Playing extends GameScenes implements SceneMethods{
         int x = e.getX();
         int y = e.getY();
         if(e.getButton()==1) {
-            buttonBarRight.mouseReleased(x, y);
-            buttonBarDown.mouseReleased(x,y);
-            if (dragingTower) {
+            tileController.mouseReleased(x, y);
+            if (buttonBarDown.getBounds().contains(x, y)) buttonBarDown.mouseReleased(x, y);
+            if (buttonBarRight.getBounds().contains(x, y)) buttonBarRight.mouseReleased(x, y);
+            if (dragingObject) {
                 towerController.mouseReleased(x, y);
-                tileController.mouseReleased(x, y);
-                dragingTower = false;
+                dragingObject = false;
             }
 
         }
@@ -250,7 +248,7 @@ public class Playing extends GameScenes implements SceneMethods{
     }
 
     public void resetBools() {
-        dragingTower = false;
+        dragingObject = false;
         selectedTower = null;
         update();
     }
@@ -279,17 +277,17 @@ public class Playing extends GameScenes implements SceneMethods{
 
 
     public void setDraggedTower(int draggedTower) {
-        this.draggedTower = draggedTower;
+        draggedObjectType = draggedTower;
     }
     public boolean getDragingTower() {
-        return dragingTower;
+        return dragingObject;
     }
 
     public int getDraggedTower() {
-        return draggedTower;
+        return draggedObjectType;
     }
     public void setDragingTower(boolean b) {
-        dragingTower = b;
+        dragingObject = b;
     }
     public ProjectileController getProjectileController() {
         return projectileController;

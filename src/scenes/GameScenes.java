@@ -2,20 +2,29 @@ package scenes;
 
 import basics.Game;
 
-import java.awt.event.KeyEvent;
-
 public class GameScenes {
+    protected boolean dragingObject;
+    protected int draggedObjectType;
+
     protected Game game;
-    public GameScenes(Game game){
+
+    public GameScenes(Game game) {
         this.game = game;
     }
-    public Game getGame(){
+
+    public Game getGame() {
         return game;
     }
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            getGame().togglePause();
-        }
+
+    public void setDragingObject(boolean b) {
+        dragingObject = b;
     }
 
+    public int getDraggedObjectType() {
+        return draggedObjectType;
+    }
+
+    public void setDraggedObjectType(int type) {
+        draggedObjectType = type;
+    }
 }

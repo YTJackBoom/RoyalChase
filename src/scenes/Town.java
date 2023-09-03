@@ -14,20 +14,16 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static basics.Game.fps;
-import static basics.Game.initGameHeight;
-import static basics.Game.initGameWidth;
+import static basics.Game.*;
 
 public class Town extends GameScenes implements SceneMethods{
     private Game game;
     private boolean isPaused = false;
-    private boolean dragingBuilding;
     private int mouseX,mouseY;
 
     private BuildingsController buildingsController;
     private MyButtonBar buttonBar;
     private BufferedImage townImage;
-    private int selectedBuilding;
     private boolean cantAfford;
     private int cantAffordCounter;
     private InfoOverlay infoOverlay;
@@ -65,7 +61,7 @@ public class Town extends GameScenes implements SceneMethods{
         g.drawImage(townImage, 0, 0, null);
         buildingsController.render(g);
         buttonBar.render(g);
-        if (dragingBuilding) {
+        if (dragingObject) {
             renderDraggedButton(g);
         }
         renderCantAfford(g);
@@ -101,7 +97,7 @@ public class Town extends GameScenes implements SceneMethods{
     public void renderDraggedButton(Graphics g) {
         BufferedImage draggedImage;
         try {
-            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(selectedBuilding));
+            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(draggedObjectType));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -147,12 +143,11 @@ public class Town extends GameScenes implements SceneMethods{
         mouseX = e.getX();
         mouseY = e.getY();
 
-//  System.out.println("ad");
         if(e.getButton()==1) {
-            buttonBar.mouseReleased(mouseX,mouseY);
-            if (dragingBuilding) {
-                buildingsController.mouseReleased(mouseX,mouseY);
-                dragingBuilding = false;
+            if (buttonBar.getBounds().contains(mouseX, mouseY)) buttonBar.mouseReleased(mouseX, mouseY);
+            if (dragingObject) {
+                buildingsController.mouseReleased(mouseX, mouseY);
+                dragingObject = false;
             }
         }
     }
@@ -182,15 +177,15 @@ public class Town extends GameScenes implements SceneMethods{
     }
 
     public void setSelectedBuilding(int type) {
-        selectedBuilding = type;
+        draggedObjectType = type;
     }
 
     public void setDragingBuilding(boolean b) {
-        dragingBuilding = b;
+        dragingObject = b;
     }
 
     public int getSelectedBuilding() {
-        return selectedBuilding;
+        return draggedObjectType;
     }
     public void setCantAfford(boolean b) {
         cantAfford = b;

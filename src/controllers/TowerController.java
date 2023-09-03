@@ -3,9 +3,9 @@ package controllers;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
 import gameObjects.Tile;
+import gameObjects.Tower;
 import helpers.*;
 import scenes.Playing;
-import gameObjects.Tower;
 import towers.TowerFoundation;
 import uiElements.Explosion;
 
@@ -141,10 +141,10 @@ public class TowerController extends ObjectsController implements ControllerMeth
         }
     }
      public void upgradeTower() {
-        Values upgradeCost = selectedTower.getWorth(1).getUpgradeCost();
+        Values upgradeCost = selectedTower.getWorth().getUpgradeCost();
         if(playerValues.canAfford(upgradeCost)) {
             playerValues.decrease(upgradeCost);
-            selectedTower.getWorth(1).increase(upgradeCost);
+            selectedTower.getWorth().increase(upgradeCost);
 
             selectedTower.upgrade();
 //            System.out.println("d");
@@ -156,7 +156,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
 
     public void sellTower() {
         if(!playing.getRecentlySold()) {
-            playerValues.increase(selectedTower.getWorth(1));
+            playerValues.increase(selectedTower.getWorth());
 
             removeQueue.add(selectedTower);
             selectedTower = null;
@@ -206,7 +206,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     public void replaceTower(Tower t) {
         if(t.getType() != variables.Towers.Foundation_T) {
             if (placeTower(t.getPos())) {
-                playerValues.increase(t.getWorth(Constants.OtherConstants.REPLACETOWERPERCENT));
+                playerValues.increase(t.getWorthByPercentage(Constants.OtherConstants.REPLACETOWERPERCENT));
                 removeQueue.add(t);
 //                towerEntityList.set(towerEntityList.indexOf(t), new Tower(this, t.getPos(), playing.getDraggedTower()));
                 playing.setSelectedTower(null);
@@ -237,7 +237,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     public void sellAllTowers() {
         for(Tower tower : towerEntityList) {
             if(tower.getType() != variables.Towers.Foundation_T) {
-                playerValues.increase(tower.getWorth(Constants.OtherConstants.SELLALLTOWERSPERCENT));
+                playerValues.increase(tower.getWorthByPercentage(Constants.OtherConstants.SELLALLTOWERSPERCENT));
             }
         }
         towerEntityList.clear();

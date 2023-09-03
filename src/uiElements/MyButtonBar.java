@@ -2,10 +2,9 @@ package uiElements;
 
 import gameObjects.GameObject;
 import gameObjects.Tower;
-import helpers.variables;
+import helpers.Coordinate;
 import scenes.GameScenes;
 import scenes.GameStates;
-import helpers.Coordinate;
 import scenes.Playing;
 import scenes.Town;
 
@@ -13,7 +12,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static helpers.variables.Buttons.*;
-import static uiElements.UIPos.PLAYINGDOWN;
 
 public class MyButtonBar {
 	private Coordinate pos;
@@ -167,24 +165,25 @@ public class MyButtonBar {
 
 		}
 	}
+
 	public void mousePressed(int x, int y) {
 		if (isVisible) {
 			for (MyButton button : buttons) {
-				if (button.getBounds().contains(x, y) ) {
+				if (button.getBounds().contains(x, y)) {
 					button.setPressed(true);
 					if (scene.getClass() == Playing.class && button.isTowerButton()) {
 						Playing playing = (Playing) scene;
-						playing.setDragingTower(true);
-						playing.setDraggedTower(button.getType());
+						scene.setDragingObject(true);
+						scene.setDraggedObjectType(button.getType());
 					} else if (scene.getClass() == Town.class && button.isBuildingButton()) {
 						Town town = (Town) scene;
-						town.setDragingBuilding(true);
-						town.setSelectedBuilding(button.getType());
+						scene.setDragingObject(true);
+						scene.setDraggedObjectType(button.getType());
 					}
 				}
 			}
 		}
-		}
+	}
 
 
 	public void mouseReleased(int x, int y) {
@@ -220,6 +219,7 @@ public class MyButtonBar {
 		}
 		resetButtons();
 		hoveredButton = null;
+		scene.setDragingObject(false);
 	}
 
 	public void mouseDragged(int x, int y) {

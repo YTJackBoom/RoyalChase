@@ -1,9 +1,8 @@
 package gameObjects;
 
-import helpers.Direction;
 import controllers.ProjectileController;
-import helpers.*;
 import controllers.TowerController;
+import helpers.*;
 
 import java.awt.*;
 
@@ -148,16 +147,28 @@ public class Tower extends GameObject {
 	public Rectangle getBounds() {
 		return bounds;
 	}
+
 	public Enemy getTarget() {
 		return target;
 	}
-	public void upgrade() {level ++;}
-	public int getLevel() {return level;}
+
+	public void upgrade() {
+		level++;
+	}
+
+	public int getLevel() {
+		return level;
+	}
 
 	public Circle getRange() {
 		return circles[0];
 	}
-	public Values getWorth(double percentage) {
+
+	public Values getWorth() {
+		return worth;
+	}
+
+	public Values getWorthByPercentage(double percentage) {
 		return worth.cloneByPercent(percentage);
 	}
 
