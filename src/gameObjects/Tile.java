@@ -71,13 +71,6 @@ public class Tile {
         return imageAnalyser.imgToPath(new Coordinate(localX, localY));
     }
     //getters and setters
-    public void render(Graphics g) {
-        g.drawImage(tileImage, pos.getX() - tileImage.getWidth() / 2, pos.getY() - tileImage.getHeight() / 2, null);
-        if (isHovered) {
-            g.setColor(Color.RED);
-            g.drawRect(pos.getX() - tileImage.getWidth() / 2, pos.getY() - tileImage.getHeight() / 2, tileImage.getWidth() - 1, tileImage.getHeight() - 1);
-        }
-    }
     public int getType() {
         return tileType;
     }
@@ -111,5 +104,13 @@ public class Tile {
 
     public void setHovered(boolean b) {
         isHovered = b;
+    }
+
+    public BufferedImage getTileImage() {
+        return tileImage;
+    }
+
+    public boolean isHovered() {
+        return isHovered;
     }
 }

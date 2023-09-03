@@ -1,6 +1,7 @@
 package uiElements;
 
 import basics.Game;
+import gameObjects.Tile;
 import gameObjects.Tower;
 import helpers.*;
 import scenes.Playing;
@@ -53,7 +54,7 @@ public class InfoOverlay {
         renderPlayerInfos(g);
         renderTowerRanges(g);
         renderTowerCosts(g);
-        renderUpgradeCosts(g);
+        renderTileBoundaries(g);
 
 
     }
@@ -188,14 +189,27 @@ public class InfoOverlay {
 
     }
 
+    public void renderTileBoundaries(Graphics g) {
+        for (Tile tile : playing.getTileController().getTileList()) {
+            if (tile.isHovered()) {
+                BufferedImage tileImg = tile.getTileImage();
+                if (playing.getTowerController().towerOn(tile.getPos().getX(), tile.getPos().getY()) == null) {
+                    g.setColor(Color.ORANGE);
+                    g.drawRect(tile.getPos().getX() - tileImg.getWidth() / 2, tile.getPos().getY() - tileImg.getHeight() / 2, tileImg.getWidth() - 1, tileImg.getHeight() - 1);
+                } else {
+                    g.setColor(Color.RED);
+                    g.drawRect(tile.getPos().getX() - tileImg.getWidth() / 2, tile.getPos().getY() - tileImg.getHeight() / 2, tileImg.getWidth() - 1, tileImg.getHeight() - 1);
+                    g.drawRect(tile.getPos().getX() - tileImg.getWidth() / 2, tile.getPos().getY() - tileImg.getHeight() / 2, tileImg.getWidth(), tileImg.getHeight());
 
+                }
+            }
+        }
+    }
 
-
-
-    public void renderUpgradeCosts(Graphics g ) {}
     public void setTowerPointer(Tower t) {
         towerPointer = t;
     }
+
     public void setDraggedTowerType(int t) {
         draggedTowerType = t;
     }

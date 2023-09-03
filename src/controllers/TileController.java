@@ -7,6 +7,7 @@ import helpers.variables;
 import scenes.Playing;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -45,7 +46,7 @@ public class TileController extends ObjectsController implements ControllerMetho
         int tilesRequiredX = (int) Math.ceil((double) newWidth / tileSize) - tileData.length;
         int tilesRequiredY = (int) Math.ceil((double) newHeight / tileSize) - (tileData.length > 0 ? tileData[0].length : 0);
 
-        int[] predefinedTiles = { 2,4 };
+        int[] predefinedTiles = {0, 1};
 
         // Add tiles horizontally
         for (int x = tileData.length; x < tilesRequiredX + tileData.length; x++) {
@@ -91,7 +92,8 @@ public class TileController extends ObjectsController implements ControllerMetho
     @Override
     public void render(Graphics g) {
         for (Tile tile : tileList) {
-            tile.render(g);
+            BufferedImage tileImg = tile.getTileImage();
+            g.drawImage(tileImg, tile.getPos().getX() - tileImg.getWidth() / 2, tile.getPos().getY() - tileImg.getHeight() / 2, null);
         }
     }
 

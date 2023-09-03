@@ -6,7 +6,7 @@ import gameObjects.Tile;
 import gameObjects.Tower;
 import helpers.*;
 import scenes.Playing;
-import towers.TowerFoundation;
+import towers.Gate;
 import uiElements.Explosion;
 
 import java.awt.*;
@@ -51,7 +51,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
     public void initGate() {
         ArrayList<Coordinate> pathCoordinates = playing.getEnemyController().getPathFinder().getPath();
-        towerEntityList.add(new TowerFoundation(this, pathCoordinates.get(pathCoordinates.size()-1)));
+        towerEntityList.add(new Gate(this, pathCoordinates.get(pathCoordinates.size() - 1)));
     }
     public void checkTowerRange(Tower tower) {
         enemyList = playing.getEnemyController().getEnemyList();
