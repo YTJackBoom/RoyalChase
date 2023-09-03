@@ -18,6 +18,7 @@ public class Tile {
     private Coordinate pos;
     private Rectangle bounds;
     private ImageAnalyser imageAnalyser;
+    private boolean isHovered = false;
 
     public Tile(Coordinate pos,BufferedImage tileImage, int id, int tileType, boolean isPath, boolean isBuildable,boolean isSpawn,boolean isGate) {
         this.isSpawn = isSpawn;
@@ -71,7 +72,11 @@ public class Tile {
     }
     //getters and setters
     public void render(Graphics g) {
-        g.drawImage(tileImage, pos.getX()-tileImage.getWidth()/2,pos.getY()-tileImage.getHeight()/2,null);
+        g.drawImage(tileImage, pos.getX() - tileImage.getWidth() / 2, pos.getY() - tileImage.getHeight() / 2, null);
+        if (isHovered) {
+            g.setColor(Color.RED);
+            g.drawRect(pos.getX() - tileImage.getWidth() / 2, pos.getY() - tileImage.getHeight() / 2, tileImage.getWidth() - 1, tileImage.getHeight() - 1);
+        }
     }
     public int getType() {
         return tileType;
@@ -99,7 +104,12 @@ public class Tile {
     public boolean isStart() {
         return isSpawn;
     }
+
     public boolean isGate() {
         return isGate;
+    }
+
+    public void setHovered(boolean b) {
+        isHovered = b;
     }
 }

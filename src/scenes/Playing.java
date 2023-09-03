@@ -234,6 +234,7 @@ public class Playing extends GameScenes implements SceneMethods{
             buttonBarDown.mouseReleased(x,y);
             if (dragingTower) {
                 towerController.mouseReleased(x, y);
+                tileController.mouseReleased(x, y);
                 dragingTower = false;
             }
 
@@ -244,7 +245,8 @@ public class Playing extends GameScenes implements SceneMethods{
     public void mouseDragged(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
-        infoOverlay.mouseDragged(mouseX,mouseY);
+        infoOverlay.mouseDragged(mouseX, mouseY);
+        tileController.mouseDragged(mouseX, mouseY);
     }
 
     public void resetBools() {

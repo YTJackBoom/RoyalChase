@@ -113,4 +113,22 @@ public class TileController extends ObjectsController implements ControllerMetho
     public ArrayList<Tile> getTileList() {
         return tileList;
     }
+
+    public void mouseDragged(int mouseX, int mouseY) {
+        if (playing.getDragingTower()) {
+            for (Tile tile : tileList) {
+                if (tile.getBounds().contains(mouseX, mouseY) && tile.isBuildable()) {
+                    tile.setHovered(true);
+                } else {
+                    tile.setHovered(false);
+                }
+            }
+        }
+    }
+
+    public void mouseReleased(int x, int y) {
+        for (Tile tile : tileList) {
+            tile.setHovered(false);
+        }
+    }
 }
