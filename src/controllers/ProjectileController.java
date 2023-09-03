@@ -2,9 +2,9 @@ package controllers;
 
 import gameObjects.Enemy;
 import gameObjects.GameObject;
+import gameObjects.Projectile;
 import gameObjects.Tower;
 import helpers.Constants;
-import gameObjects.Projectile;
 import scenes.Playing;
 import uiElements.Explosion;
 
@@ -141,15 +141,15 @@ public class ProjectileController implements ControllerMethods {
             if(target instanceof Enemy) {
                  for(Enemy enemy : playing.getEnemyController().getEnemyList()) {
                      if (projectile.getHitBox().collidesWith(enemy.getHitBox())) {
-                        playing.getEnemyController().addExplosion(new Explosion(projectile.getTarget().getPos(), Constants.ObjectConstants.EXPLOSIONLIFETIME, Constants.ObjectConstants.EXPLOSIONRADIUS, projectile.getDamage(), projectile.getStun()));
-                        removeQueue.add(projectile);
+                        playing.getEnemyController().addExplosion(new Explosion(enemy.getPos(), Constants.ObjectConstants.EXPLOSIONLIFETIME, Constants.ObjectConstants.EXPLOSIONRADIUS, projectile.getDamage(), projectile.getStun()));
+                         removeQueue.add(projectile);
                         break;
                     }
                  }
             } else if (target instanceof Tower) {
                 for (Tower tower : playing.getTowerController().getTowerList()) {
                     if(projectile.getHitBox().collidesWith(tower.getHitBox())){
-                        playing.getTowerController().addExplosion(new Explosion(projectile.getTarget().getPos(), Constants.ObjectConstants.EXPLOSIONLIFETIME, Constants.ObjectConstants.EXPLOSIONRADIUS, projectile.getDamage(), projectile.getStun()));
+                        playing.getTowerController().addExplosion(new Explosion(tower.getPos(), Constants.ObjectConstants.EXPLOSIONLIFETIME, Constants.ObjectConstants.EXPLOSIONRADIUS, projectile.getDamage(), projectile.getStun()));
                         removeQueue.add(projectile);
                         break;
                     }

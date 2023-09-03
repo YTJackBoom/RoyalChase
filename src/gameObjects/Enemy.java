@@ -2,13 +2,12 @@ package gameObjects;
 
 import controllers.EnemyController;
 import enemy.EnemyType;
-import helpers.*;
+import helpers.Circle;
+import helpers.Constants;
+import helpers.Coordinate;
+import helpers.variables;
 
-import java.awt.*;
 import java.util.ArrayList;
-
-import static basics.Game.ups;
-import static enemy.EnemyType.*;
 
 public class Enemy extends GameObject {
 	//	private Coordinate pos;
@@ -130,7 +129,9 @@ public class Enemy extends GameObject {
 				index = Math.min(index, pathCoordinates.size() - 1);
 
 				setPathIndex(index);
-				setPos(pathCoordinates.get((int) Math.round(index)));
+				Coordinate newPos = pathCoordinates.get((int) Math.round(index));
+				setPos(newPos);
+				range.setPos(newPos);
 			}
 			} else {
 				target = enemyController.getPlaying().getTowerController().getGate();

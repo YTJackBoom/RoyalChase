@@ -1,6 +1,5 @@
 package gameObjects;
 
-import helpers.Direction;
 import helpers.*;
 
 import java.awt.*;
@@ -88,6 +87,7 @@ public abstract class GameObject {
 			}
 		}
 
+		passiveAnimator.setDirection(dir);
 		activeAnimator.setDirection(dir);
 		this.pos = pos;
 	}

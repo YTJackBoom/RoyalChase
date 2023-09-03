@@ -72,7 +72,7 @@ public class variables { //class to define different variables for thing
         public static String getEnemyActiveGifPath(int enemyType) {
             return switch (enemyType) {
                 case SLIME -> "res/images/enemies/active/slime_e_active/";
-                case SKELETON -> "res/images/enemies/active/skeleton_e_active/";
+                case SKELETON -> "res/images/enemies/passive/skeleton_e_passive/";
                 case ZOMBIE -> "res/images/enemies/active/zombie_e_active/";
                 case WITCH -> "res/images/enemies/active/witch_e_active/";
                 case WIZARD -> "res/images/enemies/active/wizard_e_active/";
@@ -131,7 +131,7 @@ public class variables { //class to define different variables for thing
         public static double getEnemyRange(int enemyType) {
             return switch (enemyType) {
                 case SLIME -> 0;
-                case SKELETON -> 250;
+                case SKELETON -> 150;
                 case ZOMBIE -> 1;
                 case WITCH -> 50;
                 case WIZARD -> 50;
@@ -250,35 +250,6 @@ public class variables { //class to define different variables for thing
 
         public static File getTileFile(int tileType) {
             return new File("res/images/tiles/" + tileType + ".png");
-//            return switch (tileType) {
-//                case grass -> new File("res/images/tiles/"+grass+".png");
-//                case wood -> new File("res/images/tiles/"+wood+".png");
-//                case path_buttom_to_topright_grass -> new File("res/images/tiles/"+path_buttom_to_topright_grass+".png");
-//                case path_buttom_to_topright_wood -> new File("res/images/tiles/"+path_buttom_to_topright_wood+".png");
-//                case path_buttomleft_to_topright_grass -> new File("res/images/tiles/"+path_buttomleft_to_topright_grass+".png");
-//                case path_buttomleft_to_topright_wood -> new File("res/images/tiles/"+path_buttomleft_to_topright_wood+".png");
-//                case path_left_to_right_grass -> new File("res/images/tiles/"+path_left_to_right_grass+".png");
-//                case path_left_to_right_wood -> new File("res/images/tiles/"+path_left_to_right_wood+".png");
-//                case path_top_to_right_grass -> new File("res/images/tiles/"+path_top_to_right_grass+".png");
-//                case path_top_to_right_wood -> new File("res/images/tiles/"+path_top_to_right_wood+".png");
-//                case spawn_to_buttom_grass -> new File("res/images/tiles/"+spawn_to_buttom_grass+".png");
-//                case spawn_to_buttom_wood -> new File("res/images/tiles/"+spawn_to_buttom_wood+".png");
-//                case gate_to_buttom_grass -> new File("res/images/tiles/"+gate_to_buttom_grass+".png");
-//                case gate_to_buttom_wood -> new File("res/images/tiles/"+gate_to_buttom_wood+".png");
-//                case
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//                default -> throw new IllegalStateException("variables: getTileFile: Unexpected value:  " + tileType);
-//            };
         }
     }
 
