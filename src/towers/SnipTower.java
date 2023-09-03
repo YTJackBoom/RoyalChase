@@ -9,7 +9,7 @@ public class SnipTower extends Tower {
 
 
 	public SnipTower(TowerController towerController, Coordinate pos, int type) {
-		super(towerController,pos, type);
+		super(towerController, pos, type, true);
 	}
 
 	@Override

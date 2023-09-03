@@ -91,38 +91,42 @@ public class TowerController extends ObjectsController implements ControllerMeth
 
     public synchronized void renderTowers(Graphics g){
         for(Tower tower : towerEntityList) {
-            int width = tower.getWidth();
-            int height = tower.getHeight();
-            int towerX = tower.getPos().getX() - width / 2;
-            int towerY = tower.getPos().getY() - height / 2;
+            if (tower.isVisible()) {
+                int width = tower.getWidth();
+                int height = tower.getHeight();
+                int towerX = tower.getPos().getX() - width / 2;
+                int towerY = tower.getPos().getY() - height / 2;
 
-            if (tower.isActive()) {
-                Image turretImage = tower.getActiveAnimator().getCurrentFrame();
-                g.drawImage(turretImage, towerX, towerY, width, height, null);
-                tower.getActiveAnimator().incrementFrame();
-            } else {
-                Image turretImage = tower.getPassiveAnimator().getCurrentFrame();
-                g.drawImage(turretImage, towerX, towerY, width, height, null);
-                tower.getPassiveAnimator().incrementFrame();
+                if (tower.isActive()) {
+                    Image turretImage = tower.getActiveAnimator().getCurrentFrame();
+                    g.drawImage(turretImage, towerX, towerY, width, height, null);
+                    tower.getActiveAnimator().incrementFrame();
+                } else {
+                    Image turretImage = tower.getPassiveAnimator().getCurrentFrame();
+                    g.drawImage(turretImage, towerX, towerY, width, height, null);
+                    tower.getPassiveAnimator().incrementFrame();
+                }
             }
         }
     }
     public synchronized void renderTowerLevels(Graphics g) {
         for(Tower tower : towerEntityList) {
-            if(tower.getLevel()>1) {
-                int width = tower.getWidth();
-                int height = tower.getHeight();
-                int levelX = tower.getPos().getX() + width / 2;
-                int levelY = tower.getPos().getY() - height / 2;
-                g.setFont(Constants.UIConstants.TOWERLEVELFONT);
-                if(tower.isMaxedLevel()){
-                    g.setColor(Constants.UIConstants.TOWERMAXEDLEVELCOLOR);
-                }else {
-                    g.setColor(Constants.UIConstants.TOWERLEVELCOLOR);
+            if (tower.isVisible()) {
+                if (tower.getLevel() > 1) {
+                    int width = tower.getWidth();
+                    int height = tower.getHeight();
+                    int levelX = tower.getPos().getX() + width / 2;
+                    int levelY = tower.getPos().getY() - height / 2;
+                    g.setFont(Constants.UIConstants.TOWERLEVELFONT);
+                    if (tower.isMaxedLevel()) {
+                        g.setColor(Constants.UIConstants.TOWERMAXEDLEVELCOLOR);
+                    } else {
+                        g.setColor(Constants.UIConstants.TOWERLEVELCOLOR);
+                    }
+                    g.drawString(String.valueOf(tower.getLevel()), levelX, levelY);
                 }
-                g.drawString(String.valueOf(tower.getLevel()), levelX, levelY);
-            }
 
+            }
         }
     }
     public synchronized void renderExplosions(Graphics g){
@@ -137,7 +141,9 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
     public synchronized void renderTowersHealthBars(Graphics g) {
         for (Tower tower : towerEntityList) {
-            tower.renderHealthBar(g);
+            if (tower.isVisible()) {
+                tower.renderHealthBar(g);
+            }
         }
     }
      public void upgradeTower() {
@@ -217,7 +223,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
         Values cost = variables.Towers.getCost(playing.getDraggedTower());
         if (playerValues.canAfford(cost)) {
             playerValues.decrease(cost);
-            addQueue.add(new Tower(this, pos, playing.getDraggedTower()));
+            addQueue.add(new Tower(this, pos, playing.getDraggedTower(), true));
             playing.setSelectedTower(null);
             System.out.println("Tower placed");
             return true;

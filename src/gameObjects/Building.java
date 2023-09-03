@@ -1,14 +1,13 @@
 package gameObjects;
 
 import controllers.BuildingsController;
-import helpers.*;
+import helpers.Coordinate;
+import helpers.Values;
+import helpers.variables;
 
 import java.awt.*;
-import java.io.Serializable;
 
-import static basics.Game.fps;
 import static basics.Game.ups;
-import static helpers.Values.*;
 
 public class Building extends GameObject {
 	private int x,y;
@@ -18,7 +17,7 @@ public class Building extends GameObject {
 	private Rectangle bounds;
 	private Values playerValues;
 	public Building(BuildingsController buildingsController, int x, int y, int type ) {
-		super(new Coordinate(x,y),buildingsController.getTown().getGame().getPreLoader(), ObjectType.BUILDING,type);
+		super(new Coordinate(x, y), buildingsController.getTown().getGame().getPreLoader(), ObjectType.BUILDING, type, true);
 		this.x = x;
 		this.y = y;
 		this.type = type;

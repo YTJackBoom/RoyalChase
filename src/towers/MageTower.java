@@ -9,7 +9,7 @@ public class MageTower extends Tower {
 
 
 	public MageTower(TowerController towerController, Coordinate pos, int type) {
-		super(towerController,pos, type);
+		super(towerController, pos, type, true);
 	}
 
 	@Override

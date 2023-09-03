@@ -7,7 +7,7 @@ import helpers.Coordinate;
 public class Gate extends Tower {
 
 	public Gate(TowerController towerController, Coordinate pos) {
-		super(towerController, pos, 0);
+		super(towerController, pos, 0, false);
 	}
 
 

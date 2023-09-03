@@ -37,7 +37,9 @@ public class ProjectileController implements ControllerMethods {
     public synchronized void render(Graphics g) {
         if (projectilesList != null) {
             for (Projectile projectile : projectilesList) {
-                renderProjectile(projectile,g);
+                if (projectile.isVisible()) {
+                    renderProjectile(projectile, g);
+                }
             }
         }
     }

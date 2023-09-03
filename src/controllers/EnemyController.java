@@ -1,9 +1,5 @@
 package controllers;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import enemy.*;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
@@ -12,9 +8,12 @@ import helpers.*;
 import scenes.Playing;
 import uiElements.Explosion;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import static basics.Game.ups;
 import static helpers.variables.Enemies.*;
-import static helpers.variables.Projectiles.ROCKET;
 import static helpers.variables.Towers.Foundation_T;
 
 
@@ -144,7 +143,7 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 
    public synchronized void renderEnemies(Graphics g) {
 	   for (Enemy enemy : enemyList) {
-		   if (enemy != null) {
+		   if (enemy != null && enemy.isVisible()) {
 			   int width = enemy.getActiveAnimator().getWidth();
 			   int height = enemy.getActiveAnimator().getHeight();
 			   if (enemy.isActive()) {
@@ -160,7 +159,9 @@ public class EnemyController extends ObjectsController implements ControllerMeth
    }
    public synchronized void renderHealthBars(Graphics g) {
 		for (Enemy enemy : enemyList) {
+			if (enemy.isVisible()) {
 				enemy.renderHealthBar(g);
+			}
 		}
    }
    public synchronized void renderExplosions(Graphics g){

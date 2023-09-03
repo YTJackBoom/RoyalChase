@@ -24,7 +24,7 @@ public class Enemy extends GameObject {
 
 
 	public Enemy(EnemyController enemyController, Coordinate pos, int type, EnemyType enemyType) {
-		super(pos, enemyController.getPlaying().getGame().getPreLoader(), ObjectType.ENEMY, type);
+		super(pos, enemyController.getPlaying().getGame().getPreLoader(), ObjectType.ENEMY, type, true);
 		this.enemyType = enemyType;
 		this.enemyController = enemyController;
 		pathIndex = 1;

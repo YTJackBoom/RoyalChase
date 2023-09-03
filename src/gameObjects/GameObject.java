@@ -10,13 +10,15 @@ public abstract class GameObject {
 	protected int type;
 	protected Coordinate pos;
 	protected double health;
+	protected boolean isVisible = true;
 
 	protected HitBox hitBox;
-	protected int height,width;
+	protected int height, width;
 
-	protected double currentStun =0;
+	protected double currentStun = 0;
 
-	public GameObject(Coordinate pos,PreLoader preLoader, ObjectType oType, int type) {
+	public GameObject(Coordinate pos, PreLoader preLoader, ObjectType oType, int type, boolean visibility) {
+		isVisible = visibility;
 		objectType = oType;
 		this.type = type;
 		this.pos = pos;
@@ -123,14 +125,21 @@ public abstract class GameObject {
 	public double getStun() {
 		return currentStun;
 	}
+
 	public void damage(double i) {
 		health -= i;
 	}
+
 	public int getWidth() {
 		return width;
 	}
+
 	public int getHeight() {
 		return height;
+	}
+
+	public boolean isVisible() {
+		return isVisible;
 	}
 
 	public double getMaxHealth() {

@@ -11,18 +11,18 @@ public class Tower extends GameObject {
 //	private Animator animatorBase;
 
 //	private final Coordinate pos;
-	protected int counter;
+protected int counter;
 	private Enemy target;
-	private boolean isFiring,isLoaded;
+	private boolean isFiring, isLoaded;
 	private int level;
 	private Rectangle bounds;
 	protected TowerController towerController;
 	private ProjectileController projectileController;
 	private Circle[] circles;
 	private Values worth;
-			
-	public Tower(TowerController towerController, Coordinate pos, int type) {
-		super(pos,towerController.getPlaying().getGame().getPreLoader(),ObjectType.TOWER,type);
+
+	public Tower(TowerController towerController, Coordinate pos, int type, boolean visibility) {
+		super(pos, towerController.getPlaying().getGame().getPreLoader(), ObjectType.TOWER, type, visibility);
 		this.type = type;
 		this.pos = pos;
 		this.towerController = towerController;
