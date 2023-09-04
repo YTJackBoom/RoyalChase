@@ -118,11 +118,11 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		switch (enemyType) { //switch case for different enemy types from enum
 			case SLIME -> addQue.add(new Slime(this, pathCoordinates.get(0)));
 			case SKELETON -> addQue.add(new Skeleton(this, pathCoordinates.get(0)));
-			case ZOMBIE -> addQue.add(new Zombie(this, pathCoordinates.get(0)));
+			case GOBLIN -> addQue.add(new Goblin(this, pathCoordinates.get(0)));
 			case WITCH -> addQue.add(new Witch(this, pathCoordinates.get(0)));
 			case WIZARD -> addQue.add(new Wizard(this, pathCoordinates.get(0)));
 			case SKELETON_KING -> addQue.add(new Skeleton_King(this, pathCoordinates.get(0)));
-			case ZOMBIE_KING -> addQue.add(new Zombie_King(this, pathCoordinates.get(0)));
+			case GOBLIN_KING -> addQue.add(new Goblin_King(this, pathCoordinates.get(0)));
 			case WITCH_QUEEN -> addQue.add(new Witch_Queen(this, pathCoordinates.get(0)));
 			case WIZARD_KING -> addQue.add(new Wizard_King(this, pathCoordinates.get(0)));
 
@@ -147,27 +147,28 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 			   int width = enemy.getActiveAnimator().getWidth();
 			   int height = enemy.getActiveAnimator().getHeight();
 			   if (enemy.isActive()) {
-				   g.drawImage(enemy.getActiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height / 2, null);
+				   g.drawImage(enemy.getActiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height, null);
 				   enemy.getActiveAnimator().incrementFrame();
 			   } else {
-				   g.drawImage(enemy.getPassiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height / 2, null);
+				   g.drawImage(enemy.getPassiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height, null);
 				   enemy.getPassiveAnimator().incrementFrame();
 			   }
-
 		   }
 	   }
    }
-   public synchronized void renderHealthBars(Graphics g) {
+
+	public synchronized void renderHealthBars(Graphics g) {
 		for (Enemy enemy : enemyList) {
 			if (enemy.isVisible()) {
 				enemy.renderHealthBar(g);
 			}
 		}
-   }
-   public synchronized void renderExplosions(Graphics g){
-	   Iterator<Explosion> iterator = explosionsList.iterator();
-	   while (iterator.hasNext()) {
-		   Explosion e = iterator.next();
+	}
+
+	public synchronized void renderExplosions(Graphics g) {
+		Iterator<Explosion> iterator = explosionsList.iterator();
+		while (iterator.hasNext()) {
+			Explosion e = iterator.next();
 		   e.render(g);
 		   if (e.isFinished()) {
 			   iterator.remove();

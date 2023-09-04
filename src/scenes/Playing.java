@@ -152,6 +152,8 @@ public class Playing extends GameScenes implements SceneMethods{
             gameState = GAMEOVER;
             game.resetAll();
             playerValues.reset();
+            selectedTower = null;
+            updateInfoOverlay();
         }
     }
     public void updateButtonBarDown() {

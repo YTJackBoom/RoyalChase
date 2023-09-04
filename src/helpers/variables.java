@@ -13,11 +13,11 @@ public class variables { //class to define different variables for thing
 
         public static final int SLIME = 0;
         public static final int SKELETON = 1;
-        public static final int ZOMBIE = 2;
+        public static final int GOBLIN = 2;
         public static final int WITCH = 3;
         public static final int WIZARD = 4;
         public static final int SKELETON_KING = 5;
-        public static final int ZOMBIE_KING = 6;
+        public static final int GOBLIN_KING = 6;
         public static final int WITCH_QUEEN = 7;
         public static final int WIZARD_KING = 8;
 
@@ -26,11 +26,11 @@ public class variables { //class to define different variables for thing
             return switch (enemyType) {
                 case SLIME -> 5;
                 case SKELETON -> 5;
-                case ZOMBIE -> 25;
+                case GOBLIN -> 50;
                 case WITCH -> 10;
                 case WIZARD -> 10;
                 case SKELETON_KING -> 50;
-                case ZOMBIE_KING -> 50;
+                case GOBLIN_KING -> 50;
                 case WITCH_QUEEN -> 50;
                 case WIZARD_KING -> 50;
                 default -> 0;
@@ -42,11 +42,11 @@ public class variables { //class to define different variables for thing
             return switch (enemyType) {
                 case SLIME -> 50;
                 case SKELETON -> 100;
-                case ZOMBIE -> 100;
+                case GOBLIN -> 100;
                 case WITCH -> 100;
                 case WIZARD -> 100;
                 case SKELETON_KING -> 100;
-                case ZOMBIE_KING -> 100;
+                case GOBLIN_KING -> 100;
                 case WITCH_QUEEN -> 100;
                 case WIZARD_KING -> 100;
                 default -> throw new IllegalStateException("variables: getEnemyHealth: Unexpected value:  " + enemyType);
@@ -55,13 +55,13 @@ public class variables { //class to define different variables for thing
 
         public static String getEnemyPassiveGifPath(int enemyType) {
             return switch (enemyType) {
-                case SLIME ->  "res/images/enemies/active/slime_e_active/";
+                case SLIME -> "res/images/enemies/passive/slime_e_passive/";
                 case SKELETON -> "res/images/enemies/passive/skeleton_e_passive/";
-                case ZOMBIE -> "res/images/enemies/passive/zombie_e_passive/";
+                case GOBLIN -> "res/images/enemies/passive/goblin_e_passive/";
                 case WITCH -> "res/images/enemies/passive/witch_e_passive/";
                 case WIZARD -> "res/images/enemies/passive/wizard_e_passive/";
                 case SKELETON_KING -> "res/images/enemies/passive/skeleton_king_e_passive/";
-                case ZOMBIE_KING -> "res/images/enemies/passive/zombie_king_e_passive/";
+                case GOBLIN_KING -> "res/images/enemies/passive/goblin_king_e_passive/";
                 case WITCH_QUEEN -> "res/images/enemies/passive/witch_queen_e_passive/";
                 case WIZARD_KING -> "res/images/enemies/passive/wizard_king_e_passive/";
                 default -> throw new IllegalStateException("variables: getEnemyPassiveGifFile: Unexpected value:  " + enemyType);
@@ -72,15 +72,16 @@ public class variables { //class to define different variables for thing
         public static String getEnemyActiveGifPath(int enemyType) {
             return switch (enemyType) {
                 case SLIME -> "res/images/enemies/active/slime_e_active/";
-                case SKELETON -> "res/images/enemies/passive/skeleton_e_passive/";
-                case ZOMBIE -> "res/images/enemies/active/zombie_e_active/";
+                case SKELETON -> "res/images/enemies/active/skeleton_e_active/";
+                case GOBLIN -> "res/images/enemies/active/goblin_e_active/";
                 case WITCH -> "res/images/enemies/active/witch_e_active/";
                 case WIZARD -> "res/images/enemies/active/wizard_e_active/";
                 case SKELETON_KING -> "res/images/enemies/active/skeleton_king_e_active/";
-                case ZOMBIE_KING -> "res/images/enemies/active/zombie_king_e_active/";
+                case GOBLIN_KING -> "res/images/enemies/active/goblin_king_e_active/";
                 case WITCH_QUEEN -> "res/images/enemies/active/witch_queen_e_active/";
                 case WIZARD_KING -> "res/images/enemies/active/wizard_king_e_active/";
-                default -> throw new IllegalStateException("variables: getEnemyActiveGifFile: Unexpected value:  " + enemyType);
+                default ->
+                        throw new IllegalStateException("variables: getEnemyActiveGifFile: Unexpected value:  " + enemyType);
 
             };
         }
@@ -89,11 +90,11 @@ public class variables { //class to define different variables for thing
             return switch (enemyType) {
                 case SLIME -> 0.5;
                 case SKELETON -> 1;
-                case ZOMBIE -> 2;
+                case GOBLIN -> 2;
                 case WITCH -> 5;
                 case WIZARD -> 5;
                 case SKELETON_KING -> 5;
-                case ZOMBIE_KING -> 5;
+                case GOBLIN_KING -> 5;
                 case WITCH_QUEEN -> 5;
                 case WIZARD_KING -> 5;
                 default -> throw new IllegalStateException("variables: getEnemySpeed: Unexpected value:  " + enemyType);
@@ -104,11 +105,11 @@ public class variables { //class to define different variables for thing
             return switch (enemyType) {
                 case SLIME -> 100;
                 case SKELETON -> 2.5;
-                case ZOMBIE -> 5;
+                case GOBLIN -> 5;
                 case WITCH -> 5;
                 case WIZARD -> 5;
                 case SKELETON_KING -> 5;
-                case ZOMBIE_KING -> 5;
+                case GOBLIN_KING -> 5;
                 case WITCH_QUEEN -> 5;
                 case WIZARD_KING -> 5;
                 default -> throw new IllegalStateException("variables: getEnemyDamage: Unexpected value:  " + enemyType);
@@ -118,11 +119,11 @@ public class variables { //class to define different variables for thing
             return switch (enemyType) {
                 case SLIME -> 0;
                 case SKELETON -> 100;
-                case ZOMBIE -> 5;
+                case GOBLIN -> 5;
                 case WITCH -> 400;
                 case WIZARD -> 400;
                 case SKELETON_KING -> 800;
-                case ZOMBIE_KING -> 0;
+                case GOBLIN_KING -> 0;
                 case WITCH_QUEEN -> 1600;
                 case WIZARD_KING -> 1600;
                 default -> throw new IllegalStateException("variables: getEnemyRelaodTime: Unexpected value: "+ enemyType);
@@ -132,11 +133,11 @@ public class variables { //class to define different variables for thing
             return switch (enemyType) {
                 case SLIME -> 0;
                 case SKELETON -> 150;
-                case ZOMBIE -> 1;
+                case GOBLIN -> 1;
                 case WITCH -> 50;
                 case WIZARD -> 50;
                 case SKELETON_KING -> 100;
-                case ZOMBIE_KING -> 1;
+                case GOBLIN_KING -> 1;
                 case WITCH_QUEEN -> 100;
                 case WIZARD_KING -> 100;
                 default -> throw new IllegalStateException("variables: getEnemyRange: Unexpected value: "+ enemyType);
@@ -381,12 +382,13 @@ public class variables { //class to define different variables for thing
 
         public static File getProjectileGifFile(int projectileType) {
             return switch (projectileType) {
-                case ARROW -> new File("res/images/projectiles/active/arrow_p_active/normal.gif");
-                case LIGHTNINGBALL -> new File("res/images/projectiles/active/lightningball_p_active/normal.gif");
-                case ROCKET -> new File("res/images/projectiles/active/rocket_p_active/normal.gif");
-                case BULLET ->new File("res/images/projectiles/active/bullet_p_active/normal.gif");
+                case ARROW -> new File("res/images/projectiles/arrow.gif");
+                case LIGHTNINGBALL -> new File("res/images/projectiles/lightningball.gif");
+                case ROCKET -> new File("res/images/projectiles/rocket.gif");
+                case BULLET -> new File("res/images/projectiles/bullet.gif");
 
-                default -> throw new IllegalStateException("variables: getProjectileGifPath: Unexpected value:  " + projectileType);
+                default ->
+                        throw new IllegalStateException("variables: getProjectileGifPath: Unexpected value:  " + projectileType);
 
             };
         }

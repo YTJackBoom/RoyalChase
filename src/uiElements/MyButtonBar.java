@@ -6,7 +6,6 @@ import helpers.Coordinate;
 import scenes.GameScenes;
 import scenes.GameStates;
 import scenes.Playing;
-import scenes.Town;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -171,12 +170,7 @@ public class MyButtonBar {
 			for (MyButton button : buttons) {
 				if (button.getBounds().contains(x, y)) {
 					button.setPressed(true);
-					if (scene.getClass() == Playing.class && button.isTowerButton()) {
-						Playing playing = (Playing) scene;
-						scene.setDragingObject(true);
-						scene.setDraggedObjectType(button.getType());
-					} else if (scene.getClass() == Town.class && button.isBuildingButton()) {
-						Town town = (Town) scene;
+					if (button.isTowerButton() || button.isBuildingButton()) {
 						scene.setDragingObject(true);
 						scene.setDraggedObjectType(button.getType());
 					}
