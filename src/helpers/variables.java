@@ -44,7 +44,7 @@ public class variables { //class to define different variables for thing
                 case SKELETON -> 100;
                 case GOBLIN -> 100;
                 case WITCH -> 100;
-                case WIZARD -> 100;
+                case WIZARD -> 75;
                 case SKELETON_KING -> 100;
                 case GOBLIN_KING -> 100;
                 case WITCH_QUEEN -> 100;
@@ -92,7 +92,7 @@ public class variables { //class to define different variables for thing
                 case SKELETON -> 1;
                 case GOBLIN -> 2;
                 case WITCH -> 5;
-                case WIZARD -> 5;
+                case WIZARD -> 1;
                 case SKELETON_KING -> 5;
                 case GOBLIN_KING -> 5;
                 case WITCH_QUEEN -> 5;
@@ -107,7 +107,7 @@ public class variables { //class to define different variables for thing
                 case SKELETON -> 2.5;
                 case GOBLIN -> 5;
                 case WITCH -> 5;
-                case WIZARD -> 5;
+                case WIZARD -> 7.5;
                 case SKELETON_KING -> 5;
                 case GOBLIN_KING -> 5;
                 case WITCH_QUEEN -> 5;
@@ -132,10 +132,10 @@ public class variables { //class to define different variables for thing
         public static double getEnemyRange(int enemyType) {
             return switch (enemyType) {
                 case SLIME -> 0;
-                case SKELETON -> 150;
+                case SKELETON -> 75;
                 case GOBLIN -> 1;
                 case WITCH -> 50;
-                case WIZARD -> 50;
+                case WIZARD -> 150;
                 case SKELETON_KING -> 100;
                 case GOBLIN_KING -> 1;
                 case WITCH_QUEEN -> 100;
