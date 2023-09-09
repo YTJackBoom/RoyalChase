@@ -26,15 +26,17 @@ public class Playing extends GameScenes implements SceneMethods{
     private WaveController waveController;
     private TileController tileController;
     private ProjectileController projectileController;
-    private MyButtonBar buttonBarRight,buttonBarDown;
+    private MyButtonBar buttonBarRight, buttonBarDown;
     private InfoOverlay infoOverlay;
     private Values playerValues;
     private int mouseX, mouseY;
-    private boolean cantAfford,recentlySold,recentlySoldRender;
-    private int cantAffordCounter,recentlySoldCounter;
+    private boolean cantAfford, recentlySold, recentlySoldRender;
+    private int cantAffordCounter, recentlySoldCounter;
     private boolean isPaused = false;
     private Tower selectedTower;
     private Game game;
+
+    private DialogController dialogController; //for the tutorial
 
     public Playing(Game game) {
         super(game);
@@ -49,8 +51,7 @@ public class Playing extends GameScenes implements SceneMethods{
         projectileController = new ProjectileController(this);
 
 
-
-
+        initDialogController();
         initButtonBars();
 
 
@@ -69,9 +70,9 @@ public class Playing extends GameScenes implements SceneMethods{
         renderCantAfford(g);
         renderRecentlySold(g);
         waveController.render(g);
-        if (dragingObject) {
-            renderDraggedButton(g);
-        }
+        if (dragingObject) renderDraggedButton(g);
+        if (playerValues.getLevel() == 0) dialogController.render(g);
+
 //        infoOverlay.render(g);
     }
     @Override
@@ -94,19 +95,25 @@ public class Playing extends GameScenes implements SceneMethods{
         //the buttom bar
         int widthd = 260;
         int heightd = 100;
-        int xd = initGameWidth/2-widthd;
-        int yd = initGameHeight-10-heightd;
+        int xd = initGameWidth / 2 - widthd;
+        int yd = initGameHeight - 10 - heightd;
 
         buttonBarRight = new MyButtonBar(this, new helpers.Coordinate(xr, yr), widthr, heightr, UIPos.PLAYINGRIGHT);
-        buttonBarDown = new MyButtonBar(this,new helpers.Coordinate(xd, yd),widthd,heightd,UIPos.PLAYINGDOWN);
+        buttonBarDown = new MyButtonBar(this, new helpers.Coordinate(xd, yd), widthd, heightd, UIPos.PLAYINGDOWN);
 
     }
+
+    public void initDialogController() {
+        dialogController = new DialogController(this);
+    }
+
     public void reset() {
         enemyController = new EnemyController(this);
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
     }
+
     public void renderDraggedButton(Graphics g) {
 
         BufferedImage draggedImage;
@@ -230,6 +237,7 @@ public class Playing extends GameScenes implements SceneMethods{
         int x = e.getX();
         int y = e.getY();
         if(e.getButton()==1) {
+            if (playerValues.getLevel() == 0) dialogController.mouseReleased(x, y);
             tileController.mouseReleased(x, y);
             if (buttonBarDown.getBounds().contains(x, y)) buttonBarDown.mouseReleased(x, y);
             if (buttonBarRight.getBounds().contains(x, y)) buttonBarRight.mouseReleased(x, y);
@@ -288,28 +296,39 @@ public class Playing extends GameScenes implements SceneMethods{
     public int getDraggedTower() {
         return draggedObjectType;
     }
+
     public void setDragingTower(boolean b) {
         dragingObject = b;
     }
+
     public ProjectileController getProjectileController() {
         return projectileController;
     }
+
     public boolean isPaused() {
         return isPaused;
     }
 
-    public void pause() {
-        isPaused = true;
+    public void setPaused(boolean b) {
+        isPaused = b;
     }
-    public void resume() {
-        isPaused = false;
+
+    public void togglePause() {
+        isPaused = !isPaused;
     }
-    public void setCantAfford(boolean b) {cantAfford=b;}
-    public void setSelectedTower(Tower t) {selectedTower = t;}
+
+    public void setCantAfford(boolean b) {
+        cantAfford = b;
+    }
+
+    public void setSelectedTower(Tower t) {
+        selectedTower = t;
+    }
 
     public boolean getRecentlySold() {
         return recentlySold;
     }
+
     public void setRecentlySold(boolean b) {
         recentlySold = b;
     }

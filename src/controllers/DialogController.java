@@ -1,38 +1,63 @@
 package controllers;
 
+import scenes.GameScenes;
+import scenes.Playing;
 import uiElements.Dialog;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class DialogController {
-    private ArrayList<Dialog> visibleDialogs;
+    private ArrayList<Dialog> dialogs;
 
-    public DialogController() {
-        this.visibleDialogs = new ArrayList<Dialog>();
+    public DialogController(GameScenes scene) {
+        this.dialogs = new ArrayList<Dialog>();
+        if (scene instanceof Playing) {
+            initPlayingDialogs();
+        } else {
+            initTownDialogs();
+        }
 
     }
+
+    public void initPlayingDialogs() {
+        // Adjust dialog positions as needed.
+        dialogs.add(new Dialog(new Rectangle(500, 500, 100, 100), "This is a dialog", this));
+        dialogs.get(0).setVisible(true);
+
+        dialogs.add(new Dialog(new Rectangle(500, 600, 100, 100), "This is another dialog", this));
+    }
+
+    public void initTownDialogs() {
+        // Adjust dialog positions as needed.
+        dialogs.add(new Dialog(new Rectangle(500, 500, 100, 100), "This is a dialog", this));
+        dialogs.get(0).setVisible(true);
+
+        dialogs.add(new Dialog(new Rectangle(500, 600, 100, 100), "This is another dialog", this));
+    }
+
     public void addDialog(Dialog dialog) {
-        visibleDialogs.add(dialog);
+        dialogs.add(dialog);
     }
 
     public void render(Graphics g) {
-        for (Dialog dialog : visibleDialogs) {
+        for (Dialog dialog : dialogs) {
             dialog.render(g);
         }
     }
 
-//    public void mouseClicked(int x, int y) {
-//        for (Dialog dialog : visibleDialogs) {
-//            if(!dialog.isVisible()) visibleDialogs.remove(dialog);
-//            boolean moveToNext = dialog.onClick(x, y);
-//
-//            if (moveToNext) {
-//                currentDialog = dialogsQueue.poll();
-//            }
-//        }
-//    }
-//    }
+    public void clickedOk(Dialog d) {
+        d.setVisible(false);
+        int nextIndex = dialogs.indexOf(d) + 1;
+        if (nextIndex < dialogs.size()) dialogs.get(nextIndex).setVisible(true);
+
+    }
+
+    public void mouseReleased(int x, int y) {
+        for (Dialog dialog : dialogs) {
+            if (dialog.isVisible() && dialog.getBounds().contains(x, y)) {
+                dialog.mouseReleased(x, y);
+            }
+        }
+    }
 }

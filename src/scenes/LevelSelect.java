@@ -144,7 +144,6 @@ public class LevelSelect extends GameScenes implements SceneMethods{
             if(button.getBounds().contains(x,y)) {
                 if(button.getLevel()>=0) {
                     if (button.isChecked()) {
-//                helpers.Values.LEVEL = button.getType();
                         playerValues.setRewardmultiplyer(0);
                     } else {
                         playerValues.setRewardmultiplyer(1);
@@ -154,6 +153,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
                     System.out.println("Level " + button.getText());
                     game.getPlaying().reset();
                     GameStates.gameState = GameStates.PLAYING;
+                    if (button.getLevel() == 0) game.setPaused(true);
                 }else {
                     releasedOnTextButton(button);
                 }

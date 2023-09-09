@@ -36,10 +36,6 @@ public class GameRenderUpdater implements Runnable{ //der threat zum rendern der
             }
             case LEVELCLEARED -> game.getLevelCleared().render(g);
             case LEVELSELECT -> game.getLevelSelect().render(g);
-            case TUTORIAL -> {
-                game.getTutorial().render(g);
-                game.getInfoOverlay().render(g);
-            }
             case TOWN -> {
                 game.getTown().render(g);
                 game.getInfoOverlay().render(g);

@@ -1,54 +1,87 @@
 package uiElements;
 
-import java.awt.Graphics;
+import controllers.DialogController;
+
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Dialog {
     private String message;
     private MyButton okButton;
-    private MyButton nextButton;
-    private boolean hasNext;
     private boolean isVisible;
+    private DialogController dialogController;
+    private Rectangle bounds;
 
-    public Dialog(String message, boolean hasNext) {
+    public Dialog(Rectangle bounds, String message, DialogController dialogController) {
         this.message = message;
-        this.hasNext = hasNext;
-        this.isVisible = true;
+        this.isVisible = false;
+        this.dialogController = dialogController;
+        this.bounds = bounds;
 
-        // Adjust button positions as needed.
-        if (hasNext) {
-            this.nextButton = new MyButton("Next",  100, 100, 50, 30,true);
-        }else {
-            this.okButton = new MyButton("OK", 100, 100, 50, 30,true);
-        }
+        int buttonWidth = 50;
+        int buttonHeight = 30;
+        int buttonX = bounds.x + (bounds.width - buttonWidth) / 2;
+        int buttonY = bounds.y + bounds.height - buttonHeight - 10; // 10px margin from the bottom
+
+        this.okButton = new MyButton("OK", buttonX, buttonY, buttonWidth, buttonHeight, true);
     }
 
     public void render(Graphics g) {
         if (!isVisible) return;
 
-        // Draw the message
-        g.drawString(message, 50, 50);
+        // Render a rectangle around the text
+        g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+        // Draw the message respecting the bounds
+        drawStringWithinBounds(g, message, bounds);
 
         // Render the OK button
+        okButton.render(g);
+    }
 
-        if (hasNext) {
-            nextButton.render(g);
-        } else {
-            okButton.render(g);
+    private void drawStringWithinBounds(Graphics g, String str, Rectangle rect) {
+        FontRenderContext frc = new FontRenderContext(null, true, true);
+        Font font = g.getFont();
+        List<String> lines = new ArrayList<>();
+
+        String[] words = str.split(" ");
+        StringBuilder currentLine = new StringBuilder(words[0]);
+        for (int i = 1; i < words.length; i++) {
+            TextLayout tl = new TextLayout(currentLine.toString() + " " + words[i], font, frc);
+            if (tl.getBounds().getWidth() > rect.width) {
+                lines.add(currentLine.toString());
+                currentLine = new StringBuilder(words[i]);
+            } else {
+                currentLine.append(" ").append(words[i]);
+            }
+        }
+        lines.add(currentLine.toString());
+
+        int y = rect.y + font.getSize(); // Start from top of the rectangle plus font size
+        for (String line : lines) {
+            g.drawString(line, rect.x, y);
+            y += font.getSize() + 5; // Increase y position by font size and some padding
         }
     }
 
-    public boolean mouseReleased(int x, int y) {
+    public void mouseReleased(int x, int y) {
         if (okButton.getBounds().contains(x, y)) {
-            isVisible = false;
-            return false;
-        } else if (hasNext && nextButton.getBounds().contains(x, y)) {
-            isVisible = false;
-            return true;
+            dialogController.clickedOk(this);
         }
-        return false;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 
     public boolean isVisible() {
         return isVisible;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
     }
 }

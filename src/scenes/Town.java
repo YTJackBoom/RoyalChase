@@ -2,6 +2,7 @@ package scenes;
 
 import basics.Game;
 import controllers.BuildingsController;
+import controllers.DialogController;
 import helpers.Constants;
 import helpers.variables;
 import uiElements.InfoOverlay;
@@ -19,7 +20,7 @@ import static basics.Game.*;
 public class Town extends GameScenes implements SceneMethods{
     private Game game;
     private boolean isPaused = false;
-    private int mouseX,mouseY;
+    private int mouseX, mouseY;
 
     private BuildingsController buildingsController;
     private MyButtonBar buttonBar;
@@ -27,18 +28,24 @@ public class Town extends GameScenes implements SceneMethods{
     private boolean cantAfford;
     private int cantAffordCounter;
     private InfoOverlay infoOverlay;
-    public Town(Game game){
+
+    private DialogController dialogController; //fürs tutorial
+
+    public Town(Game game) {
         super(game);
         this.game = game;
         infoOverlay = game.getInfoOverlay();
         initClasses();
         initVariables();
         initButtonBar();
+
     }
 
 
     private void initClasses() {
         buildingsController = new BuildingsController(this);
+        dialogController = new DialogController(this);
+
     }
 
     private void initVariables() {
@@ -61,10 +68,12 @@ public class Town extends GameScenes implements SceneMethods{
         g.drawImage(townImage, 0, 0, null);
         buildingsController.render(g);
         buttonBar.render(g);
-        if (dragingObject) {
-            renderDraggedButton(g);
-        }
+        if (dragingObject) renderDraggedButton(g);
         renderCantAfford(g);
+
+        if (game.getPlayerValues().getLevel() == 0) dialogController.render(g);
+
+
     }
 
     public void renderCantAfford(Graphics g) {
@@ -144,6 +153,7 @@ public class Town extends GameScenes implements SceneMethods{
         mouseY = e.getY();
 
         if(e.getButton()==1) {
+            if (game.getPlayerValues().getLevel() == 0) dialogController.mouseReleased(mouseX, mouseY);
             if (buttonBar.getBounds().contains(mouseX, mouseY)) buttonBar.mouseReleased(mouseX, mouseY);
             if (dragingObject) {
                 buildingsController.mouseReleased(mouseX, mouseY);
@@ -162,19 +172,21 @@ public class Town extends GameScenes implements SceneMethods{
     @Override
     public void reset() {
         buildingsController = new BuildingsController(this);
-            // TODO: reset towen
+        // TODO: reset towen
     }
 
     public boolean isPaused() {
         return isPaused;
     }
-    public void pause() {
-        isPaused = true;
+
+    public void setPaused(boolean b) {
+        isPaused = b;
     }
 
-    public void resume() {
-        isPaused = false;
+    public void togglePause() {
+        isPaused = !isPaused;
     }
+
 
     public void setSelectedBuilding(int type) {
         draggedObjectType = type;

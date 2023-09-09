@@ -1,18 +1,16 @@
 package basics;
 
-import javax.swing.*;
-
-
 import controllers.BuildingsController;
 import gameObjects.Building;
 import helpers.BuildingSaveState;
 import helpers.Coordinate;
 import helpers.PreLoader;
 import helpers.Values;
-import scenes.*;
 import scenes.Menu;
+import scenes.*;
 import uiElements.InfoOverlay;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +36,6 @@ public class Game extends JFrame implements Serializable {
         private GameOver gameOver;
         private LevelCleared levelCleared;
         private LevelSelect levelSelect;
-        private Tutorial tutorial;
         private Town town;
         private InfoOverlay infoOverlay;
         private GameState gameState;
@@ -76,12 +73,15 @@ public class Game extends JFrame implements Serializable {
             gameOver = new GameOver(this);
             levelCleared = new LevelCleared(this);
             levelSelect = new LevelSelect(this);
-            tutorial = new Tutorial(this);
             town = new Town(this);
 
 
         }
         public static void main(String[] args) {
+//            System.setOut(null);
+//            System.setErr(null);
+
+
             Game game = new Game();
             game.gameScreen.initInputs();
             game.start();
@@ -119,25 +119,15 @@ public class Game extends JFrame implements Serializable {
                 case GAMEOVER -> gameOver.update();
                 case LEVELCLEARED -> levelCleared.update();
                 case LEVELSELECT -> levelSelect.update();
-                case TUTORIAL -> {tutorial.update();
-                                  town.softUpdate();}
                 case TOWN -> town.update();
 
             }
         }
 
         public void togglePause() {
-            if (!isPaused) {
-                isPaused = true;
-                playing.pause();
-                town.pause();
-                tutorial.pause();
-            } else {
-                isPaused = false;
-                playing.resume();
-                town.resume();
-                tutorial.resume();
-            }
+            isPaused = !isPaused;
+            playing.togglePause();
+            town.togglePause();
         }
         public void saveGame( String filePath) { //speicher den spielstand der ressourcen des spielers sowie der gebäude in der stadt,hierfür werden die klassen von java.io  benutzt
         try {
@@ -184,7 +174,6 @@ public class Game extends JFrame implements Serializable {
     public void resetAll() { //zum reseten beim "tod"
         playing.reset();
         levelSelect.reset();
-        tutorial.reset();
         town.reset();
         getPlayerValues().reset();
     }
@@ -249,7 +238,6 @@ public class Game extends JFrame implements Serializable {
             return gameOver;
         }
         public LevelSelect getLevelSelect() {return levelSelect;}
-        public Tutorial getTutorial() {return tutorial;}
         public Town getTown() {return town;}
         public InfoOverlay getInfoOverlay() {return infoOverlay;}
 
@@ -268,22 +256,37 @@ public class Game extends JFrame implements Serializable {
         public int getHeight() {
             return gameScreen.getHeight();
         }
-        @Override
-        public int getWidth() {
-            return gameScreen.getWidth();
-        }
-        public boolean isPaused() {
-            return isPaused;
-        }
-        public GameState getGameState(){return gameState;}
-        public void setGameState(GameState g){gameState = g;}
 
-        public GameScreen getGameScreen() {
-            return gameScreen;
-        }
-        public boolean isFullScreen() {
-            return isFullScreen;
-        }
+    @Override
+    public int getWidth() {
+        return gameScreen.getWidth();
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+        playing.setPaused(paused);
+        town.setPaused(paused);
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState g) {
+        gameState = g;
+    }
+
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
+
+    public boolean isFullScreen() {
+        return isFullScreen;
+    }
 
         public GameRenderUpdater getRenderUpdater() {
             return renderUpdater;
