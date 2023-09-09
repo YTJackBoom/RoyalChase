@@ -63,6 +63,7 @@ public class GameOver extends GameScenes implements SceneMethods{
             if(button.getBounds().contains(x,y)){
                 if(button.getText().equals("Try Again")){
                     GameStates.gameState = GameStates.LEVELSELECT;
+                    game.resetAll();
 //                    System.out.println("Continue");
                 }else if(button.getText().equals("Main Menu")){
                     GameStates.gameState = GameStates.MENU;

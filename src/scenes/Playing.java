@@ -157,8 +157,8 @@ public class Playing extends GameScenes implements SceneMethods{
     public void checkHealth() {
         if (playerValues.getHealth() <= 0) {
             gameState = GAMEOVER;
-            game.resetAll();
-            playerValues.reset();
+//            game.resetAll();
+//            playerValues.reset();
             selectedTower = null;
             updateInfoOverlay();
         }

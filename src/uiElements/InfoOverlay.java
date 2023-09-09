@@ -91,9 +91,10 @@ public class InfoOverlay {
             g.drawImage(img, imageCenterX - img.getWidth() / 2, imageCenterY - img.getHeight() / 2, null);
 
             int textCenterX = imageCenterX + img.getWidth() + 10;
-            int textCenterY = imageCenterY + textHeight / 2 ;
+            int textCenterY = imageCenterY + textHeight / 2;
 
-            g.drawString(Integer.toString(values[i]), textCenterX, textCenterY);
+            int value = values[i] < 0 ? 0 : values[i];
+            g.drawString(Integer.toString(value), textCenterX, textCenterY);
         }
 
         BufferedImage img;
