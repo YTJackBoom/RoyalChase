@@ -1,6 +1,7 @@
 package gameObjects;
 
 import controllers.EnemyController;
+import enemy.EnemyAttackPattern;
 import enemy.EnemyType;
 import helpers.Circle;
 import helpers.Constants;
@@ -18,15 +19,16 @@ public class Enemy extends GameObject {
 	protected EnemyController enemyController;
 	protected GameObject target;
 	protected Circle range;
+	protected EnemyAttackPattern enemyAttackPattern;
 	protected EnemyType enemyType;
 	private int attackTickCounter = 0;
 
 
-
-	public Enemy(EnemyController enemyController, Coordinate pos, int type, EnemyType enemyType) {
+	public Enemy(EnemyController enemyController, Coordinate pos, int type, EnemyAttackPattern enemyAttackPattern, EnemyType enemyType) {
 		super(pos, enemyController.getPlaying().getGame().getPreLoader(), ObjectType.ENEMY, type, true);
-		this.enemyType = enemyType;
+		this.enemyAttackPattern = enemyAttackPattern;
 		this.enemyController = enemyController;
+		this.enemyType = enemyType;
 		pathIndex = 1;
 		isActive = true;
 		initVariables();
@@ -45,7 +47,7 @@ public class Enemy extends GameObject {
 	}
 
 	public void move(ArrayList<Coordinate> pathCoordinates) { //um verschieden Arten von verhaltenn zu ermöglichen
-		switch (enemyType) {
+		switch (enemyAttackPattern) {
 			case MELEE:
 				meleeMove(pathCoordinates);
 				break;
@@ -190,8 +192,13 @@ public class Enemy extends GameObject {
 		}
 		return false;
 	}
+
 	public Circle getRange() {
 		return range;
+	}
+
+	public EnemyAttackPattern getEnemyAttackPattern() {
+		return enemyAttackPattern;
 	}
 
 	public EnemyType getEnemyType() {

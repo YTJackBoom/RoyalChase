@@ -6,6 +6,7 @@ import controllers.DialogController;
 import helpers.Constants;
 import helpers.variables;
 import uiElements.InfoOverlay;
+import uiElements.MyButton;
 import uiElements.MyButtonBar;
 import uiElements.UIPos;
 
@@ -14,16 +15,19 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static basics.Game.*;
 
-public class Town extends GameScenes implements SceneMethods{
+public class Town extends GameScenes implements SceneMethods {
     private Game game;
     private boolean isPaused = false;
     private int mouseX, mouseY;
 
     private BuildingsController buildingsController;
     private MyButtonBar buttonBar;
+    private ArrayList<MyButton> buttonBarControls = new ArrayList<MyButton>();
+
     private BufferedImage townImage;
     private boolean cantAfford;
     private int cantAffordCounter;
@@ -53,13 +57,16 @@ public class Town extends GameScenes implements SceneMethods{
     }
 
     public void initButtonBar() {
-            int width = 120;
-            int height = 1000;
+        int width = 120;
+        int height = 1000;
 
-            int x = game.getWidth() - width - 20;
-            int y = game.getHeight() - height - 20;
+        int x = game.getWidth() - width - 20;
+        int y = game.getHeight() - height - 20;
 
-            buttonBar = new MyButtonBar(this, new helpers.Coordinate(x, y), width, height, UIPos.TOWNRIGHT);
+        buttonBar = new MyButtonBar(this, new helpers.Coordinate(x, y), width, height, UIPos.TOWNRIGHT);
+
+        buttonBarControls.add(new MyButton(10, 500, 500, 50, 50, true));
+        buttonBarControls.add(new MyButton(11, 600, 500, 50, 50, false));
 
     }
 
@@ -67,7 +74,12 @@ public class Town extends GameScenes implements SceneMethods{
     public void render(Graphics g) {
         g.drawImage(townImage, 0, 0, null);
         buildingsController.render(g);
+
         buttonBar.render(g);
+        for (MyButton button : buttonBarControls) {
+            button.render(g);
+        }
+
         if (dragingObject) renderDraggedButton(g);
         renderCantAfford(g);
 
@@ -116,23 +128,18 @@ public class Town extends GameScenes implements SceneMethods{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        mouseX=e.getX();
-        mouseY=e.getY();
-        if(buttonBar.getBounds().contains(mouseX,mouseY)){
-            buttonBar.mouseClicked(mouseX,mouseY);
-        }
+        mouseX = e.getX();
+        mouseY = e.getY();
+//        if(buttonBar.getBounds().contains(mouseX,mouseY)){
+//            buttonBar.mouseClicked(mouseX,mouseY);
+//        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         int x =e.getX();
         int y =e.getY();
-        if(buttonBar.getBounds().contains(x,y)){
-            buttonBar.setVisible(true);
             buttonBar.mouseMoved(x,y);
-        } else{
-            buttonBar.setVisible(false);
-        }
 
     }
 
@@ -152,13 +159,30 @@ public class Town extends GameScenes implements SceneMethods{
         mouseX = e.getX();
         mouseY = e.getY();
 
-        if(e.getButton()==1) {
+        if (e.getButton() == 1) {
             if (game.getPlayerValues().getLevel() == 0) dialogController.mouseReleased(mouseX, mouseY);
             if (buttonBar.getBounds().contains(mouseX, mouseY)) buttonBar.mouseReleased(mouseX, mouseY);
             if (dragingObject) {
                 buildingsController.mouseReleased(mouseX, mouseY);
                 dragingObject = false;
             }
+            checkButtonBarControls(mouseX, mouseY);
+        }
+    }
+
+    public void checkButtonBarControls(int x, int y) {
+        MyButton extendButtonBarRight = buttonBarControls.get(0);
+        MyButton collapseButtonBarRight = buttonBarControls.get(1);
+        if (extendButtonBarRight.getBounds().contains(x, y) && extendButtonBarRight.isVisible()) {
+            buttonBar.setVisible(true);
+            extendButtonBarRight.setVisible(false);
+            collapseButtonBarRight.setVisible(true);
+        }
+
+        if (collapseButtonBarRight.getBounds().contains(x, y) && collapseButtonBarRight.isVisible()) {
+            buttonBar.setVisible(false);
+            collapseButtonBarRight.setVisible(false);
+            extendButtonBarRight.setVisible(true);
         }
     }
 

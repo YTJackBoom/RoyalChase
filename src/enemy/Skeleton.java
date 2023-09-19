@@ -11,7 +11,7 @@ public class Skeleton extends Enemy {
     private int counter;
     private boolean isLoaded;
     public Skeleton(EnemyController enemyController, Coordinate pos) {
-        super(enemyController, pos, SKELETON,EnemyType.RANGED);
+        super(enemyController, pos, SKELETON, EnemyAttackPattern.RANGED, EnemyType.NORMAL);
     }
 
     @Override

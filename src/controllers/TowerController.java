@@ -1,5 +1,6 @@
 package controllers;
 
+import enemy.EnemyType;
 import gameObjects.Enemy;
 import gameObjects.GameObject;
 import gameObjects.Tile;
@@ -55,21 +56,35 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
     public void checkTowerRange(Tower tower) {
         enemyList = playing.getEnemyController().getEnemyList();
+        Enemy targetEnemy = null;
+
         for (Enemy enemy : enemyList) {
+            if (enemy.getEnemyType() == EnemyType.BOSS && tower.getRange().contains(enemy.getHitBox()) && tower.getTarget() == null) {
+                targetEnemy = enemy;
+                break;
+            }
+        }
+
+        if (targetEnemy == null) {
+            for (Enemy enemy : enemyList) {
                 if (tower.getRange().contains(enemy.getHitBox()) && tower.getTarget() == null) {
-                    tower.setStatus(true);
-                    tower.setTarget(enemy);
+                    targetEnemy = enemy;
                     break;
-//                    if (tower.getType() == 1) System.out.println("tower target set");
                 }
             }
+        }
 
-             if (!enemyList.contains(tower.getTarget())||!tower.getRange().contains(tower.getTarget().getHitBox())) {
-                tower.setStatus(false);
-                tower.setTarget(null);
-//              if (tower.getType() == 1) System.out.println("towerTarget reset");
+// Set tower status and target based on found enemy
+        if (targetEnemy != null) {
+            tower.setStatus(true);
+            tower.setTarget(targetEnemy);
+            // if (tower.getType() == 1) System.out.println("tower target set");
+        } else if (!enemyList.contains(tower.getTarget()) || !tower.getRange().contains(tower.getTarget().getHitBox())) {
+            tower.setStatus(false);
+            tower.setTarget(null);
+            // if (tower.getType() == 1) System.out.println("towerTarget reset");
+        }
 
-            }
     }
 
 

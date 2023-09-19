@@ -8,7 +8,7 @@ import static helpers.variables.Enemies.WITCH_QUEEN;
 
 public class Witch_Queen extends Enemy {
     public Witch_Queen(EnemyController enemyController, Coordinate pos) {
-        super(enemyController, pos, WITCH_QUEEN,EnemyType.RANGED);
+        super(enemyController, pos, WITCH_QUEEN, EnemyAttackPattern.RANGED, EnemyType.BOSS);
     }
 
 }

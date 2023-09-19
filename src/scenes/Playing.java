@@ -7,6 +7,7 @@ import helpers.Constants;
 import helpers.Direction;
 import helpers.Values;
 import uiElements.InfoOverlay;
+import uiElements.MyButton;
 import uiElements.MyButtonBar;
 import uiElements.UIPos;
 
@@ -15,18 +16,23 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static basics.Game.*;
 import static scenes.GameStates.GAMEOVER;
 import static scenes.GameStates.gameState;
 
-public class Playing extends GameScenes implements SceneMethods{
+public class Playing extends GameScenes implements SceneMethods {
     private EnemyController enemyController;
     private TowerController towerController;
     private WaveController waveController;
     private TileController tileController;
     private ProjectileController projectileController;
+
+
     private MyButtonBar buttonBarRight, buttonBarDown;
+    private ArrayList<MyButton> buttonBarRightControls = new ArrayList<MyButton>();
+    ;
     private InfoOverlay infoOverlay;
     private Values playerValues;
     private int mouseX, mouseY;
@@ -50,7 +56,6 @@ public class Playing extends GameScenes implements SceneMethods{
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
 
-
         initDialogController();
         initButtonBars();
 
@@ -59,6 +64,7 @@ public class Playing extends GameScenes implements SceneMethods{
 
     @Override
     public void render(Graphics g) {
+
         tileController.render(g);
 //        g.drawImage(variables.Maps.getMapBufferedImage(playerValues.getLevel()), 0, 0, null);
         enemyController.render(g);
@@ -70,6 +76,9 @@ public class Playing extends GameScenes implements SceneMethods{
         renderCantAfford(g);
         renderRecentlySold(g);
         waveController.render(g);
+        for (MyButton button : buttonBarRightControls) {
+            button.render(g);
+        }
         if (dragingObject) renderDraggedButton(g);
         if (playerValues.getLevel() == 0) dialogController.render(g);
 
@@ -84,6 +93,8 @@ public class Playing extends GameScenes implements SceneMethods{
         updateInfoOverlay();
         checkHealth();
         updateButtonBarDown();
+
+
     }
 
     public void initButtonBars() {
@@ -100,6 +111,10 @@ public class Playing extends GameScenes implements SceneMethods{
 
         buttonBarRight = new MyButtonBar(this, new helpers.Coordinate(xr, yr), widthr, heightr, UIPos.PLAYINGRIGHT);
         buttonBarDown = new MyButtonBar(this, new helpers.Coordinate(xd, yd), widthd, heightd, UIPos.PLAYINGDOWN);
+
+//        extendButtonBarRight = new MyButton(10,100,100,50,50,true);
+        buttonBarRightControls.add(new MyButton(10, 500, 500, 50, 50, true));
+        buttonBarRightControls.add(new MyButton(11, 600, 500, 50, 50, false));
 
     }
 
@@ -203,14 +218,10 @@ public class Playing extends GameScenes implements SceneMethods{
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        if(buttonBarRight.getBounds().contains(x,y)){
-            buttonBarRight.setVisible(true);
-            buttonBarRight.mouseMoved(x,y);
-        } else{
-            buttonBarRight.setVisible(false);
-            buttonBarRight.setHoveredButton(null);
-        }
-        buttonBarDown.mouseMoved(x,y);
+//        if(buttonBarRight.getBounds().contains(x,y)) {
+        buttonBarRight.mouseMoved(x, y);
+//        }
+        buttonBarDown.mouseMoved(x, y);
 
 
     }
@@ -236,7 +247,7 @@ public class Playing extends GameScenes implements SceneMethods{
     public void mouseReleased(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        if(e.getButton()==1) {
+        if (e.getButton() == 1) {
             if (playerValues.getLevel() == 0) dialogController.mouseReleased(x, y);
             tileController.mouseReleased(x, y);
             if (buttonBarDown.getBounds().contains(x, y)) buttonBarDown.mouseReleased(x, y);
@@ -245,7 +256,23 @@ public class Playing extends GameScenes implements SceneMethods{
                 towerController.mouseReleased(x, y);
                 dragingObject = false;
             }
+            checkButtonBarControls(x, y);
+        }
+    }
 
+    public void checkButtonBarControls(int x, int y) {
+        MyButton extendButtonBarRight = buttonBarRightControls.get(0);
+        MyButton collapseButtonBarRight = buttonBarRightControls.get(1);
+        if (extendButtonBarRight.getBounds().contains(x, y) && extendButtonBarRight.isVisible()) {
+            buttonBarRight.setVisible(true);
+            extendButtonBarRight.setVisible(false);
+            collapseButtonBarRight.setVisible(true);
+        }
+
+        if (collapseButtonBarRight.getBounds().contains(x, y) && collapseButtonBarRight.isVisible()) {
+            buttonBarRight.setVisible(false);
+            collapseButtonBarRight.setVisible(false);
+            extendButtonBarRight.setVisible(true);
         }
     }
 

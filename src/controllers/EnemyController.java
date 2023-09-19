@@ -58,7 +58,7 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		}
 	}
 	public void checkEnemyRange(Enemy enemy) { //checkt ob ein turm in reichweite des gegners ist. check für gate in enemy
-		if (enemy.getEnemyType() == EnemyType.RANGED) {
+		if (enemy.getEnemyAttackPattern() == EnemyAttackPattern.RANGED) {
 			ArrayList<Tower> towerList = playing.getTowerController().getTowerList();
 			for (Tower tower : towerList) {
 				if (tower.getType() != Foundation_T) {

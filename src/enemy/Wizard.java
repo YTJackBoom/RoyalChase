@@ -12,7 +12,7 @@ public class Wizard extends Enemy {
     private boolean isLoaded;
 
     public Wizard(EnemyController enemyController, Coordinate pos) {
-        super(enemyController, pos, WIZARD, EnemyType.RANGED);
+        super(enemyController, pos, WIZARD, EnemyAttackPattern.RANGED, EnemyType.NORMAL);
     }
 
     @Override

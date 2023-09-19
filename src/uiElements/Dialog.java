@@ -24,7 +24,7 @@ public class Dialog {
         int buttonWidth = 50;
         int buttonHeight = 30;
         int buttonX = bounds.x + (bounds.width - buttonWidth) / 2;
-        int buttonY = bounds.y + bounds.height - buttonHeight - 10; // 10px margin from the bottom
+        int buttonY = bounds.y + bounds.height - buttonHeight + 10; // 10px margin from the bottom
 
         this.okButton = new MyButton("OK", buttonX, buttonY, buttonWidth, buttonHeight, true);
     }

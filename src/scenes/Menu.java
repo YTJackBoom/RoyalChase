@@ -18,6 +18,7 @@ public class Menu extends GameScenes implements SceneMethods {
 
     @Override
     public void render(Graphics g) {
+        game.getPlaying().render(g);
         renderButtons(g);
     }
 

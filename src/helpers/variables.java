@@ -482,19 +482,24 @@ public class variables { //class to define different variables for thing
         public static final int WOOD_B_B = 7;
         public static final int STONE_B_B = 8;
         public static final int HOUSE_B_B = 9;
+        public final static int EXTEND_U_B = 10;
+        public static final int COLLAPSE_U_B = 11;
 
 
         public static File getButtonImageFile(int buttonType) {
             return switch (buttonType) {
                 case Foundation_T_B -> new File("res/images/buttons/blue_square.png");
                 case ARROW_T_B -> new File(standartpath + "arrow_t_icon.png");
-                case MAGE_T_B -> new File(standartpath+ "mage_t_icon.png");
-                case ROCKET_T_B -> new File(standartpath+"rocket_t_icon.png");
-                case SNIP_T_B -> new File(standartpath+"snip_t_icon.png");
+                case MAGE_T_B -> new File(standartpath + "mage_t_icon.png");
+                case ROCKET_T_B -> new File(standartpath + "rocket_t_icon.png");
+                case SNIP_T_B -> new File(standartpath + "snip_t_icon.png");
                 case MANA_B_B -> new File("res/images/buttons/blue_square.png");
                 case HOUSE_B_B -> new File("res/images/buttons/red_square.png");
+                case EXTEND_U_B -> new File("res/images/buttons/red_square.png");
+                case COLLAPSE_U_B -> new File("res/images/buttons/red_square.png");
 
-                default -> throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);
+                default ->
+                        throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);
             };
         }
 

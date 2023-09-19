@@ -22,10 +22,10 @@ public class DialogController {
 
     public void initPlayingDialogs() {
         // Adjust dialog positions as needed.
-        dialogs.add(new Dialog(new Rectangle(500, 500, 100, 100), "This is a dialog", this));
+        dialogs.add(new Dialog(new Rectangle(500, 500, 100, 100), "dein Königreich wird von den Dunklen Magieren und ihren Schergen angegriffen!!", this));
         dialogs.get(0).setVisible(true);
 
-        dialogs.add(new Dialog(new Rectangle(500, 600, 100, 100), "This is another dialog", this));
+        dialogs.add(new Dialog(new Rectangle(500, 600, 100, 100), "Im oberen Teil des Bildschirms werden deine Diversen Resourcen angezeigt. Pausieren/Fortsetzten erfolgt durch Leertaste ", this));
     }
 
     public void initTownDialogs() {
