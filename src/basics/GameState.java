@@ -1,9 +1,8 @@
 package basics;
 
-import controllers.BuildingsController;
 import gameObjects.Building;
 import helpers.BuildingSaveState;
-import helpers.Coordinate;
+import helpers.UserSettings;
 import helpers.Values;
 
 import java.io.IOException;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 public class GameState implements Serializable { //diese klasse ist zum speichern des spielstandes nötig, ier werden die spielerwerte soiwe stadt-gebäude(in extra Klssen) abgespeichert
     private Game game;
     private Values playerValues;
+    private UserSettings userSettings;
     private ArrayList<BuildingSaveState> townBuildingsSave;
 
 
@@ -24,11 +24,13 @@ public class GameState implements Serializable { //diese klasse ist zum speicher
         this.game = game;
 
         playerValues = new Values();
+        userSettings = new UserSettings();
         townBuildingsSave = new ArrayList<BuildingSaveState>();
     }
 
     private void writeObject(ObjectOutputStream oos) throws IOException { //speichert spieler werte und schreib die Buildings in BuildingSaveState um
         oos.writeObject(playerValues);
+        oos.writeObject(userSettings);
         for(Building b : game.getTown().getBuildingsController().getBuildingsList()) {
             townBuildingsSave.add(new BuildingSaveState(b.getPos(),b.getType()));
         }
@@ -36,14 +38,11 @@ public class GameState implements Serializable { //diese klasse ist zum speicher
     }
 
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException { //liest die spielerwerte und buildings aus der datei
-        playerValues =(Values) ois.readObject();
+        playerValues = (Values) ois.readObject();
+        userSettings = (UserSettings) ois.readObject();
         townBuildingsSave = (ArrayList<BuildingSaveState>) ois.readObject();
 
     }
-
-
-
-
 
 
     public void setPlayerValues(Values playerValues) {
@@ -54,10 +53,13 @@ public class GameState implements Serializable { //diese klasse ist zum speicher
         return playerValues;
     }
 
+    public UserSettings getUserSettings() {
+        return userSettings;
+    }
+
     public ArrayList<BuildingSaveState> getTownBuildingsSave() {
         return townBuildingsSave;
     }
-
 
 
 }

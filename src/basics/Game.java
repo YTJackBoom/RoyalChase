@@ -134,6 +134,7 @@ public class Game extends JFrame implements Serializable {
             FileOutputStream fileOut = new FileOutputStream(filePath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(gameState);
+            System.out.println(gameState.getUserSettings().getDifficulty());
             out.close();
             fileOut.close();
             System.out.println("Game saved");
@@ -153,6 +154,8 @@ public class Game extends JFrame implements Serializable {
             loadTownBuildings();
             levelSelect.setPlayerValues(getPlayerValues());
             infoOverlay.setPlayerValues(getPlayerValues());
+            menu.initSliders();
+            System.out.println(gameState.getUserSettings().getDifficulty());
         } catch (IOException i) {
             i.printStackTrace();
         } catch (ClassNotFoundException c) {

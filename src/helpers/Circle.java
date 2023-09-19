@@ -17,7 +17,13 @@ public class Circle {
 	}
 
 	public void render(Graphics g) {
-		g.drawOval((int)Math.round(x - radius), (int)Math.round(y - radius), (int)Math.round(2 * radius), (int)Math.round(2 * radius));
+		if (g instanceof Graphics2D) {
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setStroke(new BasicStroke(Constants.UIConstants.CIRCLESTHICKNESS)); // thickness is the desired line width, e.g., 3.0f
+			g2d.drawOval((int) Math.round(x - radius), (int) Math.round(y - radius), (int) Math.round(2 * radius), (int) Math.round(2 * radius));
+		}
+
+//		g.drawOval((int)Math.round(x - radius), (int)Math.round(y - radius), (int)Math.round(2 * radius), (int)Math.round(2 * radius));
 	}
 
 	public boolean contains(HitBox hitbox) {

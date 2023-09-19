@@ -26,6 +26,7 @@ public class Constants {
 		public static final int TOWERSCALEFACTOR = 2;
 
 
+        public static final float CIRCLESTHICKNESS = 2.5f;
     }
 	public static class ObjectConstants {
 		public static final int SPEEDOFFSET = 1; //delay for certasin speed adjustments
