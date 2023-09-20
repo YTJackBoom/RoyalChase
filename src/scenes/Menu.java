@@ -145,9 +145,7 @@ public class Menu extends GameScenes implements SceneMethods {
         resetButtons();
 
         for (Slider slider : sliders) {
-            if (slider.getBounds().contains(x, y)) {
                 slider.mouseReleased(x, y);
-            }
         }
     }
 
@@ -157,9 +155,7 @@ public class Menu extends GameScenes implements SceneMethods {
         int mouseY = e.getY();
 
         for (Slider slider : sliders) {
-            if (slider.getBounds().contains(mouseX, mouseY)) {
                 slider.mouseDragged(mouseX, mouseY);
-            }
         }
     }
 
