@@ -6,10 +6,7 @@ import gameObjects.Tower;
 import helpers.Constants;
 import helpers.Direction;
 import helpers.Values;
-import uiElements.InfoOverlay;
-import uiElements.MyButton;
-import uiElements.MyButtonBar;
-import uiElements.UIPos;
+import uiElements.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -32,7 +29,9 @@ public class Playing extends GameScenes implements SceneMethods {
 
     private MyButtonBar buttonBarRight, buttonBarDown;
     private ArrayList<MyButton> buttonBarRightControls = new ArrayList<MyButton>();
-    ;
+
+    private BossBar bossBar;
+
     private InfoOverlay infoOverlay;
     private Values playerValues;
     private int mouseX, mouseY;
@@ -55,6 +54,7 @@ public class Playing extends GameScenes implements SceneMethods {
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
+        bossBar = new BossBar(this, new Rectangle(500, 100, 50, 50));
 
         initDialogController();
         initButtonBars();
@@ -73,6 +73,8 @@ public class Playing extends GameScenes implements SceneMethods {
         buttonBarDown.render(g);
         buttonBarRight.render(g);
 
+
+        bossBar.render(g);
         renderCantAfford(g);
         renderRecentlySold(g);
         waveController.render(g);
@@ -112,10 +114,12 @@ public class Playing extends GameScenes implements SceneMethods {
         buttonBarRight = new MyButtonBar(this, new helpers.Coordinate(xr, yr), widthr, heightr, UIPos.PLAYINGRIGHT);
         buttonBarDown = new MyButtonBar(this, new helpers.Coordinate(xd, yd), widthd, heightd, UIPos.PLAYINGDOWN);
 
-//        extendButtonBarRight = new MyButton(10,100,100,50,50,true);
+        initButtonBarControls();
+    }
+
+    public void initButtonBarControls() {
         buttonBarRightControls.add(new MyButton(10, 500, 500, 50, 50, true));
         buttonBarRightControls.add(new MyButton(11, 600, 500, 50, 50, false));
-
     }
 
     public void initDialogController() {

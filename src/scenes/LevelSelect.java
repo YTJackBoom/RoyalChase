@@ -13,6 +13,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     private Game game;
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
     private Values playerValues;
+    private GameStates backScene;
     public LevelSelect(Game game){
         super(game);
         this.game = game;
@@ -78,11 +79,8 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
     @Override
     public void update() {
-        for (int i = 0; i < playerValues.getLevelscleared(); i++) {
-            buttons.get(i).setChecked(true);
-        }
-        for(int i = playerValues.getLevelscleared(); i < buttons.size(); i++){
-            buttons.get(i).setChecked(false);
+        for (MyButton button : buttons) {
+            button.setChecked(playerValues.getLevelscleared().contains(button.getLevel()));
         }
     }
 
@@ -91,22 +89,6 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         int x = e.getX();
         int y = e.getY();
 
-//        for (MyButton button: buttons){
-//            if(button.getBounds().contains(x,y)) {
-//                if (button.isChecked()) {
-////                helpers.Values.LEVEL = button.getType();
-//                    playerValues.setRewardmultiplyer(0);
-//                } else {
-//                    playerValues.setRewardmultiplyer(1);
-//                }
-//                playerValues.setLevel(button.getLevel());
-//
-//                System.out.println("Level " + button.getText());
-//                game.getPlaying().reset();
-//                GameStates.gameState = GameStates.PLAYING;
-//
-//            }
-//        }
     }
 
     @Override
@@ -177,18 +159,24 @@ public class LevelSelect extends GameScenes implements SceneMethods{
 
     public void releasedOnTextButton(MyButton b){
         switch (b.getText()) {
-            case "Zurück" -> GameStates.gameState = GameStates.MENU;
-            default -> System.out.println("THis Button should not exist: "+b.getText());
+            case "Zurück" -> {
+                GameStates.gameState = backScene;
+            }
+            default -> System.out.println("THis Button should not exist: " + b.getText());
         }
     }
 
-    public void resetButtons(){
-        for(MyButton button: buttons){
+    public void resetButtons() {
+        for (MyButton button : buttons) {
             button.resetBools();
         }
     }
 
     public void setPlayerValues(Values playerValues) {
         this.playerValues = playerValues;
+    }
+
+    public void setBackScene(GameStates gameStates) {
+        this.backScene = gameStates;
     }
 }

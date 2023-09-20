@@ -1,7 +1,10 @@
 package controllers;
 
-import helpers.*;
 import basics.Game;
+import helpers.Direction;
+import helpers.TextReader;
+import helpers.Values;
+import helpers.Wave;
 import scenes.GameStates;
 import scenes.Playing;
 
@@ -76,6 +79,7 @@ public class WaveController implements ControllerMethods {
 
                 generateNewWave = false;
                 GameStates.gameState = LEVELCLEARED;
+
             }
         }
 

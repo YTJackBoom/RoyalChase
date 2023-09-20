@@ -1,6 +1,7 @@
 package helpers;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Values implements Serializable {
     protected double gold = 100;
@@ -12,7 +13,7 @@ public class Values implements Serializable {
     protected double wood = 100;
     protected double stone = 100;
     protected double workers = 1;
-    protected int levelscleared = 0;
+    protected ArrayList<Integer> levelscleared = new ArrayList<Integer>();
     protected double rewardmultiplyer = 1;
 
     public Values(double workers,double gold,double mana,double iron, double wood, double stone) {
@@ -29,7 +30,7 @@ public class Values implements Serializable {
         health = 100;
         score = 0;
         level = 1;
-        levelscleared = 0;
+        levelscleared.clear();
         mana = 11500;
         iron = 11500;
         wood = 11500;
@@ -128,12 +129,8 @@ public class Values implements Serializable {
         this.stone = stone;
     }
 
-    public int getLevelscleared() {
+    public ArrayList<Integer> getLevelscleared() {
         return levelscleared;
-    }
-
-    public void setLevelscleared(int levelscleared) {
-        this.levelscleared = levelscleared;
     }
 
     public double getRewardmultiplyer() {

@@ -149,12 +149,11 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
             int y = e.getY();
             for (MyButton button : buttons) {
                 if (button.getBounds().contains(x, y)) {
-                    if (playerValues.getRewardmultiplyer() == 1) {
-                        playerValues.setLevelscleared(playerValues.getLevelscleared()+1);
-                    }
+                    playerValues.getLevelscleared().add(playerValues.getLevel());
 
                     if (button.getText().equals("Continue")) {
                         GameStates.gameState = GameStates.LEVELSELECT;
+                        game.getLevelSelect().setBackScene(GameStates.LEVELCLEARED);
                         game.getPlaying().getTowerController().sellAllTowers();
                         System.out.println("Continue");
                     } else if (button.getText().equals("Save")) {
