@@ -1,5 +1,6 @@
 package uiElements;
 
+import helpers.Constants;
 import helpers.Coordinate;
 import helpers.TextReader;
 import helpers.variables;
@@ -9,8 +10,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.invoke.VarHandle;
-import java.util.Collection;
 
 import static helpers.variables.Buttons.*;
 
@@ -92,6 +91,7 @@ public class MyButton {
 
 	public void render(Graphics g) {
 		if (isVisible) {
+			g.setFont(Constants.UIConstants.BUTTONFONT);
 			if (isTextButton) {
 				renderButtonBody(g);
 				renderButtonBox(g);

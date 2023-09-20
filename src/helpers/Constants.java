@@ -14,6 +14,8 @@ public class Constants {
 		public static final Font SUCCESFULLSAVEFONT = new Font("TimesRoman", Font.PLAIN, 50);
 		public static final Font RECENTLYSOLDFONT = new Font("TimesRoman", Font.PLAIN, 50);
 		public static final Font TOWERLEVELFONT = new Font("TimesRoman", Font.PLAIN, 50);
+		public static final Font DIALOGFONT = new Font("Arial", Font.PLAIN, 20);
+		public static final Font BUTTONFONT = new Font("TimesRoman", Font.PLAIN, 15);
 
 		public static final int NUMBEROFRANGECIRCLES = 5;
 
@@ -26,8 +28,10 @@ public class Constants {
 		public static final int TOWERSCALEFACTOR = 2;
 
 
-        public static final float CIRCLESTHICKNESS = 2.5f;
-    }
+		public static final float CIRCLESTHICKNESS = 2.5f;
+
+	}
+
 	public static class ObjectConstants {
 		public static final int SPEEDOFFSET = 1; //delay for certasin speed adjustments
 		public static final int EXPLOSIONRADIUS = 75;

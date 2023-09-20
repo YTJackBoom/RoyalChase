@@ -26,6 +26,7 @@ public class Slider {
     }
 
     public void render(Graphics g) {
+        g.setFont(new Font("Arial", Font.BOLD, 20));
         g.setColor(Color.BLACK);
         // Draw the slider bar
         g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);

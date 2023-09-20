@@ -126,6 +126,7 @@ public class InfoOverlay {
 
     public void renderTowerCosts(Graphics g) {
         if (hoveredButton == null) return;
+        g.setFont(new Font("Arial", Font.BOLD, 20));
 
         String buttonText = hoveredButton.getText();
         boolean isSellText = "Sell".equals(buttonText);
