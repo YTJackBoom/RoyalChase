@@ -26,7 +26,9 @@ public class MyButton {
 	private int level = -1;
 	private BufferedImage ButtonImage;
 	private Tooltip tooltip;
-	public MyButton(String text, int x, int y, int width, int height,boolean visibility) {
+	private boolean hasOutline = true;
+
+	public MyButton(String text, int x, int y, int width, int height, boolean visibility) {
 		isVisible = visibility;
 		this.text = text;
 		this.x = x;
@@ -36,7 +38,8 @@ public class MyButton {
 		isTextButton = true;
 		initBounds();
 	}
-	public MyButton(int ButtonType, int x, int y, int width, int height,boolean visibility) {
+
+	public MyButton(int ButtonType, int x, int y, int width, int height, boolean visibility, boolean hasOutline) {
 		isVisible = visibility;
 		this.type = ButtonType;
 		this.x = x;
@@ -46,6 +49,7 @@ public class MyButton {
 		initBounds();
 		initButtonImage();
 		initButtonTooltip();
+		this.hasOutline = hasOutline;
 	}
 	public MyButton(int level, Coordinate pos, int width, int height,boolean visibility) {
 		isVisible = visibility;
@@ -115,6 +119,7 @@ public class MyButton {
 	}
 
 	private void renderButtonBox(Graphics g) {
+		if (!hasOutline) return;
 		g.setColor(Color.BLACK);
 		g.drawRect(x, y, width, height);
 		if(mousePressed) {
@@ -123,6 +128,7 @@ public class MyButton {
 		}
 	}
 	private void renderButtonText(Graphics g) {
+		g.setColor(Color.BLACK);
 		int width2 = g.getFontMetrics().stringWidth(text);
 		int height2 = g.getFontMetrics().getHeight();
 

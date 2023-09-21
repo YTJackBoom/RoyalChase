@@ -118,8 +118,8 @@ public class Playing extends GameScenes implements SceneMethods {
     }
 
     public void initButtonBarControls() {
-        buttonBarRightControls.add(new MyButton(10, 500, 500, 50, 50, true));
-        buttonBarRightControls.add(new MyButton(11, 600, 500, 50, 50, false));
+        buttonBarRightControls.add(new MyButton(10, 500, 500, 50, 50, true, false));
+        buttonBarRightControls.add(new MyButton(11, 600, 500, 50, 50, false, false));
     }
 
     public void initDialogController() {

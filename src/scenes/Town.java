@@ -65,8 +65,8 @@ public class Town extends GameScenes implements SceneMethods {
 
         buttonBar = new MyButtonBar(this, new helpers.Coordinate(x, y), width, height, UIPos.TOWNRIGHT);
 
-        buttonBarControls.add(new MyButton(10, 500, 500, 50, 50, true));
-        buttonBarControls.add(new MyButton(11, 600, 500, 50, 50, false));
+        buttonBarControls.add(new MyButton(10, 500, 500, 50, 50, true, false));
+        buttonBarControls.add(new MyButton(11, 600, 500, 50, 50, false, false));
 
     }
 
