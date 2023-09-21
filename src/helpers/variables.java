@@ -495,8 +495,8 @@ public class variables { //class to define different variables for thing
                 case SNIP_T_B -> new File(standartpath + "snip_t_icon.png");
                 case MANA_B_B -> new File("res/images/buttons/blue_square.png");
                 case HOUSE_B_B -> new File("res/images/buttons/red_square.png");
-                case EXTEND_U_B -> new File("res/images/buttons/red_square.png");
-                case COLLAPSE_U_B -> new File("res/images/buttons/red_square.png");
+                case EXTEND_U_B -> new File("res/images/buttons/extend_bar.png");
+                case COLLAPSE_U_B -> new File("res/images/buttons/collapse_bar.png");
 
                 default ->
                         throw new IllegalStateException("variables: getButtonImageFile: Unexpected value: " + buttonType);
