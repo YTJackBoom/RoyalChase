@@ -1,13 +1,12 @@
 package helpers;
 
 import java.io.Serializable;
-import java.awt.Point;
 
-public class Coordinate implements Serializable {
+public class AbsoluteCoordinate implements Serializable {
 	protected int x;
 	protected int y;
 
-	public Coordinate(int x, int y) {
+	public AbsoluteCoordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -37,17 +36,18 @@ public class Coordinate implements Serializable {
             return false;
         }
 
-        final Coordinate other = (Coordinate) obj;
-        if(x!=other.getX()) {
-        	return false;
-        }
+		final AbsoluteCoordinate other = (AbsoluteCoordinate) obj;
+		if (x != other.getX()) {
+			return false;
+		}
 
-        if(y!=other.getY()) {
-        	return false;
-        }
-        return true;
-    }
-	public double distanceTo(Coordinate pos2) {
+		if (y != other.getY()) {
+			return false;
+		}
+		return true;
+	}
+
+	public double distanceTo(AbsoluteCoordinate pos2) {
 		double deltaX = pos2.getX() - this.getX();
 		double deltaY = pos2.getY() - this.getY();
 

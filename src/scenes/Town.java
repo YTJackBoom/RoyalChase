@@ -3,8 +3,7 @@ package scenes;
 import basics.Game;
 import controllers.BuildingsController;
 import controllers.DialogController;
-import helpers.Constants;
-import helpers.variables;
+import helpers.*;
 import uiElements.InfoOverlay;
 import uiElements.MyButton;
 import uiElements.MyButtonBar;
@@ -57,17 +56,37 @@ public class Town extends GameScenes implements SceneMethods {
     }
 
     public void initButtonBar() {
-        int width = 120;
-        int height = 1000;
+        // The right bar
+        int widthr = 120;
+        int heightr = 1000;
+        float relativeXr = 1.0f - (float) widthr / fWIDTH;  // All the way to the right minus the width
+        float relativeYr = 1.0f - (float) heightr / fHEIGHT;  // Near the bottom minus the height
 
-        int x = game.getWidth() - width - 20;
-        int y = game.getHeight() - height - 20;
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0);  // Top-left corner as reference
 
-        buttonBar = new MyButtonBar(this, new Rectangle(x, y, width, height), UIPos.TOWNRIGHT);
+        UiCoordinate uiCoordinateRight = new UiCoordinate(
+                new RelativeCoordinate(referencePoint, relativeXr * 100, relativeYr * 100));
 
-        buttonBarControls.add(new MyButton(10, new Rectangle(500, 500, 50, 50), true, false));
-        buttonBarControls.add(new MyButton(11, new Rectangle(600, 500, 50, 50), false, false));
+        buttonBar = new MyButtonBar(this, uiCoordinateRight, widthr, heightr, UIPos.PLAYINGRIGHT);
 
+        initButtonBarControls();
+    }
+
+    public void initButtonBarControls() {
+        int buttonHeight = 50; // Example height of the button; adjust as needed.
+        int buttonWidth = 50; // Example width of the button; adjust as needed.
+
+        // For the button's relative positioning
+        float relativeX = 0f; // At the left edge of the buttonBarRight
+        float relativeY = 50f - (0.5f * buttonHeight / buttonBar.getHeight()) * 100; // Vertically centered as a percentage
+
+        AbsoluteCoordinate referencePoint = buttonBar.getUiCoordinate().getAbsolutePosition();
+
+        UiCoordinate sharedUiCoordinate = new UiCoordinate(
+                new RelativeCoordinate(referencePoint, relativeX, relativeY));
+
+        buttonBarControls.add(new MyButton(10, sharedUiCoordinate, buttonWidth, buttonHeight, true, false));
+        buttonBarControls.add(new MyButton(11, sharedUiCoordinate, buttonWidth, buttonHeight, false, false));
     }
 
     @Override
@@ -148,7 +167,7 @@ public class Town extends GameScenes implements SceneMethods {
         mouseX = e.getX();
         mouseY = e.getY();
         if (e.getButton()==1) {
-            if (buttonBar.getBounds().contains(mouseX, mouseY)) {
+            if (buttonBar.contains(mouseX, mouseY)) {
                 buttonBar.mousePressed(mouseX, mouseY);
             }
         }
@@ -161,7 +180,7 @@ public class Town extends GameScenes implements SceneMethods {
 
         if (e.getButton() == 1) {
             if (game.getPlayerValues().getLevel() == 0) dialogController.mouseReleased(mouseX, mouseY);
-            if (buttonBar.getBounds().contains(mouseX, mouseY)) buttonBar.mouseReleased(mouseX, mouseY);
+            if (buttonBar.contains(mouseX, mouseY)) buttonBar.mouseReleased(mouseX, mouseY);
             if (dragingObject) {
                 buildingsController.mouseReleased(mouseX, mouseY);
                 dragingObject = false;
@@ -173,13 +192,13 @@ public class Town extends GameScenes implements SceneMethods {
     public void checkButtonBarControls(int x, int y) {
         MyButton extendButtonBarRight = buttonBarControls.get(0);
         MyButton collapseButtonBarRight = buttonBarControls.get(1);
-        if (extendButtonBarRight.getBounds().contains(x, y) && extendButtonBarRight.isVisible()) {
+        if (extendButtonBarRight.contains(x, y) && extendButtonBarRight.isVisible()) {
             buttonBar.setVisible(true);
             extendButtonBarRight.setVisible(false);
             collapseButtonBarRight.setVisible(true);
         }
 
-        if (collapseButtonBarRight.getBounds().contains(x, y) && collapseButtonBarRight.isVisible()) {
+        if (collapseButtonBarRight.contains(x, y) && collapseButtonBarRight.isVisible()) {
             buttonBar.setVisible(false);
             collapseButtonBarRight.setVisible(false);
             extendButtonBarRight.setVisible(true);

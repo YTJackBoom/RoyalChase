@@ -2,7 +2,7 @@ package enemy;
 
 import controllers.EnemyController;
 import gameObjects.Enemy;
-import helpers.Coordinate;
+import helpers.AbsoluteCoordinate;
 
 import static helpers.variables.Enemies.SKELETON;
 import static helpers.variables.Projectiles.ARROW;
@@ -10,7 +10,8 @@ import static helpers.variables.Projectiles.ARROW;
 public class Skeleton extends Enemy {
     private int counter;
     private boolean isLoaded;
-    public Skeleton(EnemyController enemyController, Coordinate pos) {
+
+    public Skeleton(EnemyController enemyController, AbsoluteCoordinate pos) {
         super(enemyController, pos, SKELETON, EnemyAttackPattern.RANGED, EnemyType.NORMAL);
     }
 

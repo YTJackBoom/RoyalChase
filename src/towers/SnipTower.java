@@ -2,13 +2,13 @@ package towers;
 
 import controllers.TowerController;
 import gameObjects.Tower;
-import helpers.Coordinate;
+import helpers.AbsoluteCoordinate;
 
 public class SnipTower extends Tower {
 	private int range = 100;
 
 
-	public SnipTower(TowerController towerController, Coordinate pos, int type) {
+	public SnipTower(TowerController towerController, AbsoluteCoordinate pos, int type) {
 		super(towerController, pos, type, true);
 	}
 

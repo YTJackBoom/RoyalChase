@@ -3,9 +3,9 @@ package gameObjects;
 import controllers.EnemyController;
 import enemy.EnemyAttackPattern;
 import enemy.EnemyType;
+import helpers.AbsoluteCoordinate;
 import helpers.Circle;
 import helpers.Constants;
-import helpers.Coordinate;
 import helpers.variables;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class Enemy extends GameObject {
 	private int attackTickCounter = 0;
 
 
-	public Enemy(EnemyController enemyController, Coordinate pos, int type, EnemyAttackPattern enemyAttackPattern, EnemyType enemyType) {
+	public Enemy(EnemyController enemyController, AbsoluteCoordinate pos, int type, EnemyAttackPattern enemyAttackPattern, EnemyType enemyType) {
 		super(pos, enemyController.getPlaying().getGame().getPreLoader(), GameObjectType.ENEMY, type, true);
 		this.enemyAttackPattern = enemyAttackPattern;
 		this.enemyController = enemyController;
@@ -34,10 +34,10 @@ public class Enemy extends GameObject {
 		initVariables();
 	}
 
-	public void update(ArrayList<Coordinate> pathCoordinates) {
+	public void update(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		if (!enemyController.getPlaying().isPaused()) {
 			if (getStun() <= 0) {
-				move(pathCoordinates);
+				move(pathAbsoluteCoordinates);
 				fire();
 
 			} else {
@@ -46,28 +46,28 @@ public class Enemy extends GameObject {
 		}
 	}
 
-	public void move(ArrayList<Coordinate> pathCoordinates) { //um verschieden Arten von verhaltenn zu ermöglichen
+	public void move(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) { //um verschieden Arten von verhaltenn zu ermöglichen
 		switch (enemyAttackPattern) {
 			case MELEE:
-				meleeMove(pathCoordinates);
+				meleeMove(pathAbsoluteCoordinates);
 				break;
 			case SACRIFICE:
-				sacrificeMove(pathCoordinates);
+				sacrificeMove(pathAbsoluteCoordinates);
 				break;
 			case RANGED:
-				rangedMove(pathCoordinates);
+				rangedMove(pathAbsoluteCoordinates);
 				break;
 		}
 	}
 
-	private void meleeMove(ArrayList<Coordinate> pathCoordinates) {
+	private void meleeMove(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		if (!isMeleeAttacking) {
-			double remainingPath = pathCoordinates.size() - 2 - getPathIndex(); // -2 to stop one step before the gate
-			if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathCoordinates.size() - 2) { // adjust to -2
+			double remainingPath = pathAbsoluteCoordinates.size() - 2 - getPathIndex(); // -2 to stop one step before the gate
+			if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathAbsoluteCoordinates.size() - 2) { // adjust to -2
 				double index = getPathIndex() + getSpeed();
-				index = Math.min(index, pathCoordinates.size() - 2); // adjust to -2
+				index = Math.min(index, pathAbsoluteCoordinates.size() - 2); // adjust to -2
 				setPathIndex(index);
-				setPos(pathCoordinates.get((int) Math.round(index)));
+				setPos(pathAbsoluteCoordinates.get((int) Math.round(index)));
 				range.setPos(pos);
 			} else {
 				// We are near the gate, start "attacking"
@@ -75,11 +75,11 @@ public class Enemy extends GameObject {
 			}
 		} else {
 			// Simulate a simple "bounce" attack animation
-			bounceAttack(pathCoordinates);
+			bounceAttack(pathAbsoluteCoordinates);
 		}
 	}
 
-	private void bounceAttack(ArrayList<Coordinate> pathCoordinates) {
+	private void bounceAttack(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		final double attackSpeed = variables.Enemies.getEnemyReloadTime(type);
 		double incrementPerTick = Constants.ObjectConstants.MELEEATTACKDISTANCE / (attackSpeed * 60);  // since we want to bounce back in the entire duration, divide by 2, i.e., half for forward and half for backward
 
@@ -87,51 +87,51 @@ public class Enemy extends GameObject {
 
 		// Ensure bounds with pathCoordinates
 		if (newIndex < 0) newIndex = 0;
-		if (newIndex > pathCoordinates.size() - 1) newIndex = pathCoordinates.size() - 1;
+		if (newIndex > pathAbsoluteCoordinates.size() - 1) newIndex = pathAbsoluteCoordinates.size() - 1;
 
 		setPathIndex(newIndex);
-		setPos(pathCoordinates.get((int) Math.round(newIndex)));
+		setPos(pathAbsoluteCoordinates.get((int) Math.round(newIndex)));
 		range.setPos(pos);
 
 		attackTickCounter++;
 
 		// If we've completed half the attack duration (i.e., moved forward completely),
 		// or exceeded pathCoordinates or are less than 0, change direction.
-		if (attackTickCounter >= attackSpeed * 60 || newIndex == pathCoordinates.size() - 1 || newIndex == 0) {
-			if(isMovingForward) enemyController.enemyMeleeAttackOnGate(this);
+		if (attackTickCounter >= attackSpeed * 60 || newIndex == pathAbsoluteCoordinates.size() - 1 || newIndex == 0) {
+			if (isMovingForward) enemyController.enemyMeleeAttackOnGate(this);
 			isMovingForward = !isMovingForward;
 			attackTickCounter = 0;  // reset the counter for the backward movement
 		}
 	}
 
 
+	private void sacrificeMove(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
+		double remainingPath = pathAbsoluteCoordinates.size() - 1 - getPathIndex();
+		if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathAbsoluteCoordinates.size() - 1) {
+			double index = getPathIndex() + getSpeed();
 
-	private void sacrificeMove(ArrayList<Coordinate> pathCoordinates) {
-			double remainingPath = pathCoordinates.size() - 1 - getPathIndex();
-			if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathCoordinates.size() - 1) {
-				double index = getPathIndex() + getSpeed();
+			// Ensure index stays within the bounds of pathCoordinates.
+			index = Math.min(index, pathAbsoluteCoordinates.size() - 1);
 
-				// Ensure index stays within the bounds of pathCoordinates.
-				index = Math.min(index, pathCoordinates.size() - 1);
-
-				setPathIndex(index);
-				setPos(pathCoordinates.get((int) Math.round(index)));
-			} else { // Enemy has reached the gate, implement different behaviors.
-				enemyController.enemySacrificeOnGate(this);
-			}
+			setPathIndex(index);
+			setPos(pathAbsoluteCoordinates.get((int) Math.round(index)));
+		} else { // Enemy has reached the gate, implement different behaviors.
+			enemyController.enemySacrificeOnGate(this);
+		}
 	}
-	private void rangedMove(ArrayList<Coordinate> pathCoordinates) {
+
+	private void rangedMove(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		if (!getRange().contains(enemyController.getPlaying().getTowerController().getGate().getHitBox())) {
 
-			double remainingPath = pathCoordinates.size() - 1 - getPathIndex();
-			if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathCoordinates.size() - 1) {
+			double remainingPath = pathAbsoluteCoordinates.size() - 1 - getPathIndex();
+			if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathAbsoluteCoordinates.size() - 1) {
 				double index = getPathIndex() + getSpeed();
 
 				// Ensure index stays within the bounds of pathCoordinates.
-				index = Math.min(index, pathCoordinates.size() - 1);
+				index = Math.min(index, pathAbsoluteCoordinates.size() - 1);
 
 				setPathIndex(index);
-				Coordinate newPos = pathCoordinates.get((int) Math.round(index));
+				AbsoluteCoordinate newPos = pathAbsoluteCoordinates.get((int) Math.round(index));
 				setPos(newPos);
 				range.setPos(newPos);
 			}

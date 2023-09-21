@@ -16,28 +16,28 @@ public class PathFinder {
             this.tileController = tileController;
 
             // Initialize the start and end tiles based on tiles with isStart and isEnd properties
-            for (Tile tile : tileController.getTileList()) {
-                if (tile.isStart()) {
-                    this.startTile = tile;
-                }
-                if (tile.isGate()) {
-                    this.endTile = tile;
-                }
+        for (Tile tile : tileController.getTileList()) {
+            if (tile.isStart()) {
+                this.startTile = tile;
+            }
+            if (tile.isGate()) {
+                this.endTile = tile;
             }
         }
+    }
 
-        public ArrayList<Coordinate> getPath() {
-            ArrayList<Coordinate> fullPath = new ArrayList<>();
-            int startX = startTile.getPos().getX();
-            int startY = startTile.getPos().getY() - 128 + 235;
-            Coordinate currentCoord = new Coordinate(startX, startY);
+    public ArrayList<AbsoluteCoordinate> getPath() {
+        ArrayList<AbsoluteCoordinate> fullPath = new ArrayList<>();
+        int startX = startTile.getPos().getX();
+        int startY = startTile.getPos().getY() - 128 + 235;
+        AbsoluteCoordinate currentCoord = new AbsoluteCoordinate(startX, startY);
 
-            // Calculate the sequence of tiles based on the path.
-            ArrayList<Tile> tileSequence = determineTileSequence();
+        // Calculate the sequence of tiles based on the path.
+        ArrayList<Tile> tileSequence = determineTileSequence();
 
-            for (Tile tile : tileSequence) {
-                List<Coordinate> pathThroughTile = tile.getGlobalPath(currentCoord);
-                fullPath.addAll(pathThroughTile);
+        for (Tile tile : tileSequence) {
+            List<AbsoluteCoordinate> pathThroughTile = tile.getGlobalPath(currentCoord);
+            fullPath.addAll(pathThroughTile);
 
                 if (pathThroughTile.size() > 0) {
                     currentCoord = pathThroughTile.get(pathThroughTile.size() - 1);

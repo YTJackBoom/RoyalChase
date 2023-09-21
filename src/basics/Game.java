@@ -1,9 +1,10 @@
 package basics;
 
+import collectors.UiElementCollector;
 import controllers.BuildingsController;
 import gameObjects.Building;
+import helpers.AbsoluteCoordinate;
 import helpers.BuildingSaveState;
-import helpers.Coordinate;
 import helpers.PreLoader;
 import helpers.Values;
 import scenes.Menu;
@@ -19,20 +20,21 @@ import java.io.*;
 public class Game extends JFrame implements Serializable {
 
 
-        public final static int fps = 60; // frames pro sekunde, zum rendern
-        public static final int ups = 120; //updates pro sekunde, für game logic
-        public static final int initGameWidth = 265*7;
-        public static final int initGameHeight = 256*4;
-        private volatile int currentUPS = 0;
-        private int currentFPS = 0;
-        private boolean isPaused = false;
-        protected boolean isFullScreen =false;
-
-        // Classes
-        private GameScreen gameScreen;
-        private Menu menu;
-        private Playing playing;
-        private Settings settings;
+    public final static int fps = 60; // frames pro sekunde, zum rendern
+    public static final int ups = 120; //updates pro sekunde, für game logic
+    public static final int initGameWidth = 265 * 7;
+    public static final int initGameHeight = 256 * 4;
+    public static int fWIDTH = initGameWidth;
+    public static int fHEIGHT = initGameHeight;
+    protected boolean isFullScreen = false;
+    private volatile int currentUPS = 0;
+    private int currentFPS = 0;
+    private boolean isPaused = false;
+    // Classes
+    private GameScreen gameScreen;
+    private Menu menu;
+    private Playing playing;
+    private Settings settings;
         private GameOver gameOver;
         private LevelCleared levelCleared;
         private LevelSelect levelSelect;
@@ -168,7 +170,7 @@ public class Game extends JFrame implements Serializable {
            int i=0;
             BuildingsController buildingsController = town.getBuildingsController();
             for(BuildingSaveState b: gameState.getTownBuildingsSave()) {
-                Coordinate pos = b.getPos();
+                AbsoluteCoordinate pos = b.getPos();
                 buildingsController.getBuildingsList().set(i,new Building(buildingsController,pos.getX(),pos.getY(),b.getType()));
                 i++;
             }
@@ -204,34 +206,48 @@ public class Game extends JFrame implements Serializable {
             gameScreen.setSize(new Dimension(initGameWidth, initGameHeight));
 
             gameScreen.revalidate();
+
+            fWIDTH = initGameWidth;
+            fHEIGHT = initGameHeight;
+            UiElementCollector.getInstance().notifyScreenResize();
         } else {
             // Switch to fullscreen mode
             dispose();
             setUndecorated(true);
             setVisible(true);
-            getContentPane().setSize(screenWidth,screenHeight);
-            setSize(new Dimension(screenWidth,screenHeight));
-            setLocation(0,0 );
+            getContentPane().setSize(screenWidth, screenHeight);
+            setSize(new Dimension(screenWidth, screenHeight));
+            setLocation(0, 0);
 
-            gameScreen.setSize(new Dimension(screenWidth,screenHeight));
+            gameScreen.setSize(new Dimension(screenWidth, screenHeight));
             gameScreen.revalidate();
 
-            getPlaying().getTileController().extendTiles(screenWidth,screenHeight);
+            getPlaying().getTileController().extendTiles(screenWidth, screenHeight);
 
+            fWIDTH = screenWidth;
+            fHEIGHT = screenHeight;
+            UiElementCollector.getInstance().notifyScreenResize();
         }
         isFullScreen = !isFullScreen;
     }
-        // Getters and setters
-        protected void incrementUPS() {
-            currentUPS++;
-        }
-        protected void incrementFPS() {currentFPS++;};
-        public Menu getMenu() {
-            return menu;
-        }
 
-        public Playing getPlaying() {
-            return playing;
+    // Getters and setters
+    protected void incrementUPS() {
+        currentUPS++;
+    }
+
+    protected void incrementFPS() {
+        currentFPS++;
+    }
+
+    ;
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Playing getPlaying() {
+        return playing;
         }
 
         public Settings getSettings() {

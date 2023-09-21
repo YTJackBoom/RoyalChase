@@ -5,13 +5,13 @@ import java.awt.*;
 public class Circle {
 	private int x,y;
 	private double radius;
-	public Circle(Coordinate pos, double radius) {
+	public Circle(AbsoluteCoordinate pos, double radius) {
 		x = pos.getX();
 		y = pos.getY();
 		this.radius = radius;
 	}
 
-	public boolean contains(Coordinate pos) {
+	public boolean contains(AbsoluteCoordinate pos) {
 		int distance = (int) Math.sqrt(Math.pow(pos.getX() - x, 2) + Math.pow(pos.getY() - y, 2));
 		return distance <= radius;
 	}
@@ -56,20 +56,20 @@ public class Circle {
 		}
 	}
 
-	// If none of the pixels in the hitbox are inside the circle, return false
-	return false;
-}
+		// If none of the pixels in the hitbox are inside the circle, return false
+		return false;
+	}
 
-	public Coordinate getCenter() {
-		return new Coordinate(x,y);
+	public AbsoluteCoordinate getCenter() {
+		return new AbsoluteCoordinate(x, y);
 	}
 
 	public double getRadius() {
 		return radius;
 	}
 
-    public void setPos(Coordinate pos) {
-		x= pos.getX();
-		y=pos.getY();
-    }
+	public void setPos(AbsoluteCoordinate pos) {
+		x = pos.getX();
+		y = pos.getY();
+	}
 }

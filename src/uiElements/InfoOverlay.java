@@ -118,7 +118,7 @@ public class InfoOverlay {
 //			Circle [] circles = new Circle[Constants.UIConstants.NUMBEROFRANGECIRCLES];
 
             for (int i = 0; i < Constants.UIConstants.NUMBEROFRANGECIRCLES; i++) {
-                Circle c = new Circle(new Coordinate(mouseX, mouseY), range - Constants.UIConstants.NUMBEROFRANGECIRCLES + i);
+                Circle c = new Circle(new AbsoluteCoordinate(mouseX, mouseY), range - Constants.UIConstants.NUMBEROFRANGECIRCLES + i);
                 c.render(g);
             }
         }
@@ -136,8 +136,8 @@ public class InfoOverlay {
         if (!hoveredButton.isVisible()) return;
 
         FontMetrics fm = g.getFontMetrics();
-        int x = hoveredButton.getX() - hoveredButton.getWidth() / 2;
-        int y = hoveredButton.getY() + fm.getHeight()/2;
+        int x = hoveredButton.uiCoordinate.getX() - hoveredButton.width / 2;
+        int y = hoveredButton.uiCoordinate.getY() + fm.getHeight() / 2;
 
         Values costValues = null;
 

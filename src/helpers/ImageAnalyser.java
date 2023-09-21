@@ -5,19 +5,19 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class ImageAnalyser {
-	private ArrayList<Coordinate> pathCoordinates;
+	private ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates;
 	private BufferedImage image;
 	
 	public ImageAnalyser(BufferedImage image) {
-		pathCoordinates = new ArrayList<Coordinate>();
+		pathAbsoluteCoordinates = new ArrayList<AbsoluteCoordinate>();
 		this.image = image;
 	}
 
-	public ArrayList<Coordinate> imgToPath(Coordinate start) {
+	public ArrayList<AbsoluteCoordinate> imgToPath(AbsoluteCoordinate start) {
 		if (image != null) {
-			ArrayList<Coordinate> visited = new ArrayList<>();
+			ArrayList<AbsoluteCoordinate> visited = new ArrayList<>();
 			visited.add(start);
-			ArrayList<Coordinate> targetColorPoints = new ArrayList<>();
+			ArrayList<AbsoluteCoordinate> targetColorPoints = new ArrayList<>();
 			targetColorPoints.add(start);
 
 			int width = image.getWidth();
@@ -31,9 +31,9 @@ public class ImageAnalyser {
 			int tolerance = 5;  // Adjust as necessary for minor color deviations
 
 			while (!visited.isEmpty()) {
-				Coordinate currentCoordinate = visited.remove(0);
-				int currentX = currentCoordinate.getX();
-				int currentY = currentCoordinate.getY();
+				AbsoluteCoordinate currentAbsoluteCoordinate = visited.remove(0);
+				int currentX = currentAbsoluteCoordinate.getX();
+				int currentY = currentAbsoluteCoordinate.getY();
 				for (int j = 0; j < 8; j++) {
 					int nextX = currentX + dx[j];
 					int nextY = currentY + dy[j];
@@ -43,10 +43,10 @@ public class ImageAnalyser {
 
 						// Check if the pixel matches the target color within the specified tolerance
 						if (alpha != 0 && colorMatches(nextColor, targetColor, tolerance)) {
-							Coordinate nextCoordinate = new Coordinate(nextX, nextY);
-							if (!targetColorPoints.contains(nextCoordinate) && !visited.contains(nextCoordinate)) {
-								visited.add(nextCoordinate);
-								targetColorPoints.add(nextCoordinate);
+							AbsoluteCoordinate nextAbsoluteCoordinate = new AbsoluteCoordinate(nextX, nextY);
+							if (!targetColorPoints.contains(nextAbsoluteCoordinate) && !visited.contains(nextAbsoluteCoordinate)) {
+								visited.add(nextAbsoluteCoordinate);
+								targetColorPoints.add(nextAbsoluteCoordinate);
 							}
 						}
 					}

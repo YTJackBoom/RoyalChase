@@ -12,7 +12,7 @@ public class Slider extends UiElement {
     private int snapSize;
 
     public Slider(Rectangle bounds, int minValue, int maxValue, int startValue) {
-        super(bounds, UIObjectType.DIALOG, 0, true, "", "");
+        super(bounds, UIObjectType.DIALOG, 0, true);
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.currentValue = startValue;

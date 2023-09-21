@@ -1,27 +1,31 @@
 package uiElements;
 
+import collectors.UiElementCollector;
+import helpers.UiCoordinate;
 import helpers.variables;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+
 public abstract class UiElement {
-    protected Rectangle bounds;
     protected boolean isVisible = true;
     protected UIObjectType uiObjectType;
     protected int type;
     protected BufferedImage primaryImage;
-    protected String posUpdateCalculationX, posUpdateCalculationY;
+    protected UiCoordinate uiCoordinate;
+    protected int height, width;
 
-    public UiElement(Rectangle bounds, UIObjectType uiObjectType, int type, boolean visibility, String posUpdateCalculationX, String posUpdateCalculationY) {
+    public UiElement(UiCoordinate uiCoordinate, int width, int height, UIObjectType uiObjectType, int type, boolean visibility) {
         isVisible = visibility;
         this.uiObjectType = uiObjectType;
         this.type = type;
-        this.bounds = bounds;
-        this.posUpdateCalculationX = posUpdateCalculationX;
-        this.posUpdateCalculationY = posUpdateCalculationY;
+        this.uiCoordinate = uiCoordinate;
+        this.height = height;
+        this.width = width;
         initImage();
+        UiElementCollector.getInstance().addUiElement(this);
 
     }
 
@@ -36,43 +40,29 @@ public abstract class UiElement {
         }
     }
 
-    ;
-
     public void render(Graphics g) {
         if (!isVisible) return;
         if (primaryImage == null) return;
-        g.drawImage(primaryImage, bounds.x, bounds.y, null);
+        g.drawImage(primaryImage, uiCoordinate.getX(), uiCoordinate.getY(), null);
     }
 
     public void updatePosOnResize() {
 
     }
 
-
-    public void setPos(int x, int y) {
-        bounds.x = x;
-        bounds.y = y;
+    public UiCoordinate getUiCoordinate() {
+        return uiCoordinate;
     }
 
+    public void setUiCoordinate(UiCoordinate uiCoordinate) {
+        this.uiCoordinate = uiCoordinate;
+    }
 
-    public Rectangle getBounds() {
-        return bounds;
+    public boolean contains(int x, int y) {
+        return x >= uiCoordinate.getX() && x <= uiCoordinate.getX() + width && y >= uiCoordinate.getY() && y <= uiCoordinate.getY() + height;
     }
 
     public int getHeight() {
-        return bounds.height;
+        return height;
     }
-
-    public int getWidth() {
-        return bounds.width;
-    }
-
-    public int getX() {
-        return bounds.x;
-    }
-
-    public int getY() {
-        return bounds.y;
-    }
-
 }

@@ -2,8 +2,8 @@ package gameObjects;
 
 
 import controllers.ProjectileController;
+import helpers.AbsoluteCoordinate;
 import helpers.Constants;
-import helpers.Coordinate;
 import helpers.math;
 import helpers.variables;
 
@@ -24,7 +24,7 @@ public class Projectile extends GameObject{
 
 
 	public Projectile(ProjectileController projectileController,GameObject origin, GameObject target, int type) {
-		super(new Coordinate(origin.getPos().getX(), origin.getPos().getY()), projectileController.getPlaying().getGame().getPreLoader(), GameObjectType.PROJECTILE, type, true);
+		super(new AbsoluteCoordinate(origin.getPos().getX(), origin.getPos().getY()), projectileController.getPlaying().getGame().getPreLoader(), GameObjectType.PROJECTILE, type, true);
 		this.type = type;
 		this.target = target;
 		this.projectileController = projectileController;

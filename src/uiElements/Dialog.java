@@ -2,6 +2,7 @@ package uiElements;
 
 import controllers.DialogController;
 import helpers.Constants;
+import helpers.UiCoordinate;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -14,40 +15,40 @@ public class Dialog extends UiElement {
     private MyButton okButton;
     private DialogController dialogController;
 
-    public Dialog(Rectangle bounds, String message, DialogController dialogController, String posUpdateCalculationX, String posUpdateCalculationY) {
-        super(bounds, UIObjectType.DIALOG, 0, true, posUpdateCalculationX, posUpdateCalculationY);
+    public Dialog(UiCoordinate uiCoordinate, int width, int height, String message, DialogController dialogController) {
+        super(uiCoordinate, width, height, UIObjectType.DIALOG, 0, true);
         this.message = message;
         isVisible = false;
         this.dialogController = dialogController;
 
         // Update the bounds height based on the message content
         int totalTextHeight = calculateTotalTextHeight(message);
-        bounds.height = totalTextHeight + 60; // 60 for button height, and margins
+        super.height = totalTextHeight + 60; // 60 for button height, and margins
 
         int buttonWidth = 50;
         int buttonHeight = 30;
-        int buttonX = bounds.x + (bounds.width - buttonWidth) / 2;
-        int buttonY = bounds.y + bounds.height - buttonHeight - 10; // 10px margin from the bottom
+        int buttonX = uiCoordinate.getX() + (width - buttonWidth) / 2;
+        int buttonY = uiCoordinate.getY() + height - buttonHeight - 10; // 10px margin from the bottom
 
         this.okButton = new MyButton("OK", new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight), true);
     }
 
     public void render(Graphics g) {
         if (!isVisible) return;
-        g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-        drawStringWithinBounds(g, message, bounds);
+        g.drawRect(uiCoordinate.getX(), uiCoordinate.getY(), width, height);
+        drawStringWithinBounds(g);
         okButton.render(g);
     }
 
-    private void drawStringWithinBounds(Graphics g, String str, Rectangle rect) {
+    private void drawStringWithinBounds(Graphics g) {
         g.setFont(Constants.UIConstants.DIALOGFONT);
         FontRenderContext frc = new FontRenderContext(null, true, true);
         Font font = g.getFont();
-        List<String> lines = splitTextIntoLines(str, rect.width, font, frc);
+        List<String> lines = splitTextIntoLines(message, width, font, frc);
 
-        int y = rect.y + font.getSize();
+        int y = uiCoordinate.getY() + font.getSize();
         for (String line : lines) {
-            g.drawString(line, rect.x, y);
+            g.drawString(line, uiCoordinate.getX(), y);
             y += font.getSize() + 5;
         }
     }
@@ -55,7 +56,7 @@ public class Dialog extends UiElement {
     private int calculateTotalTextHeight(String str) {
         Font font = Constants.UIConstants.DIALOGFONT;
         FontRenderContext frc = new FontRenderContext(null, true, true);
-        List<String> lines = splitTextIntoLines(str, bounds.width, font, frc);
+        List<String> lines = splitTextIntoLines(str, width, font, frc);
 
         // Calculate total height
         int totalHeight = 0;
@@ -83,7 +84,7 @@ public class Dialog extends UiElement {
     }
 
     public void mouseReleased(int x, int y) {
-        if (okButton.getBounds().contains(x, y)) {
+        if (okButton.contains(x, y)) {
             dialogController.clickedOk(this);
         }
     }
