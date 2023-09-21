@@ -22,7 +22,7 @@ protected int counter;
 	private Values worth;
 
 	public Tower(TowerController towerController, Coordinate pos, int type, boolean visibility) {
-		super(pos, towerController.getPlaying().getGame().getPreLoader(), ObjectType.TOWER, type, visibility);
+		super(pos, towerController.getPlaying().getGame().getPreLoader(), GameObjectType.TOWER, type, visibility);
 		this.type = type;
 		this.pos = pos;
 		this.towerController = towerController;

@@ -1,7 +1,6 @@
 package scenes;
 
 import basics.Game;
-import helpers.Coordinate;
 import helpers.Values;
 import uiElements.MyButton;
 
@@ -34,13 +33,13 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         int buttonXOffset = 200;
         int buttonYOffset = 200;
 
-        for(int i = 0; i < buttonsAmount; i++){
-            int x = buttonXStart + (i%buttonsPerLine)*buttonXOffset;
-            int y = buttonYStart + (i/buttonsPerLine)*buttonYOffset;
-            buttons.add(new MyButton((i+1),new Coordinate(x,y),buttonWidth,buttonHeight,true));
+        for (int i = 0; i < buttonsAmount; i++) {
+            int x = buttonXStart + (i % buttonsPerLine) * buttonXOffset;
+            int y = buttonYStart + (i / buttonsPerLine) * buttonYOffset;
+            buttons.add(new MyButton((i + 1), new Rectangle(x, y, buttonWidth, buttonHeight), true));
         }
-        buttons.add(new MyButton(0,new Coordinate(buttonXStart-buttonXOffset,buttonYStart),buttonWidth,buttonHeight,true)); //Tutorial
-        buttons.add(new MyButton("Zurück",buttonXStart-(buttonXOffset+buttonXOffset/2),buttonYStart-buttonYOffset/2,buttonWidth/2,buttonHeight/2,true));
+        buttons.add(new MyButton(0, new Rectangle(buttonXStart - buttonXOffset, buttonYStart, buttonWidth, buttonHeight), true)); //Tutorial
+        buttons.add(new MyButton("Zurück", new Rectangle(buttonXStart - (buttonXOffset + buttonXOffset / 2), buttonYStart - buttonYOffset / 2, buttonWidth / 2, buttonHeight / 2), true));
     }
 
     @Override
@@ -66,8 +65,8 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         for (MyButton button : buttons) {
             if (button.isChecked()) {
 
-                int x = button.getX() + button.getWidth() / 2 - 10; // Adjust the tick position as needed
-                int y = button.getY() + button.getHeight() / 2 - 10; // Adjust the tick position as needed
+                int x = button.getBounds().x + button.getBounds().width / 2 - 10; // Adjust the tick position as needed
+                int y = button.getBounds().y + button.getBounds().height / 2 - 10; // Adjust the tick position as needed
 
                 g.setColor(Color.GREEN); // Set the tick color
 

@@ -9,18 +9,16 @@ import java.awt.font.TextLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dialog {
+public class Dialog extends UiElement {
     private String message;
     private MyButton okButton;
-    private boolean isVisible;
     private DialogController dialogController;
-    private Rectangle bounds;
 
-    public Dialog(Rectangle bounds, String message, DialogController dialogController) {
+    public Dialog(Rectangle bounds, String message, DialogController dialogController, String posUpdateCalculationX, String posUpdateCalculationY) {
+        super(bounds, UIObjectType.DIALOG, 0, true, posUpdateCalculationX, posUpdateCalculationY);
         this.message = message;
-        this.isVisible = false;
+        isVisible = false;
         this.dialogController = dialogController;
-        this.bounds = bounds;
 
         // Update the bounds height based on the message content
         int totalTextHeight = calculateTotalTextHeight(message);
@@ -31,7 +29,7 @@ public class Dialog {
         int buttonX = bounds.x + (bounds.width - buttonWidth) / 2;
         int buttonY = bounds.y + bounds.height - buttonHeight - 10; // 10px margin from the bottom
 
-        this.okButton = new MyButton("OK", buttonX, buttonY, buttonWidth, buttonHeight, true);
+        this.okButton = new MyButton("OK", new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight), true);
     }
 
     public void render(Graphics g) {
@@ -98,7 +96,4 @@ public class Dialog {
         return isVisible;
     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
 }

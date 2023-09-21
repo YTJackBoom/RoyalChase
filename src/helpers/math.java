@@ -1,7 +1,6 @@
 package helpers;
 
 import gameObjects.Enemy;
-import gameObjects.ObjectType;
 import gameObjects.Tower;
 
 import java.util.Random;

@@ -4,32 +4,26 @@ import enemy.EnemyType;
 import gameObjects.Enemy;
 import scenes.Playing;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-public class BossBar {
-    private Rectangle bounds;
-    private BufferedImage backgroundImage;
+import static helpers.variables.Icons.BOSSBAR;
+
+public class BossBar extends UiElement {
     private Enemy bossPointer;
     private Color lostHealthColor;
     private Playing playing;
 
     public BossBar(Playing playing, Rectangle bounds) {
-        this.bounds = bounds;
-        try {
-            this.backgroundImage = ImageIO.read(new File("res/images/icons/infooverlay/boss_bar.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        super(bounds, UIObjectType.ICON, BOSSBAR, true,
+                "fWIDTH/2 - WIDTH/2", "10");
         this.lostHealthColor = Color.RED;
         this.playing = playing;
     }
 
     public void render(Graphics g) {
         if (playing.getEnemyController().getEnemyList().size() == 0) return;
+        super.render(g);
+
         bossPointer = null;
 
         for (Enemy enemy : playing.getEnemyController().getEnemyList()) { //zum updaten des pointers
@@ -42,8 +36,6 @@ public class BossBar {
         if (bossPointer != null) {
             int currentHealth = (int) bossPointer.getHealth();
             int maxHealth = (int) bossPointer.getMaxHealth();
-            // Draw the background image
-            g.drawImage(backgroundImage, bounds.x, bounds.y, bounds.width, bounds.height, null);
 
             // Calculate the width of the lost health rectangle
             float healthPercentage = (float) currentHealth / maxHealth;
@@ -56,14 +48,5 @@ public class BossBar {
             g.setColor(lostHealthColor);
             g.fillRect(startX, bounds.y, lostHealthWidth, bounds.height);
         }
-    }
-
-
-    public void setBossPointer(Enemy e) {
-        bossPointer = e;
-    }
-
-    public Rectangle getBounds() {
-        return bounds;
     }
 }

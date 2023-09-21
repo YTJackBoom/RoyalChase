@@ -17,7 +17,7 @@ public class Building extends GameObject {
 	private Rectangle bounds;
 	private Values playerValues;
 	public Building(BuildingsController buildingsController, int x, int y, int type ) {
-		super(new Coordinate(x, y), buildingsController.getTown().getGame().getPreLoader(), ObjectType.BUILDING, type, true);
+		super(new Coordinate(x, y), buildingsController.getTown().getGame().getPreLoader(), GameObjectType.BUILDING, type, true);
 		this.x = x;
 		this.y = y;
 		this.type = type;

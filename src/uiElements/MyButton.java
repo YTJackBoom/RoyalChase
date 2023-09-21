@@ -1,11 +1,9 @@
 package uiElements;
 
 import helpers.Constants;
-import helpers.Coordinate;
 import helpers.TextReader;
 import helpers.variables;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,72 +11,46 @@ import java.io.IOException;
 
 import static helpers.variables.Buttons.*;
 
-public class MyButton {
+public class MyButton extends UiElement {
 	private boolean checked = false;
 	private boolean isTextButton = false;
 	private boolean mouseHover = false;
 	private boolean mousePressed = false;
-	private boolean isVisible = false;
 	private String text = null;
 	private int type;
-	private Rectangle bounds;
-	private int x,y,width,height;
 	private int level = -1;
 	private BufferedImage ButtonImage;
 	private Tooltip tooltip;
 	private boolean hasOutline = true;
 
-	public MyButton(String text, int x, int y, int width, int height, boolean visibility) {
+	public MyButton(String text, Rectangle bounds, boolean visibility) {
+		super(bounds, UIObjectType.BUTTON, 0, visibility, "", "");
 		isVisible = visibility;
 		this.text = text;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
 		isTextButton = true;
-		initBounds();
 	}
 
-	public MyButton(int ButtonType, int x, int y, int width, int height, boolean visibility, boolean hasOutline) {
-		isVisible = visibility;
+	public MyButton(int ButtonType, Rectangle bounds, boolean visibility, boolean hasOutline) {
+		super(bounds, UIObjectType.BUTTON, ButtonType, visibility, "", "");
 		this.type = ButtonType;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		initBounds();
-		initButtonImage();
 		initButtonTooltip();
 		this.hasOutline = hasOutline;
 	}
-	public MyButton(int level, Coordinate pos, int width, int height,boolean visibility) {
+
+	public MyButton(int level, Rectangle bounds, boolean visibility) {
+		super(bounds, UIObjectType.BUTTON, 0, visibility, "", "");
 		isVisible = visibility;
 		this.level = level;
-		this.x = pos.getX();
-		this.y = pos.getY();
-		this.width = width;
-		this.height = height;
 		isTextButton = true;
-		if(level ==0) {
+		if (level == 0) {
 			text = "Tutorial";
-		}else {
-			text = "Level "+level;
-		}
-		initBounds();
-	}
-
-
-
-	private void initBounds() {
-		bounds = new Rectangle(x,y,width,height);
-	}
-	private void initButtonImage() {
-		try {
-			ButtonImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(type));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		} else {
+			text = "Level " + level;
 		}
 	}
+
+
+
 	private void initButtonTooltip() {
 		File tooltipText;
 		if ((tooltipText = variables.Buttons.getTooltipTextFile(type)) == null) return;
@@ -93,6 +65,7 @@ public class MyButton {
 
 	}
 
+	@Override
 	public void render(Graphics g) {
 		if (isVisible) {
 			g.setFont(Constants.UIConstants.BUTTONFONT);
@@ -101,7 +74,7 @@ public class MyButton {
 				renderButtonBox(g);
 				renderButtonText(g);
 			} else {
-				renderButtonImage(g);
+				super.render(g);
 				renderButtonBox(g);
 				if(tooltip != null)	tooltip.render(g);
 
@@ -115,16 +88,16 @@ public class MyButton {
 		} else {
 			g.setColor(Color.WHITE);
 		}
-		g.fillRect(x, y, width, height);
+		g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
 
 	private void renderButtonBox(Graphics g) {
 		if (!hasOutline) return;
 		g.setColor(Color.BLACK);
-		g.drawRect(x, y, width, height);
+		g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 		if(mousePressed) {
-			g.drawRect(x+1, y+1, width-2, height-2);
-			g.drawRect(x+2, y+2, width-4, height-4);
+			g.drawRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2);
+			g.drawRect(bounds.x + 2, bounds.y + 2, bounds.width - 4, bounds.height - 4);
 		}
 	}
 	private void renderButtonText(Graphics g) {
@@ -132,15 +105,9 @@ public class MyButton {
 		int width2 = g.getFontMetrics().stringWidth(text);
 		int height2 = g.getFontMetrics().getHeight();
 
-		g.drawString(text, x - width2/2 + width/2, y + height2/2 + height/2 );
-	}
-	private void renderButtonImage(Graphics g) {
-		g.drawImage(ButtonImage, x, y, width, height, null);
+		g.drawString(text, bounds.x - width2 / 2 + bounds.width / 2, bounds.y + height2 / 2 + bounds.height / 2);
 	}
 
-	public Rectangle getBounds() {
-		return bounds;
-	}
 
 	public void setHovered(boolean mouseHover) {
 		this.mouseHover = mouseHover;
@@ -168,19 +135,6 @@ public class MyButton {
 	public boolean isBuildingButton() {
 		return type >= MANA_B_B && !isTextButton && type <= HOUSE_B_B;
 	}
-	public int getX() {
-		return x;
-	}
-	public int getY() {
-		return y;
-	}
-	public int getWidth() {
-		return width;
-	}
-	public int getHeight() {
-		return height;
-	}
-
 	public void setChecked(boolean b) {
 		checked = b;
 	}
@@ -200,9 +154,4 @@ public class MyButton {
 		isVisible = visible;
 	}
 
-	public void setPos(Coordinate pos) {
-		x= pos.getX();
-		y= pos.getY();
-		initBounds();
-	}
 }

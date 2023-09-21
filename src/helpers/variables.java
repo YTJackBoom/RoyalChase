@@ -531,6 +531,9 @@ public class variables { //class to define different variables for thing
         public static final int IRON = 8;
         public static final int WOOD = 9;
         public static final int STONE = 10;
+        public static final int BOSSBAR = 11;
+        public static final int BUTTONBAR_RIGHT = 12;
+        public static final int BUTTONBAR_DOWN = 13;
 
         public static File getIconImageFile(int IconType) {
             return switch (IconType) {
@@ -545,6 +548,9 @@ public class variables { //class to define different variables for thing
                 case MANA -> new File(standartpath + "infooverlay/mana_icon.png");
                 case STONE -> new File(standartpath + "infooverlay/stone_icon.png");
                 case WORKERS -> new File(standartpath + "infooverlay/stone_icon.png");
+                case BOSSBAR -> new File(standartpath + "infooverlay/boss_bar.png");
+                case BUTTONBAR_RIGHT -> new File(standartpath + "ui/buttonbar_right.png");
+                case BUTTONBAR_DOWN -> new File(standartpath + "ui/buttonbar_right.png");
                 default -> throw new IllegalStateException("IconType does not exist");
             };
         }

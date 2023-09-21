@@ -2,8 +2,7 @@ package uiElements;
 
 import java.awt.*;
 
-public class Slider {
-    private Rectangle bounds;
+public class Slider extends UiElement {
     private int minValue;
     private int maxValue;
     private int currentValue;
@@ -13,7 +12,7 @@ public class Slider {
     private int snapSize;
 
     public Slider(Rectangle bounds, int minValue, int maxValue, int startValue) {
-        this.bounds = bounds;
+        super(bounds, UIObjectType.DIALOG, 0, true, "", "");
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.currentValue = startValue;
@@ -25,6 +24,7 @@ public class Slider {
         this.knob = new Rectangle(knobX, bounds.y, knobWidth, bounds.height);
     }
 
+    @Override
     public void render(Graphics g) {
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.setColor(Color.BLACK);
@@ -95,7 +95,4 @@ public class Slider {
         return currentValue;
     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
 }

@@ -111,15 +111,15 @@ public class Playing extends GameScenes implements SceneMethods {
         int xd = initGameWidth / 2 - widthd;
         int yd = initGameHeight - 10 - heightd;
 
-        buttonBarRight = new MyButtonBar(this, new helpers.Coordinate(xr, yr), widthr, heightr, UIPos.PLAYINGRIGHT);
-        buttonBarDown = new MyButtonBar(this, new helpers.Coordinate(xd, yd), widthd, heightd, UIPos.PLAYINGDOWN);
+        buttonBarRight = new MyButtonBar(this, new Rectangle(xr, yr, widthr, heightr), UIPos.PLAYINGRIGHT);
+        buttonBarDown = new MyButtonBar(this, new Rectangle(xd, yd, widthd, heightd), UIPos.PLAYINGDOWN);
 
         initButtonBarControls();
     }
 
     public void initButtonBarControls() {
-        buttonBarRightControls.add(new MyButton(10, 500, 500, 50, 50, true, false));
-        buttonBarRightControls.add(new MyButton(11, 600, 500, 50, 50, false, false));
+        buttonBarRightControls.add(new MyButton(10, new Rectangle(500, 500, 50, 50), true, false));
+        buttonBarRightControls.add(new MyButton(11, new Rectangle(600, 500, 50, 50), false, false));
     }
 
     public void initDialogController() {

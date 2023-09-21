@@ -20,17 +20,17 @@ public class GameOver extends GameScenes implements SceneMethods{
     }
 
     public void initButtons() {
-        int startX = Game.initGameWidth/4;
-        int startY = Game.initGameHeight/2;
-        int xOffset = Game.initGameWidth/2;
+        int startX = Game.initGameWidth / 4;
+        int startY = Game.initGameHeight / 2;
+        int xOffset = Game.initGameWidth / 2;
         int yOffset = 0;
         int width = 100;
         int height = 100;
 //        System.out.println(startX);
 //        System.out.println(xOffset);
 //        System.out.println(startY);
-    	buttons.add(new MyButton( "Try Again", startX, startY, width, height,true));
-    	buttons.add(new MyButton("Main Menu", startX+xOffset, startY, width, height,true));
+        buttons.add(new MyButton("Try Again", new Rectangle(startX, startY, width, height), true));
+        buttons.add(new MyButton("Main Menu", new Rectangle(startX + xOffset, startY, width, height), true));
     }
     @Override
     public void render(Graphics g) {

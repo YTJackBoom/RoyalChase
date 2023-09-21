@@ -6,7 +6,7 @@ import java.awt.*;
 
 public abstract class GameObject {
 	protected Animator activeAnimator,passiveAnimator;
-	protected ObjectType objectType;
+	protected GameObjectType gameObjectType;
 	protected int type;
 	protected Coordinate pos;
 	protected double health;
@@ -17,9 +17,9 @@ public abstract class GameObject {
 
 	protected double currentStun = 0;
 
-	public GameObject(Coordinate pos, PreLoader preLoader, ObjectType oType, int type, boolean visibility) {
+	public GameObject(Coordinate pos, PreLoader preLoader, GameObjectType oType, int type, boolean visibility) {
 		isVisible = visibility;
-		objectType = oType;
+		gameObjectType = oType;
 		this.type = type;
 		this.pos = pos;
 		initAnimators(preLoader);
@@ -34,7 +34,7 @@ public abstract class GameObject {
 
 
 	private void initAnimators(PreLoader preLoader){
-		switch (objectType) {
+		switch (gameObjectType) {
 			case ENEMY -> {
 				activeAnimator = preLoader.getEnemyActiveAnimator(type).clone();
 				passiveAnimator = preLoader.getEnemyPassiveAnimator(type).clone();
@@ -95,25 +95,31 @@ public abstract class GameObject {
 	}
 
 
-	public Animator getActiveAnimator(){
+	public Animator getActiveAnimator() {
 		return activeAnimator;
 	}
+
 	public Animator getPassiveAnimator() {
 		return passiveAnimator;
 	}
+
 	public void removeAnimators() {
 		activeAnimator = null;
 		passiveAnimator = null;
 	}
-	public ObjectType getObjectType() {
-		return objectType;
+
+	public GameObjectType getObjectType() {
+		return gameObjectType;
 	}
+
 	public int getType() {
 		return type;
 	}
+
 	public Coordinate getPos() {
 		return pos;
 	}
+
 	public HitBox getHitBox() {
 		return hitBox;
 	}
@@ -143,7 +149,7 @@ public abstract class GameObject {
 	}
 
 	public double getMaxHealth() {
-		return switch (objectType) {
+		return switch (gameObjectType) {
 			case TOWER -> variables.Towers.getTowerHealth(type);
 			case ENEMY -> variables.Enemies.getEnemyHealth(type);
 			default -> 0.0;

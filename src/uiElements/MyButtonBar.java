@@ -2,120 +2,97 @@ package uiElements;
 
 import gameObjects.GameObject;
 import gameObjects.Tower;
-import helpers.Coordinate;
 import scenes.GameScenes;
 import scenes.GameStates;
 import scenes.Playing;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static helpers.variables.Buttons.*;
 
-public class MyButtonBar {
-	private Coordinate pos;
+public class MyButtonBar extends UiElement {
 	private GameScenes scene;
 	private ArrayList<MyButton> buttons;
-	private int width;
-	private int height;
-	private Rectangle bounds;
 	private boolean isVisible = false;
 	private GameObject pointer;
 	private MyButton hoveredButton;
 	private UIPos uipos;
-	private BufferedImage barBackgroundImage;
-	public MyButtonBar(GameScenes scene, Coordinate pos, int width, int height, UIPos uiPos){
+
+	public MyButtonBar(GameScenes scene, Rectangle bounds, UIPos uiPos) {
+		super(bounds, UIObjectType.ICON, switch (uiPos) {
+			case PLAYINGDOWN -> 13;
+			case PLAYINGRIGHT -> 12;
+			case TOWNRIGHT -> 12;
+		}, true, "", "");
+
 		this.uipos = uiPos;
 		buttons = new ArrayList<MyButton>();
-		this.pos = pos;
-		this.width = width;
-		this.height = height;
+
 		this.scene = scene;
 		switch (uiPos) {
 			case PLAYINGDOWN -> initPlayingButtonsDown();
 			case PLAYINGRIGHT -> initPlayingButtons();
 			case TOWNRIGHT -> initTownButtons();
 		}
-		initBounds();
 	}
 
 
 	public void initPlayingButtons() {
-		int startX = pos.getX() + 10;
-		int startY = pos.getY() + 20;
+		int startX = bounds.x + 10;
+		int startY = bounds.y + 20;
 		int xOffset = 0;
 		int yOffset = 90;
 		int width = 100;
 		int height = 80;
 
-		buttons.add(new MyButton("Town", startX, startY, width, height, true));
-		buttons.add(new MyButton("Sell", startX + xOffset, startY + yOffset, width, height, true));
-		buttons.add(new MyButton("Upgrade", startX + xOffset * 2, startY + yOffset * 2, width, height, true));
+		buttons.add(new MyButton("Town", new Rectangle(startX, startY, width, height), true));
 
-		buttons.add(new MyButton(ARROW_T_B, startX + xOffset * 3, startY + yOffset * 3, width, height, true, false));
-		buttons.add(new MyButton(ROCKET_T_B, startX + xOffset * 4, startY + yOffset * 4, width, height, true, false));
-		buttons.add(new MyButton(MAGE_T_B, startX + xOffset * 5, startY + yOffset * 5, width, height, true, false));
-		buttons.add(new MyButton(SNIP_T_B, startX + xOffset * 6, startY + yOffset * 6, width, height, true, false));
+		buttons.add(new MyButton(ARROW_T_B, new Rectangle(startX + xOffset * 3, startY + yOffset * 3, width, height), true, false));
+		buttons.add(new MyButton(ROCKET_T_B, new Rectangle(startX + xOffset * 4, startY + yOffset * 4, width, height), true, false));
+		buttons.add(new MyButton(MAGE_T_B, new Rectangle(startX + xOffset * 5, startY + yOffset * 5, width, height), true, false));
+		buttons.add(new MyButton(SNIP_T_B, new Rectangle(startX + xOffset * 6, startY + yOffset * 6, width, height), true, false));
 
 
-		buttons.add(new MyButton("Menu", startX + xOffset * 7, startY + yOffset * 7, width, height, true));
+		buttons.add(new MyButton("Menu", new Rectangle(startX + xOffset * 7, startY + yOffset * 7, width, height), true));
 
-		initBackgroundImg();
 
 	}
 
 	public void initPlayingButtonsDown() {
-		int startX = pos.getX()+10;
-		int startY = pos.getY()+10;
+		int startX = bounds.x + 10;
+		int startY = bounds.y + 10;
 		int xOffset = 110;
 		int yOffset = 0;
 		int width = 100;
 		int height = 80;
 
-		buttons.add(new MyButton("Sell",startX, startY, width, height,true));
-		buttons.add(new MyButton("Upgrade",startX+xOffset, startY+yOffset, width, height,true));
+		buttons.add(new MyButton("Sell", new Rectangle(startX, startY, width, height), true));
+		buttons.add(new MyButton("Upgrade", new Rectangle(startX + xOffset, startY + yOffset, width, height), true));
 	}
 
 	public void initTownButtons() {
-		int startX = pos.getX() + 10;
-		int startY = pos.getY() + 20;
+		int startX = bounds.x + 10;
+		int startY = bounds.y + 20;
 		int xOffset = 0;
 		int yOffset = 90;
 		int width = 100;
 		int height = 80;
 
-		buttons.add(new MyButton("Battle!", startX, startY, width, height, true));
-		buttons.add(new MyButton("Back", startX + xOffset, startY + yOffset, width, height, true));
+		buttons.add(new MyButton("Battle!", new Rectangle(startX, startY, width, height), true));
 
-		buttons.add(new MyButton(MANA_B_B, startX + xOffset * 2, startY + yOffset * 2, width, height, true, false));
-		buttons.add(new MyButton(HOUSE_B_B, startX + xOffset * 3, startY + yOffset * 3, width, height, true, false));
+		buttons.add(new MyButton(MANA_B_B, new Rectangle(startX + xOffset * 2, startY + yOffset * 2, width, height), true, false));
+		buttons.add(new MyButton(HOUSE_B_B, new Rectangle(startX + xOffset * 3, startY + yOffset * 3, width, height), true, false));
 
-		buttons.add(new MyButton("Next", startX + xOffset * 4, startY + yOffset * 4, width, height, true));
-		buttons.add(new MyButton("Menu", startX + xOffset * 5, startY + yOffset * 5, width, height, true));
+		buttons.add(new MyButton("Menu", new Rectangle(startX + xOffset * 5, startY + yOffset * 5, width, height), true));
 
-		initBackgroundImg();
 
 	}
 
-	public void initBackgroundImg() {
-		try {
-			barBackgroundImage = ImageIO.read(new File("res/images/icons/ui/buttonbar_right.png"));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public void initBounds() {
-		bounds = new Rectangle(pos.getX(), pos.getY(), width, height);
-	}
-
+	@Override
 	public void render(Graphics g) {
 		if (isVisible) {
-			g.drawImage(barBackgroundImage, pos.getX(), pos.getY(), width, height, null);
+			super.render(g);
 			renderButtons(g);
 		}
 
@@ -126,14 +103,14 @@ public class MyButtonBar {
 		}else {
 			Tower tower = (Tower) pointer;
 			if (!tower.isMaxedLevel()) {
-				buttons.get(0).setPos(new Coordinate(pos.getX()+10,pos.getY()+10));
+				buttons.get(0).setPos(bounds.x + 10, bounds.y + 10);
 				setButtonsVisibility(true);
 				renderButtonsList(g);
 			}else {
 				buttons.get(1).setVisible(false);
-				int x = pos.getX()+width/2-buttons.get(0).getWidth()/2;
-				int y = pos.getY();
-				buttons.get(0).setPos(new Coordinate(x,y));
+				int x = bounds.x + bounds.width / 2 - buttons.get(0).getBounds().width / 2;
+				int y = bounds.y;
+				buttons.get(0).setPos(x, y);
 				renderButtonsList(g);
 			}
 		}
@@ -151,12 +128,6 @@ public class MyButtonBar {
 		}
 	}
 	//Getters and Setters
-	public Coordinate getPos() {
-		return pos;
-	}
-	public int getHeight() {
-		return height;
-	}
 
 
 	//Mouse Listeners
@@ -248,9 +219,6 @@ public class MyButtonBar {
 		}
 	}
 
-	public Rectangle getBounds() {
-		return bounds;
-	}
 	public void setPointer(GameObject pointer) {
 		this.pointer = pointer;
 	}
