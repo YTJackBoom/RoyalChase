@@ -1,8 +1,7 @@
 package scenes;
 
 import basics.Game;
-import helpers.Constants;
-import helpers.Values;
+import helpers.*;
 import uiElements.MyButton;
 
 import java.awt.*;
@@ -25,9 +24,11 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
         initButtons();
     }
     public void initButtons() {
-        buttons.add(new MyButton("Continue", new Rectangle(100, 100, 200, 100), true)); //continueButton
-        buttons.add(new MyButton("Save", new Rectangle(100, 300, 200, 100), true)); //saveButton
-        buttons.add(new MyButton("Main Menu", new Rectangle(100, 500, 200, 100), true)); //mainMenuButton
+        int width = 200;
+        int height = 100;
+        buttons.add(new MyButton("Continue", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 1 / 4, 1 / 2)), width, height, true)); //continueButton
+        buttons.add(new MyButton("Save", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 2 / 4, 1 / 2)), width, height, true)); //saveButton
+        buttons.add(new MyButton("Main Menu", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 3 / 4, 1 / 2)), width, height, true)); //mainMenuButton
     }
 
     @Override
@@ -101,9 +102,9 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
         int x = e.getX();
         int y = e.getY();
         for (MyButton button: buttons){
-            if(button.getBounds().contains(x,y)){
+            if (button.contains(x, y)) {
                 button.setHovered(true);
-            }else{
+            } else {
                 button.setHovered(false);
             }
         }
@@ -116,7 +117,7 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
             int x = e.getX();
             int y = e.getY();
             for (MyButton button : buttons) {
-                if (button.getBounds().contains(x, y)) {
+                if (button.contains(x, y)) {
                     button.setPressed(true);
                 }
             }
@@ -129,7 +130,7 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
             int x = e.getX();
             int y = e.getY();
             for (MyButton button : buttons) {
-                if (button.getBounds().contains(x, y)) {
+                if (button.contains(x, y)) {
                     playerValues.getLevelscleared().add(playerValues.getLevel());
 
                     if (button.getText().equals("Continue")) {

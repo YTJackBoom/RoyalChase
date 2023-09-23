@@ -1,7 +1,9 @@
 package uiElements;
 
 import controllers.DialogController;
+import helpers.AbsoluteCoordinate;
 import helpers.Constants;
+import helpers.RelativeCoordinate;
 import helpers.UiCoordinate;
 
 import java.awt.*;
@@ -27,11 +29,17 @@ public class Dialog extends UiElement {
 
         int buttonWidth = 50;
         int buttonHeight = 30;
-        int buttonX = uiCoordinate.getX() + (width - buttonWidth) / 2;
-        int buttonY = uiCoordinate.getY() + height - buttonHeight - 10; // 10px margin from the bottom
 
-        this.okButton = new MyButton("OK", new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight), true);
+        // Relative positioning
+        float relativeX = 0.5f - (float) buttonWidth / (2 * width); // Centered horizontally
+        float relativeY = 1.0f - (float) (buttonHeight + 10) / height; // 10px margin from the bottom
+
+        AbsoluteCoordinate dialogTopLeft = uiCoordinate.getAbsolutePosition();
+        UiCoordinate okButtonCoordinate = new UiCoordinate(new RelativeCoordinate(dialogTopLeft, relativeX, relativeY, width, height));
+
+        this.okButton = new MyButton("OK", okButtonCoordinate, buttonWidth, buttonHeight, true);
     }
+
 
     public void render(Graphics g) {
         if (!isVisible) return;

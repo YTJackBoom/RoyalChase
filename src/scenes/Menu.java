@@ -33,12 +33,26 @@ public class Menu extends GameScenes implements SceneMethods {
 
     public void initSliders() {
         UserSettings userSettings = game.getGameState().getUserSettings();
+        int frameWidth = Game.initGameWidth;
+        int frameHeight = Game.initGameHeight;
         int sliderWidth = 200;
         int sliderHeight = 50;
-        sliders.clear();
-        sliders.add(new Slider(new Rectangle(100, 100, sliderWidth, sliderHeight), 0, 5, userSettings.getDifficulty()));
-        sliders.add(new Slider(new Rectangle(100, 200, sliderWidth, sliderHeight), 0, 100, userSettings.getVolume()));
+
+        float relativeX = 100.0f / frameWidth;
+        float relativeY1 = 100.0f / frameHeight;
+        float relativeY2 = 200.0f / frameHeight;
+
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
+
+        // First Slider
+        UiCoordinate slider1Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY1));
+        sliders.add(new Slider(slider1Coordinate, sliderWidth, sliderHeight, 0, 5, userSettings.getDifficulty()));
+
+        // Second Slider
+        UiCoordinate slider2Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY2));
+        sliders.add(new Slider(slider2Coordinate, sliderWidth, sliderHeight, 0, 100, userSettings.getVolume()));
     }
+
 
     public void initButtons() {
         int frameWidth = Game.initGameWidth;
@@ -60,13 +74,13 @@ public class Menu extends GameScenes implements SceneMethods {
 
         AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
 
-        UiCoordinate button1Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX1 * 100, relativeY * 100));
+        UiCoordinate button1Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX1, relativeY));
         buttons.add(new MyButton("Play", button1Coordinate, buttonWidth, buttonHeight, true));
 
-        UiCoordinate button2Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX2 * 100, relativeY * 100));
+        UiCoordinate button2Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX2, relativeY));
         buttons.add(new MyButton("Load Game", button2Coordinate, buttonWidth, buttonHeight, true));
 
-        UiCoordinate button3Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX3 * 100, relativeY * 100));
+        UiCoordinate button3Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX3, relativeY));
         buttons.add(new MyButton("Exit", button3Coordinate, buttonWidth, buttonHeight, true));
     }
 

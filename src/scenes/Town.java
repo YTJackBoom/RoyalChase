@@ -64,8 +64,7 @@ public class Town extends GameScenes implements SceneMethods {
 
         AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0);  // Top-left corner as reference
 
-        UiCoordinate uiCoordinateRight = new UiCoordinate(
-                new RelativeCoordinate(referencePoint, relativeXr * 100, relativeYr * 100));
+        UiCoordinate uiCoordinateRight = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeXr, relativeYr));
 
         buttonBar = new MyButtonBar(this, uiCoordinateRight, widthr, heightr, UIPos.PLAYINGRIGHT);
 
@@ -78,12 +77,11 @@ public class Town extends GameScenes implements SceneMethods {
 
         // For the button's relative positioning
         float relativeX = 0f; // At the left edge of the buttonBarRight
-        float relativeY = 50f - (0.5f * buttonHeight / buttonBar.getHeight()) * 100; // Vertically centered as a percentage
+        float relativeY = 50f - (0.5f * buttonHeight / buttonBar.getHeight()); // Vertically centered as a percentage
 
         AbsoluteCoordinate referencePoint = buttonBar.getUiCoordinate().getAbsolutePosition();
 
-        UiCoordinate sharedUiCoordinate = new UiCoordinate(
-                new RelativeCoordinate(referencePoint, relativeX, relativeY));
+        UiCoordinate sharedUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBar.getWidth(), buttonBar.getHeight()));
 
         buttonBarControls.add(new MyButton(10, sharedUiCoordinate, buttonWidth, buttonHeight, true, false));
         buttonBarControls.add(new MyButton(11, sharedUiCoordinate, buttonWidth, buttonHeight, false, false));

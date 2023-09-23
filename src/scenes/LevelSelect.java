@@ -1,6 +1,9 @@
 package scenes;
 
 import basics.Game;
+import helpers.AbsoluteCoordinate;
+import helpers.RelativeCoordinate;
+import helpers.UiCoordinate;
 import helpers.Values;
 import uiElements.MyButton;
 
@@ -13,7 +16,8 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
     private Values playerValues;
     private GameStates backScene;
-    public LevelSelect(Game game){
+
+    public LevelSelect(Game game) {
         super(game);
         this.game = game;
         playerValues = game.getPlayerValues();
@@ -23,24 +27,40 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
 
 
-    public void initButtons(){
+    public void initButtons() {
+        int frameWidth = Game.initGameWidth;
+        int frameHeight = Game.initGameHeight;
+
         int buttonsAmount = 9;
         int buttonsPerLine = 3;
         int buttonWidth = 150;
         int buttonHeight = 150;
-        int buttonXStart = 300;
-        int buttonYStart = 200;
-        int buttonXOffset = 200;
-        int buttonYOffset = 200;
+        float buttonXStartPct = 300.0f / frameWidth;
+        float buttonYStartPct = 200.0f / frameHeight;
+        float buttonXOffsetPct = 200.0f / frameWidth;
+        float buttonYOffsetPct = 200.0f / frameHeight;
+
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
 
         for (int i = 0; i < buttonsAmount; i++) {
-            int x = buttonXStart + (i % buttonsPerLine) * buttonXOffset;
-            int y = buttonYStart + (i / buttonsPerLine) * buttonYOffset;
-            buttons.add(new MyButton((i + 1), new Rectangle(x, y, buttonWidth, buttonHeight), true));
+            float x = buttonXStartPct + (i % buttonsPerLine) * buttonXOffsetPct;
+            float y = buttonYStartPct + (i / buttonsPerLine) * buttonYOffsetPct;
+
+            UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, x * 100, y * 100, frameWidth, frameHeight));
+
+            buttons.add(new MyButton((i + 1), buttonCoordinate, buttonWidth, buttonHeight, true));
         }
-        buttons.add(new MyButton(0, new Rectangle(buttonXStart - buttonXOffset, buttonYStart, buttonWidth, buttonHeight), true)); //Tutorial
-        buttons.add(new MyButton("Zurück", new Rectangle(buttonXStart - (buttonXOffset + buttonXOffset / 2), buttonYStart - buttonYOffset / 2, buttonWidth / 2, buttonHeight / 2), true));
+
+        float tutorialX = buttonXStartPct - buttonXOffsetPct;
+        UiCoordinate tutorialCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, tutorialX * 100, buttonYStartPct * 100, frameWidth, frameHeight));
+        buttons.add(new MyButton(0, tutorialCoordinate, buttonWidth, buttonHeight, true)); // Tutorial
+
+        float backButtonX = buttonXStartPct - (buttonXOffsetPct + buttonXOffsetPct / 2);
+        float backButtonY = buttonYStartPct - buttonYOffsetPct / 2;
+        UiCoordinate backButtonCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, backButtonX * 100, backButtonY * 100, frameWidth, frameHeight));
+        buttons.add(new MyButton("Zurück", backButtonCoordinate, buttonWidth / 2, buttonHeight / 2, true));
     }
+
 
     @Override
     public void render(Graphics g) {
@@ -65,8 +85,8 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         for (MyButton button : buttons) {
             if (button.isChecked()) {
 
-                int x = button.getBounds().x + button.getBounds().width / 2 - 10; // Adjust the tick position as needed
-                int y = button.getBounds().y + button.getBounds().height / 2 - 10; // Adjust the tick position as needed
+                int x = (int) (button.getUiCoordinate().getX() + button.getWidth() / 2 - 10); // Adjust the tick position as needed
+                int y = (int) (button.getUiCoordinate().getY() + button.getHeight() / 2 - 10); // Adjust the tick position as needed
 
                 g.setColor(Color.GREEN); // Set the tick color
 
@@ -95,9 +115,9 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         int x = e.getX();
         int y = e.getY();
         for(MyButton button: buttons){
-            if(button.getBounds().contains(x,y)){
+            if (button.contains(x, y)) {
                 button.setHovered(true);
-            }else{
+            } else {
                 button.setHovered(false);
             }
         }
@@ -110,7 +130,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         int y = e.getY();
 
         for(MyButton button: buttons){
-            if(button.getBounds().contains(x,y)){
+            if (button.contains(x, y)) {
                 button.setPressed(true);
             }
         }
@@ -122,8 +142,8 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         int x = e.getX();
         int y = e.getY();
         for (MyButton button: buttons){
-            if(button.getBounds().contains(x,y)) {
-                if(button.getLevel()>=0) {
+            if (button.contains(x, y)) {
+                if (button.getLevel() >= 0) {
                     if (button.isChecked()) {
                         playerValues.setRewardmultiplyer(0);
                     } else {

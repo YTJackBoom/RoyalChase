@@ -65,4 +65,12 @@ public abstract class UiElement {
     public int getHeight() {
         return height;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
 }

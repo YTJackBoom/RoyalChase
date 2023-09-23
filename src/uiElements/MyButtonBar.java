@@ -44,20 +44,24 @@ public class MyButtonBar extends UiElement {
 		int menuX = uiCoordinate.getX();
 		int menuY = uiCoordinate.getY();
 
-		int startX = menuX + 10;
-		int startY = menuY + 20;
-		int yOffset = 80 + 10;  // height + 10 pixels gap between buttons
-		int xOffset = 0;
 		int buttonWidth = 100;
 		int buttonHeight = 80;
 
-		startY = addRelativelyPositionedButton("Town", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, false);
-		startY = addRelativelyPositionedButton(ARROW_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, false);
-		startY = addRelativelyPositionedButton(ROCKET_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, false);
-		startY = addRelativelyPositionedButton(MAGE_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, false);
-		startY = addRelativelyPositionedButton(SNIP_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, false);
+		int startX = (int) (menuX + 0.05 * width);
+		int startY = (int) (menuY + 0.02 * height);
+		int yOffset = (int) (0.055 * height);  // height + 10 pixels gap between buttons
+		int xOffset = 0;
 
-		addRelativelyPositionedButton("Menu", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, false);
+
+		boolean horizontal = false;
+
+		startY = addRelativelyPositionedButton("Town", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(ARROW_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(ROCKET_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(MAGE_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(SNIP_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+
+		addRelativelyPositionedButton("Menu", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
 	}
 
 
@@ -82,8 +86,8 @@ public class MyButtonBar extends UiElement {
 		int menuX = uiCoordinate.getX();
 		int menuY = uiCoordinate.getY();
 
-		int startX = uiCoordinate.getX() + 10;
-		int startY = uiCoordinate.getY() + 20;
+		int startX = (int) (menuX + 0.1 * width);
+		int startY = (int) (menuY + 0.2 * height);
 		int xOffset = 0;
 		int yOffset = 90;
 		int width = 100;
@@ -100,7 +104,7 @@ public class MyButtonBar extends UiElement {
 		float relativeX = (float) (x - menuX) / menuWidth;
 		float relativeY = (float) (y - menuY) / menuHeight;
 
-		UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY));
+		UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, menuWidth, menuHeight));
 		buttons.add(new MyButton(label, buttonCoordinate, width, height, true));
 		return horizontal ? x + xOffset + width : y + yOffset + height;
 	}
@@ -109,8 +113,8 @@ public class MyButtonBar extends UiElement {
 		float relativeX = (float) (x - menuX) / menuWidth;
 		float relativeY = (float) (y - menuY) / menuHeight;
 
-		UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY));
-		buttons.add(new MyButton(imageType, buttonCoordinate, width, height, true));
+		UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, menuWidth, menuHeight));
+		buttons.add(new MyButton(imageType, buttonCoordinate, width, height, true, false));
 		return horizontal ? x + xOffset + width : y + yOffset + height;
 	}
 
@@ -127,6 +131,7 @@ public class MyButtonBar extends UiElement {
 		if (uipos != UIPos.PLAYINGDOWN) {
 			renderButtonsList(g);
 		} else {
+			if (pointer == null) return;
 			Tower tower = (Tower) pointer;
 
 			if (!tower.isMaxedLevel()) {
@@ -136,7 +141,7 @@ public class MyButtonBar extends UiElement {
 				int x = uiCoordinate.getX() + (int) (width * (relativeX / 100));  // converted back from percentage for absolute positioning
 				int y = uiCoordinate.getY() + (int) (height * (relativeY / 100));
 
-				buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY)));
+				buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, width, height)));
 				setButtonsVisibility(true);
 				renderButtonsList(g);
 			} else {
@@ -147,7 +152,7 @@ public class MyButtonBar extends UiElement {
 				int x = uiCoordinate.getX() + (int) (width * (relativeX / 100));
 				int y = uiCoordinate.getY();  // As it's the top of the bounds
 
-				buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY)));
+				buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, width, height)));
 				renderButtonsList(g);
 			}
 		}
@@ -250,6 +255,7 @@ public class MyButtonBar extends UiElement {
 	}
 	public void setVisible(boolean b) {
 		isVisible = b;
+		setButtonsVisibility(b);
 	}
 	public void setButtonsVisibility(boolean b) {
 		for (MyButton button : buttons) {

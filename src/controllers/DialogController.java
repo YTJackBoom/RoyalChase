@@ -1,5 +1,9 @@
 package controllers;
 
+import basics.Game;
+import helpers.AbsoluteCoordinate;
+import helpers.RelativeCoordinate;
+import helpers.UiCoordinate;
 import scenes.GameScenes;
 import scenes.Playing;
 import uiElements.Dialog;
@@ -21,34 +25,80 @@ public class DialogController {
     }
 
     public void initPlayingDialogs() {
-        // Adjust dialog positions as needed.
-        dialogs.add(0, new Dialog(new Rectangle(200, 500, 200, 0), "Du wurdest zum neuen Groß-General des Königreichs Eldoria ernannt!", this));
+        int frameWidth = Game.initGameWidth;
+        int frameHeight = Game.initGameHeight;
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
+
+        // Define relative positions for the dialogs
+        float[][] relativePositions = {
+                {0.2f, 0.5f},
+                {0.3f, 0.6f},
+                {0.4f, 0.6f},
+                {0.5f, 0.6f},
+                {0.5f, 0.5f},
+                {0.4f, 0.5f},
+                {0.3f, 0.5f},
+                {0.2f, 0.5f},
+                {0.1f, 0.5f}
+        };
+
+        String[] messages = {
+                "Du wurdest zum neuen Groß-General des Königreichs Eldoria ernannt!",
+                "Seit der König von den Dunklen Magiern entführt wurde herrscht das Kriegs-Gesetzt und du hast nun die größte Macht",
+                "Doch dies ist noch nicht dass Ende, denn deinen Wissenschaftlern und Magiern ist es gelungen die Hauptstdt mobil zu machen",
+                "Aus diesem Grund hast du begonnen Monster-Lager in defensiven Kämpfen einzunehmen, bis du zum König vordringst!",
+                "Gerade ist das Spiel pausiert. Du kannst jederzeit mit der Leertaste Pausieren/Fortzsetzen",
+                "Im oberen Teil des Bildschirms werden deine Diversen Resourcen angezeigt, welche genutzt werden können, um Türme oder Gebäude zu Bauen",
+                "Durchs clicken auf diesen Button erscheint deine Bau-Übericht für neue Türme",
+                "Versuche doch einmal einen Turm auf ein Feld zu platzieren. Freie Felder werden Grün umrahmt und falls du einen Turm ersetzt erscheint dass Feld Rot",
+                "Schauen wir uns nun deine Stadt an. Clicke hierfür einfach af Stadt"
+        };
+
+        for (int i = 0; i < relativePositions.length; i++) {
+            float relativeX = relativePositions[i][0];
+            float relativeY = relativePositions[i][1];
+            int width = 200;
+            int height = 0; // Adjust height based on the message, done in Dialog's constructor
+
+            UiCoordinate dialogCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY));
+
+            dialogs.add(new Dialog(dialogCoordinate, width, height, messages[i], this));
+        }
         dialogs.get(0).setVisible(true);
-        dialogs.add(1, new Dialog(new Rectangle(300, 600, 200, 0), "Seit der König von den Dunklen Magiern entführt wurde herrscht das Kriegs-Gesetzt und du hast nun die größte Macht", this));
-        dialogs.add(2, new Dialog(new Rectangle(400, 600, 200, 0), "Doch dies ist noch nicht dass Ende, denn deinen Wissenschaftlern und Magiern ist es gelungen die Hauptstdt mobil zu machen ", this));
-        dialogs.add(3, new Dialog(new Rectangle(500, 600, 200, 0), "Aus diesem Grund hast du begonnen Monster-Lager in defensiven Kämpfen einzunehmen, bis du zum König vordringst!", this));
-        dialogs.add(4, new Dialog(new Rectangle(500, 500, 200, 0), "Gerade ist das Spiel pausiert. Du kannst jederzeit mit der Leertaste Pausieren/Fortzsetzen", this));
-        dialogs.add(5, new Dialog(new Rectangle(400, 500, 200, 0), "Im oberen Teil des Bildschirms werden deine Diversen Resourcen angezeigt, welche genutzt werden können, um Türme oder Gebäude zu Bauen", this));
-
-        dialogs.add(6, new Dialog(new Rectangle(300, 500, 200, 0), "Durchs clicken auf diesen Button erscheint deine Bau-Übericht für neue Türme", this));
-        dialogs.add(7, new Dialog(new Rectangle(200, 500, 200, 0), "Versuche doch einmal einen Turm auf ein Feld zu platzieren. Freie Felder werden Grün umrahmt und falls du einen Turm ersetzt erscheint dass Feld Rot", this));
-        dialogs.add(8, new Dialog(new Rectangle(100, 500, 200, 0), "Schauen wir uns nun deine Stadt an. Clicke hierfür einfach af Stadt", this));
-
-
-//        dialogs.add(new Dialog(new Rectangle(500, 500, 100, 100), "Dein Königreich wird von den Dunklen Magieren und ihren Schergen angegriffen!!", this));
-
     }
 
     public void initTownDialogs() {
-        // Adjust dialog positions as needed.
-        dialogs.add(new Dialog(new Rectangle(500, 500, 100, 100), "This is a dialog", this));
+        int frameWidth = Game.initGameWidth;
+        int frameHeight = Game.initGameHeight;
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
+
+        // Define relative positions for the dialogs
+        float[][] relativePositions = {
+                {0.5f, 0.5f},
+                {0.5f, 0.6f},
+                {0.5f, 0.6f}
+        };
+
+        String[] messages = {
+                "This is a dialog",
+                "This is another dialog",
+                "This is another dialog"
+        };
+
+        for (int i = 0; i < relativePositions.length; i++) {
+            float relativeX = relativePositions[i][0];
+            float relativeY = relativePositions[i][1];
+            int width = 100;
+            int height = 100;
+
+            UiCoordinate dialogCoordinate = new UiCoordinate(
+                    new RelativeCoordinate(referencePoint, relativeX, relativeY));
+
+            dialogs.add(new Dialog(dialogCoordinate, width, height, messages[i], this));
+        }
         dialogs.get(0).setVisible(true);
-
-        dialogs.add(new Dialog(new Rectangle(500, 600, 100, 100), "This is another dialog", this));
-        dialogs.add(new Dialog(new Rectangle(500, 600, 100, 100), "This is another dialog", this));
-
-
     }
+
 
     public void addDialog(Dialog dialog) {
         dialogs.add(dialog);
@@ -74,7 +124,7 @@ public class DialogController {
 
     public void mouseReleased(int x, int y) {
         for (Dialog dialog : dialogs) {
-            if (dialog.isVisible() && dialog.getBounds().contains(x, y)) {
+            if (dialog.isVisible() && dialog.contains(x, y)) {
                 dialog.mouseReleased(x, y);
             }
         }

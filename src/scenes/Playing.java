@@ -113,30 +113,28 @@ public class Playing extends GameScenes implements SceneMethods {
     }
 
     public void initButtonBars() {
-        // Frame dimensions
-
         // The right bar
         int widthr = 120;
         int heightr = 1000;
-        float relativeXr = 1.0f - (float) widthr / fWIDTH;  // All the way to the right minus the width
-        float relativeYr = 1.0f - (float) heightr / fHEIGHT;  // Near the bottom minus the height
+        float relativeXr = 1.0f - (float) widthr / (fWIDTH);  // All the way to the right minus the width
+        float relativeYr = 1.0f - (float) heightr / (fHEIGHT);  // Near the bottom minus the height
 
         // The bottom bar
         int widthd = 260;
         int heightd = 100;
-        float relativeXd = 0.5f - (float) widthd / (2 * fWIDTH);  // Centered horizontally
+        float relativeXd = 0.5f - (float) widthd / (fWIDTH);  // Centered horizontally
         float relativeYd = 1.0f - (float) heightd / fHEIGHT;  // At the bottom minus the height
 
         AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0);  // Top-left corner as reference
 
-        UiCoordinate uiCoordinateRight = new UiCoordinate(
-                new RelativeCoordinate(referencePoint, relativeXr * 100, relativeYr * 100));
+        UiCoordinate uiCoordinateRight = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeXr, relativeYr));
 
-        UiCoordinate uiCoordinateDown = new UiCoordinate(
-                new RelativeCoordinate(referencePoint, relativeXd * 100, relativeYd * 100));
+        UiCoordinate uiCoordinateDown = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeXd, relativeYd));
 
         buttonBarRight = new MyButtonBar(this, uiCoordinateRight, widthr, heightr, UIPos.PLAYINGRIGHT);
         buttonBarDown = new MyButtonBar(this, uiCoordinateDown, widthd, heightd, UIPos.PLAYINGDOWN);
+        buttonBarRight.setVisible(true);
+        buttonBarDown.setVisible(true);
 
         initButtonBarControls();
     }
@@ -147,16 +145,16 @@ public class Playing extends GameScenes implements SceneMethods {
         int buttonWidth = 50; // Example width of the button; adjust as needed.
 
         // For the button's relative positioning
-        float relativeX = 0f; // At the left edge of the buttonBarRight
-        float relativeY = 50f - (0.5f * buttonHeight / buttonBarRight.getHeight()) * 100; // Vertically centered as a percentage
+        float relativeX = -((float) buttonWidth / buttonBarRight.getWidth()); // to the left of buttonBarRight by the width of the button
+        float relativeY = 0.5f - (0.5f * buttonHeight / buttonBarRight.getHeight()); // Vertically centered as a percentage
 
         AbsoluteCoordinate referencePoint = buttonBarRight.getUiCoordinate().getAbsolutePosition();
 
-        UiCoordinate sharedUiCoordinate = new UiCoordinate(
-                new RelativeCoordinate(referencePoint, relativeX, relativeY));
+        UiCoordinate extendUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 0.5f, relativeY, buttonBarRight.getWidth(), buttonBarRight.getHeight()));
+        UiCoordinate collapseUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBarRight.getWidth(), buttonBarRight.getHeight()));
 
-        buttonBarRightControls.add(new MyButton(10, sharedUiCoordinate, buttonWidth, buttonHeight, true, false));
-        buttonBarRightControls.add(new MyButton(11, sharedUiCoordinate, buttonWidth, buttonHeight, false, false));
+        buttonBarRightControls.add(new MyButton(10, extendUiCoordinate, buttonWidth, buttonHeight, true, false));
+        buttonBarRightControls.add(new MyButton(11, collapseUiCoordinate, buttonWidth, buttonHeight, false, false));
     }
 
 
