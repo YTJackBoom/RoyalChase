@@ -24,8 +24,8 @@ public class Game extends JFrame implements Serializable {
     public static final int ups = 120; //updates pro sekunde, für game logic
     public static final int initGameWidth = 265 * 7;
     public static final int initGameHeight = 256 * 4;
-    public static int fWIDTH = initGameWidth;
-    public static int fHEIGHT = initGameHeight;
+    public static volatile int fWIDTH = initGameWidth;
+    public static volatile int fHEIGHT = initGameHeight;
     protected boolean isFullScreen = false;
     private volatile int currentUPS = 0;
     private int currentFPS = 0;
@@ -35,7 +35,7 @@ public class Game extends JFrame implements Serializable {
     private Menu menu;
     private Playing playing;
     private Settings settings;
-        private GameOver gameOver;
+    private GameOver gameOver;
         private LevelCleared levelCleared;
         private LevelSelect levelSelect;
         private Town town;
@@ -209,7 +209,6 @@ public class Game extends JFrame implements Serializable {
 
             fWIDTH = initGameWidth;
             fHEIGHT = initGameHeight;
-            UiElementCollector.getInstance().notifyScreenResize();
         } else {
             // Switch to fullscreen mode
             dispose();
@@ -226,8 +225,8 @@ public class Game extends JFrame implements Serializable {
 
             fWIDTH = screenWidth;
             fHEIGHT = screenHeight;
-            UiElementCollector.getInstance().notifyScreenResize();
         }
+        UiElementCollector.getInstance().notifyScreenResize();
         isFullScreen = !isFullScreen;
     }
 

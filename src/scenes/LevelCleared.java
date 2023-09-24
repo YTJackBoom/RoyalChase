@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import static basics.Game.fHEIGHT;
 import static basics.Game.fps;
 
 
@@ -26,9 +27,11 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
     public void initButtons() {
         int width = 200;
         int height = 100;
-        buttons.add(new MyButton("Continue", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 1 / 4, 1 / 2)), width, height, true)); //continueButton
-        buttons.add(new MyButton("Save", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 2 / 4, 1 / 2)), width, height, true)); //saveButton
-        buttons.add(new MyButton("Main Menu", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 3 / 4, 1 / 2)), width, height, true)); //mainMenuButton
+
+        float yOffset = 0.5f - (float) height / (fHEIGHT * 2);
+        buttons.add(new MyButton("Continue", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 1 / 4f, yOffset)), width, height, true)); //continueButton
+        buttons.add(new MyButton("Save", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 2 / 4f, yOffset)), width, height, true)); //saveButton
+        buttons.add(new MyButton("Main Menu", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 3 / 4f, yOffset)), width, height, true)); //mainMenuButton
     }
 
     @Override
@@ -50,11 +53,8 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
             g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
             String text = "Level Cleared";
 
-            FontMetrics fontMetrics = g.getFontMetrics();
-            int textWidth = fontMetrics.stringWidth(text);
-
-            int x = (game.getWidth() - textWidth) / 2;
-            int y = game.getHeight() / 2 + 50 / 2;
+            int x = (game.getWidth() / 2) - 40;
+            int y = game.getHeight() / 3 + 50 / 2;
 
             g.drawString(text, x, y);
         }

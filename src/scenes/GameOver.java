@@ -32,8 +32,8 @@ public class GameOver extends GameScenes implements SceneMethods{
 //        System.out.println(startX);
 //        System.out.println(xOffset);
 //        System.out.println(startY);
-        buttons.add(new MyButton("Try Again", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 1 / 3, 1 / 2)), width, height, true));
-        buttons.add(new MyButton("Main Menu", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 2 / 3, 1 / 2)), width, height, true));
+        buttons.add(new MyButton("Try Again", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 1 / 3f, 1 / 2f)), width, height, true));
+        buttons.add(new MyButton("Main Menu", new UiCoordinate(new RelativeCoordinate(new AbsoluteCoordinate(0, 0), 2 / 3f, 1 / 2f)), width, height, true));
     }
     @Override
     public void render(Graphics g) {

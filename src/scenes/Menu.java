@@ -61,26 +61,18 @@ public class Menu extends GameScenes implements SceneMethods {
         int buttonWidth = 200;
         int buttonHeight = 100;
 
-        // First Button: Positioned at 1/3 of the frame's width
-        float relativeX1 = (1.0f / 3.0f) - (float) buttonWidth / (2 * frameWidth);
-        float relativeY = 0.5f - (float) buttonHeight / (2 * frameHeight);
 
-        // Second Button: Positioned at 2/3 of the frame's width
-        float relativeX2 = (2.0f / 3.0f) - (float) buttonWidth / (2 * frameWidth);
-        // (relativeY remains the same)
-
-        // Third Button: Positioned at the end of the frame's width
-        float relativeX3 = 1.0f - (float) buttonWidth / frameWidth;
+        float yOffset = 0.5f - (float) buttonHeight / (2 * frameHeight);
 
         AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
 
-        UiCoordinate button1Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX1, relativeY));
+        UiCoordinate button1Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 1 / 4f, yOffset));
         buttons.add(new MyButton("Play", button1Coordinate, buttonWidth, buttonHeight, true));
 
-        UiCoordinate button2Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX2, relativeY));
+        UiCoordinate button2Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 2 / 4f, yOffset));
         buttons.add(new MyButton("Load Game", button2Coordinate, buttonWidth, buttonHeight, true));
 
-        UiCoordinate button3Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX3, relativeY));
+        UiCoordinate button3Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 3 / 4f, yOffset));
         buttons.add(new MyButton("Exit", button3Coordinate, buttonWidth, buttonHeight, true));
     }
 

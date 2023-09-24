@@ -1,9 +1,6 @@
 package uiElements;
 
-import helpers.Constants;
-import helpers.TextReader;
-import helpers.UiCoordinate;
-import helpers.variables;
+import helpers.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -31,8 +28,8 @@ public class MyButton extends UiElement {
 		isTextButton = true;
 	}
 
-	public MyButton(int ButtonType, UiCoordinate uiCoordinate, int width, int height, boolean visibility, boolean hasOutline) {
-		super(uiCoordinate, width, height, UIObjectType.BUTTON, ButtonType, visibility);
+	public MyButton(int ButtonType, UiCoordinate uiCoordinate, int width, int height, boolean visibility, boolean hasOutline, UiElement parent) {
+		super(uiCoordinate, width, height, UIObjectType.BUTTON, ButtonType, visibility, parent);
 		this.type = ButtonType;
 		initButtonTooltip();
 		this.hasOutline = hasOutline;
@@ -54,7 +51,7 @@ public class MyButton extends UiElement {
 
 	private void initButtonTooltip() {
 		File tooltipText;
-		if ((tooltipText = variables.Buttons.getTooltipTextFile(type)) == null) return;
+		if ((tooltipText = variables.Buttons.getTooltipTextFile(type)) == null || parent == null) return;
 		TextReader textReader = new TextReader(tooltipText);
 		String[] texts;
 		try {
@@ -62,9 +59,25 @@ public class MyButton extends UiElement {
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-		tooltip = new Tooltip(texts, 1700, 900);
 
+		AbsoluteCoordinate referencePoint = parent.uiCoordinate.getAbsolutePosition();
+
+		// Compute tooltip width
+		int tooltipWidth = Tooltip.computeWidth(texts);
+
+		// Adjust the xOffset so the tooltip safely fits within the parent's width
+		float maxPossibleX = parent.width - tooltipWidth;
+		float relativeX = (referencePoint.getX() + tooltipWidth > parent.width) ? maxPossibleX / parent.width : 0;  // If it overflows, adjust it to the maximum possible x, else, keep it to 0.
+
+		float relativeY = 1.0f;
+
+		tooltip = new Tooltip(texts, new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, parent.width, parent.height)));
+		parent.addChild(tooltip);
+		System.out.println(tooltip.getUiCoordinate().getAbsolutePosition().getX() + " " + tooltip.getUiCoordinate().getAbsolutePosition().getY());
+		System.out.println(parent.uiCoordinate.getAbsolutePosition().getX() + " " + parent.uiCoordinate.getAbsolutePosition().getY());
+		System.out.println(parent.width + " " + parent.height);
 	}
+
 
 	@Override
 	public void render(Graphics g) {

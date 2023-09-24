@@ -8,7 +8,6 @@ import scenes.GameScenes;
 import scenes.GameStates;
 import scenes.Playing;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static helpers.variables.Buttons.*;
@@ -16,7 +15,6 @@ import static helpers.variables.Buttons.*;
 public class MyButtonBar extends UiElement {
 	private GameScenes scene;
 	private ArrayList<MyButton> buttons;
-	private boolean isVisible = false;
 	private GameObject pointer;
 	private MyButton hoveredButton;
 	private UIPos uipos;
@@ -71,8 +69,8 @@ public class MyButtonBar extends UiElement {
 		int menuX = uiCoordinate.getX();
 		int menuY = uiCoordinate.getY();
 
-		int startX = uiCoordinate.getX() + 10;
-		int startY = uiCoordinate.getX() + 10;
+		int startX = (int) (menuX + 0.05 * width);
+		int startY = (int) (uiCoordinate.getY() + 0.05 * height);
 		int xOffset = 110;
 		int yOffset = 0;
 		int width = 100;
@@ -105,7 +103,9 @@ public class MyButtonBar extends UiElement {
 		float relativeY = (float) (y - menuY) / menuHeight;
 
 		UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, menuWidth, menuHeight));
-		buttons.add(new MyButton(label, buttonCoordinate, width, height, true));
+		MyButton button = new MyButton(label, buttonCoordinate, width, height, true);
+		buttons.add(button);
+		addChild(button);
 		return horizontal ? x + xOffset + width : y + yOffset + height;
 	}
 
@@ -114,36 +114,31 @@ public class MyButtonBar extends UiElement {
 		float relativeY = (float) (y - menuY) / menuHeight;
 
 		UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, menuWidth, menuHeight));
-		buttons.add(new MyButton(imageType, buttonCoordinate, width, height, true, false));
+		MyButton button = new MyButton(imageType, buttonCoordinate, width, height, true, false, this);
+		buttons.add(button);
+		addChild(button);
 		return horizontal ? x + xOffset + width : y + yOffset + height;
 	}
 
-
 	@Override
-	public void render(Graphics g) {
-		if (isVisible) {
-			super.render(g);
-			renderButtons(g);
-		}
-
+	public void updateOnFrame() {
+		updateButtonPos();
 	}
-	public void renderButtons(Graphics g) {
-		if (uipos != UIPos.PLAYINGDOWN) {
-			renderButtonsList(g);
-		} else {
-			if (pointer == null) return;
-			Tower tower = (Tower) pointer;
 
-			if (!tower.isMaxedLevel()) {
-				float relativeX = (10f / width) * 100;  // converted to percentage
-				float relativeY = (10f / height) * 100; // converted to percentage
+	public void updateButtonPos() {
+		if (uipos == UIPos.PLAYINGDOWN) return;
+		if (pointer == null) return;
+		Tower tower = (Tower) pointer;
 
-				int x = uiCoordinate.getX() + (int) (width * (relativeX / 100));  // converted back from percentage for absolute positioning
-				int y = uiCoordinate.getY() + (int) (height * (relativeY / 100));
+		if (!tower.isMaxedLevel()) {
+			float relativeX = (10f / width) * 100;  // converted to percentage
+			float relativeY = (10f / height) * 100; // converted to percentage
 
-				buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, width, height)));
-				setButtonsVisibility(true);
-				renderButtonsList(g);
+			int x = uiCoordinate.getX() + (int) (width * (relativeX / 100));  // converted back from percentage for absolute positioning
+			int y = uiCoordinate.getY() + (int) (height * (relativeY / 100));
+
+			buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, width, height)));
+			setButtonsVisibility(true);
 			} else {
 				buttons.get(1).setVisible(false);
 				float relativeX = (0.5f - ((float) buttons.get(0).width / 2 / width)) * 100;  // centering the button within bounds and converting to percentage
@@ -153,16 +148,6 @@ public class MyButtonBar extends UiElement {
 				int y = uiCoordinate.getY();  // As it's the top of the bounds
 
 				buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, width, height)));
-				renderButtonsList(g);
-			}
-		}
-	}
-
-
-
-	public void renderButtonsList(Graphics g) {
-		for (MyButton button : buttons) {
-			button.render(g);
 		}
 	}
 	public void resetButtons() {
@@ -252,10 +237,6 @@ public class MyButtonBar extends UiElement {
 
 	public void mouseDragged(int x, int y) {
 
-	}
-	public void setVisible(boolean b) {
-		isVisible = b;
-		setButtonsVisibility(b);
 	}
 	public void setButtonsVisibility(boolean b) {
 		for (MyButton button : buttons) {

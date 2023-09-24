@@ -116,4 +116,12 @@ public class Tile {
     public boolean isHovered() {
         return isHovered;
     }
+
+    public int getWidth() {
+        return tileImage.getWidth();
+    }
+
+    public int getHeight() {
+        return tileImage.getHeight();
+    }
 }

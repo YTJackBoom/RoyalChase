@@ -38,6 +38,7 @@ public class Dialog extends UiElement {
         UiCoordinate okButtonCoordinate = new UiCoordinate(new RelativeCoordinate(dialogTopLeft, relativeX, relativeY, width, height));
 
         this.okButton = new MyButton("OK", okButtonCoordinate, buttonWidth, buttonHeight, true);
+        addChild(okButton);
     }
 
 

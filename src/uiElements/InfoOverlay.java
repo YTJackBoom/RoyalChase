@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static basics.Game.fWIDTH;
 import static helpers.variables.Icons.*;
 
 public class InfoOverlay {
@@ -60,16 +61,18 @@ public class InfoOverlay {
     }
 
     public void renderPlayerInfos(Graphics g) {
-        int startX = 100;
-        int startY = 50;
-        int xOffset = 200;
+        int startY = (int) (0.02 * fWIDTH);
+        int marginForFirstIcon = (int) (0.01 * fWIDTH);  // Setting a margin for the first icon
+
+        int totalIcons = 10; // This includes the 9 original icons and the pause/play icon
+        int spacing = fWIDTH / totalIcons;
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         FontMetrics fm = g.getFontMetrics();
         int textHeight = fm.getAscent() - fm.getDescent();
 
-        int[] icons = { WAVES, ENEMIES, HEART, WORKERS,GOLD, MANA, IRON, WOOD, STONE };
+        int[] icons = {WAVES, ENEMIES, HEART, WORKERS, GOLD, MANA, IRON, WOOD, STONE};
         int[] values = {
                 game.getPlaying().getWaveController().getRemainingWaves(),
                 game.getPlaying().getWaveController().getCurrentWaveNotSpawnedEnemies() + game.getPlaying().getEnemyController().getEnemyList().size(),
@@ -82,10 +85,18 @@ public class InfoOverlay {
                 (int) playerValues.getStone()
         };
 
-        for (int i = 0; i < icons.length; i++) {
-            BufferedImage img = iconImages.get(icons[i]);
+        BufferedImage img;
+        if (game.isPaused()) {
+            img = iconImages.get(1);
+        } else {
+            img = iconImages.get(0);
+        }
+        g.drawImage(img, marginForFirstIcon, startY - img.getHeight() / 2, null);
 
-            int imageCenterX = startX + i * xOffset;
+        for (int i = 0; i < icons.length; i++) {
+            img = iconImages.get(icons[i]);
+
+            int imageCenterX = marginForFirstIcon + (i + 1) * spacing; // +1 because the first spot is occupied by the pause/play icon, and adding the margin for the starting position
             int imageCenterY = startY;
 
             g.drawImage(img, imageCenterX - img.getWidth() / 2, imageCenterY - img.getHeight() / 2, null);
@@ -96,17 +107,10 @@ public class InfoOverlay {
             int value = values[i] < 0 ? 0 : values[i];
             g.drawString(Integer.toString(value), textCenterX, textCenterY);
         }
-
-        BufferedImage img;
-        if(game.isPaused()) {
-            img = iconImages.get(0);
-        } else {
-            img = iconImages.get(1);
-        }
-        g.drawImage(img,25,startY-img.getHeight()/2,null);
-
-
     }
+
+
+
 
     public void renderTowerRanges(Graphics g) {
         if (towerPointer != null) {
@@ -194,14 +198,15 @@ public class InfoOverlay {
     public void renderTileBoundaries(Graphics g) {
         for (Tile tile : playing.getTileController().getTileList()) {
             if (tile.isHovered()) {
-                BufferedImage tileImg = tile.getTileImage();
+                int tileWidth = tile.getWidth();
+                int tileHeight = tile.getHeight();
                 if (playing.getTowerController().towerOn(tile.getPos().getX(), tile.getPos().getY()) == null) {
                     g.setColor(Color.ORANGE);
-                    g.drawRect(tile.getPos().getX() - tileImg.getWidth() / 2, tile.getPos().getY() - tileImg.getHeight() / 2, tileImg.getWidth() - 1, tileImg.getHeight() - 1);
+                    g.drawRect(tile.getPos().getX() - tileWidth / 2, tile.getPos().getY() - tileHeight / 2, tileWidth - 1, tileHeight - 1);
                 } else {
                     g.setColor(Color.RED);
-                    g.drawRect(tile.getPos().getX() - tileImg.getWidth() / 2, tile.getPos().getY() - tileImg.getHeight() / 2, tileImg.getWidth() - 1, tileImg.getHeight() - 1);
-                    g.drawRect(tile.getPos().getX() - tileImg.getWidth() / 2, tile.getPos().getY() - tileImg.getHeight() / 2, tileImg.getWidth(), tileImg.getHeight());
+                    g.drawRect(tile.getPos().getX() - tileWidth / 2, tile.getPos().getY() - tileHeight / 2, tileWidth - 1, tileHeight - 1);
+                    g.drawRect(tile.getPos().getX() - tileWidth / 2, tile.getPos().getY() - tileHeight / 2, tileWidth, tileHeight);
 
                 }
             }

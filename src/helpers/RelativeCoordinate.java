@@ -26,10 +26,24 @@ public class RelativeCoordinate {
         this.referenceHeight = fHEIGHT;  // Set in the constructor
     }
 
-    public AbsoluteCoordinate calculate() {
+    public AbsoluteCoordinate calculateInitAbs() {
         int x = referencePoint.getX() + (int) (xOffsetPercentage * referenceWidth);
         int y = referencePoint.getY() + (int) (yOffsetPercentage * referenceHeight);
         return new AbsoluteCoordinate(x, y);
+    }
+
+    public AbsoluteCoordinate adjustAbsolute(AbsoluteCoordinate absoluteCoordinate) {
+        int x = referencePoint.getX() + (int) (xOffsetPercentage * referenceWidth);
+        int y = referencePoint.getY() + (int) (yOffsetPercentage * referenceHeight);
+
+        absoluteCoordinate.setX(x);
+        absoluteCoordinate.setY(y);
+        return absoluteCoordinate;
+    }
+
+    public void setReferenceDimensions(int width, int height) {
+        this.referenceWidth = width;
+        this.referenceHeight = height;
     }
 
     public float getxOffsetPercentage() {

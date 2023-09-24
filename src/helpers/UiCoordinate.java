@@ -6,7 +6,7 @@ public class UiCoordinate {
 
     public UiCoordinate(RelativeCoordinate relativePosition) {
         this.relativePosition = relativePosition;
-        this.absolutePosition = relativePosition.calculate();
+        this.absolutePosition = relativePosition.calculateInitAbs();
 
     }
 
@@ -26,10 +26,10 @@ public class UiCoordinate {
         return relativePosition;
     }
 
-    public void updateBasedOnFrame(int frameWidth, int frameHeight) {
+    public void updateBasedOnFrame() {
         // If there's a relative position set, use it to update the absolute position
         if (relativePosition != null) {
-            absolutePosition = relativePosition.calculate();
+            absolutePosition = relativePosition.adjustAbsolute(absolutePosition);
         }
     }
 }

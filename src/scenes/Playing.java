@@ -114,10 +114,10 @@ public class Playing extends GameScenes implements SceneMethods {
 
     public void initButtonBars() {
         // The right bar
-        int widthr = 120;
-        int heightr = 1000;
+        int widthr = 117;
+        int heightr = 798;
         float relativeXr = 1.0f - (float) widthr / (fWIDTH);  // All the way to the right minus the width
-        float relativeYr = 1.0f - (float) heightr / (fHEIGHT);  // Near the bottom minus the height
+        float relativeYr = 0.05f;
 
         // The bottom bar
         int widthd = 260;
@@ -153,8 +153,10 @@ public class Playing extends GameScenes implements SceneMethods {
         UiCoordinate extendUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 0.5f, relativeY, buttonBarRight.getWidth(), buttonBarRight.getHeight()));
         UiCoordinate collapseUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBarRight.getWidth(), buttonBarRight.getHeight()));
 
-        buttonBarRightControls.add(new MyButton(10, extendUiCoordinate, buttonWidth, buttonHeight, true, false));
-        buttonBarRightControls.add(new MyButton(11, collapseUiCoordinate, buttonWidth, buttonHeight, false, false));
+        buttonBarRightControls.add(new MyButton(10, extendUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBarRight));
+        buttonBarRightControls.add(new MyButton(11, collapseUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBarRight));
+        buttonBarRight.addChild(buttonBarRightControls.get(0));
+        buttonBarRight.addChild(buttonBarRightControls.get(1));
     }
 
 

@@ -57,8 +57,8 @@ public class Town extends GameScenes implements SceneMethods {
 
     public void initButtonBar() {
         // The right bar
-        int widthr = 120;
-        int heightr = 1000;
+        int widthr = 117;
+        int heightr = 798;
         float relativeXr = 1.0f - (float) widthr / fWIDTH;  // All the way to the right minus the width
         float relativeYr = 1.0f - (float) heightr / fHEIGHT;  // Near the bottom minus the height
 
@@ -66,7 +66,7 @@ public class Town extends GameScenes implements SceneMethods {
 
         UiCoordinate uiCoordinateRight = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeXr, relativeYr));
 
-        buttonBar = new MyButtonBar(this, uiCoordinateRight, widthr, heightr, UIPos.PLAYINGRIGHT);
+        buttonBar = new MyButtonBar(this, uiCoordinateRight, widthr, heightr, UIPos.TOWNRIGHT);
 
         initButtonBarControls();
     }
@@ -83,8 +83,8 @@ public class Town extends GameScenes implements SceneMethods {
 
         UiCoordinate sharedUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBar.getWidth(), buttonBar.getHeight()));
 
-        buttonBarControls.add(new MyButton(10, sharedUiCoordinate, buttonWidth, buttonHeight, true, false));
-        buttonBarControls.add(new MyButton(11, sharedUiCoordinate, buttonWidth, buttonHeight, false, false));
+        buttonBarControls.add(new MyButton(10, sharedUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBar));
+        buttonBarControls.add(new MyButton(11, sharedUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBar));
     }
 
     @Override

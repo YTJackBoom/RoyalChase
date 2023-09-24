@@ -46,18 +46,18 @@ public class LevelSelect extends GameScenes implements SceneMethods{
             float x = buttonXStartPct + (i % buttonsPerLine) * buttonXOffsetPct;
             float y = buttonYStartPct + (i / buttonsPerLine) * buttonYOffsetPct;
 
-            UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, x * 100, y * 100, frameWidth, frameHeight));
+            UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, x, y, frameWidth, frameHeight));
 
             buttons.add(new MyButton((i + 1), buttonCoordinate, buttonWidth, buttonHeight, true));
         }
 
         float tutorialX = buttonXStartPct - buttonXOffsetPct;
-        UiCoordinate tutorialCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, tutorialX * 100, buttonYStartPct * 100, frameWidth, frameHeight));
+        UiCoordinate tutorialCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, tutorialX, buttonYStartPct, frameWidth, frameHeight));
         buttons.add(new MyButton(0, tutorialCoordinate, buttonWidth, buttonHeight, true)); // Tutorial
 
         float backButtonX = buttonXStartPct - (buttonXOffsetPct + buttonXOffsetPct / 2);
         float backButtonY = buttonYStartPct - buttonYOffsetPct / 2;
-        UiCoordinate backButtonCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, backButtonX * 100, backButtonY * 100, frameWidth, frameHeight));
+        UiCoordinate backButtonCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, backButtonX, backButtonY, frameWidth, frameHeight));
         buttons.add(new MyButton("Zurück", backButtonCoordinate, buttonWidth / 2, buttonHeight / 2, true));
     }
 
