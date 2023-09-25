@@ -9,9 +9,9 @@ public class Slider extends UiElement {
     private int maxValue;
     private int currentValue;
     private Rectangle knob;
-    private int knobWidth = 20;
+    private float relativeKnobWidth = 0.05f;  // Assuming 5% of slider's width
     private boolean isDragging;
-    private int snapSize;
+    private float snapSize;
 
     public Slider(UiCoordinate uiCoordinate, int width, int height, int minValue, int maxValue, int startValue) {
         super(uiCoordinate, width, height, UIObjectType.DIALOG, 0, true);
@@ -20,8 +20,13 @@ public class Slider extends UiElement {
         this.currentValue = startValue;
 
         // Calculate the number of snap points
-        this.snapSize = width / (maxValue - minValue);
+        this.snapSize = 1.0f / (maxValue - minValue);
 
+        updateKnob();
+    }
+
+    private void updateKnob() {
+        int knobWidth = (int) (width * relativeKnobWidth);
         int knobX = uiCoordinate.getX() + (int) (((float) (currentValue - minValue) / (maxValue - minValue)) * (width - knobWidth));
         this.knob = new Rectangle(knobX, uiCoordinate.getY(), knobWidth, height);
     }
@@ -48,6 +53,11 @@ public class Slider extends UiElement {
         g.setColor(Color.WHITE); // Choose a color that contrasts with the knob color
         g.drawString(valueStr, textX, textY);
     }
+    @Override
+    public void updatePosOnResize() {
+        super.updatePosOnResize();
+        updateKnob();
+    }
 
 
     public void mousePressed(int x, int y) {
@@ -63,7 +73,9 @@ public class Slider extends UiElement {
 
     public void mouseDragged(int x, int y) {
         if (isDragging) {
+            int knobWidth = (int) (width * relativeKnobWidth);
             int newKnobX = x - knobWidth / 2;
+
             // Ensure the knob stays within the bounds of the slider
             newKnobX = Math.max(uiCoordinate.getX(), Math.min(newKnobX, uiCoordinate.getX() + width - knobWidth));
             knob.setLocation(newKnobX, knob.y);
@@ -72,13 +84,20 @@ public class Slider extends UiElement {
         }
     }
 
+    private void updateCurrentValue() {
+        int knobWidth = (int) (width * relativeKnobWidth);
+        float positionInSlider = (float) (knob.x - uiCoordinate.getX()) / (width - knobWidth);
+        currentValue = minValue + (int) (positionInSlider * (maxValue - minValue));
+    }
+
     private void snapToClosestValue() {
         // Calculate the closest snap point
-        int relativeX = knob.x - uiCoordinate.getX();
-        int snapPosition = Math.round((float) relativeX / snapSize);
+        float relativeX = (float) (knob.x - uiCoordinate.getX()) / width;
+        float snapPosition = Math.round(relativeX / snapSize);
 
         // Calculate the new knob position
-        int newKnobX = uiCoordinate.getX() + snapPosition * snapSize;
+        int knobWidth = (int) (width * relativeKnobWidth);
+        int newKnobX = uiCoordinate.getX() + (int) (snapPosition * width * snapSize);
 
         // Ensure that the knob does not extend beyond the slider's bounds
         newKnobX = Math.min(newKnobX, uiCoordinate.getX() + width - knobWidth);
@@ -86,13 +105,6 @@ public class Slider extends UiElement {
         knob.setLocation(newKnobX, knob.y);
         updateCurrentValue();
     }
-
-
-    private void updateCurrentValue() {
-        float positionInSlider = (float) (knob.x - uiCoordinate.getX()) / (width - knobWidth);
-        currentValue = minValue + (int) (positionInSlider * (maxValue - minValue));
-    }
-
     public int getValue() {
         return currentValue;
     }
