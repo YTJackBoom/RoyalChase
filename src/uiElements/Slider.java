@@ -96,5 +96,4 @@ public class Slider extends UiElement {
     public int getValue() {
         return currentValue;
     }
-
 }

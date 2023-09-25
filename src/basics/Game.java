@@ -36,32 +36,53 @@ public class Game extends JFrame implements Serializable {
     private Playing playing;
     private Settings settings;
     private GameOver gameOver;
-        private LevelCleared levelCleared;
-        private LevelSelect levelSelect;
-        private Town town;
-        private InfoOverlay infoOverlay;
-        private GameState gameState;
-        private GameRenderUpdater renderUpdater;
-        private PreLoader preLoader;
+    private LevelCleared levelCleared;
+    private LevelSelect levelSelect;
+    private Town town;
+    private InfoOverlay infoOverlay;
+    private GameState gameState;
+    private GameRenderUpdater renderUpdater;
+    private PreLoader preLoader;
+    private Timer resizeEndTimer;
 
 
-        public Game() { //Initialisieren des Fensters
-            initClasses();
+    public Game() { //Initialisieren des Fensters
+        initClasses();
 
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
-            setResizable(false);
-            setLayout(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(true);
 
-            setTitle("Bang Bang");
-            add(gameScreen);
-            setSize(new Dimension(initGameWidth, initGameHeight));
-            setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+        add(gameScreen, BorderLayout.CENTER);
 
-            setVisible(true);
+
+        setTitle("Bang Bang");
+        Insets insets = getInsets();
+        setMinimumSize(new Dimension(initGameWidth, initGameHeight));
+
+        setContentPane(gameScreen);
+        pack();
+
+
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+
+
+//            System.setOut(null);
+//            System.setErr(null);
+
+
+        Game game = new Game();
+        game.gameScreen.initInputs();
+        game.start();
+
         }
 
-
         private void initClasses() { //Initialisieren der Klassen
+            initClassesForResizes();
+
             gameState = new GameState(this);
             preLoader = new PreLoader();
 
@@ -79,16 +100,47 @@ public class Game extends JFrame implements Serializable {
 
 
         }
-        public static void main(String[] args) {
-//            System.setOut(null);
-//            System.setErr(null);
 
-
-            Game game = new Game();
-            game.gameScreen.initInputs();
-            game.start();
-
-        }
+    private void initClassesForResizes() {
+//            resizeEndTimer = new Timer(500, new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    SwingUtilities.invokeLater(() -> {
+////                        System.out.println(gameScreen.getWidth()+" "+gameScreen.getHeight());
+//
+//                        Insets insets = getInsets();
+//                        System.out.println(insets.bottom + " " + insets.top + " " + insets.left + " " + insets.right);
+//                        fWIDTH = getContentPane().getWidth();
+//                        fHEIGHT = getContentPane().getHeight();
+//
+//
+//                        gameScreen.setSize(new Dimension(fWIDTH, fHEIGHT));
+////                        gameScreen.setBounds(insets.left, insets.top, fWIDTH, fHEIGHT);
+//                        gameScreen.revalidate();
+//                        gameScreen.repaint();
+//
+//                        UiElementCollector.getInstance().notifyScreenResize();
+//                        getPlaying().getTileController().extendTiles(fWIDTH, fHEIGHT);
+////
+////                        System.out.println("Screen resized to " + fWIDTH + "x" + fHEIGHT);
+//                    });
+//
+//                }
+//            });
+//
+//            // Ensure the timer only fires once after being started.
+//            resizeEndTimer.setRepeats(false);
+//
+//            addComponentListener(new ComponentAdapter() {
+//                @Override
+//                public void componentResized(ComponentEvent e) {
+//                    // Restart the timer on every resize event.
+//                    // If the window isn't resized for the duration of the timer's delay,
+//                    // the above ActionListener will be executed.
+//                    resizeEndTimer.restart();
+//                }
+//            });
+    }
         private void start() {//Initialisiert zwei threaths, einen für spiel-logic und einen für spiel-grafik(sowie einen timer zur ausgabe der fps und ups)
 
 
@@ -214,7 +266,6 @@ public class Game extends JFrame implements Serializable {
             dispose();
             setUndecorated(true);
             setVisible(true);
-            getContentPane().setSize(screenWidth, screenHeight);
             setSize(new Dimension(screenWidth, screenHeight));
             setLocation(0, 0);
 
@@ -309,5 +360,6 @@ public class Game extends JFrame implements Serializable {
         public GameRenderUpdater getRenderUpdater() {
             return renderUpdater;
     }
+
 }
 
