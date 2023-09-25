@@ -23,11 +23,10 @@ public class BossBar extends UiElement {
 
     public void render(Graphics g) {
         if (playing.getEnemyController().getEnemyList().size() == 0) return;
-        super.render(g);
 
         bossPointer = null;
 
-        for (Enemy enemy : playing.getEnemyController().getEnemyList()) { //zum updaten des pointers
+        for (Enemy enemy : playing.getEnemyController().getEnemyList()) {
             if (enemy.getEnemyType() == EnemyType.BOSS) {
                 bossPointer = enemy;
                 break;
@@ -35,17 +34,24 @@ public class BossBar extends UiElement {
         }
 
         if (bossPointer != null) {
+            super.render(g);
+
             int currentHealth = (int) bossPointer.getHealth();
             int maxHealth = (int) bossPointer.getMaxHealth();
 
             // Calculate the width of the lost health rectangle
             float healthPercentage = (float) currentHealth / maxHealth;
             int lostHealthWidth = (int) ((1.0f - healthPercentage) * width);
+            int remainingHealthWidth = width - lostHealthWidth;  // Calculate the width of the remaining health rectangle
+
+            // Draw the remaining health rectangle (green)
+            g.setColor(Color.GREEN);
+            g.fillRect(uiCoordinate.getX(), uiCoordinate.getY(), remainingHealthWidth, height);
 
             // Determine the starting x-coordinate for the lost health rectangle
-            int startX = uiCoordinate.getX() + width - lostHealthWidth;
+            int startX = uiCoordinate.getX() + remainingHealthWidth;
 
-            // Draw the lost health rectangle
+            // Draw the lost health rectangle (red)
             g.setColor(lostHealthColor);
             g.fillRect(startX, uiCoordinate.getY(), lostHealthWidth, height);
         }

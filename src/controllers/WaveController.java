@@ -62,15 +62,15 @@ public class WaveController implements ControllerMethods {
         }
     }
     public void updateNewWave() {
-        if(generateNewWave) {
-            if (counter/cooldown == 1) {
+        if (generateNewWave) {
+            if (counter / cooldown == 1) {
                 currentWave++;
                 generateNewWave = false;
                 counter = 0;
-            }else {
+            } else {
                 counter++;
             }
-            if(currentWave+1 == waves.size()&&waves.get(currentWave).getCurrentIndex() == waves.get(currentWave).getSpawnList().size()&&enemyController.getEnemyList().size() == 0) {
+            if (currentWave + 1 == waves.size() && waves.get(currentWave).getCurrentIndex() == waves.get(currentWave).getSpawnList().size()) {
                 playing.getProjectileController().clearProjectiles();
                 playing.setDragingTower(false);
                 playing.setSelectedTower(null);
@@ -82,8 +82,8 @@ public class WaveController implements ControllerMethods {
 
             }
         }
-
     }
+
     public void spawnEnemy() {
         enemyController.spawnEnemy(waves.get(currentWave).getCurrentEnemyType());
         waves.get(currentWave).setCurrentIndex(waves.get(currentWave).getCurrentIndex()+1);

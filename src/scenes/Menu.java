@@ -106,18 +106,6 @@ public class Menu extends GameScenes implements SceneMethods {
         int x = e.getX();
         int y = e.getY();
 
-        for (MyButton button : buttons) {
-            if (button.contains(x, y)) {
-                if (button.getText().equals("Play")) {
-                    GameStates.gameState = GameStates.LEVELSELECT;
-                } else if (button.getText().equals("Load Game")) {
-                    game.loadGame(Constants.OtherConstants.SAVEGAMELOCATION);
-                    GameStates.gameState = GameStates.LEVELSELECT;
-                } else if (button.getText().equals("Exit")) {
-                    System.exit(0);
-                }
-            }
-        }
     }
 
     @Override

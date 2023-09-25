@@ -101,7 +101,7 @@ public abstract class UiElement {
     }
 
     public boolean contains(int x, int y) {
-        return x >= uiCoordinate.getX() && x <= uiCoordinate.getX() + width && y >= uiCoordinate.getY() && y <= uiCoordinate.getY() + height;
+        return x >= uiCoordinate.getX() && x <= uiCoordinate.getX() + width && y >= uiCoordinate.getY() && y <= uiCoordinate.getY() + height && isVisible;
     }
 
     public int getHeight() {

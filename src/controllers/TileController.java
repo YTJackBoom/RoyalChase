@@ -48,36 +48,19 @@ public class TileController extends ObjectsController implements ControllerMetho
 
         int[] predefinedTiles = {0, 1};
 
-        // Add tiles horizontally
-        for (int x = tileData.length; x < tilesRequiredX + tileData.length; x++) {
-            for (int y = 0; y < (tileData.length > 0 ? tileData[0].length : 0); y++) {
-                int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
-                Tile tile = variables.Tiles.getRawTile(randomTileType);
-                tile.setPos(new AbsoluteCoordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
-                tileList.add(tile);
-            }
-        }
-
-        // Add tiles vertically
-        for (int x = 0; x < tileData.length; x++) {
-            for (int y = (tileData.length > 0 ? tileData[0].length : 0); y < tilesRequiredY + (tileData.length > 0 ? tileData[0].length : 0); y++) {
-                int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
-                Tile tile = variables.Tiles.getRawTile(randomTileType);
-                tile.setPos(new AbsoluteCoordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
-                tileList.add(tile);
-            }
-        }
-
-        // Add tiles for the bottom-right corner
-        for (int x = tileData.length; x < tilesRequiredX + tileData.length; x++) {
-            for (int y = (tileData.length > 0 ? tileData[0].length : 0); y < tilesRequiredY + (tileData.length > 0 ? tileData[0].length : 0); y++) {
-                int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
-                Tile tile = variables.Tiles.getRawTile(randomTileType);
-                tile.setPos(new AbsoluteCoordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
-                tileList.add(tile);
+        for (int x = 0; x < tilesRequiredX + tileData.length; x++) {
+            for (int y = 0; y < tilesRequiredY + (tileData.length > 0 ? tileData[0].length : 0); y++) {
+                // Check the x and y conditions for horizontal, vertical and corner cases
+                if ((x >= tileData.length || y >= (tileData.length > 0 ? tileData[0].length : 0)) && getTile(x*tileSize, y*tileSize) == null) {
+                    int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
+                    Tile tile = variables.Tiles.getRawTile(randomTileType);
+                    tile.setPos(new AbsoluteCoordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
+                    tileList.add(tile);
+                }
             }
         }
     }
+
 
     @Override
     public void workAddQueue() {

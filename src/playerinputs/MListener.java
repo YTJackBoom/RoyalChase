@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 
 public class MListener implements MouseInputListener {
     private Game game;
+    private long lastReleaseTime = 0;
+    private final long releaseCooldown = 500;
     public MListener(Game game) {
         this.game = game;
     }
@@ -44,6 +46,12 @@ public class MListener implements MouseInputListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastReleaseTime < releaseCooldown) {
+            return;  // Ignore this mouse release because it's too soon after the last one
+        }
+        lastReleaseTime = currentTime;  // Update the last release time
+
         switch (GameStates.gameState) {
             case MENU -> game.getMenu().mouseReleased(e);
             case PLAYING -> game.getPlaying().mouseReleased(e);

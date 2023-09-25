@@ -15,6 +15,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.*;
 
 public class Game extends JFrame implements Serializable {
@@ -102,44 +104,44 @@ public class Game extends JFrame implements Serializable {
         }
 
     private void initClassesForResizes() {
-//            resizeEndTimer = new Timer(500, new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    SwingUtilities.invokeLater(() -> {
-////                        System.out.println(gameScreen.getWidth()+" "+gameScreen.getHeight());
-//
-//                        Insets insets = getInsets();
+            resizeEndTimer = new Timer(50, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    SwingUtilities.invokeLater(() -> {
+//                        System.out.println(gameScreen.getWidth()+" "+gameScreen.getHeight());
+
+                        Insets insets = getInsets();
 //                        System.out.println(insets.bottom + " " + insets.top + " " + insets.left + " " + insets.right);
-//                        fWIDTH = getContentPane().getWidth();
-//                        fHEIGHT = getContentPane().getHeight();
+                        fWIDTH = getContentPane().getWidth();
+                        fHEIGHT = getContentPane().getHeight();
+
+
+                        gameScreen.setSize(new Dimension(fWIDTH, fHEIGHT));
+//                        gameScreen.setBounds(insets.left, insets.top, fWIDTH, fHEIGHT);
+                        gameScreen.revalidate();
+                        gameScreen.repaint();
+
+                        UiElementCollector.getInstance().notifyScreenResize();
+                        getPlaying().getTileController().extendTiles(fWIDTH, fHEIGHT);
 //
-//
-//                        gameScreen.setSize(new Dimension(fWIDTH, fHEIGHT));
-////                        gameScreen.setBounds(insets.left, insets.top, fWIDTH, fHEIGHT);
-//                        gameScreen.revalidate();
-//                        gameScreen.repaint();
-//
-//                        UiElementCollector.getInstance().notifyScreenResize();
-//                        getPlaying().getTileController().extendTiles(fWIDTH, fHEIGHT);
-////
-////                        System.out.println("Screen resized to " + fWIDTH + "x" + fHEIGHT);
-//                    });
-//
-//                }
-//            });
-//
-//            // Ensure the timer only fires once after being started.
-//            resizeEndTimer.setRepeats(false);
-//
-//            addComponentListener(new ComponentAdapter() {
-//                @Override
-//                public void componentResized(ComponentEvent e) {
-//                    // Restart the timer on every resize event.
-//                    // If the window isn't resized for the duration of the timer's delay,
-//                    // the above ActionListener will be executed.
-//                    resizeEndTimer.restart();
-//                }
-//            });
+//                        System.out.println("Screen resized to " + fWIDTH + "x" + fHEIGHT);
+                    });
+
+                }
+            });
+
+            // Ensure the timer only fires once after being started.
+            resizeEndTimer.setRepeats(false);
+
+            addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    // Restart the timer on every resize event.
+                    // If the window isn't resized for the duration of the timer's delay,
+                    // the above ActionListener will be executed.
+                    resizeEndTimer.restart();
+                }
+            });
     }
         private void start() {//Initialisiert zwei threaths, einen für spiel-logic und einen für spiel-grafik(sowie einen timer zur ausgabe der fps und ups)
 
@@ -277,7 +279,7 @@ public class Game extends JFrame implements Serializable {
             fWIDTH = screenWidth;
             fHEIGHT = screenHeight;
         }
-        UiElementCollector.getInstance().notifyScreenResize();
+//        UiElementCollector.getInstance().notifyScreenResize();
         isFullScreen = !isFullScreen;
     }
 
@@ -321,16 +323,6 @@ public class Game extends JFrame implements Serializable {
             return levelCleared;
         }
         public Values getPlayerValues() {return gameState.getPlayerValues();}
-        @Override
-        public int getHeight() {
-            return gameScreen.getHeight();
-        }
-
-    @Override
-    public int getWidth() {
-        return gameScreen.getWidth();
-    }
-
     public boolean isPaused() {
         return isPaused;
     }
