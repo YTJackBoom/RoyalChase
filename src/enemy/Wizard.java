@@ -2,7 +2,7 @@ package enemy;
 
 import controllers.EnemyController;
 import gameObjects.Enemy;
-import helpers.Coordinate;
+import helpers.AbsoluteCoordinate;
 
 import static helpers.variables.Enemies.WIZARD;
 import static helpers.variables.Projectiles.LIGHTNINGBALL;
@@ -11,7 +11,7 @@ public class Wizard extends Enemy {
     private int counter;
     private boolean isLoaded;
 
-    public Wizard(EnemyController enemyController, Coordinate pos) {
+    public Wizard(EnemyController enemyController, AbsoluteCoordinate pos) {
         super(enemyController, pos, WIZARD, EnemyAttackPattern.RANGED, EnemyType.BOSS);
     }
 

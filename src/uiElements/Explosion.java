@@ -1,17 +1,13 @@
 package uiElements;
 
+import controllers.EnemyController;
 import controllers.ObjectsController;
 import controllers.TowerController;
-import gameObjects.Enemy;
 import gameObjects.GameObject;
+import helpers.AbsoluteCoordinate;
 import helpers.Circle;
-import helpers.Coordinate;
-import controllers.EnemyController;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RadialGradientPaint;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -20,13 +16,13 @@ import static basics.Game.fps;
 
 public class Explosion {
 
-    private Coordinate pos;
+    private AbsoluteCoordinate pos;
     private double lifespan,radius,maxDamage,maxStun;
     private ArrayList<GameObject> damagedObjects;
 
     private double elapsedTime; // time since explosion started (in seconds)
 
-    public Explosion(Coordinate pos, double lifespan, double radius, double maxDamage, double maxStun) {
+    public Explosion(AbsoluteCoordinate pos, double lifespan, double radius, double maxDamage, double maxStun) {
         this.pos = pos;
         this.lifespan = lifespan;
         this.radius = radius;

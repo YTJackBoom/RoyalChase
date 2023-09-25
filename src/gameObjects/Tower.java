@@ -21,7 +21,7 @@ protected int counter;
 	private Circle[] circles;
 	private Values worth;
 
-	public Tower(TowerController towerController, Coordinate pos, int type, boolean visibility) {
+	public Tower(TowerController towerController, AbsoluteCoordinate pos, int type, boolean visibility) {
 		super(pos, towerController.getPlaying().getGame().getPreLoader(), GameObjectType.TOWER, type, visibility);
 		this.type = type;
 		this.pos = pos;
@@ -54,8 +54,8 @@ protected int counter;
 	}
 	public void updateDirection() {
 		if(!(target==null&&!towerController.getPlaying().getEnemyController().contains(target))) {
-			Coordinate towerPos = this.getPos();
-			Coordinate targetPos = this.getTarget().getPos();
+			AbsoluteCoordinate towerPos = this.getPos();
+			AbsoluteCoordinate targetPos = this.getTarget().getPos();
 
 			int deltaX = targetPos.getX() - towerPos.getX();
 			int deltaY = targetPos.getY() - towerPos.getY();
@@ -137,7 +137,7 @@ protected int counter;
 		this.target = target;
 	}
 
-	public Coordinate getPos() {
+	public AbsoluteCoordinate getPos() {
 		return pos;
 	}
 

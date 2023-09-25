@@ -11,12 +11,12 @@ public  class math {
         public static boolean checkRange(Tower tower, Enemy object2) {
             if (object2 != null) {
                 int towerRange = variables.Towers.getTowerRange(tower.getType());
-                Coordinate towerPos = tower.getPos();
-                Coordinate object2Pos = object2.getPos();
-                double distance = math.GeneralMath.calculateDistance(towerPos,object2Pos);
+                AbsoluteCoordinate towerPos = tower.getPos();
+                AbsoluteCoordinate object2Pos = object2.getPos();
+                double distance = math.GeneralMath.calculateDistance(towerPos, object2Pos);
 
                 if (distance <= towerRange) {
-                     return true;
+                    return true;
                 } else return false;
 
             } else return false;
@@ -25,8 +25,9 @@ public  class math {
 
     public static class ProjectileMath {
         private static long previousTime;
-        public static Coordinate calculateArrowPos(Coordinate pos1, Coordinate pos2, double speed) { // int[0] = x ; 1 = y //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
-            Coordinate pos = pos1;
+
+        public static AbsoluteCoordinate calculateArrowPos(AbsoluteCoordinate pos1, AbsoluteCoordinate pos2, double speed) { // int[0] = x ; 1 = y //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
+            AbsoluteCoordinate pos = pos1;
 
             double xMultiplyer;
             double yMultiplyer;
@@ -68,7 +69,7 @@ public  class math {
             return pos;
         }
 
-        public static Coordinate calculateRocketPos(Coordinate rocketPosition, Coordinate targetPosition,double sineX,double speed) {
+        public static AbsoluteCoordinate calculateRocketPos(AbsoluteCoordinate rocketPosition, AbsoluteCoordinate targetPosition, double sineX, double speed) {
             double newX;
             double newY;
 
@@ -100,22 +101,22 @@ public  class math {
             }
 
 
-
             //using the line from rocketPos to target Pos as x-Axis, calculates y for sine
-            double sineY = 2*Math.sin(sineX);
+            double sineY = 2 * Math.sin(sineX);
 
             // converts sineY and displaycement to final coords
-            double finalX = newX + (sineY*Math.cos(angleC));
-            double finalY = newY + (sineY*Math.sin(180-90-angleC));
+            double finalX = newX + (sineY * Math.cos(angleC));
+            double finalY = newY + (sineY * Math.sin(180 - 90 - angleC));
 
-            return new Coordinate((int)finalX, (int)finalY+5);
+            return new AbsoluteCoordinate((int) finalX, (int) finalY + 5);
         }
-        public static Coordinate calculateLightningBallPos(Coordinate ballPosition, Coordinate targetPosition, double speed, double maxRandomDisplacement) {
+
+        public static AbsoluteCoordinate calculateLightningBallPos(AbsoluteCoordinate ballPosition, AbsoluteCoordinate targetPosition, double speed, double maxRandomDisplacement) {
             double newX;
             double newY;
 
 
-            double distance = GeneralMath.calculateDistance(ballPosition,targetPosition);
+            double distance = GeneralMath.calculateDistance(ballPosition, targetPosition);
 
             // If the ball has reached the target, return the target position
             if (distance <= speed) {
@@ -134,10 +135,10 @@ public  class math {
             newX = ballPosition.getX() + (speed * Math.cos(angleToTarget)) + randomDisplacementX;
             newY = ballPosition.getY() + (speed * Math.sin(angleToTarget)) + randomDisplacementY;
 
-            return new Coordinate((int) newX, (int) newY);
+            return new AbsoluteCoordinate((int) newX, (int) newY);
         }
 
-        public static Coordinate calculateBulletPos(Coordinate bulletPos, double angleInRadians, double speed) {
+        public static AbsoluteCoordinate calculateBulletPos(AbsoluteCoordinate bulletPos, double angleInRadians, double speed) {
             // Convert angle to radians if it is in degrees
 //            double angleInRadians = Math.toRadians(angle);
 
@@ -145,17 +146,17 @@ public  class math {
             double newX = bulletPos.x + speed * -Math.cos(angleInRadians);
             double newY = bulletPos.y + speed * -Math.sin(angleInRadians);
 
-            return new Coordinate((int)newX, (int)newY);
+            return new AbsoluteCoordinate((int) newX, (int) newY);
         }
     }
 
 
     public static class GeneralMath {
 
-        public static double calculateAngle(Coordinate pos1, Coordinate pos2) {
+        public static double calculateAngle(AbsoluteCoordinate pos1, AbsoluteCoordinate pos2) {
             double dx = pos2.getX() - pos1.getX();
             double dy = pos2.getY() - pos1.getY();
-            double angleInRadians = Math.atan2(dy,dx);
+            double angleInRadians = Math.atan2(dy, dx);
 
 //            angleInRadians = -angleInRadians;
 //
@@ -167,10 +168,11 @@ public  class math {
 //            }
             return angleInRadians;
         }
-        public static double calculateDistance(Coordinate pos1,Coordinate pos2){
+
+        public static double calculateDistance(AbsoluteCoordinate pos1, AbsoluteCoordinate pos2) {
             double dx = pos2.getX() - pos1.getX();
             double dy = pos2.getY() - pos1.getY();
-            return Math.sqrt(dx*dx+dy*dy);
+            return Math.sqrt(dx * dx + dy * dy);
         }
     }
 }

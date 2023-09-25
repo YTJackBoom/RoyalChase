@@ -3,10 +3,10 @@ package helpers;
 import java.io.Serializable;
 
 public class BuildingSaveState implements Serializable {
-    private Coordinate pos;
+    private AbsoluteCoordinate pos;
     private int type;
 
-    public BuildingSaveState(Coordinate pos, int type) {
+    public BuildingSaveState(AbsoluteCoordinate pos, int type) {
         this.pos = pos;
         this.type = type;
     }
@@ -19,11 +19,11 @@ public class BuildingSaveState implements Serializable {
         this.type = type;
     }
 
-    public Coordinate getPos() {
+    public AbsoluteCoordinate getPos() {
         return pos;
     }
 
-    public void setPos(Coordinate pos) {
+    public void setPos(AbsoluteCoordinate pos) {
         this.pos = pos;
     }
 }

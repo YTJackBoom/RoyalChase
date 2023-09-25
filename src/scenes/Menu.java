@@ -1,8 +1,7 @@
 package scenes;
 
 import basics.Game;
-import helpers.Constants;
-import helpers.UserSettings;
+import helpers.*;
 import uiElements.MyButton;
 import uiElements.Slider;
 
@@ -34,23 +33,49 @@ public class Menu extends GameScenes implements SceneMethods {
 
     public void initSliders() {
         UserSettings userSettings = game.getGameState().getUserSettings();
+        int frameWidth = Game.initGameWidth;
+        int frameHeight = Game.initGameHeight;
         int sliderWidth = 200;
         int sliderHeight = 50;
-        sliders.clear();
-        sliders.add(new Slider(new Rectangle(100, 100, sliderWidth, sliderHeight), 0, 5, userSettings.getDifficulty()));
-        sliders.add(new Slider(new Rectangle(100, 200, sliderWidth, sliderHeight), 0, 100, userSettings.getVolume()));
+
+        float relativeX = 100.0f / frameWidth;
+        float relativeY1 = 100.0f / frameHeight;
+        float relativeY2 = 200.0f / frameHeight;
+
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
+
+        // First Slider
+        UiCoordinate slider1Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY1));
+        sliders.add(new Slider(slider1Coordinate, sliderWidth, sliderHeight, 0, 5, userSettings.getDifficulty()));
+
+        // Second Slider
+        UiCoordinate slider2Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY2));
+        sliders.add(new Slider(slider2Coordinate, sliderWidth, sliderHeight, 0, 100, userSettings.getVolume()));
     }
 
+
     public void initButtons() {
+        int frameWidth = Game.initGameWidth;
+        int frameHeight = Game.initGameHeight;
+
         int buttonWidth = 200;
         int buttonHeight = 100;
-        int buttonX = 300;
-        int buttonY = 500;
-        int offsetX = 200;
-        buttons.add(new MyButton("Play", new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight), true));
-        buttons.add(new MyButton("Load Game", new Rectangle(buttonX + offsetX, buttonY, buttonWidth, buttonHeight), true));
-        buttons.add(new MyButton("Exit", new Rectangle(buttonX + 2 * offsetX, buttonY, buttonWidth, buttonHeight), true));
+
+
+        float yOffset = 0.5f - (float) buttonHeight / (2 * frameHeight);
+
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
+
+        UiCoordinate button1Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 1 / 4f, yOffset));
+        buttons.add(new MyButton("Play", button1Coordinate, buttonWidth, buttonHeight, true));
+
+        UiCoordinate button2Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 2 / 4f, yOffset));
+        buttons.add(new MyButton("Load Game", button2Coordinate, buttonWidth, buttonHeight, true));
+
+        UiCoordinate button3Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 3 / 4f, yOffset));
+        buttons.add(new MyButton("Exit", button3Coordinate, buttonWidth, buttonHeight, true));
     }
+
 
     public void renderButtons(Graphics g) {
         for (MyButton button : buttons) {
@@ -82,13 +107,13 @@ public class Menu extends GameScenes implements SceneMethods {
         int y = e.getY();
 
         for (MyButton button : buttons) {
-            if (button.getBounds().contains(x, y)) {
+            if (button.contains(x, y)) {
                 if (button.getText().equals("Play")) {
                     GameStates.gameState = GameStates.LEVELSELECT;
-                }else if(button.getText().equals("Load Game")){
+                } else if (button.getText().equals("Load Game")) {
                     game.loadGame(Constants.OtherConstants.SAVEGAMELOCATION);
                     GameStates.gameState = GameStates.LEVELSELECT;
-                }else if(button.getText().equals("Exit")){
+                } else if (button.getText().equals("Exit")) {
                     System.exit(0);
                 }
             }
@@ -100,9 +125,9 @@ public class Menu extends GameScenes implements SceneMethods {
         int x = e.getX();
         int y = e.getY();
         for(MyButton button: buttons){
-            if(button.getBounds().contains(x,y)){
+            if (button.contains(x, y)) {
                 button.setHovered(true);
-            }else{
+            } else {
                 button.setHovered(false);
             }
         }
@@ -115,12 +140,12 @@ public class Menu extends GameScenes implements SceneMethods {
         int y = e.getY();
 
         for (MyButton button : buttons) {
-            if (button.getBounds().contains(x, y)) {
+            if (button.contains(x, y)) {
                 button.setPressed(true);
             }
         }
         for (Slider slider : sliders) {
-            if (slider.getBounds().contains(x, y)) {
+            if (slider.contains(x, y)) {
                 slider.mousePressed(x, y);
             }
         }
@@ -132,7 +157,7 @@ public class Menu extends GameScenes implements SceneMethods {
         int y = e.getY();
 
         for (MyButton button: buttons){
-            if(button.getBounds().contains(x,y)){
+            if (button.contains(x, y)) {
                 if (button.getText().equals("Play")) {
                     GameStates.gameState = GameStates.LEVELSELECT;
                     game.getLevelSelect().setBackScene(GameStates.MENU);

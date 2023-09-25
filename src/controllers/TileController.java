@@ -1,7 +1,7 @@
 package controllers;
 
 import gameObjects.Tile;
-import helpers.Coordinate;
+import helpers.AbsoluteCoordinate;
 import helpers.TextReader;
 import helpers.variables;
 import scenes.Playing;
@@ -35,7 +35,7 @@ public class TileController extends ObjectsController implements ControllerMetho
         for (int x = 0; x < tileData.length; x++) {
             for (int y = 0; y < tileData[x].length; y++) {
                 Tile tile = variables.Tiles.getRawTile(tileData[x][y]);
-                tile.setPos(new Coordinate(x * 256 + 128, y * 256 + 128));
+                tile.setPos(new AbsoluteCoordinate(x * 256 + 128, y * 256 + 128));
                 tileList.add(tile);
             }
         }
@@ -53,7 +53,7 @@ public class TileController extends ObjectsController implements ControllerMetho
             for (int y = 0; y < (tileData.length > 0 ? tileData[0].length : 0); y++) {
                 int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
                 Tile tile = variables.Tiles.getRawTile(randomTileType);
-                tile.setPos(new Coordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
+                tile.setPos(new AbsoluteCoordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
                 tileList.add(tile);
             }
         }
@@ -63,7 +63,7 @@ public class TileController extends ObjectsController implements ControllerMetho
             for (int y = (tileData.length > 0 ? tileData[0].length : 0); y < tilesRequiredY + (tileData.length > 0 ? tileData[0].length : 0); y++) {
                 int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
                 Tile tile = variables.Tiles.getRawTile(randomTileType);
-                tile.setPos(new Coordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
+                tile.setPos(new AbsoluteCoordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
                 tileList.add(tile);
             }
         }
@@ -73,7 +73,7 @@ public class TileController extends ObjectsController implements ControllerMetho
             for (int y = (tileData.length > 0 ? tileData[0].length : 0); y < tilesRequiredY + (tileData.length > 0 ? tileData[0].length : 0); y++) {
                 int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
                 Tile tile = variables.Tiles.getRawTile(randomTileType);
-                tile.setPos(new Coordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
+                tile.setPos(new AbsoluteCoordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
                 tileList.add(tile);
             }
         }

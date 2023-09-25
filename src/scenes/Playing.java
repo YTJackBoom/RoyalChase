@@ -3,9 +3,7 @@ package scenes;
 import basics.Game;
 import controllers.*;
 import gameObjects.Tower;
-import helpers.Constants;
-import helpers.Direction;
-import helpers.Values;
+import helpers.*;
 import uiElements.*;
 
 import javax.imageio.ImageIO;
@@ -54,8 +52,7 @@ public class Playing extends GameScenes implements SceneMethods {
         towerController = new TowerController(this);
         waveController = new WaveController(this);
         projectileController = new ProjectileController(this);
-        bossBar = new BossBar(this, new Rectangle(500, 100, 50, 50));
-
+        initBossBar();
         initDialogController();
         initButtonBars();
 
@@ -99,28 +96,69 @@ public class Playing extends GameScenes implements SceneMethods {
 
     }
 
+
+    public void initBossBar() {
+        int width = 100;
+        int height = 20;
+
+        float relativeX = 0.5f - (float) width / (2 * fWIDTH); // Calculate relative X to account for BossBar's width.
+        float relativeY = 0.0f; // At the top
+
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner of the frame.
+        RelativeCoordinate relativeCoordinate = new RelativeCoordinate(referencePoint, relativeX, relativeY);
+        UiCoordinate uiCoordinate = new UiCoordinate(relativeCoordinate);
+
+        bossBar = new BossBar(this, uiCoordinate, width, height);
+
+    }
+
     public void initButtonBars() {
-        //the right bar
-        int widthr = 120;
-        int heightr = 1000;
-        int xr = Game.initGameWidth - widthr - 20;
-        int yr = Game.initGameHeight - heightr - 20;
-        //the buttom bar
+        // The right bar
+        int widthr = 117;
+        int heightr = 798;
+        float relativeXr = 1.0f - (float) widthr / (fWIDTH);  // All the way to the right minus the width
+        float relativeYr = 0.05f;
+
+        // The bottom bar
         int widthd = 260;
         int heightd = 100;
-        int xd = initGameWidth / 2 - widthd;
-        int yd = initGameHeight - 10 - heightd;
+        float relativeXd = 0.5f - (float) widthd / (fWIDTH);  // Centered horizontally
+        float relativeYd = 1.0f - (float) heightd / fHEIGHT;  // At the bottom minus the height
 
-        buttonBarRight = new MyButtonBar(this, new Rectangle(xr, yr, widthr, heightr), UIPos.PLAYINGRIGHT);
-        buttonBarDown = new MyButtonBar(this, new Rectangle(xd, yd, widthd, heightd), UIPos.PLAYINGDOWN);
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0);  // Top-left corner as reference
+
+        UiCoordinate uiCoordinateRight = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeXr, relativeYr));
+
+        UiCoordinate uiCoordinateDown = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeXd, relativeYd));
+
+        buttonBarRight = new MyButtonBar(this, uiCoordinateRight, widthr, heightr, UIPos.PLAYINGRIGHT);
+        buttonBarDown = new MyButtonBar(this, uiCoordinateDown, widthd, heightd, UIPos.PLAYINGDOWN);
+        buttonBarRight.setVisible(true);
+        buttonBarDown.setVisible(true);
 
         initButtonBarControls();
     }
 
+
     public void initButtonBarControls() {
-        buttonBarRightControls.add(new MyButton(10, new Rectangle(500, 500, 50, 50), true, false));
-        buttonBarRightControls.add(new MyButton(11, new Rectangle(600, 500, 50, 50), false, false));
+        int buttonHeight = 50; // Example height of the button; adjust as needed.
+        int buttonWidth = 50; // Example width of the button; adjust as needed.
+
+        // For the button's relative positioning
+        float relativeX = -((float) buttonWidth / buttonBarRight.getWidth()); // to the left of buttonBarRight by the width of the button
+        float relativeY = 0.5f - (0.5f * buttonHeight / buttonBarRight.getHeight()); // Vertically centered as a percentage
+
+        AbsoluteCoordinate referencePoint = buttonBarRight.getUiCoordinate().getAbsolutePosition();
+
+        UiCoordinate extendUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 0.5f, relativeY, buttonBarRight.getWidth(), buttonBarRight.getHeight()));
+        UiCoordinate collapseUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBarRight.getWidth(), buttonBarRight.getHeight()));
+
+        buttonBarRightControls.add(new MyButton(10, extendUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBarRight));
+        buttonBarRightControls.add(new MyButton(11, collapseUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBarRight));
+        buttonBarRight.addChild(buttonBarRightControls.get(0));
+        buttonBarRight.addChild(buttonBarRightControls.get(1));
     }
+
 
     public void initDialogController() {
         dialogController = new DialogController(this);
@@ -206,11 +244,11 @@ public class Playing extends GameScenes implements SceneMethods {
         if(e.getButton() ==1) {
             infoOverlay.mouseClicked(x,y);
 
-            if (buttonBarRight.getBounds().contains(x,y)) {
+            if (buttonBarRight.contains(x, y)) {
                 buttonBarRight.mouseClicked(x, y);
             }
-            if (buttonBarDown.getBounds().contains(x,y)) {
-                buttonBarDown.mouseClicked(x,y);
+            if (buttonBarDown.contains(x, y)) {
+                buttonBarDown.mouseClicked(x, y);
             }
             towerController.mouseClicked(x, y);
         } else if (e.getButton() ==3) {
@@ -237,9 +275,9 @@ public class Playing extends GameScenes implements SceneMethods {
         if(e.getButton()==1) {
             infoOverlay.mousePressed(mouseX,mouseY);
 
-            if (buttonBarRight.getBounds().contains(mouseX, mouseY)) {
+            if (buttonBarRight.contains(mouseX, mouseY)) {
                 buttonBarRight.mousePressed(mouseX, mouseY);
-            } else if (buttonBarDown.getBounds().contains(mouseX, mouseY)) {
+            } else if (buttonBarDown.contains(mouseX, mouseY)) {
                 buttonBarDown.mousePressed(mouseX, mouseY);
             }
         } else if (e.getButton()==3) {
@@ -254,8 +292,8 @@ public class Playing extends GameScenes implements SceneMethods {
         if (e.getButton() == 1) {
             if (playerValues.getLevel() == 0) dialogController.mouseReleased(x, y);
             tileController.mouseReleased(x, y);
-            if (buttonBarDown.getBounds().contains(x, y)) buttonBarDown.mouseReleased(x, y);
-            if (buttonBarRight.getBounds().contains(x, y)) buttonBarRight.mouseReleased(x, y);
+            if (buttonBarDown.contains(x, y)) buttonBarDown.mouseReleased(x, y);
+            if (buttonBarRight.contains(x, y)) buttonBarRight.mouseReleased(x, y);
             if (dragingObject) {
                 towerController.mouseReleased(x, y);
                 dragingObject = false;
@@ -267,13 +305,13 @@ public class Playing extends GameScenes implements SceneMethods {
     public void checkButtonBarControls(int x, int y) {
         MyButton extendButtonBarRight = buttonBarRightControls.get(0);
         MyButton collapseButtonBarRight = buttonBarRightControls.get(1);
-        if (extendButtonBarRight.getBounds().contains(x, y) && extendButtonBarRight.isVisible()) {
+        if (extendButtonBarRight.contains(x, y) && extendButtonBarRight.isVisible()) {
             buttonBarRight.setVisible(true);
             extendButtonBarRight.setVisible(false);
             collapseButtonBarRight.setVisible(true);
         }
 
-        if (collapseButtonBarRight.getBounds().contains(x, y) && collapseButtonBarRight.isVisible()) {
+        if (collapseButtonBarRight.contains(x, y) && collapseButtonBarRight.isVisible()) {
             buttonBarRight.setVisible(false);
             collapseButtonBarRight.setVisible(false);
             extendButtonBarRight.setVisible(true);

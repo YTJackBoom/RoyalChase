@@ -8,7 +8,7 @@ public abstract class GameObject {
 	protected Animator activeAnimator,passiveAnimator;
 	protected GameObjectType gameObjectType;
 	protected int type;
-	protected Coordinate pos;
+	protected AbsoluteCoordinate pos;
 	protected double health;
 	protected boolean isVisible = true;
 
@@ -17,7 +17,7 @@ public abstract class GameObject {
 
 	protected double currentStun = 0;
 
-	public GameObject(Coordinate pos, PreLoader preLoader, GameObjectType oType, int type, boolean visibility) {
+	public GameObject(AbsoluteCoordinate pos, PreLoader preLoader, GameObjectType oType, int type, boolean visibility) {
 		isVisible = visibility;
 		gameObjectType = oType;
 		this.type = type;
@@ -58,40 +58,17 @@ public abstract class GameObject {
 	public void renderHealthBar(Graphics g) {
 		double t = getMaxHealth();
 		if (health < t) {
-			int hpbarx = (int)Math.round(pos.getX() - t / 2);
+			int hpbarx = (int) Math.round(pos.getX() - t / 2);
 			g.setColor(Color.RED);
-			g.fillRect(hpbarx, pos.getY() - 10 - height / 2, (int)t, 5);
+			g.fillRect(hpbarx, pos.getY() - 10 - height / 2, (int) t, 5);
 
 			g.setColor(Color.GREEN);
 			g.fillRect(hpbarx, pos.getY() - 10 - height / 2, (int) (t * ((double) health / t)), 5);
 		}
 	}
 
-
-	public void setPos(Coordinate pos) {
-		Coordinate prePos = this.pos;
-		int deltaX = pos.getX() - prePos.getX();
-		int deltaY = pos.getY() - prePos.getY();
-
-		Direction dir = activeAnimator.getDirection();
-
-		if (Math.abs(deltaX) > Math.abs(deltaY)) {
-			if (deltaX > 0) {
-				dir = Direction.RIGHT;
-			} else if (deltaX < 0) {
-				dir = Direction.LEFT;
-			}
-		} else {
-			if (deltaY > 0) {
-				dir = Direction.DOWN;
-			} else if (deltaY < 0) {
-				dir = Direction.UP;
-			}
-		}
-
-		passiveAnimator.setDirection(dir);
-		activeAnimator.setDirection(dir);
-		this.pos = pos;
+	public AbsoluteCoordinate getPos() {
+		return pos;
 	}
 
 
@@ -116,8 +93,30 @@ public abstract class GameObject {
 		return type;
 	}
 
-	public Coordinate getPos() {
-		return pos;
+	public void setPos(AbsoluteCoordinate pos) {
+		AbsoluteCoordinate prePos = this.pos;
+		int deltaX = pos.getX() - prePos.getX();
+		int deltaY = pos.getY() - prePos.getY();
+
+		Direction dir = activeAnimator.getDirection();
+
+		if (Math.abs(deltaX) > Math.abs(deltaY)) {
+			if (deltaX > 0) {
+				dir = Direction.RIGHT;
+			} else if (deltaX < 0) {
+				dir = Direction.LEFT;
+			}
+		} else {
+			if (deltaY > 0) {
+				dir = Direction.DOWN;
+			} else if (deltaY < 0) {
+				dir = Direction.UP;
+			}
+		}
+
+		passiveAnimator.setDirection(dir);
+		activeAnimator.setDirection(dir);
+		this.pos = pos;
 	}
 
 	public HitBox getHitBox() {

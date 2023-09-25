@@ -2,11 +2,12 @@ package uiElements;
 
 import gameObjects.GameObject;
 import gameObjects.Tower;
+import helpers.RelativeCoordinate;
+import helpers.UiCoordinate;
 import scenes.GameScenes;
 import scenes.GameStates;
 import scenes.Playing;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static helpers.variables.Buttons.*;
@@ -14,17 +15,16 @@ import static helpers.variables.Buttons.*;
 public class MyButtonBar extends UiElement {
 	private GameScenes scene;
 	private ArrayList<MyButton> buttons;
-	private boolean isVisible = false;
 	private GameObject pointer;
 	private MyButton hoveredButton;
 	private UIPos uipos;
 
-	public MyButtonBar(GameScenes scene, Rectangle bounds, UIPos uiPos) {
-		super(bounds, UIObjectType.ICON, switch (uiPos) {
+	public MyButtonBar(GameScenes scene, UiCoordinate uiCoordinate, int width, int height, UIPos uiPos) {
+		super(uiCoordinate, width, height, UIObjectType.ICON, switch (uiPos) {
 			case PLAYINGDOWN -> 13;
 			case PLAYINGRIGHT -> 12;
 			case TOWNRIGHT -> 12;
-		}, true, "", "");
+		}, true);
 
 		this.uipos = uiPos;
 		buttons = new ArrayList<MyButton>();
@@ -39,87 +39,115 @@ public class MyButtonBar extends UiElement {
 
 
 	public void initPlayingButtons() {
-		int startX = bounds.x + 10;
-		int startY = bounds.y + 20;
+		int menuX = uiCoordinate.getX();
+		int menuY = uiCoordinate.getY();
+
+		int buttonWidth = 100;
+		int buttonHeight = 80;
+
+		int startX = (int) (menuX + 0.05 * width);
+		int startY = (int) (menuY + 0.02 * height);
+		int yOffset = (int) (0.055 * height);  // height + 10 pixels gap between buttons
 		int xOffset = 0;
-		int yOffset = 90;
-		int width = 100;
-		int height = 80;
-
-		buttons.add(new MyButton("Town", new Rectangle(startX, startY, width, height), true));
-
-		buttons.add(new MyButton(ARROW_T_B, new Rectangle(startX + xOffset * 3, startY + yOffset * 3, width, height), true, false));
-		buttons.add(new MyButton(ROCKET_T_B, new Rectangle(startX + xOffset * 4, startY + yOffset * 4, width, height), true, false));
-		buttons.add(new MyButton(MAGE_T_B, new Rectangle(startX + xOffset * 5, startY + yOffset * 5, width, height), true, false));
-		buttons.add(new MyButton(SNIP_T_B, new Rectangle(startX + xOffset * 6, startY + yOffset * 6, width, height), true, false));
 
 
-		buttons.add(new MyButton("Menu", new Rectangle(startX + xOffset * 7, startY + yOffset * 7, width, height), true));
+		boolean horizontal = false;
 
+		startY = addRelativelyPositionedButton("Town", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(ARROW_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(ROCKET_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(MAGE_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(SNIP_T_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
 
+		addRelativelyPositionedButton("Menu", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
 	}
 
+
+
+
 	public void initPlayingButtonsDown() {
-		int startX = bounds.x + 10;
-		int startY = bounds.y + 10;
+		int menuX = uiCoordinate.getX();
+		int menuY = uiCoordinate.getY();
+
+		int startX = (int) (menuX + 0.05 * width);
+		int startY = (int) (uiCoordinate.getY() + 0.05 * height);
 		int xOffset = 110;
 		int yOffset = 0;
 		int width = 100;
 		int height = 80;
 
-		buttons.add(new MyButton("Sell", new Rectangle(startX, startY, width, height), true));
-		buttons.add(new MyButton("Upgrade", new Rectangle(startX + xOffset, startY + yOffset, width, height), true));
+		startX = addRelativelyPositionedButton("Sell", startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, true);
+		startX = addRelativelyPositionedButton("Upgrade", startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, true);
 	}
 
 	public void initTownButtons() {
-		int startX = bounds.x + 10;
-		int startY = bounds.y + 20;
+		int menuX = uiCoordinate.getX();
+		int menuY = uiCoordinate.getY();
+
+		int startX = (int) (menuX + 0.1 * width);
+		int startY = (int) (menuY + 0.2 * height);
 		int xOffset = 0;
 		int yOffset = 90;
 		int width = 100;
 		int height = 80;
 
-		buttons.add(new MyButton("Battle!", new Rectangle(startX, startY, width, height), true));
+		startY = addRelativelyPositionedButton("Battle!", startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, false);
+		startY = addRelativelyPositionedButton(MANA_B_B, startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, false);
+		startY = addRelativelyPositionedButton(HOUSE_B_B, startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, false);
+		startY = addRelativelyPositionedButton("Menu", startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, false);
+	}
 
-		buttons.add(new MyButton(MANA_B_B, new Rectangle(startX + xOffset * 2, startY + yOffset * 2, width, height), true, false));
-		buttons.add(new MyButton(HOUSE_B_B, new Rectangle(startX + xOffset * 3, startY + yOffset * 3, width, height), true, false));
+	// The horizontal parameter will determine whether we're adjusting horizontally or vertically
+	private int addRelativelyPositionedButton(String label, int x, int y, int width, int height, int menuX, int menuY, int menuWidth, int menuHeight, int xOffset, int yOffset, boolean horizontal) {
+		float relativeX = (float) (x - menuX) / menuWidth;
+		float relativeY = (float) (y - menuY) / menuHeight;
 
-		buttons.add(new MyButton("Menu", new Rectangle(startX + xOffset * 5, startY + yOffset * 5, width, height), true));
+		UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, menuWidth, menuHeight));
+		MyButton button = new MyButton(label, buttonCoordinate, width, height, true);
+		buttons.add(button);
+		addChild(button);
+		return horizontal ? x + xOffset + width : y + yOffset + height;
+	}
 
+	private int addRelativelyPositionedButton(int imageType, int x, int y, int width, int height, int menuX, int menuY, int menuWidth, int menuHeight, int xOffset, int yOffset, boolean horizontal) {
+		float relativeX = (float) (x - menuX) / menuWidth;
+		float relativeY = (float) (y - menuY) / menuHeight;
 
+		UiCoordinate buttonCoordinate = new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, menuWidth, menuHeight));
+		MyButton button = new MyButton(imageType, buttonCoordinate, width, height, true, false, this);
+		buttons.add(button);
+		addChild(button);
+		return horizontal ? x + xOffset + width : y + yOffset + height;
 	}
 
 	@Override
-	public void render(Graphics g) {
-		if (isVisible) {
-			super.render(g);
-			renderButtons(g);
-		}
-
+	public void updateOnFrame() {
+		updateButtonPos();
 	}
-	public void renderButtons(Graphics g) {
-		if(!(uipos == UIPos.PLAYINGDOWN)) {
-			renderButtonsList(g);
-		}else {
-			Tower tower = (Tower) pointer;
-			if (!tower.isMaxedLevel()) {
-				buttons.get(0).setPos(bounds.x + 10, bounds.y + 10);
-				setButtonsVisibility(true);
-				renderButtonsList(g);
-			}else {
+
+	public void updateButtonPos() {
+		if (uipos == UIPos.PLAYINGDOWN) return;
+		if (pointer == null) return;
+		Tower tower = (Tower) pointer;
+
+		if (!tower.isMaxedLevel()) {
+			float relativeX = (10f / width) * 100;  // converted to percentage
+			float relativeY = (10f / height) * 100; // converted to percentage
+
+			int x = uiCoordinate.getX() + (int) (width * (relativeX / 100));  // converted back from percentage for absolute positioning
+			int y = uiCoordinate.getY() + (int) (height * (relativeY / 100));
+
+			buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, width, height)));
+			setButtonsVisibility(true);
+			} else {
 				buttons.get(1).setVisible(false);
-				int x = bounds.x + bounds.width / 2 - buttons.get(0).getBounds().width / 2;
-				int y = bounds.y;
-				buttons.get(0).setPos(x, y);
-				renderButtonsList(g);
-			}
-		}
-	}
+				float relativeX = (0.5f - ((float) buttons.get(0).width / 2 / width)) * 100;  // centering the button within bounds and converting to percentage
+				float relativeY = 0f;  // top of the bounds
 
+				int x = uiCoordinate.getX() + (int) (width * (relativeX / 100));
+				int y = uiCoordinate.getY();  // As it's the top of the bounds
 
-	public void renderButtonsList(Graphics g) {
-		for (MyButton button : buttons) {
-			button.render(g);
+				buttons.get(0).setUiCoordinate(new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(), relativeX, relativeY, width, height)));
 		}
 	}
 	public void resetButtons() {
@@ -145,7 +173,7 @@ public class MyButtonBar extends UiElement {
 
 		if (isVisible) {
 			for (MyButton button : buttons) {
-				if (button.getBounds().contains(x, y)) {
+				if (button.contains(x, y)) {
 					button.setHovered(true);
 					hoveredButton = button;
 					break;
@@ -159,7 +187,7 @@ public class MyButtonBar extends UiElement {
 	public void mousePressed(int x, int y) {
 		if (isVisible) {
 			for (MyButton button : buttons) {
-				if (button.getBounds().contains(x, y)) {
+				if (button.contains(x, y)) {
 					button.setPressed(true);
 					if (button.isTowerButton() || button.isBuildingButton()) {
 						scene.setDragingObject(true);
@@ -174,7 +202,7 @@ public class MyButtonBar extends UiElement {
 	public void mouseReleased(int x, int y) {
 		if(isVisible) {
 			for (MyButton button : buttons) {
-				if (button.getBounds().contains(x, y)&&button.isVisible()) {
+				if (button.contains(x, y) && button.isVisible()) {
 					if (button.getText() != null) {
 						if (button.getText().equals("Play")) {
 							GameStates.gameState = GameStates.PLAYING;
@@ -209,9 +237,6 @@ public class MyButtonBar extends UiElement {
 
 	public void mouseDragged(int x, int y) {
 
-	}
-	public void setVisible(boolean b) {
-		isVisible = b;
 	}
 	public void setButtonsVisibility(boolean b) {
 		for (MyButton button : buttons) {

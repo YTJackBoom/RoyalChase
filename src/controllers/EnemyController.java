@@ -21,7 +21,7 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 	private ArrayList<Enemy> enemyList,removeQue,addQue;
 	private ArrayList<Explosion> explosionsList;
 
-	private ArrayList<Coordinate> pathCoordinates;//pathCoordinates
+	private ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates;//pathCoordinates
 
 	private Playing playing;
 	private Values playerValues;
@@ -31,7 +31,7 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 
 		this.playing = playing;
 		pathFinder = new PathFinder(playing.getTileController());
-		pathCoordinates = pathFinder.getPath();
+		pathAbsoluteCoordinates = pathFinder.getPath();
 		enemyList = new ArrayList<Enemy>();
 		explosionsList = new ArrayList<Explosion>();
 		removeQue = new ArrayList<Enemy>();
@@ -53,7 +53,7 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		for (Enemy enemy : enemyList) {
 			if(enemy != null) {
 				checkEnemyRange(enemy);
-				enemy.update(pathCoordinates);
+				enemy.update(pathAbsoluteCoordinates);
 			}
 		}
 	}
@@ -116,15 +116,15 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 	}
 	public void spawnEnemy(int enemyType) {
 		switch (enemyType) { //switch case for different enemy types from enum
-			case SLIME -> addQue.add(new Slime(this, pathCoordinates.get(0)));
-			case SKELETON -> addQue.add(new Skeleton(this, pathCoordinates.get(0)));
-			case GOBLIN -> addQue.add(new Goblin(this, pathCoordinates.get(0)));
-			case WITCH -> addQue.add(new Witch(this, pathCoordinates.get(0)));
-			case WIZARD -> addQue.add(new Wizard(this, pathCoordinates.get(0)));
-			case SKELETON_KING -> addQue.add(new Skeleton_King(this, pathCoordinates.get(0)));
-			case GOBLIN_KING -> addQue.add(new Goblin_King(this, pathCoordinates.get(0)));
-			case WITCH_QUEEN -> addQue.add(new Witch_Queen(this, pathCoordinates.get(0)));
-			case WIZARD_KING -> addQue.add(new Wizard_King(this, pathCoordinates.get(0)));
+			case SLIME -> addQue.add(new Slime(this, pathAbsoluteCoordinates.get(0)));
+			case SKELETON -> addQue.add(new Skeleton(this, pathAbsoluteCoordinates.get(0)));
+			case GOBLIN -> addQue.add(new Goblin(this, pathAbsoluteCoordinates.get(0)));
+			case WITCH -> addQue.add(new Witch(this, pathAbsoluteCoordinates.get(0)));
+			case WIZARD -> addQue.add(new Wizard(this, pathAbsoluteCoordinates.get(0)));
+			case SKELETON_KING -> addQue.add(new Skeleton_King(this, pathAbsoluteCoordinates.get(0)));
+			case GOBLIN_KING -> addQue.add(new Goblin_King(this, pathAbsoluteCoordinates.get(0)));
+			case WITCH_QUEEN -> addQue.add(new Witch_Queen(this, pathAbsoluteCoordinates.get(0)));
+			case WIZARD_KING -> addQue.add(new Wizard_King(this, pathAbsoluteCoordinates.get(0)));
 
 		}
    }
@@ -201,16 +201,16 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		return pathFinder;
 	}
 
-	public void setPathCoordinates(ArrayList<Coordinate> newPathCoordinates) {
-		pathCoordinates = newPathCoordinates;
-   }
+	public void setPathCoordinates(ArrayList<AbsoluteCoordinate> newPathAbsoluteCoordinates) {
+		pathAbsoluteCoordinates = newPathAbsoluteCoordinates;
+	}
 
 	public ArrayList<Enemy> getEnemyList() {
 		return enemyList;
 	}
 
 	public synchronized boolean contains(GameObject enemy) {
-		if(enemy instanceof Enemy) {
+		if (enemy instanceof Enemy) {
 			return enemyList.contains((Enemy) enemy);
 		}
 		return false;

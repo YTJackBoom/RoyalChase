@@ -51,8 +51,8 @@ public class TowerController extends ObjectsController implements ControllerMeth
         updateExplosions();
     }
     public void initGate() {
-        ArrayList<Coordinate> pathCoordinates = playing.getEnemyController().getPathFinder().getPath();
-        towerEntityList.add(new Gate(this, pathCoordinates.get(pathCoordinates.size() - 1)));
+        ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates = playing.getEnemyController().getPathFinder().getPath();
+        towerEntityList.add(new Gate(this, pathAbsoluteCoordinates.get(pathAbsoluteCoordinates.size() - 1)));
     }
     public void checkTowerRange(Tower tower) {
         enemyList = playing.getEnemyController().getEnemyList();
@@ -224,8 +224,9 @@ public class TowerController extends ObjectsController implements ControllerMeth
             }
         }
     }
+
     public void replaceTower(Tower t) {
-        if(t.getType() != variables.Towers.Foundation_T) {
+        if (t.getType() != variables.Towers.Foundation_T) {
             if (placeTower(t.getPos())) {
                 playerValues.increase(t.getWorthByPercentage(Constants.OtherConstants.REPLACETOWERPERCENT));
                 removeQueue.add(t);
@@ -234,7 +235,8 @@ public class TowerController extends ObjectsController implements ControllerMeth
             }
         }
     }
-    public boolean placeTower(Coordinate pos) {
+
+    public boolean placeTower(AbsoluteCoordinate pos) {
         Values cost = variables.Towers.getCost(playing.getDraggedTower());
         if (playerValues.canAfford(cost)) {
             playerValues.decrease(cost);

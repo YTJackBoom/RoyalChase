@@ -1,29 +1,44 @@
 package uiElements;
 
+import collectors.UiElementCollector;
+import helpers.UiCoordinate;
 import helpers.variables;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 
 public abstract class UiElement {
-    protected Rectangle bounds;
     protected boolean isVisible = true;
     protected UIObjectType uiObjectType;
     protected int type;
-    protected BufferedImage primaryImage;
-    protected String posUpdateCalculationX, posUpdateCalculationY;
 
-    public UiElement(Rectangle bounds, UIObjectType uiObjectType, int type, boolean visibility, String posUpdateCalculationX, String posUpdateCalculationY) {
+    protected UiElement parent;
+    private ArrayList<UiElement> children;
+
+    protected BufferedImage primaryImage;
+    protected UiCoordinate uiCoordinate;
+    protected int height, width;
+
+    public UiElement(UiCoordinate uiCoordinate, int width, int height, UIObjectType uiObjectType, int type, boolean visibility) {
+        this(uiCoordinate, width, height, uiObjectType, type, visibility, null);
+    }
+
+    public UiElement(UiCoordinate uiCoordinate, int width, int height, UIObjectType uiObjectType, int type, boolean visibility, UiElement parent) {
         isVisible = visibility;
         this.uiObjectType = uiObjectType;
         this.type = type;
-        this.bounds = bounds;
-        this.posUpdateCalculationX = posUpdateCalculationX;
-        this.posUpdateCalculationY = posUpdateCalculationY;
+        this.uiCoordinate = uiCoordinate;
+        this.height = height;
+        this.width = width;
+        this.parent = parent;  // Set the parent
+        children = new ArrayList<UiElement>();
         initImage();
-
+        UiElementCollector.getInstance().addUiElement(this);
     }
+
 
     public void initImage() {
         try {
@@ -36,43 +51,68 @@ public abstract class UiElement {
         }
     }
 
-    ;
+    public void updateOnFrame() {
+
+    }
 
     public void render(Graphics g) {
         if (!isVisible) return;
-        if (primaryImage == null) return;
-        g.drawImage(primaryImage, bounds.x, bounds.y, null);
+        updateOnFrame();
+        if (primaryImage != null) {
+            g.drawImage(primaryImage, uiCoordinate.getX(), uiCoordinate.getY(), null);
+        }
+        for (UiElement uiElement : children) {
+            uiElement.render(g);
+        }
     }
+
+    public void addChild(UiElement uiElement) {
+        children.add(uiElement);
+        uiElement.setParent(this);
+        UiElementCollector.getInstance().removeUiElement(uiElement);
+    }
+
+    public void removeChild(UiElement uiElement) {
+        children.remove(uiElement);
+    }
+
 
     public void updatePosOnResize() {
-
+        uiCoordinate.updateBasedOnFrame();
+        for (UiElement uiElement : children) {
+            uiElement.updatePosOnResize();
+        }
     }
 
-
-    public void setPos(int x, int y) {
-        bounds.x = x;
-        bounds.y = y;
+    public UiCoordinate getUiCoordinate() {
+        return uiCoordinate;
     }
 
+    public UiElement getParent() {
+        return parent;
+    }
 
-    public Rectangle getBounds() {
-        return bounds;
+    public void setParent(UiElement parent) {
+        this.parent = parent;
+    }
+
+    public void setUiCoordinate(UiCoordinate uiCoordinate) {
+        this.uiCoordinate = uiCoordinate;
+    }
+
+    public boolean contains(int x, int y) {
+        return x >= uiCoordinate.getX() && x <= uiCoordinate.getX() + width && y >= uiCoordinate.getY() && y <= uiCoordinate.getY() + height;
     }
 
     public int getHeight() {
-        return bounds.height;
+        return height;
     }
 
     public int getWidth() {
-        return bounds.width;
+        return width;
     }
 
-    public int getX() {
-        return bounds.x;
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
-
-    public int getY() {
-        return bounds.y;
-    }
-
 }

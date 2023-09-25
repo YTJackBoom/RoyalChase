@@ -2,8 +2,8 @@ package helpers;
 
 import gameObjects.GameObject;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.Rectangle;
 
 public class HitBox {
 	private GameObject gameObject;
@@ -19,8 +19,8 @@ public class HitBox {
 		Animator otherAnimator = other.getGameObject().getActiveAnimator();
 		BufferedImage otherImage = otherAnimator.getCurrentFrame();
 
-		Coordinate thisPos = gameObject.getPos();
-		Coordinate otherPos = other.getGameObject().getPos();
+		AbsoluteCoordinate thisPos = gameObject.getPos();
+		AbsoluteCoordinate otherPos = other.getGameObject().getPos();
 		int thisX = thisPos.getX() - animator.getWidth() / 2;
 		int thisY = thisPos.getY() - animator.getHeight() / 2;
 
@@ -48,7 +48,7 @@ public class HitBox {
 	public boolean contains(int x, int y) {
 		Animator animator = gameObject.getActiveAnimator();
 		BufferedImage thisImage = animator.getCurrentFrame();
-		Coordinate thisPos = gameObject.getPos();
+		AbsoluteCoordinate thisPos = gameObject.getPos();
 		int thisX = thisPos.getX() - animator.getWidth() / 2;
 		int thisY = thisPos.getY() - animator.getHeight() / 2;
 

@@ -2,11 +2,11 @@ package towers;
 
 import controllers.TowerController;
 import gameObjects.Tower;
-import helpers.Coordinate;
+import helpers.AbsoluteCoordinate;
 
 public class Gate extends Tower {
 
-	public Gate(TowerController towerController, Coordinate pos) {
+	public Gate(TowerController towerController, AbsoluteCoordinate pos) {
 		super(towerController, pos, 0, false);
 	}
 

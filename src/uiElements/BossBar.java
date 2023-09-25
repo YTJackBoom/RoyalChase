@@ -2,6 +2,7 @@ package uiElements;
 
 import enemy.EnemyType;
 import gameObjects.Enemy;
+import helpers.UiCoordinate;
 import scenes.Playing;
 
 import java.awt.*;
@@ -13,11 +14,11 @@ public class BossBar extends UiElement {
     private Color lostHealthColor;
     private Playing playing;
 
-    public BossBar(Playing playing, Rectangle bounds) {
-        super(bounds, UIObjectType.ICON, BOSSBAR, true,
-                "fWIDTH/2 - WIDTH/2", "10");
+    public BossBar(Playing playing, UiCoordinate uiCoordinate, int width, int height) {
+        super(uiCoordinate, width, height, UIObjectType.ICON, BOSSBAR, true);
         this.lostHealthColor = Color.RED;
         this.playing = playing;
+
     }
 
     public void render(Graphics g) {
@@ -39,14 +40,14 @@ public class BossBar extends UiElement {
 
             // Calculate the width of the lost health rectangle
             float healthPercentage = (float) currentHealth / maxHealth;
-            int lostHealthWidth = (int) ((1.0f - healthPercentage) * bounds.width);
+            int lostHealthWidth = (int) ((1.0f - healthPercentage) * width);
 
             // Determine the starting x-coordinate for the lost health rectangle
-            int startX = bounds.x + bounds.width - lostHealthWidth;
+            int startX = uiCoordinate.getX() + width - lostHealthWidth;
 
             // Draw the lost health rectangle
             g.setColor(lostHealthColor);
-            g.fillRect(startX, bounds.y, lostHealthWidth, bounds.height);
+            g.fillRect(startX, uiCoordinate.getY(), lostHealthWidth, height);
         }
     }
 }
