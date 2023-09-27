@@ -4,8 +4,8 @@ import controllers.EnemyController;
 import gameObjects.Enemy;
 import helpers.AbsoluteCoordinate;
 
-import static helpers.variables.Enemies.SKELETON;
-import static helpers.variables.Projectiles.ARROW;
+import static helpers.ObjectValues.Enemies.SKELETON;
+import static helpers.ObjectValues.Projectiles.ARROW;
 
 public class Skeleton extends Enemy {
     private int counter;

@@ -1,12 +1,13 @@
 package controllers;
 
+import helpers.AssetLocation;
+
 import javax.sound.sampled.*;
-import java.io.File;
 import java.util.ArrayList;
 
-public class SoundEffectsController {
+public class SoundController {
 
-    private static SoundEffectsController instance;
+    private static SoundController instance;
     private Clip soundEffectClip;
     private Clip bgMusicClip;
     private FloatControl bgMusicVolumeControl;
@@ -18,7 +19,7 @@ public class SoundEffectsController {
     private final int MAX_CLIPS = 10; // maximale gleichzeitige soundeffecte (nicht hintergrund)
     private int currentBgMusic = -1;
 
-    private SoundEffectsController() {
+    private SoundController() {
         initializeClipPool();
     }
     private void initializeClipPool() {
@@ -32,9 +33,9 @@ public class SoundEffectsController {
          }
      }
 
-    public static SoundEffectsController getInstance() {
+    public static SoundController getInstance() {
         if (instance == null) {
-            instance = new SoundEffectsController();
+            instance = new SoundController();
         }
         return instance;
     }
@@ -51,7 +52,7 @@ public class SoundEffectsController {
         if (clip != null) {
             new Thread(() -> {
                 try {
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(helpers.variables.Sounds.getSoundFile(soundEffect));
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.getSoundFile(soundEffect));
                     clip.open(audioInputStream);
                     clip.start();
                 } catch (Exception ex) {
@@ -76,7 +77,7 @@ public class SoundEffectsController {
 
         new Thread(() -> {
             try {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(helpers.variables.Sounds.getSoundFile(soundEffect));
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.getSoundFile(soundEffect));
                 bgMusicClip = AudioSystem.getClip();
                 bgMusicClip.open(audioInputStream);
 

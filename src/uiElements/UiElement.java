@@ -1,8 +1,9 @@
 package uiElements;
 
 import collectors.UiElementCollector;
+import controllers.AssetController;
 import helpers.UiCoordinate;
-import helpers.variables;
+import helpers.AssetLocation;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,8 +14,9 @@ import java.util.ArrayList;
 public abstract class UiElement {
     protected boolean isVisible = true;
     protected UIObjectType uiObjectType;
-    protected int type;
 
+
+    protected int type;
     protected UiElement parent;
     private ArrayList<UiElement> children;
 
@@ -29,10 +31,10 @@ public abstract class UiElement {
     public UiElement(UiCoordinate uiCoordinate, int width, int height, UIObjectType uiObjectType, int type, boolean visibility, UiElement parent) {
         isVisible = visibility;
         this.uiObjectType = uiObjectType;
-        this.type = type;
         this.uiCoordinate = uiCoordinate;
         this.height = height;
         this.width = width;
+        this.type = type;
         this.parent = parent;  // Set the parent
         children = new ArrayList<UiElement>();
         initImage();
@@ -41,13 +43,13 @@ public abstract class UiElement {
 
 
     public void initImage() {
-        try {
-            switch (uiObjectType) {
-                case BUTTON -> primaryImage = ImageIO.read(variables.Buttons.getButtonImageFile(type));
-                case ICON -> primaryImage = ImageIO.read(variables.Icons.getIconImageFile(type));
+        switch (uiObjectType) {
+            case BUTTON -> {
+                primaryImage = AssetController.getInstance().getIcon( "button_"+type);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            case ICON -> {
+                primaryImage = AssetController.getInstance().getIcon( "icon_"+type);
+            }
         }
     }
 

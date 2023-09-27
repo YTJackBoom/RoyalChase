@@ -10,7 +10,7 @@ public  class math {
     public static class TowerMath {
         public static boolean checkRange(Tower tower, Enemy object2) {
             if (object2 != null) {
-                int towerRange = variables.Towers.getTowerRange(tower.getType());
+                int towerRange = ObjectValues.Towers.getTowerRange(tower.getType());
                 AbsoluteCoordinate towerPos = tower.getPos();
                 AbsoluteCoordinate object2Pos = object2.getPos();
                 double distance = math.GeneralMath.calculateDistance(towerPos, object2Pos);

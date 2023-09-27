@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static basics.Game.fWIDTH;
-import static helpers.variables.Icons.*;
+import static helpers.AssetLocation.Icons.*;
 
 public class InfoOverlay {
     private Game game;
@@ -37,7 +37,7 @@ public class InfoOverlay {
         ArrayList<File> iconFiles = new ArrayList<File>();
         iconImages = new ArrayList<BufferedImage>();
         for (int i = 0; i<=10;i++) {
-            iconFiles.add(variables.Icons.getIconImageFile(i));
+            iconFiles.add(AssetLocation.Icons.getIconImageFile(i));
         }
 
         try {
@@ -118,7 +118,7 @@ public class InfoOverlay {
             towerPointer.renderRange(g);
         }
         if (playing.getDragingTower()) {
-            int range = variables.Towers.getTowerRange(draggedTowerType);
+            int range = ObjectValues.Towers.getTowerRange(draggedTowerType);
 //			Circle [] circles = new Circle[Constants.UIConstants.NUMBEROFRANGECIRCLES];
 
             for (int i = 0; i < Constants.UIConstants.NUMBEROFRANGECIRCLES; i++) {
@@ -147,7 +147,7 @@ public class InfoOverlay {
 
         if (hoveredButton.isTowerButton() || hoveredButton.isBuildingButton()) {
             int type = hoveredButton.getType();
-            costValues = hoveredButton.isTowerButton() ? variables.Towers.getCost(type) : variables.Buildings.getCost(type);
+            costValues = hoveredButton.isTowerButton() ? ObjectValues.Towers.getCost(type) : ObjectValues.Buildings.getCost(type);
         } else if (buttonText != null && towerPointer != null) {
             if ("Upgrade".equals(buttonText)) {
                 costValues = towerPointer.getWorth().getUpgradeCost();
@@ -164,7 +164,7 @@ public class InfoOverlay {
 
         for (int i = 0; i < costs.length; i++) {
             try {
-                BufferedImage img = ImageIO.read(variables.Icons.getIconImageFile(i + 5));
+                BufferedImage img = ImageIO.read(AssetLocation.Icons.getIconImageFile(i + 5));
                 int imagePadding = 5;  // gap between image and number
 
                 int textHeight = (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D();

@@ -2,7 +2,7 @@ package gameObjects;
 
 import helpers.AbsoluteCoordinate;
 import helpers.ImageAnalyser;
-import helpers.variables;
+import helpers.AssetLocation;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -38,7 +38,7 @@ public class Tile {
         this.isBuildable = isBuildable;
         this.tileType = tileType;
         try {
-            tileImage = ImageIO.read(variables.Tiles.getTileFile(tileType));
+            tileImage = ImageIO.read(AssetLocation.Tiles.getTileFile(tileType));
         } catch (IOException e) {
             throw new RuntimeException(e + " Tile " + tileType + " not found");
         }

@@ -10,7 +10,7 @@ import scenes.Playing;
 
 import java.util.ArrayList;
 
-import static helpers.variables.Buttons.*;
+import static helpers.AssetLocation.Buttons.*;
 
 public class MyButtonBar extends UiElement {
 	private GameScenes scene;

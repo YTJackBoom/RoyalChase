@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static basics.Game.ups;
-import static helpers.variables.Enemies.*;
-import static helpers.variables.Towers.Foundation_T;
+import static helpers.ObjectValues.Enemies.*;
+import static helpers.ObjectValues.Towers.Foundation_T;
 
 
 public class EnemyController extends ObjectsController implements ControllerMethods {
@@ -89,12 +89,12 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		}
 	}
 	public void enemySacrificeOnGate(Enemy enemy) {
-		playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
+		playerValues.setHealth(playerValues.getHealth() - ObjectValues.Enemies.getEnemyDamage(enemy.getType()));
 		removeQue.add(enemy);
 		System.out.println("Enemy reached the end");
 	}
 	public void enemyMeleeAttackOnGate(Enemy enemy) {
-		playerValues.setHealth(playerValues.getHealth() - variables.Enemies.getEnemyDamage(enemy.getType()));
+		playerValues.setHealth(playerValues.getHealth() - ObjectValues.Enemies.getEnemyDamage(enemy.getType()));
 	}
 	public synchronized void updateExplosions() {
 		for(Explosion e : explosionsList) {

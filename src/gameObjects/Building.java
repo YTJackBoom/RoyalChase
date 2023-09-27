@@ -2,8 +2,9 @@ package gameObjects;
 
 import controllers.BuildingsController;
 import helpers.AbsoluteCoordinate;
+import helpers.ObjectValues;
 import helpers.Values;
-import helpers.variables;
+import helpers.AssetLocation;
 
 import java.awt.*;
 
@@ -17,7 +18,7 @@ public class Building extends GameObject {
 	private Rectangle bounds;
 	private Values playerValues;
 	public Building(BuildingsController buildingsController, int x, int y, int type ) {
-		super(new AbsoluteCoordinate(x, y), buildingsController.getTown().getGame().getPreLoader(), GameObjectType.BUILDING, type, true);
+		super(new AbsoluteCoordinate(x, y),GameObjectType.BUILDING, type, true);
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -33,7 +34,7 @@ public class Building extends GameObject {
 	public void update() { //coal iro wood stone
 		if (counter >=ups) {
 			counter = 0;
-			playerValues.increase(variables.Buildings.getProduction(type));
+			playerValues.increase(ObjectValues.Buildings.getProduction(type));
 		} else {
 			counter++;
 		}

@@ -226,7 +226,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
 
     public void replaceTower(Tower t) {
-        if (t.getType() != variables.Towers.Foundation_T) {
+        if (t.getType() != ObjectValues.Towers.Foundation_T) {
             if (placeTower(t.getPos())) {
                 playerValues.increase(t.getWorthByPercentage(Constants.OtherConstants.REPLACETOWERPERCENT));
                 removeQueue.add(t);
@@ -237,7 +237,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
 
     public boolean placeTower(AbsoluteCoordinate pos) {
-        Values cost = variables.Towers.getCost(playing.getDraggedTower());
+        Values cost = ObjectValues.Towers.getCost(playing.getDraggedTower());
         if (playerValues.canAfford(cost)) {
             playerValues.decrease(cost);
             addQueue.add(new Tower(this, pos, playing.getDraggedTower(), true));
@@ -259,7 +259,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
     public void sellAllTowers() {
         for(Tower tower : towerEntityList) {
-            if(tower.getType() != variables.Towers.Foundation_T) {
+            if(tower.getType() != ObjectValues.Towers.Foundation_T) {
                 playerValues.increase(tower.getWorthByPercentage(Constants.OtherConstants.SELLALLTOWERSPERCENT));
             }
         }
@@ -267,7 +267,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
     public void mouseClicked(int x, int y) {
         for(Tower tower : towerEntityList) {
-            if(tower.getType() != variables.Towers.Foundation_T) {
+            if(tower.getType() != ObjectValues.Towers.Foundation_T) {
                 if (tower.getBounds().contains(x, y)) {
                     selectedTower = tower;
                     playing.setSelectedTower(tower);

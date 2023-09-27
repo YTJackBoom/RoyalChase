@@ -2,12 +2,9 @@ package gameObjects;
 
 
 import controllers.ProjectileController;
-import helpers.AbsoluteCoordinate;
-import helpers.Constants;
-import helpers.math;
-import helpers.variables;
+import helpers.*;
 
-import static helpers.variables.Projectiles.*;
+import static helpers.ObjectValues.Projectiles.*;
 
 
 public class Projectile extends GameObject{
@@ -24,7 +21,7 @@ public class Projectile extends GameObject{
 
 
 	public Projectile(ProjectileController projectileController,GameObject origin, GameObject target, int type) {
-		super(new AbsoluteCoordinate(origin.getPos().getX(), origin.getPos().getY()), projectileController.getPlaying().getGame().getPreLoader(), GameObjectType.PROJECTILE, type, true);
+		super(new AbsoluteCoordinate(origin.getPos().getX(), origin.getPos().getY()), GameObjectType.PROJECTILE, type, true);
 		this.type = type;
 		this.target = target;
 		this.projectileController = projectileController;
@@ -49,7 +46,7 @@ public class Projectile extends GameObject{
 				pos = math.ProjectileMath.calculateArrowPos(pos,target.getPos(),getSpeed());
 			}
 			case ROCKET -> {
-				numberForTrajectory += variables.Projectiles.getProjectileSpeed(variables.Projectiles.ROCKET);
+				numberForTrajectory += ObjectValues.Projectiles.getProjectileSpeed(ObjectValues.Projectiles.ROCKET);
 				pos = math.ProjectileMath.calculateRocketPos(pos, target.getPos(), numberForTrajectory, getSpeed());
 			}
 			case LIGHTNINGBALL -> {
@@ -69,7 +66,7 @@ public class Projectile extends GameObject{
 	public double getDamage() {
 		double dmg = 0;
 		if (origin instanceof Tower) {
-			dmg = variables.Towers.getTowerDamage(origin.type);
+			dmg = ObjectValues.Towers.getTowerDamage(origin.type);
 
 			Tower temp = (Tower) origin;
 			int tLevel = temp.getLevel();
@@ -78,13 +75,13 @@ public class Projectile extends GameObject{
 				dmg += dmg * Constants.ObjectConstants.DMGUPGRADE;
 			}
 		} else if (origin instanceof Enemy) {
-			dmg = variables.Enemies.getEnemyDamage(origin.type);
+			dmg = ObjectValues.Enemies.getEnemyDamage(origin.type);
 
 		}
 		return dmg;
 	}
 	public double getStun() {
-		return variables.Projectiles.getStun(type);
+		return ObjectValues.Projectiles.getStun(type);
 	}
 
 	public double getSpeed() {
@@ -93,7 +90,7 @@ public class Projectile extends GameObject{
 //		for(int i =1 ; i<tLevel;i++) {
 //			speed += speed*Constants.ObjectConstants.SPEEDUPGRADE;
 //		}
-		return variables.Projectiles.getProjectileSpeed(type);
+		return ObjectValues.Projectiles.getProjectileSpeed(type);
 	}
 
 	public int getWidth() {

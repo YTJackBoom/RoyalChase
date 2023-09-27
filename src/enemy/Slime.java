@@ -4,7 +4,7 @@ import controllers.EnemyController;
 import gameObjects.Enemy;
 import helpers.AbsoluteCoordinate;
 
-import static helpers.variables.Enemies.SLIME;
+import static helpers.ObjectValues.Enemies.SLIME;
 
 public class Slime extends Enemy {
     public Slime(EnemyController enemyController, AbsoluteCoordinate pos) {

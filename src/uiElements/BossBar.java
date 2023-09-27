@@ -7,7 +7,7 @@ import scenes.Playing;
 
 import java.awt.*;
 
-import static helpers.variables.Icons.BOSSBAR;
+import static helpers.AssetLocation.Icons.BOSSBAR;
 
 public class BossBar extends UiElement {
     private Enemy bossPointer;

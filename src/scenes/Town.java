@@ -52,7 +52,7 @@ public class Town extends GameScenes implements SceneMethods {
     }
 
     private void initVariables() {
-        townImage = variables.Town.getBackgroundImage();
+        townImage = AssetLocation.Town.getBackgroundImage();
     }
 
     public void initButtonBar() {
@@ -135,7 +135,7 @@ public class Town extends GameScenes implements SceneMethods {
     public void renderDraggedButton(Graphics g) {
         BufferedImage draggedImage;
         try {
-            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(draggedObjectType));
+            draggedImage = ImageIO.read(AssetLocation.Buttons.getButtonImageFile(draggedObjectType));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

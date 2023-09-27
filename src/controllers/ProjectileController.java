@@ -12,9 +12,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static basics.GameScreen.fBOUNDS;
+import static helpers.ObjectValues.Projectiles.BULLET;
+import static helpers.ObjectValues.Projectiles.ROCKET;
 import static helpers.math.GeneralMath.calculateAngle;
-import static helpers.variables.Projectiles.BULLET;
-import static helpers.variables.Projectiles.ROCKET;
+
 
 public class ProjectileController implements ControllerMethods {
     private Playing playing;

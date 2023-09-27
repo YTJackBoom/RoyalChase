@@ -4,7 +4,7 @@ import controllers.EnemyController;
 import gameObjects.Enemy;
 import helpers.AbsoluteCoordinate;
 
-import static helpers.variables.Enemies.GOBLIN_KING;
+import static helpers.ObjectValues.Enemies.GOBLIN_KING;
 
 public class Goblin_King extends Enemy {
     public Goblin_King(EnemyController enemyController, AbsoluteCoordinate pos) {

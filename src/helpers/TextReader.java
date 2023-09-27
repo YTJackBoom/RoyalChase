@@ -71,7 +71,7 @@ public class TextReader {
 
     public void initWaveFileAnalyser(int i) {
         try {
-            reader = new BufferedReader(new FileReader(variables.Maps.getMapWaveFile(i)));
+            reader = new BufferedReader(new FileReader(AssetLocation.Maps.getMapWaveFile(i)));
         } catch (IOException e) {
             System.out.println("WaveFileAnalyser can't read " + i);
         }

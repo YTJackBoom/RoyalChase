@@ -1,15 +1,16 @@
 package controllers;
 
 import gameObjects.Building;
+import helpers.ObjectValues;
 import helpers.Values;
-import helpers.variables;
+import helpers.AssetLocation;
 import scenes.Town;
 import specialBuildings.House;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-import static helpers.variables.Buildings.*;
+import static helpers.ObjectValues.Buildings.*;
 
 public class BuildingsController implements ControllerMethods{
 	private Town town;
@@ -107,7 +108,7 @@ public class BuildingsController implements ControllerMethods{
 	}
 
 	private void handleBuildingPlacement(int index) {
-		Values cost = variables.Buildings.getCost(town.getSelectedBuilding());
+		Values cost = ObjectValues.Buildings.getCost(town.getSelectedBuilding());
 
 		if (playerValues.canAfford(cost)) {
 			playerValues.decrease(cost);

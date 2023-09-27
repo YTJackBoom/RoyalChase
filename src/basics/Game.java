@@ -1,12 +1,12 @@
 package basics;
 
 import collectors.UiElementCollector;
+import controllers.AssetController;
 import controllers.BuildingsController;
-import controllers.SoundEffectsController;
+import controllers.SoundController;
 import gameObjects.Building;
 import helpers.AbsoluteCoordinate;
 import helpers.BuildingSaveState;
-import helpers.PreLoader;
 import helpers.Values;
 import scenes.Menu;
 import scenes.*;
@@ -45,7 +45,6 @@ public class Game extends JFrame implements Serializable {
     private InfoOverlay infoOverlay;
     private GameState gameState;
     private GameRenderUpdater renderUpdater;
-    private PreLoader preLoader;
     private Timer resizeEndTimer;
 
 
@@ -66,7 +65,7 @@ public class Game extends JFrame implements Serializable {
         setContentPane(gameScreen);
         pack();
 
-        SoundEffectsController.getInstance().playBackgroundMusic(0);
+//        SoundController.getInstance().playBackgroundMusic(0);
 
         setVisible(true);
     }
@@ -86,9 +85,9 @@ public class Game extends JFrame implements Serializable {
 
         private void initClasses() { //Initialisieren der Klassen
             initClassesForResizes();
+            AssetController.getInstance();
 
             gameState = new GameState(this);
-            preLoader = new PreLoader();
 
             infoOverlay = new InfoOverlay(this);
 
@@ -314,10 +313,6 @@ public class Game extends JFrame implements Serializable {
         public Town getTown() {return town;}
         public InfoOverlay getInfoOverlay() {return infoOverlay;}
 
-
-        public PreLoader getPreLoader() {
-            return preLoader;
-        }
         public int getUps() {return ups;}
 
 

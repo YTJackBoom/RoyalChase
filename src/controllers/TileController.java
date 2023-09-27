@@ -2,8 +2,9 @@ package controllers;
 
 import gameObjects.Tile;
 import helpers.AbsoluteCoordinate;
+import helpers.ObjectValues;
 import helpers.TextReader;
-import helpers.variables;
+import helpers.AssetLocation;
 import scenes.Playing;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ public class TileController extends ObjectsController implements ControllerMetho
     }
 
     public void initTiles() {
-        TextReader textReader = new TextReader(variables.Maps.getTileTextFile(playing.getGame().getGameState().getPlayerValues().getLevel()));
+        TextReader textReader = new TextReader(AssetLocation.Maps.getTileTextFile(playing.getGame().getGameState().getPlayerValues().getLevel()));
         try {
             tileData = textReader.readTileData();
         } catch (IOException e) {
@@ -34,7 +35,7 @@ public class TileController extends ObjectsController implements ControllerMetho
         }
         for (int x = 0; x < tileData.length; x++) {
             for (int y = 0; y < tileData[x].length; y++) {
-                Tile tile = variables.Tiles.getRawTile(tileData[x][y]);
+                Tile tile = ObjectValues.Tiles.getRawTile(tileData[x][y]);
                 tile.setPos(new AbsoluteCoordinate(x * 256 + 128, y * 256 + 128));
                 tileList.add(tile);
             }
@@ -53,7 +54,7 @@ public class TileController extends ObjectsController implements ControllerMetho
                 // Check the x and y conditions for horizontal, vertical and corner cases
                 if ((x >= tileData.length || y >= (tileData.length > 0 ? tileData[0].length : 0)) && getTile(x*tileSize, y*tileSize) == null) {
                     int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
-                    Tile tile = variables.Tiles.getRawTile(randomTileType);
+                    Tile tile = ObjectValues.Tiles.getRawTile(randomTileType);
                     tile.setPos(new AbsoluteCoordinate(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2));
                     tileList.add(tile);
                 }

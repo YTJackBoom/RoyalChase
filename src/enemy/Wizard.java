@@ -4,8 +4,8 @@ import controllers.EnemyController;
 import gameObjects.Enemy;
 import helpers.AbsoluteCoordinate;
 
-import static helpers.variables.Enemies.WIZARD;
-import static helpers.variables.Projectiles.LIGHTNINGBALL;
+import static helpers.ObjectValues.Enemies.WIZARD;
+import static helpers.ObjectValues.Projectiles.LIGHTNINGBALL;
 
 public class Wizard extends Enemy {
     private int counter;

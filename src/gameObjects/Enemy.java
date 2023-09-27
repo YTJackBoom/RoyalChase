@@ -3,10 +3,7 @@ package gameObjects;
 import controllers.EnemyController;
 import enemy.EnemyAttackPattern;
 import enemy.EnemyType;
-import helpers.AbsoluteCoordinate;
-import helpers.Circle;
-import helpers.Constants;
-import helpers.variables;
+import helpers.*;
 
 import java.util.ArrayList;
 
@@ -25,7 +22,7 @@ public class Enemy extends GameObject {
 
 
 	public Enemy(EnemyController enemyController, AbsoluteCoordinate pos, int type, EnemyAttackPattern enemyAttackPattern, EnemyType enemyType) {
-		super(pos, enemyController.getPlaying().getGame().getPreLoader(), GameObjectType.ENEMY, type, true);
+		super(pos, GameObjectType.ENEMY, type, true);
 		this.enemyAttackPattern = enemyAttackPattern;
 		this.enemyController = enemyController;
 		this.enemyType = enemyType;
@@ -80,7 +77,7 @@ public class Enemy extends GameObject {
 	}
 
 	private void bounceAttack(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
-		final double attackSpeed = variables.Enemies.getEnemyReloadTime(type);
+		final double attackSpeed = ObjectValues.Enemies.getEnemyReloadTime(type);
 		double incrementPerTick = Constants.ObjectConstants.MELEEATTACKDISTANCE / (attackSpeed * 60);  // since we want to bounce back in the entire duration, divide by 2, i.e., half for forward and half for backward
 
 		double newIndex = isMovingForward ? getPathIndex() + incrementPerTick : getPathIndex() - incrementPerTick;
@@ -147,8 +144,8 @@ public class Enemy extends GameObject {
 
 
 	public void initVariables() {
-		speed = variables.Enemies.getEnemySpeed(type);
-		range = new Circle(pos,variables.Enemies.getEnemyRange(type));
+		speed = ObjectValues.Enemies.getEnemySpeed(type);
+		range = new Circle(pos, ObjectValues.Enemies.getEnemyRange(type));
 	}
 
 	public double getPathIndex() {
@@ -158,7 +155,7 @@ public class Enemy extends GameObject {
 		return speed;
 	}
 	public double getReloadTime() {
-		return variables.Enemies.getEnemyReloadTime(type);
+		return ObjectValues.Enemies.getEnemyReloadTime(type);
 	}
 	public void setPathIndex(double i) {
 		pathIndex =i;
@@ -180,7 +177,7 @@ public class Enemy extends GameObject {
 	}
 
 	public int getReward() {
-		return variables.Enemies.getEnemyReward(type);
+		return ObjectValues.Enemies.getEnemyReward(type);
 	}
 
 

@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static helpers.variables.Buttons.*;
+import static helpers.AssetLocation.Buttons.*;
 
 public class MyButton extends UiElement {
 	private boolean checked = false;
@@ -15,7 +15,6 @@ public class MyButton extends UiElement {
 	private boolean mouseHover = false;
 	private boolean mousePressed = false;
 	private String text = null;
-	private int type;
 	private int level = -1;
 	private BufferedImage ButtonImage;
 	private Tooltip tooltip;
@@ -30,7 +29,6 @@ public class MyButton extends UiElement {
 
 	public MyButton(int ButtonType, UiCoordinate uiCoordinate, int width, int height, boolean visibility, boolean hasOutline, UiElement parent) {
 		super(uiCoordinate, width, height, UIObjectType.BUTTON, ButtonType, visibility, parent);
-		this.type = ButtonType;
 		initButtonTooltip();
 		this.hasOutline = hasOutline;
 	}
@@ -50,8 +48,9 @@ public class MyButton extends UiElement {
 
 
 	private void initButtonTooltip() {
-		File tooltipText;
-		if ((tooltipText = variables.Buttons.getTooltipTextFile(type)) == null || parent == null) return;
+		File tooltipText = AssetLocation.Buttons.getTooltipTextFile(type);
+		if (tooltipText == null || !tooltipText.exists() || parent == null) return;
+
 		TextReader textReader = new TextReader(tooltipText);
 		String[] texts;
 		try {
@@ -144,7 +143,7 @@ public class MyButton extends UiElement {
 	}
 	public boolean isTowerButton() {
 		//TODO: Change this to a better way of checking if it is a tower button
-		return type >= Foundation_T_B && !isTextButton && type <= SNIP_T_B;
+		return type >= 0 && !isTextButton && type <= SNIP_T_B;
 	}
 	public boolean isBuildingButton() {
 		return type >= MANA_B_B && !isTextButton && type <= HOUSE_B_B;

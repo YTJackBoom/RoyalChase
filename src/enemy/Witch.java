@@ -4,7 +4,7 @@ import controllers.EnemyController;
 import gameObjects.Enemy;
 import helpers.AbsoluteCoordinate;
 
-import static helpers.variables.Enemies.WITCH;
+import static helpers.ObjectValues.Enemies.WITCH;
 
 public class Witch extends Enemy {
     public Witch(EnemyController enemyController, AbsoluteCoordinate pos) {

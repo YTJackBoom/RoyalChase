@@ -1,5 +1,6 @@
 package gameObjects;
 
+import controllers.AssetController;
 import helpers.*;
 
 import java.awt.*;
@@ -17,12 +18,12 @@ public abstract class GameObject {
 
 	protected double currentStun = 0;
 
-	public GameObject(AbsoluteCoordinate pos, PreLoader preLoader, GameObjectType oType, int type, boolean visibility) {
+	public GameObject(AbsoluteCoordinate pos, GameObjectType oType, int type, boolean visibility) {
 		isVisible = visibility;
 		gameObjectType = oType;
 		this.type = type;
 		this.pos = pos;
-		initAnimators(preLoader);
+		initAnimators();
 		hitBox = new HitBox(this);
 
 		width = activeAnimator.getWidth();
@@ -33,24 +34,24 @@ public abstract class GameObject {
 
 
 
-	private void initAnimators(PreLoader preLoader){
+	private void initAnimators(){
 		switch (gameObjectType) {
 			case ENEMY -> {
-				activeAnimator = preLoader.getEnemyActiveAnimator(type).clone();
-				passiveAnimator = preLoader.getEnemyPassiveAnimator(type).clone();
+				activeAnimator = AssetController.getInstance().getAnimator("enemyActive_"+type);
+				passiveAnimator = AssetController.getInstance().getAnimator("enemyPassive_"+type);
 			}
 			case TOWER -> {
-				activeAnimator = preLoader.getTowerActiveAnimator(type).clone();
+				activeAnimator = AssetController.getInstance().getAnimator("towerActive_"+type);
 				activeAnimator.scaleImages(Constants.UIConstants.TOWERSCALEFACTOR);
 //				activeAnimator = new Animator(new File("res/images/towers/active/mage_t_active/normal.gif"));
-				passiveAnimator = preLoader.getTowerPassiveAnimator(type).clone();
+				passiveAnimator = AssetController.getInstance().getAnimator("towerPassive_"+type);
 				passiveAnimator.scaleImages(Constants.UIConstants.TOWERSCALEFACTOR);
 			}
 			case BUILDING -> {
-				activeAnimator = preLoader.getBuildingAnimator(type).clone();
+				activeAnimator = AssetController.getInstance().getAnimator("building_"+type);
 			}
 			case PROJECTILE -> {
-				activeAnimator = preLoader.getProjectileAnimator(type-1).clone();
+				activeAnimator = AssetController.getInstance().getAnimator("projectile_"+(type-1));
 			}
 		}
 	}
@@ -149,8 +150,8 @@ public abstract class GameObject {
 
 	public double getMaxHealth() {
 		return switch (gameObjectType) {
-			case TOWER -> variables.Towers.getTowerHealth(type);
-			case ENEMY -> variables.Enemies.getEnemyHealth(type);
+			case TOWER -> ObjectValues.Towers.getTowerHealth(type);
+			case ENEMY -> ObjectValues.Enemies.getEnemyHealth(type);
 			default -> 0.0;
 		};
 

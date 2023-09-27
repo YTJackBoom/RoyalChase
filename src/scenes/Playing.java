@@ -175,7 +175,7 @@ public class Playing extends GameScenes implements SceneMethods {
 
         BufferedImage draggedImage;
         try {
-            draggedImage = ImageIO.read(helpers.variables.Buttons.getButtonImageFile(draggedObjectType));
+            draggedImage = ImageIO.read(AssetLocation.Buttons.getButtonImageFile(draggedObjectType));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

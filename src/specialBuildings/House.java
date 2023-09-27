@@ -2,14 +2,15 @@ package specialBuildings;
 
 import controllers.BuildingsController;
 import gameObjects.Building;
-import helpers.variables;
+import helpers.AssetLocation;
+import helpers.ObjectValues;
 
-import static helpers.variables.Buildings.HOUSE;
+import static helpers.ObjectValues.Buildings.HOUSE;
 
 public class House extends Building {
     public House(BuildingsController buildingsController, int x, int y) {
         super(buildingsController, x, y, HOUSE);
-        buildingsController.getTown().getGame().getPlayerValues().increase(variables.Buildings.getProduction(HOUSE));
+        buildingsController.getTown().getGame().getPlayerValues().increase(ObjectValues.Buildings.getProduction(HOUSE));
     }
 
 

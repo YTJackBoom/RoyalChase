@@ -18,7 +18,7 @@ protected int counter;
 	private Values worth;
 
 	public Tower(TowerController towerController, AbsoluteCoordinate pos, int type, boolean visibility) {
-		super(pos, towerController.getPlaying().getGame().getPreLoader(), GameObjectType.TOWER, type, visibility);
+		super(pos,GameObjectType.TOWER, type, visibility);
 		this.type = type;
 		this.pos = pos;
 		this.towerController = towerController;
@@ -90,7 +90,7 @@ protected int counter;
 		this.width = activeAnimator.getWidth();
 		projectileController = towerController.getPlaying().getProjectileController();
 		isLoaded = true;
-		worth = variables.Towers.getCost(type);
+		worth = ObjectValues.Towers.getCost(type);
 		level = 1;
 
 
@@ -99,7 +99,7 @@ protected int counter;
 			bounds = new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
 	}
 	public void initRange() {
-		int range = variables.Towers.getTowerRange(type);
+		int range = ObjectValues.Towers.getTowerRange(type);
 		circles = new Circle[Constants.UIConstants.NUMBEROFRANGECIRCLES];
 
 
@@ -110,7 +110,7 @@ protected int counter;
 	}
 
 	public double getReloadTime() {
-		int r = variables.Towers.getTowerReloadTime(type);
+		int r = ObjectValues.Towers.getTowerReloadTime(type);
 
 		for(int i =1 ; i<level;i++) {
 			if ((r-r*Constants.ObjectConstants.SPEEDUPGRADE)>Constants.ObjectConstants.LOWESTRELOADSPEED){
@@ -150,7 +150,7 @@ protected int counter;
 
 	public void upgrade() {
 		level++;
-		health = health+variables.Towers.getTowerHealth(type)*Constants.ObjectConstants.HEALTHUPGRADE;
+		health = health+ ObjectValues.Towers.getTowerHealth(type)*Constants.ObjectConstants.HEALTHUPGRADE;
 	}
 
 	public int getLevel() {
