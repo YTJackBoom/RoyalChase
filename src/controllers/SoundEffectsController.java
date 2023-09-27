@@ -15,7 +15,8 @@ public class SoundEffectsController {
     private float volume = 1.0f; // default volume, range 0.0 (muted) to 1.0 (max)
 
     private ArrayList<Clip> clipPool = new ArrayList<>();
-    private final int MAX_CLIPS = 10; // Pool siz
+    private final int MAX_CLIPS = 10; // maximale gleichzeitige soundeffecte (nicht hintergrund)
+    private int currentBgMusic = -1;
 
     private SoundEffectsController() {
         initializeClipPool();
@@ -45,12 +46,12 @@ public class SoundEffectsController {
         }
         return null;
     }
-    public void playSoundEffect(String path) {
+    public void playSoundEffect(int soundEffect) {
         Clip clip = getAvailableClip();
         if (clip != null) {
             new Thread(() -> {
                 try {
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource(path));
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(helpers.variables.Sounds.getSoundFile(soundEffect));
                     clip.open(audioInputStream);
                     clip.start();
                 } catch (Exception ex) {
@@ -61,10 +62,21 @@ public class SoundEffectsController {
     }
 
 
-    public void playBackgroundMusic(String path) {
+    public void playBackgroundMusic(int soundEffect) {
+        // Check if the requested background music is already playing
+        if (currentBgMusic != -1 && currentBgMusic == soundEffect && bgMusicClip != null && bgMusicClip.isRunning()) {
+            return; // If it's already playing, do nothing
+        }
+
+        // If there's another background music playing, stop it
+        if (bgMusicClip != null) {
+            bgMusicClip.stop();
+            bgMusicClip.close(); // Release the resources associated with the clip
+        }
+
         new Thread(() -> {
             try {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(path));
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(helpers.variables.Sounds.getSoundFile(soundEffect));
                 bgMusicClip = AudioSystem.getClip();
                 bgMusicClip.open(audioInputStream);
 
@@ -72,6 +84,8 @@ public class SoundEffectsController {
                 setVolumeForClip(bgMusicVolumeControl, volume);
 
                 bgMusicClip.loop(Clip.LOOP_CONTINUOUSLY);
+                currentBgMusic = soundEffect; // Update the currently playing background music ID
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

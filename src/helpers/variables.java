@@ -554,6 +554,39 @@ public class variables { //class to define different variables for thing
                 default -> throw new IllegalStateException("IconType does not exist");
             };
         }
+    }
+    public static class Sounds {
+        private static final String standartpath_background = "res/sounds/background/";
+        private static final String standartpath_effects = "res/sounds/effects/";
+        public static final int BACKGROUND_PLAYING = 0;
+        public static final int BACKGROUND_TOWN = 1;
+        public static final int BACKGROUND_MENU = 2;
+        public static final int BACKGROUND_GAMEOVER = 3;
+        public static final int BACKGROUND_WIN = 4;
+
+        public static final int ARROW_FIRED = 5;
+        public static final int ROCKET_FIRED = 6;
+        public static final int SNIP_FIRED = 7;
+        public static final int MAGE_FIRED = 8;
+        public static final int ENEMY_DIED = 9;
+
+        public static File getSoundFile(int SoundType) {
+            return switch (SoundType) {
+                case BACKGROUND_PLAYING -> new File(standartpath_background + "playing.wav");
+                case BACKGROUND_TOWN -> new File(standartpath_background + "town.wav");
+                case BACKGROUND_MENU -> new File(standartpath_background + "menu.wav");
+                case BACKGROUND_GAMEOVER -> new File(standartpath_background + "gameover.wav");
+                case BACKGROUND_WIN -> new File(standartpath_background + "win.wav");
+                case ARROW_FIRED -> new File(standartpath_effects + "arrow_fired.wav");
+                case ROCKET_FIRED -> new File(standartpath_effects + "rocket_fired.wav");
+                case SNIP_FIRED -> new File(standartpath_effects + "snip_fired.wav");
+                case MAGE_FIRED -> new File(standartpath_effects + "mage_fired.wav");
+                case ENEMY_DIED -> new File(standartpath_effects + "enemy_died.wav");
+                default -> throw new IllegalStateException("SoundType does not exist");
+
+            };
+        }
+
 
 
     }

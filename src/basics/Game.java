@@ -66,7 +66,7 @@ public class Game extends JFrame implements Serializable {
         setContentPane(gameScreen);
         pack();
 
-        SoundEffectsController.getInstance().playBackgroundMusic("res/sounds/r.wav");
+        SoundEffectsController.getInstance().playBackgroundMusic(0);
 
         setVisible(true);
     }
