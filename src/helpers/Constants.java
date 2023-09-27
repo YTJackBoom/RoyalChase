@@ -48,6 +48,7 @@ public class Constants {
 
 
         public static final double MELEEATTACKDISTANCE = 15;
+        public static final double HEALTHUPGRADE = 0.25;
     }
 	public static class OtherConstants {
 		public static final String SAVEGAMELOCATION ="res/savegame";

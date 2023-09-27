@@ -1,6 +1,7 @@
 package scenes;
 
 import basics.Game;
+import controllers.SoundEffectsController;
 import helpers.*;
 import uiElements.MyButton;
 import uiElements.Slider;
@@ -99,6 +100,7 @@ public class Menu extends GameScenes implements SceneMethods {
         game.getGameState().getUserSettings().setDifficulty(sliders.get(0).getValue());
 //        System.out.println(sliders.get(0).getValue());
         game.getGameState().getUserSettings().setVolume(sliders.get(1).getValue());
+        SoundEffectsController.getInstance().setVolume(sliders.get(1).getValue()/100f);
     }
 
     @Override

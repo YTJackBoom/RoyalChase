@@ -7,10 +7,6 @@ import helpers.*;
 import java.awt.*;
 
 public class Tower extends GameObject {
-//	private Animator passiveAnimator, activeAnimatorTurret;
-//	private Animator animatorBase;
-
-//	private final Coordinate pos;
 protected int counter;
 	private Enemy target;
 	private boolean isFiring, isLoaded;
@@ -154,6 +150,7 @@ protected int counter;
 
 	public void upgrade() {
 		level++;
+		health = health+variables.Towers.getTowerHealth(type)*Constants.ObjectConstants.HEALTHUPGRADE;
 	}
 
 	public int getLevel() {

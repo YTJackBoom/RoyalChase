@@ -2,6 +2,7 @@ package basics;
 
 import collectors.UiElementCollector;
 import controllers.BuildingsController;
+import controllers.SoundEffectsController;
 import gameObjects.Building;
 import helpers.AbsoluteCoordinate;
 import helpers.BuildingSaveState;
@@ -65,6 +66,7 @@ public class Game extends JFrame implements Serializable {
         setContentPane(gameScreen);
         pack();
 
+        SoundEffectsController.getInstance().playBackgroundMusic("res/sounds/r.wav");
 
         setVisible(true);
     }
