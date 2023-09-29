@@ -84,8 +84,10 @@ public class Game extends JFrame implements Serializable {
         }
 
         private void initClasses() { //Initialisieren der Klassen
-            initClassesForResizes();
+            System.out.println("Gerade werden die Assets des Spiels geladen, bitte warten...");
             AssetController.getInstance();
+            SoundController.getInstance();
+            System.out.println("Assets geladen");
 
             gameState = new GameState(this);
 
@@ -100,6 +102,9 @@ public class Game extends JFrame implements Serializable {
             levelCleared = new LevelCleared(this);
             levelSelect = new LevelSelect(this);
             town = new Town(this);
+
+            initClassesForResizes();
+
 
 
         }

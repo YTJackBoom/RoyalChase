@@ -1,10 +1,7 @@
 package gameObjects;
 
 import controllers.BuildingsController;
-import helpers.AbsoluteCoordinate;
-import helpers.ObjectValues;
-import helpers.Values;
-import helpers.AssetLocation;
+import helpers.*;
 
 import java.awt.*;
 

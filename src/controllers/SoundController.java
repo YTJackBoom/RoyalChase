@@ -3,7 +3,14 @@ package controllers;
 import helpers.AssetLocation;
 
 import javax.sound.sampled.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SoundController {
 
@@ -13,25 +20,19 @@ public class SoundController {
     private FloatControl bgMusicVolumeControl;
     private FloatControl soundEffectVolumeControl;
 
-    private float volume = 1.0f; // default volume, range 0.0 (muted) to 1.0 (max)
+    private float backgroundVolume = 1.0f; // default volume, range 0.0 (muted) to 1.0 (max)
+    private float soundEffectVolume = 1.0f; // default volume, range 0.0 (muted) to 1.0 (max)
+    private final int MAX_CLIPS = 15; // maximale gleichzeitige soundeffecte (nicht hintergrund)
+    private String currentBgMusic = null;
+    private Map<Clip, String> clipSoundMap = new HashMap<>(); // Track which sound is loaded in each clip
+    private Map<String, ArrayList<Clip>> preloadedClips = new HashMap<>();
+    private ExecutorService soundThreadPool = Executors.newFixedThreadPool(MAX_CLIPS);
 
-    private ArrayList<Clip> clipPool = new ArrayList<>();
-    private final int MAX_CLIPS = 10; // maximale gleichzeitige soundeffecte (nicht hintergrund)
-    private int currentBgMusic = -1;
+
 
     private SoundController() {
-        initializeClipPool();
+        preLoadSounds();
     }
-    private void initializeClipPool() {
-         for (int i = 0; i < MAX_CLIPS; i++) {
-             try {
-                 Clip clip = AudioSystem.getClip();
-                 clipPool.add(clip);
-             } catch (Exception ex) {
-                 ex.printStackTrace();
-             }
-         }
-     }
 
     public static SoundController getInstance() {
         if (instance == null) {
@@ -39,33 +40,56 @@ public class SoundController {
         }
         return instance;
     }
-    private Clip getAvailableClip() {
-        for (Clip clip : clipPool) {
-            if (!clip.isActive()) {
-                return clip;
+    private void preLoadSounds() {
+        int instancesPerSound = 1;
+
+        // Get all the sound keys from AssetController
+        Set<String> soundKeys = AssetController.getInstance().getSoundKeys();
+
+        for (String soundKey : soundKeys) {
+            preloadSound(soundKey, instancesPerSound);
+        }
+    }
+
+    public void preloadSound(String soundEffect, int instances) {
+        ArrayList<Clip> clips = new ArrayList<>();
+        try {
+            AudioInputStream originalStream = AssetController.getInstance().getSound(soundEffect);
+            byte[] audioBytes = originalStream.readAllBytes();  // Read the entire stream once
+            for (int i = 0; i < instances; i++) {
+                    try {
+                        AudioInputStream copyStream = new AudioInputStream(new ByteArrayInputStream(audioBytes), originalStream.getFormat(), audioBytes.length / originalStream.getFormat().getFrameSize());
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(copyStream);
+                        clips.add(clip);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        preloadedClips.put(soundEffect, clips);
+    }
+
+    public void playSoundEffect(String soundEffect) {
+        ArrayList<Clip> clips = preloadedClips.get(soundEffect);
+        if (clips != null) {
+            for (Clip clip : clips) {
+                if (!clip.isActive()) {
+                    soundThreadPool.execute(() -> {
+                        clip.setFramePosition(0);
+                        clip.start();
+                    });
+                    return;  // Exit the method after scheduling one of the clips to play
+                }
             }
         }
-        return null;
-    }
-    public void playSoundEffect(int soundEffect) {
-        Clip clip = getAvailableClip();
-        if (clip != null) {
-            new Thread(() -> {
-                try {
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.getSoundFile(soundEffect));
-                    clip.open(audioInputStream);
-                    clip.start();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }).start();
-        }
     }
 
-
-    public void playBackgroundMusic(int soundEffect) {
+    public void playBackgroundMusic(String soundEffect) {
         // Check if the requested background music is already playing
-        if (currentBgMusic != -1 && currentBgMusic == soundEffect && bgMusicClip != null && bgMusicClip.isRunning()) {
+        if (currentBgMusic != null && currentBgMusic.equals(soundEffect) && bgMusicClip != null && bgMusicClip.isRunning()) {
             return; // If it's already playing, do nothing
         }
 
@@ -77,12 +101,12 @@ public class SoundController {
 
         new Thread(() -> {
             try {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.getSoundFile(soundEffect));
+                AudioInputStream audioInputStream = AssetController.getInstance().getSound(soundEffect);
                 bgMusicClip = AudioSystem.getClip();
                 bgMusicClip.open(audioInputStream);
 
                 bgMusicVolumeControl = (FloatControl) bgMusicClip.getControl(FloatControl.Type.MASTER_GAIN);
-                setVolumeForClip(bgMusicVolumeControl, volume);
+                setVolumeForClip(bgMusicVolumeControl, backgroundVolume);
 
                 bgMusicClip.loop(Clip.LOOP_CONTINUOUSLY);
                 currentBgMusic = soundEffect; // Update the currently playing background music ID
@@ -104,30 +128,30 @@ public class SoundController {
             bgMusicClip.start();
         }
     }
-
-    public void pauseSoundEffect() {
-        if (soundEffectClip != null && soundEffectClip.isRunning()) {
-            soundEffectClip.stop();
-        }
-    }
-
-    public void resumeSoundEffect() {
-        if (soundEffectClip != null && !soundEffectClip.isRunning()) {
-            soundEffectClip.start();
-        }
-    }
-
-    public void setVolume(float volume) {
-        this.volume = Math.max(0.0f, Math.min(volume, 1.0f)); // Ensure volume is between 0 and 1
+    public void setBackgroundVolume(float volume) {
+        this.backgroundVolume = Math.max(0.0f, Math.min(volume, 1.0f)); // Ensure volume is between 0 and 1
 
         // Apply to currently active clips
         if (bgMusicVolumeControl != null) {
-            setVolumeForClip(bgMusicVolumeControl, this.volume);
+            setVolumeForClip(bgMusicVolumeControl, this.backgroundVolume);
         }
         if (soundEffectVolumeControl != null) {
-            setVolumeForClip(soundEffectVolumeControl, this.volume);
+            setVolumeForClip(soundEffectVolumeControl, this.backgroundVolume);
         }
     }
+
+    public void setSoundEffectVolume(float volume) {
+        this.soundEffectVolume = Math.max(0.0f, Math.min(volume, 1.0f)); // Ensure volume is between 0 and 1
+
+        // Apply to all preloaded clips
+        for (ArrayList<Clip> clips : preloadedClips.values()) {
+            for (Clip clip : clips) {
+                FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                setVolumeForClip(control, this.soundEffectVolume);
+            }
+        }
+    }
+
 
     private void setVolumeForClip(FloatControl control, float volume) {
         float min = control.getMinimum();

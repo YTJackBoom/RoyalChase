@@ -11,6 +11,7 @@ public abstract class GameObject {
 	protected int type;
 	protected AbsoluteCoordinate pos;
 	protected double health;
+	protected double damageDealt;
 	protected boolean isVisible = true;
 
 	protected HitBox hitBox;
@@ -124,12 +125,20 @@ public abstract class GameObject {
 		return hitBox;
 	}
 
-    public void setStun(double stun) {
+	public double getHealth() {
+		return health;
+	}
+
+	public void setStun(double stun) {
 		currentStun = stun;
     }
 
 	public double getStun() {
 		return currentStun;
+	}
+
+	public double getDamageDealt() {
+		return damageDealt;
 	}
 
 	public void damage(double i) {
@@ -150,8 +159,8 @@ public abstract class GameObject {
 
 	public double getMaxHealth() {
 		return switch (gameObjectType) {
-			case TOWER -> ObjectValues.Towers.getTowerHealth(type);
-			case ENEMY -> ObjectValues.Enemies.getEnemyHealth(type);
+			case TOWER -> ObjectValues.Towers.getTowerHealth(type)*math.DifficultyMath.calculateTowerHealthPercentChange();
+			case ENEMY -> ObjectValues.Enemies.getEnemyHealth(type)*math.DifficultyMath.calculateEnemyHealthPercentChange();
 			default -> 0.0;
 		};
 

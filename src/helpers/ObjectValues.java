@@ -4,6 +4,8 @@ import gameObjects.Tile;
 
 import java.lang.reflect.Field;
 
+import static basics.GameState.userSettings;
+
 public class ObjectValues {
         public static class Enemies {
 
@@ -277,13 +279,14 @@ public class ObjectValues {
             public static final int STONEORE = 3;
             public static final int WOODORE = 4;
             public static Values getProduction(int type) {
+                double percent = math.DifficultyMath.calculateTownProductionPercentChange();
                 return switch (type) {
                     case PLACEHOLDER -> new Values(0,0,0,0,0,0);
-                    case MANA -> new Values(0,0,5,0,0,0);
-                    case IRON -> new Values(0,0,0,5,0,0);
-                    case WOOD -> new Values(0,0,0,0,5,0);
-                    case STONE -> new Values(0,0,0,0,0,5);
-                    case HOUSE -> new Values(5,0,0,0,0,0);
+                    case MANA -> new Values(0,0,5*percent,0,0,0);
+                    case IRON -> new Values(0,0,0,5*percent,0,0);
+                    case WOOD -> new Values(0,0,0,0,5*percent,0);
+                    case STONE -> new Values(0,0,0,0,0,5*percent);
+                    case HOUSE -> new Values(5*percent,0,0,0,0,0);
                     default -> new Values(0,0,0,0,0,0);
                 };
             }

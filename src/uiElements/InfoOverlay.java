@@ -1,6 +1,7 @@
 package uiElements;
 
 import basics.Game;
+import controllers.AssetController;
 import gameObjects.Tile;
 import gameObjects.Tower;
 import helpers.*;
@@ -34,18 +35,9 @@ public class InfoOverlay {
         initVariables();
     }
     private void initVariables(){
-        ArrayList<File> iconFiles = new ArrayList<File>();
         iconImages = new ArrayList<BufferedImage>();
         for (int i = 0; i<=10;i++) {
-            iconFiles.add(AssetLocation.Icons.getIconImageFile(i));
-        }
-
-        try {
-            for (File file : iconFiles) {
-                iconImages.add(ImageIO.read(file));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            iconImages.add(AssetController.getInstance().getIcon("icon_"+i));
         }
     }
 
@@ -163,8 +155,7 @@ public class InfoOverlay {
         double[] playerResources = {playerValues.getWorkers(), playerValues.getGold(), playerValues.getMana(), playerValues.getIron(), playerValues.getWood(), playerValues.getStone()};
 
         for (int i = 0; i < costs.length; i++) {
-            try {
-                BufferedImage img = ImageIO.read(AssetLocation.Icons.getIconImageFile(i + 5));
+                BufferedImage img = AssetController.getInstance().getIcon("icon_"+(i + 5));
                 int imagePadding = 5;  // gap between image and number
 
                 int textHeight = (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D();
@@ -187,14 +178,8 @@ public class InfoOverlay {
                 // Draw the text. The y position is adjusted to align it to the center of the image.
                 g.drawString(costString, x + img.getWidth() + imagePadding, blockY + imgHeight + (textHeight - imgHeight) / 2);
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
-
-
-    }
-
     public void renderTileBoundaries(Graphics g) {
         for (Tile tile : playing.getTileController().getTileList()) {
             if (tile.isHovered()) {

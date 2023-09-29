@@ -66,7 +66,7 @@ public class Projectile extends GameObject{
 	public double getDamage() {
 		double dmg = 0;
 		if (origin instanceof Tower) {
-			dmg = ObjectValues.Towers.getTowerDamage(origin.type);
+			dmg = origin.damageDealt;
 
 			Tower temp = (Tower) origin;
 			int tLevel = temp.getLevel();
@@ -75,7 +75,7 @@ public class Projectile extends GameObject{
 				dmg += dmg * Constants.ObjectConstants.DMGUPGRADE;
 			}
 		} else if (origin instanceof Enemy) {
-			dmg = ObjectValues.Enemies.getEnemyDamage(origin.type);
+			dmg = origin.damageDealt;
 
 		}
 		return dmg;

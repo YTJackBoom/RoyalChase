@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class GameState implements Serializable { //diese klasse ist zum speichern des spielstandes nötig, ier werden die spielerwerte soiwe stadt-gebäude(in extra Klssen) abgespeichert
     private Game game;
-    private Values playerValues;
-    private UserSettings userSettings;
+    public static Values playerValues;
+    public static UserSettings userSettings;
     private ArrayList<BuildingSaveState> townBuildingsSave;
 
 

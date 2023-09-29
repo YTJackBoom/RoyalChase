@@ -172,6 +172,40 @@ public class AssetLocation { //class to define different variables for thing
         public static int getLowestInt(){return AssetLocation.getLowestInt(Icons.class);}
     }
     public static class Sounds {
+        public static class Deaths {
+            private static final String DEATHS_BASE_PATH = "res/sounds/deaths/";
+            public static final int SLIME_DIED = 0;
+            public static final int SKELETON_DIED = 1;
+            public static final int GOBLIN_DIED = 2;
+            public static final int WITCH_DIED = 3;
+            public static final int WIZARD_DIED = 4;
+            public static final int TOWER_DIED = 5 ;
+
+            public static File getSoundFile(int DeathType) {
+                return new File(DEATHS_BASE_PATH + getFieldNameByValue(AssetLocation.Sounds.Deaths.class, DeathType).toLowerCase() + ".wav");
+            }
+
+            public static int getNumberOfIntDeclarations() {
+                return AssetLocation.getHighestInt(Deaths.class);
+            }
+            public static int getLowestInt(){return AssetLocation.getLowestInt(Deaths.class);}
+        }
+        public static class ProjectileFired {
+            private static final String PROJECTILE_FIRED_BASE_PATH = "res/sounds/projectileFired/";
+//            public static final int ARROW_FIRED = 0;
+//            public static final int ROCKET_FIRED = 1;
+//            public static final int SNIP_FIRED = 2;
+//            public static final int MAGE_FIRED = 3;
+
+            public static File getSoundFile(int ProjectileFiredType) {
+                return new File(PROJECTILE_FIRED_BASE_PATH + getFieldNameByValue(AssetLocation.Sounds.ProjectileFired.class, ProjectileFiredType).toLowerCase() + ".wav");
+            }
+
+            public static int getNumberOfIntDeclarations() {
+                return AssetLocation.getHighestInt(ProjectileFired.class);
+            }
+            public static int getLowestInt(){return AssetLocation.getLowestInt(ProjectileFired.class);}
+        }
         private static final String SOUNDS_BASE_PATH = "res/sounds/";
         public static final int BACKGROUND_PLAYING = 0;
 //        public static final int BACKGROUND_TOWN = 1;

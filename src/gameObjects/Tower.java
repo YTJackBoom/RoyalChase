@@ -86,6 +86,7 @@ protected int counter;
 	}
 
 	public void initVariables() {
+		damageDealt = ObjectValues.Towers.getTowerDamage(type)*math.DifficultyMath.calculateTowerDamagePercentChange();
 		this.height = activeAnimator.getHeight();
 		this.width = activeAnimator.getWidth();
 		projectileController = towerController.getPlaying().getProjectileController();
@@ -150,7 +151,7 @@ protected int counter;
 
 	public void upgrade() {
 		level++;
-		health = health+ ObjectValues.Towers.getTowerHealth(type)*Constants.ObjectConstants.HEALTHUPGRADE;
+		health = health*Constants.ObjectConstants.HEALTHUPGRADE;
 	}
 
 	public int getLevel() {

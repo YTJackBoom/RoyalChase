@@ -11,6 +11,8 @@ public class Enemy extends GameObject {
 	//	private Coordinate pos;
 	private double pathIndex;
 	private double speed;
+	private double reloadTime;
+	private double goldReward;
 	protected boolean isActive;
 	protected boolean isMeleeAttacking,isMovingForward; //Für melee angriffe, die  derzeitige Richtung der Bewegung im Angriff und ob der Angriff gerade ausgeführt wird
 	protected EnemyController enemyController;
@@ -144,8 +146,11 @@ public class Enemy extends GameObject {
 
 
 	public void initVariables() {
-		speed = ObjectValues.Enemies.getEnemySpeed(type);
+		speed = ObjectValues.Enemies.getEnemySpeed(type)*math.DifficultyMath.calculateEnemySpeedPercentChange();
 		range = new Circle(pos, ObjectValues.Enemies.getEnemyRange(type));
+		reloadTime = ObjectValues.Enemies.getEnemyReloadTime(type)*math.DifficultyMath.calculateEnemyReloadTimePercentChange();
+		damageDealt = ObjectValues.Enemies.getEnemyDamage(type)*math.DifficultyMath.calculateEnemyDamagePercentChange();
+		goldReward = ObjectValues.Enemies.getEnemyReward(type)*math.DifficultyMath.calculateEnemyRewardPercentChange();
 	}
 
 	public double getPathIndex() {
@@ -155,13 +160,10 @@ public class Enemy extends GameObject {
 		return speed;
 	}
 	public double getReloadTime() {
-		return ObjectValues.Enemies.getEnemyReloadTime(type);
+		return reloadTime;
 	}
 	public void setPathIndex(double i) {
 		pathIndex =i;
-	}
-	public double getHealth() {
-		return health;
 	}
 	public boolean isActive() {
 		return isActive;
@@ -176,8 +178,8 @@ public class Enemy extends GameObject {
 		return target;
 	}
 
-	public int getReward() {
-		return ObjectValues.Enemies.getEnemyReward(type);
+	public double getReward() {
+		return goldReward;
 	}
 
 

@@ -37,7 +37,7 @@ public abstract class UiElement {
         this.type = type;
         this.parent = parent;  // Set the parent
         children = new ArrayList<UiElement>();
-        initImage();
+        if(type != 0) initImage();
         UiElementCollector.getInstance().addUiElement(this);
     }
 

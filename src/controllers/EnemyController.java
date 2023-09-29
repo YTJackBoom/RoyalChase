@@ -81,6 +81,8 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		for (Enemy enemy : enemyList) {
 			if (enemy != null) {
 				if (enemy.getHealth() <= 0) {
+					SoundController.getInstance().playSoundEffect("deaths_"+enemy.getType());
+
 					removeQue.add(enemy);
 					playerValues.setGold((int) (playerValues.getGold() +  (enemy.getReward()* playerValues.getRewardmultiplyer())));
 					System.out.println("Nemy killed for " + enemy.getReward() + " gold");
@@ -89,12 +91,12 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		}
 	}
 	public void enemySacrificeOnGate(Enemy enemy) {
-		playerValues.setHealth(playerValues.getHealth() - ObjectValues.Enemies.getEnemyDamage(enemy.getType()));
+		playerValues.setHealth(playerValues.getHealth() - enemy.getDamageDealt());
 		removeQue.add(enemy);
 		System.out.println("Enemy reached the end");
 	}
 	public void enemyMeleeAttackOnGate(Enemy enemy) {
-		playerValues.setHealth(playerValues.getHealth() - ObjectValues.Enemies.getEnemyDamage(enemy.getType()));
+		playerValues.setHealth(playerValues.getHealth() - enemy.getDamageDealt());
 	}
 	public synchronized void updateExplosions() {
 		for(Explosion e : explosionsList) {

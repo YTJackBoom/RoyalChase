@@ -45,7 +45,9 @@ public class TowerController extends ObjectsController implements ControllerMeth
         for (Tower tower : towerEntityList) {
             if(!playing.isPaused()) {
                 checkTowerRange(tower);
+                checkTowerHealth(tower);
             }
+
             tower.update();
         }
         updateExplosions();
@@ -85,6 +87,12 @@ public class TowerController extends ObjectsController implements ControllerMeth
             // if (tower.getType() == 1) System.out.println("towerTarget reset");
         }
 
+    }
+    public void checkTowerHealth(Tower tower) {
+        if (tower.getHealth() <= 0) {
+            SoundController.getInstance().playSoundEffect("deaths_5");
+            removeQueue.add(tower);
+        }
     }
 
 

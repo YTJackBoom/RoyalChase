@@ -173,12 +173,7 @@ public class Playing extends GameScenes implements SceneMethods {
 
     public void renderDraggedButton(Graphics g) {
 
-        BufferedImage draggedImage;
-        try {
-            draggedImage = ImageIO.read(AssetLocation.Buttons.getButtonImageFile(draggedObjectType));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        BufferedImage draggedImage = AssetController.getInstance().getIcon("button_" + draggedObjectType);
 
         g.drawImage(draggedImage, mouseX-draggedImage.getWidth()/2 , mouseY-draggedImage.getHeight()/2, null);
     }

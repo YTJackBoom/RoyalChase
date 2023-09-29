@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import static basics.GameState.playerValues;
+
 public class Menu extends GameScenes implements SceneMethods {
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
     private ArrayList<Slider> sliders = new ArrayList<Slider>();
@@ -100,7 +102,8 @@ public class Menu extends GameScenes implements SceneMethods {
         game.getGameState().getUserSettings().setDifficulty(sliders.get(0).getValue());
 //        System.out.println(sliders.get(0).getValue());
         game.getGameState().getUserSettings().setVolume(sliders.get(1).getValue());
-        SoundController.getInstance().setVolume(sliders.get(1).getValue()/100f);
+        SoundController.getInstance().setBackgroundVolume(sliders.get(1).getValue()/100f);
+        SoundController.getInstance().setSoundEffectVolume(sliders.get(1).getValue()/100f);
     }
 
     @Override

@@ -5,6 +5,8 @@ import gameObjects.Tower;
 
 import java.util.Random;
 
+import static basics.GameState.userSettings;
+
 public  class math {
 
     public static class TowerMath {
@@ -157,15 +159,6 @@ public  class math {
             double dx = pos2.getX() - pos1.getX();
             double dy = pos2.getY() - pos1.getY();
             double angleInRadians = Math.atan2(dy, dx);
-
-//            angleInRadians = -angleInRadians;
-//
-//            // Ensure the angle is within the range of -π to π
-//            if (angleInRadians < -Math.PI) {
-//                angleInRadians += 2 * Math.PI;
-//            } else if (angleInRadians > Math.PI) {
-//                angleInRadians -= 2 * Math.PI;
-//            }
             return angleInRadians;
         }
 
@@ -174,6 +167,43 @@ public  class math {
             double dy = pos2.getY() - pos1.getY();
             return Math.sqrt(dx * dx + dy * dy);
         }
+    }
+    public static class DifficultyMath {
+        public static double calculateEnemyHealthPercentChange() {
+            double difficulty = userSettings.getDifficulty();
+            return 1.1 + difficulty/10 ;
+        }
+        public static double calculateEnemySpeedPercentChange() {
+            double difficulty = userSettings.getDifficulty();
+            return 1.1 + difficulty/10 ;
+        }
+        public static double calculateEnemyDamagePercentChange() {
+            double difficulty = userSettings.getDifficulty();
+            return 1.1 + difficulty/10 ;
+        }
+        public static double calculateEnemyReloadTimePercentChange() {
+            double difficulty = userSettings.getDifficulty();
+            return 1.1 + difficulty/10 ;
+        }
+        public static double calculateTowerDamagePercentChange() {
+            double difficulty = userSettings.getDifficulty();
+            return 1.1 + difficulty/10 ;
+        }
+        public static double calculateTowerHealthPercentChange() {
+            double difficulty = userSettings.getDifficulty();
+            return 1.1 + difficulty/10 ;
+        }
+        public static double calculateEnemyRewardPercentChange() {
+            double difficulty = userSettings.getDifficulty();
+            return 1.1 + difficulty/10 ;
+        }
+        public static double calculateTownProductionPercentChange() {
+            double difficulty = userSettings.getDifficulty();
+            return 1.1 + difficulty/10 ;
+        }
+
+
+
     }
 }
 

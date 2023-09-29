@@ -1,6 +1,7 @@
 package scenes;
 
 import basics.Game;
+import controllers.AssetController;
 import controllers.BuildingsController;
 import controllers.DialogController;
 import helpers.*;
@@ -133,13 +134,7 @@ public class Town extends GameScenes implements SceneMethods {
         infoOverlay.setHoveredButton(buttonBar.getHoveredButton());
     }
     public void renderDraggedButton(Graphics g) {
-        BufferedImage draggedImage;
-        try {
-            draggedImage = ImageIO.read(AssetLocation.Buttons.getButtonImageFile(draggedObjectType));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        BufferedImage draggedImage = AssetController.getInstance().getIcon("button_" + draggedObjectType);
         g.drawImage(draggedImage, mouseX-draggedImage.getWidth()/2 , mouseY-draggedImage.getHeight()/2, null);
     }
 
@@ -147,9 +142,6 @@ public class Town extends GameScenes implements SceneMethods {
     public void mouseClicked(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
-//        if(buttonBar.getBounds().contains(mouseX,mouseY)){
-//            buttonBar.mouseClicked(mouseX,mouseY);
-//        }
     }
 
     @Override
