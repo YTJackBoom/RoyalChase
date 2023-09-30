@@ -192,10 +192,10 @@ public class AssetLocation { //class to define different variables for thing
         }
         public static class ProjectileFired {
             private static final String PROJECTILE_FIRED_BASE_PATH = "res/sounds/projectileFired/";
-//            public static final int ARROW_FIRED = 0;
-//            public static final int ROCKET_FIRED = 1;
-//            public static final int SNIP_FIRED = 2;
-//            public static final int MAGE_FIRED = 3;
+            public static final int ARROW_FIRED = ObjectValues.Projectiles.ARROW;
+            public static final int ROCKET_FIRED = ObjectValues.Projectiles.ROCKET;
+            public static final int SNIP_FIRED = ObjectValues.Projectiles.BULLET;
+            public static final int MAGE_FIRED = ObjectValues.Projectiles.LIGHTNINGBALL;
 
             public static File getSoundFile(int ProjectileFiredType) {
                 return new File(PROJECTILE_FIRED_BASE_PATH + getFieldNameByValue(AssetLocation.Sounds.ProjectileFired.class, ProjectileFiredType).toLowerCase() + ".wav");

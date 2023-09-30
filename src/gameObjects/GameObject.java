@@ -52,7 +52,7 @@ public abstract class GameObject {
 				activeAnimator = AssetController.getInstance().getAnimator("building_"+type);
 			}
 			case PROJECTILE -> {
-				activeAnimator = AssetController.getInstance().getAnimator("projectile_"+(type-1));
+				activeAnimator = AssetController.getInstance().getAnimator("projectile_"+type);
 			}
 		}
 	}

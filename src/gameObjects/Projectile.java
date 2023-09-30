@@ -2,6 +2,7 @@ package gameObjects;
 
 
 import controllers.ProjectileController;
+import controllers.SoundController;
 import helpers.*;
 
 import static helpers.ObjectValues.Projectiles.*;
@@ -22,6 +23,7 @@ public class Projectile extends GameObject{
 
 	public Projectile(ProjectileController projectileController,GameObject origin, GameObject target, int type) {
 		super(new AbsoluteCoordinate(origin.getPos().getX(), origin.getPos().getY()), GameObjectType.PROJECTILE, type, true);
+		SoundController.getInstance().playSoundEffect("projectileFired_"+type);
 		this.type = type;
 		this.target = target;
 		this.projectileController = projectileController;
