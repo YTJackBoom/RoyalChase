@@ -159,7 +159,7 @@ public class AssetLocation { //class to define different variables for thing
                 case IRON -> new File(ICONS_BASE_PATH + "infooverlay/iron_icon.png");
                 case MANA -> new File(ICONS_BASE_PATH + "infooverlay/mana_icon.png");
                 case STONE -> new File(ICONS_BASE_PATH + "infooverlay/stone_icon.png");
-                case WORKERS -> new File(ICONS_BASE_PATH + "infooverlay/stone_icon.png");
+                case WORKERS -> new File(ICONS_BASE_PATH + "infooverlay/worker_icon.png");
                 case BOSSBAR -> new File(ICONS_BASE_PATH + "infooverlay/boss_bar.png");
                 case BUTTONBAR_RIGHT -> new File(ICONS_BASE_PATH + "ui/buttonbar_right.png");
                 case BUTTONBAR_DOWN -> new File(ICONS_BASE_PATH + "ui/buttonbar_right.png");
