@@ -12,25 +12,40 @@ public class HitBox {
 		gameObject = obj;
 	}
 
-	public boolean collidesWith(HitBox other) {
+	public Rectangle getBoundingBox() {
 		Animator animator = gameObject.getActiveAnimator();
 		BufferedImage thisImage = animator.getCurrentFrame();
-
-		Animator otherAnimator = other.getGameObject().getActiveAnimator();
-		BufferedImage otherImage = otherAnimator.getCurrentFrame();
-
 		AbsoluteCoordinate thisPos = gameObject.getPos();
-		AbsoluteCoordinate otherPos = other.getGameObject().getPos();
+		int thisX = thisPos.getX() - animator.getWidth() / 2;
+		int thisY = thisPos.getY() - animator.getHeight() / 2;
+		return new Rectangle(thisX, thisY, thisImage.getWidth(), thisImage.getHeight());
+	}
+
+	public boolean intersects(Rectangle otherRect) {
+		return getBoundingBox().intersects(otherRect);
+	}
+
+	public boolean collidesWith(HitBox other) {
+		if(!this.intersects(other.getBoundingBox())) {
+			return false; // Early exit if bounding boxes don't intersect.
+		}
+
+		Rectangle intersection = this.getBoundingBox().intersection(other.getBoundingBox());
+		return checkPixelCollision(other, intersection);
+	}
+
+	private boolean checkPixelCollision(HitBox other, Rectangle intersection) {
+		Animator animator = gameObject.getActiveAnimator();
+		BufferedImage thisImage = animator.getCurrentFrame();
+		AbsoluteCoordinate thisPos = gameObject.getPos();
 		int thisX = thisPos.getX() - animator.getWidth() / 2;
 		int thisY = thisPos.getY() - animator.getHeight() / 2;
 
-		int otherX = otherPos.getX() - otherAnimator.getHeight() / 2;
+		Animator otherAnimator = other.getGameObject().getActiveAnimator();
+		BufferedImage otherImage = otherAnimator.getCurrentFrame();
+		AbsoluteCoordinate otherPos = other.getGameObject().getPos();
+		int otherX = otherPos.getX() - otherAnimator.getWidth() / 2;
 		int otherY = otherPos.getY() - otherAnimator.getHeight() / 2;
-
-		Rectangle thisRect = new Rectangle(thisX, thisY, thisImage.getWidth(), thisImage.getHeight());
-		Rectangle otherRect = new Rectangle(otherX, otherY, otherImage.getWidth(), otherImage.getHeight());
-
-		Rectangle intersection = thisRect.intersection(otherRect);
 
 		for (int y = intersection.y; y < intersection.y + intersection.height; y++) {
 			for (int x = intersection.x; x < intersection.x + intersection.width; x++) {
@@ -42,7 +57,6 @@ public class HitBox {
 				}
 			}
 		}
-
 		return false;
 	}
 	public boolean contains(int x, int y) {
