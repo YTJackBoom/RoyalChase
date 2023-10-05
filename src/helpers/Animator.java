@@ -162,15 +162,15 @@ public class Animator implements Cloneable{
             return currentImageArray[currentImageIndex].getWidth();
         }
         System.out.println("Animators Width check failed");
-        return currentImageArray[0].getWidth();
+        return imageArrayUp[0].getWidth();
     }
 
     public int getHeight() {
         if (currentImageIndex < currentImageArray.length && currentImageIndex >= 0) {
-            return currentImageArray[currentImageIndex].getWidth();
+            return currentImageArray[currentImageIndex].getHeight();
         }
         System.out.println("Animators Height check failed");
-        return currentImageArray[0].getWidth();
+        return imageArrayUp[0].getHeight();
     }
     public void setDirection(Direction direction) {
         this.direction = direction;

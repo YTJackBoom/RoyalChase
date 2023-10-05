@@ -17,13 +17,6 @@ public class Skeleton extends Enemy {
 
     @Override
     public void fire() {
-        if (counter - getReloadTime() >= 0) {
-            isLoaded = true;
-            counter = 0;
-        } else counter++;
-    spawnProjectile();
-    }
-    public void spawnProjectile() {
         if (isLoaded && isActive&&target != null) {
             enemyController.getPlaying().getProjectileController().spawnProjectile(this, target,ARROW); // target mitgabe, um target zu damagen
 

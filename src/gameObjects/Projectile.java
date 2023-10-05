@@ -18,8 +18,6 @@ public class Projectile extends GameObject{
 	private int counter;
 	private double numberForTrajectory;
 	private double towerAngleToTarget;
-	private int height,width;
-
 
 	public Projectile(ProjectileController projectileController,GameObject origin, GameObject target, int type) {
 		super(new AbsoluteCoordinate(origin.getPos().getX(), origin.getPos().getY()), GameObjectType.PROJECTILE, type, true);
@@ -29,8 +27,6 @@ public class Projectile extends GameObject{
 		this.projectileController = projectileController;
 		this.origin = origin;
 		towerAngleToTarget = math.GeneralMath.calculateAngle(target.getPos(),origin.getPos());
-		height = activeAnimator.getHeight();
-		width = activeAnimator.getWidth();
 	}
 
 	public void update() {
@@ -95,10 +91,4 @@ public class Projectile extends GameObject{
 		return ObjectValues.Projectiles.getProjectileSpeed(type);
 	}
 
-	public int getWidth() {
-		return width;
-	}
-	public int getHeight() {
-		return height;
-	}
 }

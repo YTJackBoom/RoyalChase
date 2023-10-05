@@ -10,12 +10,9 @@ public class AssetLocation { //class to define different variables for thing
 
         private static final String ENEMY_BASE_PATH = "res/images/enemies/";
 
-        public static String getEnemyPassiveGifPath(int enemyType) {
-            return ENEMY_BASE_PATH + "passive/" + ObjectValues.Enemies.getEnemyName(enemyType).toLowerCase() + "_e_passive/";
-        }
 
         public static String getEnemyActiveGifPath(int enemyType) {
-            return ENEMY_BASE_PATH + "active/" + ObjectValues.Enemies.getEnemyName(enemyType).toLowerCase() + "_e_active/";
+            return ENEMY_BASE_PATH + ObjectValues.Enemies.getEnemyName(enemyType).toLowerCase() + "_e_active/";
         }
 
 

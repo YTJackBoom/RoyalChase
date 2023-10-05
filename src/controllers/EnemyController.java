@@ -124,7 +124,7 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 			case WITCH -> addQue.add(new Witch(this, pathAbsoluteCoordinates.get(0)));
 			case WIZARD -> addQue.add(new Wizard(this, pathAbsoluteCoordinates.get(0)));
 			case SKELETON_KING -> addQue.add(new Skeleton_King(this, pathAbsoluteCoordinates.get(0)));
-			case GOBLIN_KING -> addQue.add(new Goblin_King(this, pathAbsoluteCoordinates.get(0)));
+			case ZOMBIE_GIANT -> addQue.add(new Zombie_Giant(this, pathAbsoluteCoordinates.get(0)));
 			case WITCH_QUEEN -> addQue.add(new Witch_Queen(this, pathAbsoluteCoordinates.get(0)));
 			case WIZARD_KING -> addQue.add(new Wizard_King(this, pathAbsoluteCoordinates.get(0)));
 
@@ -137,24 +137,19 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 	   }
 	   renderExplosions(g);
 
-	   for (Enemy enemy :enemyList) {
-		   enemy.getRange().render(g);
-	   }
+//	   for (Enemy enemy :enemyList) {
+//		   enemy.getRange().render(g);
+//	   }
    }
 
 
    public synchronized void renderEnemies(Graphics g) {
 	   for (Enemy enemy : enemyList) {
 		   if (enemy != null && enemy.isVisible()) {
-			   int width = enemy.getActiveAnimator().getWidth();
-			   int height = enemy.getActiveAnimator().getHeight();
-			   if (enemy.isActive()) {
-				   g.drawImage(enemy.getActiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height, null);
-				   enemy.getActiveAnimator().incrementFrame();
-			   } else {
-				   g.drawImage(enemy.getPassiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height, null);
-				   enemy.getPassiveAnimator().incrementFrame();
-			   }
+			   int width = enemy.getWidth();
+			   int height = enemy.getHeight();
+			   g.drawImage(enemy.getActiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height, null);
+			   enemy.getActiveAnimator().incrementFrame();
 		   }
 	   }
    }

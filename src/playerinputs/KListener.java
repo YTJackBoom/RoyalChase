@@ -63,6 +63,7 @@ public class KListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.getPlayerValues().increase(new Values(1000000, 10000, 10000, 10000, 10000, 10000));
+                game.getPlayerValues().setHealth(50000);
             }
         });
 

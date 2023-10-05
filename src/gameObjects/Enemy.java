@@ -21,7 +21,8 @@ public class Enemy extends GameObject {
 	protected EnemyAttackPattern enemyAttackPattern;
 	protected EnemyType enemyType;
 	private int attackTickCounter = 0;
-
+	protected boolean isLoaded = true;
+	private int counter = 0;
 
 	public Enemy(EnemyController enemyController, AbsoluteCoordinate pos, int type, EnemyAttackPattern enemyAttackPattern, EnemyType enemyType) {
 		super(pos, GameObjectType.ENEMY, type, true);
@@ -37,6 +38,12 @@ public class Enemy extends GameObject {
 		if (!enemyController.getPlaying().isPaused()) {
 			if (getStun() <= 0) {
 				move(pathAbsoluteCoordinates);
+
+				if (counter - getReloadTime() >= 0) {
+					isLoaded = true;
+					counter = 0;
+				} else counter++;
+
 				fire();
 
 			} else {

@@ -31,7 +31,6 @@ public class AssetController {
             // Preload enemy animators
             for (int i = AssetLocation.Enemies.getLowestInt(); i <= AssetLocation.Enemies.getNumberOfIntDeclarations(); i++) {
                 animators.put("enemyActive_" + i, new Animator(AssetLocation.Enemies.getEnemyActiveGifPath(i)));
-                animators.put("enemyPassive_" + i, new Animator(AssetLocation.Enemies.getEnemyPassiveGifPath(i)));
             }
             // Preload tower animators
             for (int i = AssetLocation.Towers.getLowestInt(); i <= AssetLocation.Towers.getNumberOfIntDeclarations(); i++) {

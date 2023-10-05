@@ -87,8 +87,6 @@ protected int counter;
 
 	public void initVariables() {
 		damageDealt = ObjectValues.Towers.getTowerDamage(type)*math.DifficultyMath.calculateTowerDamagePercentChange();
-		this.height = activeAnimator.getHeight();
-		this.width = activeAnimator.getWidth();
 		projectileController = towerController.getPlaying().getProjectileController();
 		isLoaded = true;
 		worth = ObjectValues.Towers.getCost(type);
@@ -97,7 +95,7 @@ protected int counter;
 
 	}
 	public void initBounds() {
-			bounds = new Rectangle(pos.getX()-width/2,pos.getY()-height/2,width,height);
+			bounds = new Rectangle(pos.getX()-getWidth()/2,pos.getY()-getHeight()/2,getWidth(), getHeight());
 	}
 	public void initRange() {
 		int range = ObjectValues.Towers.getTowerRange(type);

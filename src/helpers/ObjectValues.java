@@ -4,8 +4,6 @@ import gameObjects.Tile;
 
 import java.lang.reflect.Field;
 
-import static basics.GameState.userSettings;
-
 public class ObjectValues {
         public static class Enemies {
 
@@ -15,7 +13,7 @@ public class ObjectValues {
             public static final int WITCH = 3;
             public static final int WIZARD = 4;
             public static final int SKELETON_KING = 5;
-            public static final int GOBLIN_KING = 6;
+            public static final int ZOMBIE_GIANT = 6;
             public static final int WITCH_QUEEN = 7;
             public static final int WIZARD_KING = 8;
 
@@ -27,10 +25,10 @@ public class ObjectValues {
                     case GOBLIN -> 50;
                     case WITCH -> 10;
                     case WIZARD -> 10;
-                    case SKELETON_KING -> 50;
-                    case GOBLIN_KING -> 50;
-                    case WITCH_QUEEN -> 50;
-                    case WIZARD_KING -> 50;
+                    case SKELETON_KING -> 100;
+                    case ZOMBIE_GIANT -> 100;
+                    case WITCH_QUEEN -> 100;
+                    case WIZARD_KING -> 100;
                     default -> 0;
                 };
             }
@@ -44,7 +42,7 @@ public class ObjectValues {
                     case WITCH -> 100;
                     case WIZARD -> 75;
                     case SKELETON_KING -> 100;
-                    case GOBLIN_KING -> 100;
+                    case ZOMBIE_GIANT -> 500;
                     case WITCH_QUEEN -> 100;
                     case WIZARD_KING -> 100;
                     default -> throw new IllegalStateException("variables: getEnemyHealth: Unexpected value:  " + enemyType);
@@ -58,7 +56,7 @@ public class ObjectValues {
                     case WITCH -> 5;
                     case WIZARD -> 1;
                     case SKELETON_KING -> 5;
-                    case GOBLIN_KING -> 5;
+                    case ZOMBIE_GIANT -> 0.5;
                     case WITCH_QUEEN -> 5;
                     case WIZARD_KING -> 5;
                     default -> throw new IllegalStateException("variables: getEnemySpeed: Unexpected value:  " + enemyType);
@@ -73,7 +71,7 @@ public class ObjectValues {
                     case WITCH -> 5;
                     case WIZARD -> 7.5;
                     case SKELETON_KING -> 5;
-                    case GOBLIN_KING -> 5;
+                    case ZOMBIE_GIANT -> 20;
                     case WITCH_QUEEN -> 5;
                     case WIZARD_KING -> 5;
                     default -> throw new IllegalStateException("variables: getEnemyDamage: Unexpected value:  " + enemyType);
@@ -87,7 +85,7 @@ public class ObjectValues {
                     case WITCH -> 400;
                     case WIZARD -> 400;
                     case SKELETON_KING -> 800;
-                    case GOBLIN_KING -> 0;
+                    case ZOMBIE_GIANT -> 1000;
                     case WITCH_QUEEN -> 1600;
                     case WIZARD_KING -> 1600;
                     default -> throw new IllegalStateException("variables: getEnemyRelaodTime: Unexpected value: "+ enemyType);
@@ -101,7 +99,7 @@ public class ObjectValues {
                     case WITCH -> 50;
                     case WIZARD -> 150;
                     case SKELETON_KING -> 100;
-                    case GOBLIN_KING -> 1;
+                    case ZOMBIE_GIANT -> 500;
                     case WITCH_QUEEN -> 100;
                     case WIZARD_KING -> 100;
                     default -> throw new IllegalStateException("variables: getEnemyRange: Unexpected value: "+ enemyType);

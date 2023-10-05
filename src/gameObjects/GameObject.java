@@ -15,7 +15,6 @@ public abstract class GameObject {
 	protected boolean isVisible = true;
 
 	protected HitBox hitBox;
-	protected int height, width;
 
 	protected double currentStun = 0;
 
@@ -27,8 +26,6 @@ public abstract class GameObject {
 		initAnimators();
 		hitBox = new HitBox(this);
 
-		width = activeAnimator.getWidth();
-		height = activeAnimator.getHeight();
 
 		health = getMaxHealth();
 	}
@@ -39,7 +36,6 @@ public abstract class GameObject {
 		switch (gameObjectType) {
 			case ENEMY -> {
 				activeAnimator = AssetController.getInstance().getAnimator("enemyActive_"+type);
-				passiveAnimator = AssetController.getInstance().getAnimator("enemyPassive_"+type);
 			}
 			case TOWER -> {
 				activeAnimator = AssetController.getInstance().getAnimator("towerActive_"+type);
@@ -58,16 +54,25 @@ public abstract class GameObject {
 	}
 
 	public void renderHealthBar(Graphics g) {
+		double maxWidth = 1.5 * getWidth();
 		double t = getMaxHealth();
+
 		if (health < t) {
-			int hpbarx = (int) Math.round(pos.getX() - t / 2);
+			double healthRatio = health / t;
+			int displayedHealthWidth = (int) (maxWidth * healthRatio);
+
+			int hpbarx = (int) Math.round(pos.getX() - maxWidth / 2);
+			int yOffset = gameObjectType == GameObjectType.ENEMY ? 10+getHeight() : 10+getHeight() / 2;
+
 			g.setColor(Color.RED);
-			g.fillRect(hpbarx, pos.getY() - 10 - height / 2, (int) t, 5);
+			g.fillRect(hpbarx, pos.getY()-yOffset, (int) maxWidth, 5);
 
 			g.setColor(Color.GREEN);
-			g.fillRect(hpbarx, pos.getY() - 10 - height / 2, (int) (t * ((double) health / t)), 5);
+			g.fillRect(hpbarx, pos.getY()-yOffset , displayedHealthWidth, 5);
 		}
 	}
+
+
 
 	public AbsoluteCoordinate getPos() {
 		return pos;
@@ -116,7 +121,7 @@ public abstract class GameObject {
 			}
 		}
 
-		passiveAnimator.setDirection(dir);
+		if (passiveAnimator != null) passiveAnimator.setDirection(dir);
 		activeAnimator.setDirection(dir);
 		this.pos = pos;
 	}
@@ -146,11 +151,11 @@ public abstract class GameObject {
 	}
 
 	public int getWidth() {
-		return width;
+		return activeAnimator.getWidth();
 	}
 
 	public int getHeight() {
-		return height;
+		return activeAnimator.getHeight();
 	}
 
 	public boolean isVisible() {

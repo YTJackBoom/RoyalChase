@@ -42,7 +42,7 @@ public class Slider extends UiElement {
         g.fillRect(knob.x, knob.y, knob.width, knob.height);
 
         // Draw the current value on the knob
-        String valueStr = Integer.toString(currentValue);
+        String valueStr = Integer.toString(currentValue)+"%";
         FontMetrics fm = g.getFontMetrics();
         int stringWidth = fm.stringWidth(valueStr);
         int stringHeight = fm.getAscent();
