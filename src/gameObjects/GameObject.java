@@ -101,6 +101,10 @@ public abstract class GameObject {
 	}
 
 	public void setPos(AbsoluteCoordinate pos) {
+		if (gameObjectType == GameObjectType.BUILDING) {
+			this.pos = pos;
+			return;
+		}
 		AbsoluteCoordinate prePos = this.pos;
 		int deltaX = pos.getX() - prePos.getX();
 		int deltaY = pos.getY() - prePos.getY();
@@ -160,6 +164,10 @@ public abstract class GameObject {
 
 	public boolean isVisible() {
 		return isVisible;
+	}
+
+	public void setVisible(boolean visible) {
+		isVisible = visible;
 	}
 
 	public double getMaxHealth() {

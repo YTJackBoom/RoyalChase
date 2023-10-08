@@ -8,8 +8,8 @@ import helpers.ObjectValues;
 import static helpers.ObjectValues.Buildings.HOUSE;
 
 public class House extends Building {
-    public House(BuildingsController buildingsController, int x, int y) {
-        super(buildingsController, x, y, HOUSE);
+    public House(BuildingsController buildingsController, int x, int y,boolean visibility) {
+        super(buildingsController, x, y, HOUSE,visibility);
         buildingsController.getTown().getGame().getPlayerValues().increase(ObjectValues.Buildings.getProduction(HOUSE));
     }
 

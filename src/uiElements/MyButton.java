@@ -146,7 +146,7 @@ public class MyButton extends UiElement {
 		return type >= 0 && !isTextButton && type <= SNIP_T_B;
 	}
 	public boolean isBuildingButton() {
-		return type >= MANA_B_B && !isTextButton && type <= HOUSE_B_B;
+		return type >= MANA_B_B && !isTextButton && type <= MINER_B_B;
 	}
 	public void setChecked(boolean b) {
 		checked = b;

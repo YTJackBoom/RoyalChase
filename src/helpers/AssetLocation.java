@@ -90,8 +90,15 @@ public class AssetLocation { //class to define different variables for thing
 
     public static class Buildings {
         private static final String BUILDING_BASE_PATH = "res/images/buildings/";
-        public static File getBuidingGifFile(int buildingType) {
-            return new File(BUILDING_BASE_PATH + ObjectValues.Buildings.getBuildingName(buildingType).toLowerCase() + ".gif");
+
+        public static File getBuildingGifFile(int buildingType) {
+            try {
+                return new File(BUILDING_BASE_PATH + ObjectValues.Buildings.getBuildingName(buildingType).toLowerCase() + ".gif");
+            } catch (Exception e) {
+                System.out.println("Failed to get the gif file for buildingType: " + buildingType);
+                e.printStackTrace();
+                return null; // You can choose to return null or handle this differently based on your needs.
+            }
         }
         public static int getNumberOfIntDeclarations() {
             return AssetLocation.getHighestInt(ObjectValues.Buildings.class);
@@ -108,14 +115,24 @@ public class AssetLocation { //class to define different variables for thing
         public static final int SNIP_T_B = 4;
         public static final int MANA_B_B = 5;
         public static final int IRON_B_B = 6;
-        public static final int WOOD_B_B = 7;
-        public static final int STONE_B_B = 8;
+        public static final int STONE_B_B = 7;
+        public static final int WOOD_B_B = 8;
         public static final int HOUSE_B_B = 9;
-        public final static int EXTEND_U_B = 10;
-        public static final int COLLAPSE_U_B = 11;
+        public static final int MINER_B_B = 10;
+
+        public final static int EXTEND_U_B = 11;
+        public static final int COLLAPSE_U_B = 12;
+
 
         public static File getButtonImageFile(int buttonType) {
-            return new File(BUTTON_BASE_PATH + AssetLocation.getFieldNameByValue(Buttons.class,buttonType).toLowerCase() + ".png");
+            try {
+                return new File(BUTTON_BASE_PATH + AssetLocation.getFieldNameByValue(Buttons.class,buttonType).toLowerCase() + ".png");
+            } catch (Exception e) {
+                System.out.println("Failed to get the png file for buttonType: " + buttonType);
+                e.printStackTrace();
+                return null;
+            }
+
         }
 
         public static File getTooltipTextFile(int buttonType) {

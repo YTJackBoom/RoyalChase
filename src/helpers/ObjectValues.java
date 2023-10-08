@@ -267,33 +267,31 @@ public class ObjectValues {
         }
         public static class Buildings {
             public static final int PLACEHOLDER = 0;
-            public static final int MANA = AssetLocation.Buttons.MANA_B_B;
-            public static final int IRON = AssetLocation.Buttons.IRON_B_B;
-            public static final int STONE = AssetLocation.Buttons.STONE_B_B;
-            public static final int WOOD = AssetLocation.Buttons.WOOD_B_B;
+            public static final int MANA_MINER = AssetLocation.Buttons.MANA_B_B;
+            public static final int IRON_MINER = AssetLocation.Buttons.IRON_B_B;
+            public static final int STONE_MINER = AssetLocation.Buttons.STONE_B_B;
+            public static final int WOOD_MINER = AssetLocation.Buttons.WOOD_B_B;
             public static final int HOUSE = AssetLocation.Buttons.HOUSE_B_B;
-            public static final int MANAORE = 1;
-            public static final int IRONORE = 2;
-            public static final int STONEORE = 3;
-            public static final int WOODORE = 4;
+            public static final int MINER = AssetLocation.Buttons.MINER_B_B;
+            public static final int MANA_ORE = 1;
+            public static final int IRON_ORE = 2;
+            public static final int STONE_ORE = 3;
+            public static final int WOOD_ORE = 4;
             public static Values getProduction(int type) {
                 double percent = math.DifficultyMath.calculateTownProductionPercentChange();
                 return switch (type) {
                     case PLACEHOLDER -> new Values(0,0,0,0,0,0);
-                    case MANA -> new Values(0,0,5*percent,0,0,0);
-                    case IRON -> new Values(0,0,0,5*percent,0,0);
-                    case WOOD -> new Values(0,0,0,0,5*percent,0);
-                    case STONE -> new Values(0,0,0,0,0,5*percent);
+                    case MANA_MINER -> new Values(0,0,5*percent,0,0,0);
+                    case IRON_MINER -> new Values(0,0,0,5*percent,0,0);
+                    case WOOD_MINER -> new Values(0,0,0,0,5*percent,0);
+                    case STONE_MINER -> new Values(0,0,0,0,0,5*percent);
                     case HOUSE -> new Values(5*percent,0,0,0,0,0);
                     default -> new Values(0,0,0,0,0,0);
                 };
             }
             public static Values getCost(int buildingType) {
                 return switch (buildingType) {
-                    case MANA -> new Values(1,10,0,10,10,25);
-                    case IRON -> new Values(1,10,0,0,25,10);
-                    case STONE -> new Values(1,10,0,5,25,0);
-                    case WOOD -> new Values(1,10,5,5,5,10);
+                    case MINER -> new Values(1,0,0,0,0,0);
                     case HOUSE -> new Values(2,10,10,10,10,10);
                     default -> new Values(999,999,999,999,999,999);
                 };

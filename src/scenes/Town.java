@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static basics.Game.*;
+import static helpers.AssetLocation.Buttons.COLLAPSE_U_B;
+import static helpers.AssetLocation.Buttons.EXTEND_U_B;
 
 public class Town extends GameScenes implements SceneMethods {
     private Game game;
@@ -60,8 +62,8 @@ public class Town extends GameScenes implements SceneMethods {
         // The right bar
         int widthr = 117;
         int heightr = 798;
-        float relativeXr = 1.0f - (float) widthr / fWIDTH;  // All the way to the right minus the width
-        float relativeYr = 1.0f - (float) heightr / fHEIGHT;  // Near the bottom minus the height
+        float relativeXr = 1.0f - (float) widthr / (fWIDTH);  // All the way to the right minus the width
+        float relativeYr = 0.05f;
 
         AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0);  // Top-left corner as reference
 
@@ -84,8 +86,10 @@ public class Town extends GameScenes implements SceneMethods {
 
         UiCoordinate sharedUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBar.getWidth(), buttonBar.getHeight()));
 
-        buttonBarControls.add(new MyButton(10, sharedUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBar));
-        buttonBarControls.add(new MyButton(11, sharedUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBar));
+        buttonBarControls.add(new MyButton(EXTEND_U_B, sharedUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBar));
+        buttonBarControls.add(new MyButton(COLLAPSE_U_B, sharedUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBar));
+        buttonBar.addChild(buttonBarControls.get(0));
+        buttonBar.addChild(buttonBarControls.get(1));
     }
 
     @Override

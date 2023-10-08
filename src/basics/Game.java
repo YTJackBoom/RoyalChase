@@ -231,7 +231,7 @@ public class Game extends JFrame implements Serializable {
             BuildingsController buildingsController = town.getBuildingsController();
             for(BuildingSaveState b: gameState.getTownBuildingsSave()) {
                 AbsoluteCoordinate pos = b.getPos();
-                buildingsController.getBuildingsList().set(i,new Building(buildingsController,pos.getX(),pos.getY(),b.getType()));
+                buildingsController.getBuildingsList().set(i,new Building(buildingsController,pos.getX(),pos.getY(),b.getType(),true));
                 i++;
             }
     }

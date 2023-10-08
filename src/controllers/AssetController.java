@@ -43,7 +43,7 @@ public class AssetController {
             }
             // Preload building animators
             for (int i = AssetLocation.Buildings.getLowestInt(); i <= AssetLocation.Buildings.getNumberOfIntDeclarations(); i++) {
-                animators.put("building_" + i, new Animator(AssetLocation.Buildings.getBuidingGifFile(i)));
+                animators.put("building_" + i, new Animator(AssetLocation.Buildings.getBuildingGifFile(i)));
             }
             // Preload icons
             for (int i = AssetLocation.Icons.getLowestInt(); i <= AssetLocation.Icons.getNumberOfIntDeclarations(); i++) {

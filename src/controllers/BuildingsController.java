@@ -1,9 +1,9 @@
 package controllers;
 
 import gameObjects.Building;
+import helpers.AbsoluteCoordinate;
 import helpers.ObjectValues;
 import helpers.Values;
-import helpers.AssetLocation;
 import scenes.Town;
 import specialBuildings.House;
 
@@ -37,11 +37,13 @@ public class BuildingsController implements ControllerMethods{
 		int buildingSpacing = 200;
 		for (int i = 0; i < buildingsPerLine; i++) {
 			for (int j = 0; j < buildingsPerLine; j++) {
-				buildingsList.add(new Building(this,startX + (i * (buildingSize + buildingSpacing)), startY + (j * (buildingSize + buildingSpacing)), type));
+				buildingsList.add(new Building(this,startX + (i * (buildingSize + buildingSpacing)), startY + (j * (buildingSize + buildingSpacing)), type,true));
 			}
 		}
-		buildingsList.add(new Building(this, 900,900,MANAORE));
-
+		buildingsList.add(new Building(this, 900,900, MANA_ORE,true));
+		buildingsList.add(new Building(this, 900,800, IRON_ORE,true));
+		buildingsList.add(new Building(this, 900,700, STONE_ORE,true));
+		buildingsList.add(new Building(this, 900,600, WOOD_ORE,true));
 
 
 
@@ -63,7 +65,8 @@ public class BuildingsController implements ControllerMethods{
 	@Override
 	public void render(Graphics g) {
 		for (Building building : buildingsList) {
-			g.drawImage(building.getActiveAnimator().getCurrentFrame(), building.getX(), building.getY(), null);
+			g.drawImage(building.getActiveAnimator().getCurrentFrame(), building.getPos().getX(), building.getPos().getY(), null);
+			building.getActiveAnimator().incrementFrame();
 		}
 	}
 	@Override
@@ -80,43 +83,47 @@ public class BuildingsController implements ControllerMethods{
 	public void mouseReleased(int x, int y) {
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
-
-			// Checks if the mouse was released within a building's bounds.
-			if (building.getBounds().contains(x, y)) {
-
-				// Check if the building is of type MANAORE to WOODORE
-				if (isValidOreType(building.getType())) {
-
-					// Check if the selected building matches the criteria for placement.
-					if (town.getSelectedBuilding() == (building.getType() + 4) && building.getType() != 0) {
-						handleBuildingPlacement(i);
-					}
-				}
-				// For any other building type, it should be placed on PLACEHOLDER
-				else if (building.getType() == PLACEHOLDER && !isValidMineType(town.getSelectedBuilding())) {
-					handleBuildingPlacement(i);
+			if (building.getBounds().contains(x,y)) {
+				if (isValidOreType(building.getType())&&building.getType() != PLACEHOLDER) {
+					handleMineBuildingPlacement(i);
+				} else if (building.getType() == PLACEHOLDER) {
+					handleHosueBuildingPlacement(i);
 				}
 			}
+			}
 		}
-	}
 
-	private boolean isValidMineType(int type) {
-		return type >= MANA && type <= WOOD;
-	}
 	private boolean isValidOreType(int type) {
-		return type >= MANAORE && type <= WOODORE;
+		return type >= MANA_ORE && type <= WOOD_ORE;
 	}
 
-	private void handleBuildingPlacement(int index) {
+	private void handleHosueBuildingPlacement(int index) {
 		Values cost = ObjectValues.Buildings.getCost(town.getSelectedBuilding());
 
 		if (playerValues.canAfford(cost)) {
 			playerValues.decrease(cost);
-			if (town.getSelectedBuilding() == HOUSE) {  //Seperater check für house da es keine konstante sondern einmalige produktion hat
-				buildingsList.set(index, new House(this, buildingsList.get(index).getX(), buildingsList.get(index).getY()));
-			}else {
-				buildingsList.set(index, new Building(this, buildingsList.get(index).getX(), buildingsList.get(index).getY(), town.getSelectedBuilding()));
-			}
+			Building prevBuilding = buildingsList.get(index);
+
+			buildingsList.set(index, new House(this, prevBuilding.getPos().getX(), prevBuilding.getPos().getY(),true));
+
+			System.out.println("Building placed");
+		} else {
+			town.setCantAfford(true);
+		}
+	}
+	private void handleMineBuildingPlacement(int index) {
+		Values cost = ObjectValues.Buildings.getCost(town.getSelectedBuilding());
+
+		if (playerValues.canAfford(cost)) {
+			playerValues.decrease(cost);
+
+			Building prevBuilding = buildingsList.get(index);
+				Building newBuilding = new Building(this, 500, 500, prevBuilding.getType()+4,true);
+				AbsoluteCoordinate pos = new AbsoluteCoordinate(prevBuilding.getPos().getX()+(prevBuilding.getWidth()-newBuilding.getWidth()), prevBuilding.getPos().getY()+ (prevBuilding.getHeight()-newBuilding.getHeight()));
+				newBuilding.setPos(pos);
+				buildingsList.set(index, newBuilding);
+
+
 			System.out.println("Building placed");
 		} else {
 			town.setCantAfford(true);

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static basics.Game.*;
+import static helpers.AssetLocation.Buttons.COLLAPSE_U_B;
+import static helpers.AssetLocation.Buttons.EXTEND_U_B;
 import static scenes.GameStates.GAMEOVER;
 import static scenes.GameStates.gameState;
 
@@ -153,8 +155,8 @@ public class Playing extends GameScenes implements SceneMethods {
         UiCoordinate extendUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 0.5f, relativeY, buttonBarRight.getWidth(), buttonBarRight.getHeight()));
         UiCoordinate collapseUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBarRight.getWidth(), buttonBarRight.getHeight()));
 
-        buttonBarRightControls.add(new MyButton(10, extendUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBarRight));
-        buttonBarRightControls.add(new MyButton(11, collapseUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBarRight));
+        buttonBarRightControls.add(new MyButton(EXTEND_U_B, extendUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBarRight));
+        buttonBarRightControls.add(new MyButton(COLLAPSE_U_B, collapseUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBarRight));
         buttonBarRight.addChild(buttonBarRightControls.get(0));
         buttonBarRight.addChild(buttonBarRightControls.get(1));
     }

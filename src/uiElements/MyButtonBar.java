@@ -84,17 +84,21 @@ public class MyButtonBar extends UiElement {
 		int menuX = uiCoordinate.getX();
 		int menuY = uiCoordinate.getY();
 
-		int startX = (int) (menuX + 0.1 * width);
-		int startY = (int) (menuY + 0.2 * height);
-		int xOffset = 0;
-		int yOffset = 90;
-		int width = 100;
-		int height = 80;
+		int buttonWidth = 100;
+		int buttonHeight = 80;
 
-		startY = addRelativelyPositionedButton("Battle!", startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, false);
-		startY = addRelativelyPositionedButton(MANA_B_B, startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, false);
-		startY = addRelativelyPositionedButton(HOUSE_B_B, startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, false);
-		startY = addRelativelyPositionedButton("Menu", startX, startY, width, height, menuX, menuY, width, height, xOffset, yOffset, false);
+		int startX = (int) (menuX + 0.05 * width);
+		int startY = (int) (menuY + 0.02 * height);
+		int yOffset = (int) (0.055 * height);  // height + 10 pixels gap between buttons
+		int xOffset = 0;
+
+
+		boolean horizontal = false;
+
+		startY = addRelativelyPositionedButton("Battle!", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(MINER_B_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(HOUSE_B_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton("Menu", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
 	}
 
 	// The horizontal parameter will determine whether we're adjusting horizontally or vertically

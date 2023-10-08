@@ -14,8 +14,8 @@ public class Building extends GameObject {
 	private BuildingsController buildingsController;
 	private Rectangle bounds;
 	private Values playerValues;
-	public Building(BuildingsController buildingsController, int x, int y, int type ) {
-		super(new AbsoluteCoordinate(x, y),GameObjectType.BUILDING, type, true);
+	public Building(BuildingsController buildingsController, int x, int y, int type, boolean visibility ) {
+		super(new AbsoluteCoordinate(x, y),GameObjectType.BUILDING, type, visibility);
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -43,12 +43,6 @@ public class Building extends GameObject {
 
 
 	//Getters and Setters
-	public int getX(){
-		return x;
-	}
-	public int getY() {
-		return y;
-	}
 	public int getType() {
 		return type;
 	}
