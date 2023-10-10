@@ -25,7 +25,7 @@ public class Game extends JFrame implements Serializable {
 
     public final static int fps = 60; // frames pro sekunde, zum rendern
     public static final int ups = 120; //updates pro sekunde, für game logic
-    public static final int initGameWidth = 265 * 7;
+    public static final int initGameWidth = 256 * 7;
     public static final int initGameHeight = 256 * 4;
     public static volatile int fWIDTH = initGameWidth;
     public static volatile int fHEIGHT = initGameHeight;

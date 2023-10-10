@@ -97,6 +97,7 @@ public class MyButtonBar extends UiElement {
 
 		startY = addRelativelyPositionedButton("Battle!", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
 		startY = addRelativelyPositionedButton(MINER_B_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
+		startY = addRelativelyPositionedButton(WOOD_B_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
 		startY = addRelativelyPositionedButton(HOUSE_B_B, startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
 		startY = addRelativelyPositionedButton("Menu", startX, startY, buttonWidth, buttonHeight, menuX, menuY, width, height, xOffset, yOffset, horizontal);
 	}

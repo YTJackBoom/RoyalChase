@@ -84,17 +84,19 @@ public class BuildingsController implements ControllerMethods{
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
 			if (building.getBounds().contains(x,y)) {
-				if (isValidOreType(building.getType())&&building.getType() != PLACEHOLDER) {
+				if (isValidOreType(building.getType())&&town.getSelectedBuilding() == MINER) {
 					handleMineBuildingPlacement(i);
-				} else if (building.getType() == PLACEHOLDER) {
+				} else if (building.getType() == PLACEHOLDER&&town.getSelectedBuilding() == HOUSE) {
 					handleHosueBuildingPlacement(i);
+				} else if (building.getType() == WOOD_ORE && town.getSelectedBuilding() == WOOD_MINER ) {
+					handleMineBuildingPlacement(i);
 				}
 			}
 			}
 		}
 
 	private boolean isValidOreType(int type) {
-		return type >= MANA_ORE && type <= WOOD_ORE;
+		return type >= MANA_ORE && type <= STONE_ORE;
 	}
 
 	private void handleHosueBuildingPlacement(int index) {

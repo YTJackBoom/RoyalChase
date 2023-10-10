@@ -292,6 +292,7 @@ public class ObjectValues {
             public static Values getCost(int buildingType) {
                 return switch (buildingType) {
                     case MINER -> new Values(1,0,0,0,0,0);
+                    case WOOD_MINER -> new Values(1,0,0,0,0,0);
                     case HOUSE -> new Values(2,10,10,10,10,10);
                     default -> new Values(999,999,999,999,999,999);
                 };
