@@ -8,6 +8,10 @@ import uiElements.MyButton;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.ArrayList;
 
 public class GameOver extends GameScenes implements SceneMethods{
@@ -43,9 +47,21 @@ public class GameOver extends GameScenes implements SceneMethods{
     }
 
     public void renderBackground(Graphics g){
-        game.getPlaying().render(g);
-//        g.setColor(Color.BLACK);
-//        g.fillRect(0,0,game.getWidth(),game.getHeight());
+        BufferedImage image = new BufferedImage(game.getWidth(), game.getHeight(), BufferedImage.TYPE_INT_ARGB); //der hintergrund (= das Spielfeld) wird als buffered image aufgenommen
+        Graphics2D g2d = image.createGraphics();
+        game.getPlaying().render(g2d);
+        g2d.dispose();
+
+        float[] matrix = {                                                                                       //und geblurred + als hintergrund gezeichnet
+                1/9f, 1/9f, 1/9f,
+                1/9f, 1/9f, 1/9f,
+                1/9f, 1/9f, 1/9f,
+        };
+        BufferedImageOp op = new ConvolveOp(new Kernel(3, 3, matrix), ConvolveOp.EDGE_NO_OP, null);
+        BufferedImage blurredImage = op.filter(image, null);
+
+        g.drawImage(blurredImage, 0, 0, null);
+
     }
 
     public void renderButtons(Graphics g){

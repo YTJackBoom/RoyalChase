@@ -285,7 +285,7 @@ public class ObjectValues {
                     case IRON_MINER -> new Values(0,0,0,5*percent,0,0);
                     case WOOD_MINER -> new Values(0,0,0,0,5*percent,0);
                     case STONE_MINER -> new Values(0,0,0,0,0,5*percent);
-                    case HOUSE -> new Values(5*percent,0,0,0,0,0);
+                    case HOUSE -> new Values(5,0,0,0,0,0);
                     default -> new Values(0,0,0,0,0,0);
                 };
             }
