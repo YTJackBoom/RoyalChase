@@ -29,6 +29,8 @@ public class Game extends JFrame implements Serializable {
     public static final int initGameHeight = 256 * 4;
     public static volatile int fWIDTH = initGameWidth;
     public static volatile int fHEIGHT = initGameHeight;
+    public static volatile int prevfWIDTH = initGameWidth;
+    public static volatile int prevfHEIGHT = initGameHeight;
     protected boolean isFullScreen = false;
     private volatile int currentUPS = 0;
     private int currentFPS = 0;
@@ -115,20 +117,22 @@ public class Game extends JFrame implements Serializable {
                 public void actionPerformed(ActionEvent e) { //timer um sehr viele resizes zu verhindern
                     SwingUtilities.invokeLater(() -> {
 
-                        int newWidth = getContentPane().getWidth();
-                        int newHeight = getContentPane().getHeight();
-
-
-                        gameScreen.setSize(new Dimension(newWidth, newHeight));
-                        gameScreen.revalidate();
-                        gameScreen.repaint();
-
-                        UiElementCollector.getInstance().notifyScreenResize(newWidth,newHeight);
-                        getPlaying().getTileController().extendTiles(newWidth, newHeight);
-                        getTown().notifyScreenResize(newWidth,newHeight);
+                        prevfHEIGHT = fHEIGHT;
+                        prevfWIDTH = fWIDTH;
 
                         fWIDTH = getContentPane().getWidth();
                         fHEIGHT = getContentPane().getHeight();
+
+
+                        gameScreen.setSize(new Dimension(fWIDTH, fHEIGHT));
+                        gameScreen.revalidate();
+                        gameScreen.repaint();
+
+                        UiElementCollector.getInstance().notifyScreenResize(fWIDTH,fHEIGHT);
+                        getPlaying().getTileController().extendTiles(fWIDTH, fHEIGHT);
+                        getTown().notifyScreenResize(fWIDTH,fHEIGHT);
+
+
                     });
 
                 }
@@ -253,13 +257,19 @@ public class Game extends JFrame implements Serializable {
             dispose();
             setUndecorated(false);
             setVisible(true);
-            setSize(new Dimension(initGameWidth, initGameHeight));
+            Insets insets = getInsets();
+            setSize(initGameWidth + insets.left + insets.right, initGameHeight + insets.top + insets.bottom);
             // Center the frame if desired
             setLocationRelativeTo(null);
 
             gameScreen.setSize(new Dimension(initGameWidth, initGameHeight));
 
             gameScreen.revalidate();
+
+            // Explicitly set fWIDTH and fHEIGHT to initial dimensions
+//            fWIDTH = initGameWidth;
+//            fHEIGHT = initGameHeight;
+
         } else {
             // Switch to fullscreen mode
             dispose();
@@ -273,9 +283,10 @@ public class Game extends JFrame implements Serializable {
 
             getPlaying().getTileController().extendTiles(screenWidth, screenHeight);
         }
-//        UiElementCollector.getInstance().notifyScreenResize();
+        // ...
         isFullScreen = !isFullScreen;
     }
+
 
     // Getters and setters
     protected void incrementUPS() {

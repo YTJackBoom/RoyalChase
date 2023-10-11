@@ -10,6 +10,7 @@ import specialBuildings.House;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static basics.Game.*;
 import static helpers.ObjectValues.Buildings.*;
 
 public class BuildingsController implements ControllerMethods{
@@ -81,9 +82,11 @@ public class BuildingsController implements ControllerMethods{
 
 
 	public void mouseReleased(int x, int y) {
+		Building tempBuilding = new Building(this, x, y, town.getSelectedBuilding(),false);
+
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
-			if (building.getBounds().contains(x,y)) {
+			if (tempBuilding.getHitBox().collidesWith(building.getHitBox())) {
 				if (isValidOreType(building.getType())&&town.getSelectedBuilding() == MINER) {
 					handleMineBuildingPlacement(i);
 				} else if (building.getType() == PLACEHOLDER&&town.getSelectedBuilding() == HOUSE) {
@@ -106,7 +109,9 @@ public class BuildingsController implements ControllerMethods{
 			playerValues.decrease(cost);
 			Building prevBuilding = buildingsList.get(index);
 
-			buildingsList.set(index, new House(this, prevBuilding.getPos().getX(), prevBuilding.getPos().getY(),true));
+			House newBuilding = new House(this, prevBuilding.getPos().getX(), prevBuilding.getPos().getY(),true);
+			if(!(fWIDTH == initGameWidth && fHEIGHT == initGameHeight)) newBuilding.getActiveAnimator().notifyScreenResize(fWIDTH, fHEIGHT);
+			buildingsList.set(index, newBuilding);
 
 			System.out.println("Building placed");
 		} else {
@@ -123,6 +128,7 @@ public class BuildingsController implements ControllerMethods{
 				Building newBuilding = new Building(this, 500, 500, prevBuilding.getType()+4,true);
 				AbsoluteCoordinate pos = new AbsoluteCoordinate(prevBuilding.getPos().getX()+(prevBuilding.getWidth()-newBuilding.getWidth()), prevBuilding.getPos().getY()+ (prevBuilding.getHeight()-newBuilding.getHeight()));
 				newBuilding.setPos(pos);
+				if(!(fWIDTH == initGameWidth && fHEIGHT == initGameHeight))	newBuilding.getActiveAnimator().notifyScreenResize(fWIDTH, fHEIGHT);
 				buildingsList.set(index, newBuilding);
 
 
@@ -138,6 +144,12 @@ public class BuildingsController implements ControllerMethods{
 	public void notifyScreenResize(int width, int height) {
 		for (Building building : buildingsList) {
 			building.getActiveAnimator().notifyScreenResize(width, height);
+		}
+	}
+
+	public void flushImages() {
+		for (Building building : buildingsList) {
+			building.initAnimators();
 		}
 	}
 }

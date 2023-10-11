@@ -199,12 +199,17 @@ public class Town extends GameScenes implements SceneMethods {
         }
     }
     public void notifyScreenResize(int width, int height) {
-        resizeBackGround(width, height);
-        buildingsController.notifyScreenResize(width, height);
+        if(!(width == initGameWidth && height == initGameHeight)) {
+            resizeBackGround(width, height);
+            buildingsController.notifyScreenResize(width, height);
+        } else {
+            townImage = AssetLocation.Town.getBackgroundImage();
+            buildingsController.flushImages();
+        }
     }
     public void resizeBackGround(int width, int height) {
-        double widthScale = (double) width / fWIDTH;
-        double heightScale = (double) height / fHEIGHT;
+        double widthScale = (double) width / prevfWIDTH;
+        double heightScale = (double) height / prevfHEIGHT;
 
         int newWidth = (int) (townImage.getWidth() * widthScale);
         int newHeight = (int) (townImage.getHeight() * heightScale);

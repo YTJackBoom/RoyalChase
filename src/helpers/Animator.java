@@ -11,8 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static basics.Game.fHEIGHT;
-import static basics.Game.fWIDTH;
+import static basics.Game.*;
 import static helpers.Direction.UP;
 import static helpers.math.ImageMath.resizeImage;
 
@@ -150,8 +149,8 @@ public class Animator implements Cloneable{
     }
 
     public void notifyScreenResize(int newWidth, int newHeight) {
-        double widthScale = (double) newWidth / fWIDTH;
-        double heightScale = (double) newHeight / fHEIGHT;
+        double widthScale = (double) newWidth / prevfWIDTH;
+        double heightScale = (double) newHeight / prevfHEIGHT;
         scaleImages(widthScale, heightScale);
     }
 
