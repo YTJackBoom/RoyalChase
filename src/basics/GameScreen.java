@@ -11,11 +11,6 @@ import java.awt.*;
 public class GameScreen extends JPanel {
 
 	private Game game;
-
-	public static Rectangle fBOUNDS = new Rectangle(0, 0, Game.initGameWidth, Game.initGameHeight);
-
-
-
 	public GameScreen(Game game) {
 		this.game = game;
 		setDoubleBuffered(true);

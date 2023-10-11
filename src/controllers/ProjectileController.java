@@ -11,7 +11,8 @@ import uiElements.Explosion;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static basics.GameScreen.fBOUNDS;
+import static basics.Game.fHEIGHT;
+import static basics.Game.fWIDTH;
 import static helpers.ObjectValues.Projectiles.BULLET;
 import static helpers.ObjectValues.Projectiles.ROCKET;
 import static helpers.math.GeneralMath.calculateAngle;
@@ -163,7 +164,7 @@ public class ProjectileController implements ControllerMethods {
     }
 
     public void checkBulletCollision(Projectile projectile, GameObject target) {
-        if (!fBOUNDS.contains(projectile.getPos().getX(), projectile.getPos().getY())) { //chekc ob projectile im spiel ist, nur für bullet da diese sich unnabhängig vom ziel bewegt
+        if (projectile.getPos().getX()>fWIDTH||projectile.getPos().getY()>fHEIGHT) { //chekc ob projectile im spiel ist, nur für bullet da diese sich unnabhängig vom ziel bewegt
             removeQueue.add(projectile);
             System.out.println("out of bounds");
         } else {

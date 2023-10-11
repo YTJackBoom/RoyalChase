@@ -76,7 +76,7 @@ public class AssetLocation { //class to define different variables for thing
         }
     public static class Town {
         public static BufferedImage getBackgroundImage() {
-            File mapFile = new File("res/images/town/town_background.jpg");
+            File mapFile = new File("res/images/town/town_background.png");
             BufferedImage mapImage;
             try {
                 mapImage = ImageIO.read(mapFile);

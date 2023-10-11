@@ -11,7 +11,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static basics.Game.fHEIGHT;
+import static basics.Game.fWIDTH;
 import static helpers.Direction.UP;
+import static helpers.math.ImageMath.resizeImage;
 
 public class Animator implements Cloneable{
     private int currentImageIndex;
@@ -116,18 +119,11 @@ public class Animator implements Cloneable{
             updateCounter = 0; // reset the counter after switching to the next frame
         }
     }
-    public void scaleImages(double scale) {
-
-        // Using nearest-neighbor interpolation for scaling
-        AffineTransform at = new AffineTransform();
-        at.scale(scale, scale);
-
-        AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-
-        imageArrayUp = scaleImageArray(imageArrayUp, scaleOp);
-        imageArrayDown = scaleImageArray(imageArrayDown, scaleOp);
-        imageArrayLeft = scaleImageArray(imageArrayLeft, scaleOp);
-        imageArrayRight = scaleImageArray(imageArrayRight, scaleOp);
+    public void scaleImages(double widthScale, double heightScale) {
+        imageArrayUp = scaleImageArray(imageArrayUp, widthScale, heightScale);
+        imageArrayDown = scaleImageArray(imageArrayDown, widthScale, heightScale);
+        imageArrayLeft = scaleImageArray(imageArrayLeft, widthScale, heightScale);
+        imageArrayRight = scaleImageArray(imageArrayRight, widthScale, heightScale);
 
         // Update the currentImageArray to reflect the direction currently set
         switch (direction) {
@@ -139,20 +135,27 @@ public class Animator implements Cloneable{
         }
     }
 
-    private BufferedImage[] scaleImageArray(BufferedImage[] originalArray, AffineTransformOp op) {
+
+    private BufferedImage[] scaleImageArray(BufferedImage[] originalArray, double widthScale, double heightScale) {
         if (originalArray == null) return null;
 
         BufferedImage[] scaledArray = new BufferedImage[originalArray.length];
         for (int i = 0; i < originalArray.length; i++) {
             BufferedImage originalImage = originalArray[i];
-            BufferedImage scaledImage = new BufferedImage((int) (originalImage.getWidth() * op.getTransform().getScaleX()),
-                    (int) (originalImage.getHeight() * op.getTransform().getScaleY()),
-                    BufferedImage.TYPE_INT_ARGB);
-            op.filter(originalImage, scaledImage);
-            scaledArray[i] = scaledImage;
+            int newWidth = (int) (originalImage.getWidth() * widthScale);
+            int newHeight = (int) (originalImage.getHeight() * heightScale);
+            scaledArray[i] = resizeImage(originalImage, newWidth, newHeight);
         }
         return scaledArray;
     }
+
+    public void notifyScreenResize(int newWidth, int newHeight) {
+        double widthScale = (double) newWidth / fWIDTH;
+        double heightScale = (double) newHeight / fHEIGHT;
+        scaleImages(widthScale, heightScale);
+    }
+
+
 
 
 

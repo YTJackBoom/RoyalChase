@@ -134,4 +134,10 @@ public class BuildingsController implements ControllerMethods{
 		public ArrayList<Building> getBuildingsList() {
 		return buildingsList;
 		}
+
+	public void notifyScreenResize(int width, int height) {
+		for (Building building : buildingsList) {
+			building.getActiveAnimator().notifyScreenResize(width, height);
+		}
 	}
+}

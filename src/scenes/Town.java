@@ -198,6 +198,19 @@ public class Town extends GameScenes implements SceneMethods {
             extendButtonBarRight.setVisible(true);
         }
     }
+    public void notifyScreenResize(int width, int height) {
+        resizeBackGround(width, height);
+        buildingsController.notifyScreenResize(width, height);
+    }
+    public void resizeBackGround(int width, int height) {
+        double widthScale = (double) width / fWIDTH;
+        double heightScale = (double) height / fHEIGHT;
+
+        int newWidth = (int) (townImage.getWidth() * widthScale);
+        int newHeight = (int) (townImage.getHeight() * heightScale);
+
+        townImage = math.ImageMath.resizeImage(townImage, newWidth, newHeight);
+    }
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -242,4 +255,7 @@ public class Town extends GameScenes implements SceneMethods {
     public BuildingsController getBuildingsController() {
         return buildingsController;
     }
+
+
+
 }

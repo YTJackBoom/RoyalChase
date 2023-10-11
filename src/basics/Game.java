@@ -112,39 +112,33 @@ public class Game extends JFrame implements Serializable {
     private void initClassesForResizes() {
             resizeEndTimer = new Timer(50, new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(ActionEvent e) { //timer um sehr viele resizes zu verhindern
                     SwingUtilities.invokeLater(() -> {
-//                        System.out.println(gameScreen.getWidth()+" "+gameScreen.getHeight());
 
-                        Insets insets = getInsets();
-//                        System.out.println(insets.bottom + " " + insets.top + " " + insets.left + " " + insets.right);
-                        fWIDTH = getContentPane().getWidth();
-                        fHEIGHT = getContentPane().getHeight();
+                        int newWidth = getContentPane().getWidth();
+                        int newHeight = getContentPane().getHeight();
 
 
-                        gameScreen.setSize(new Dimension(fWIDTH, fHEIGHT));
-//                        gameScreen.setBounds(insets.left, insets.top, fWIDTH, fHEIGHT);
+                        gameScreen.setSize(new Dimension(newWidth, newHeight));
                         gameScreen.revalidate();
                         gameScreen.repaint();
 
-                        UiElementCollector.getInstance().notifyScreenResize();
-                        getPlaying().getTileController().extendTiles(fWIDTH, fHEIGHT);
-//
-//                        System.out.println("Screen resized to " + fWIDTH + "x" + fHEIGHT);
+                        UiElementCollector.getInstance().notifyScreenResize(newWidth,newHeight);
+                        getPlaying().getTileController().extendTiles(newWidth, newHeight);
+                        getTown().notifyScreenResize(newWidth,newHeight);
+
+                        fWIDTH = getContentPane().getWidth();
+                        fHEIGHT = getContentPane().getHeight();
                     });
 
                 }
             });
 
-            // Ensure the timer only fires once after being started.
-            resizeEndTimer.setRepeats(false);
+            resizeEndTimer.setRepeats(false); //nur einmal ausführen , .restart() startet timer auch
 
             addComponentListener(new ComponentAdapter() {
                 @Override
-                public void componentResized(ComponentEvent e) {
-                    // Restart the timer on every resize event.
-                    // If the window isn't resized for the duration of the timer's delay,
-                    // the above ActionListener will be executed.
+                public void componentResized(ComponentEvent e) { //wenn das fenster resized wird, wird ein timer restartet, der nach 50ms die größe des fensters an die anderen klassen weitergibt
                     resizeEndTimer.restart();
                 }
             });
@@ -266,9 +260,6 @@ public class Game extends JFrame implements Serializable {
             gameScreen.setSize(new Dimension(initGameWidth, initGameHeight));
 
             gameScreen.revalidate();
-
-            fWIDTH = initGameWidth;
-            fHEIGHT = initGameHeight;
         } else {
             // Switch to fullscreen mode
             dispose();
@@ -281,9 +272,6 @@ public class Game extends JFrame implements Serializable {
             gameScreen.revalidate();
 
             getPlaying().getTileController().extendTiles(screenWidth, screenHeight);
-
-            fWIDTH = screenWidth;
-            fHEIGHT = screenHeight;
         }
 //        UiElementCollector.getInstance().notifyScreenResize();
         isFullScreen = !isFullScreen;

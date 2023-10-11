@@ -4,15 +4,12 @@ import uiElements.UiElement;
 
 import java.util.ArrayList;
 
-import static basics.Game.fHEIGHT;
-import static basics.Game.fWIDTH;
-
 public class UiElementCollector {
     private static UiElementCollector instance;
-    private ArrayList<UiElement> activeUiElements;
+    private ArrayList<UiElement> topLevelUiElements;
 
     private UiElementCollector() {
-        activeUiElements = new ArrayList<>();
+        topLevelUiElements = new ArrayList<>();
     }
 
     public static UiElementCollector getInstance() {
@@ -23,17 +20,17 @@ public class UiElementCollector {
     }
 
     public void addUiElement(UiElement uiElement) {
-        activeUiElements.add(uiElement);
+        topLevelUiElements.add(uiElement);
     }
 
 
     public void removeUiElement(UiElement uiElement) {
-        activeUiElements.remove(uiElement);
+        topLevelUiElements.remove(uiElement);
     }
 
-    public void notifyScreenResize() {
-        for (UiElement uiElement : activeUiElements) {
-            uiElement.getUiCoordinate().getRelativePosition().setReferenceDimensions(fWIDTH, fHEIGHT);
+    public void notifyScreenResize(int width, int height) {
+        for (UiElement uiElement : topLevelUiElements) {
+            uiElement.getUiCoordinate().getRelativePosition().setReferenceDimensions(width, height);
             uiElement.updatePosOnResize();
         }
     }
