@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Controller Klasse für die Tiles in PLaying
+ */
 public class TileController extends ObjectsController implements ControllerMethods {
     private Playing playing;
     private ArrayList<Tile> tileList;
@@ -26,7 +29,10 @@ public class TileController extends ObjectsController implements ControllerMetho
         initTiles();
     }
 
-    public void initTiles() {
+    /**
+     * Methode, um die Tiles aus der Text-Datei zum derzeitigen Level zu initialisieren
+     */
+    private void initTiles() {
         TextReader textReader = new TextReader(AssetLocation.Maps.getTileTextFile(playing.getGame().getGameState().getPlayerValues().getLevel()));
         try {
             tileData = textReader.readTileData();
@@ -41,17 +47,22 @@ public class TileController extends ObjectsController implements ControllerMetho
             }
         }
     }
+
+    /**
+     * Methode, um die Tiles zu erweitern, falls der Bildschirm resizet wird
+     * @param newWidth Bildschirmbreite
+     * @param newHeight Bildschirmhöhe
+     */
     public void extendTiles(int newWidth, int newHeight) {
-        int tileSize = 256; // assuming each tile is 256x256 pixels, adjust if needed
+        int tileSize = 256;
 
         int tilesRequiredX = (int) Math.ceil((double) newWidth / tileSize) - tileData.length;
         int tilesRequiredY = (int) Math.ceil((double) newHeight / tileSize) - (tileData.length > 0 ? tileData[0].length : 0);
 
-        int[] predefinedTiles = {0, 1};
+        int[] predefinedTiles = {0, 1}; //zufälliges tile (1 == Gras oder 0 == Wald)
 
         for (int x = 0; x < tilesRequiredX + tileData.length; x++) {
             for (int y = 0; y < tilesRequiredY + (tileData.length > 0 ? tileData[0].length : 0); y++) {
-                // Check the x and y conditions for horizontal, vertical and corner cases
                 if ((x >= tileData.length || y >= (tileData.length > 0 ? tileData[0].length : 0)) && getTile(x*tileSize, y*tileSize) == null) {
                     int randomTileType = predefinedTiles[RANDOM.nextInt(predefinedTiles.length)];
                     Tile tile = ObjectValues.Tiles.getRawTile(randomTileType);
@@ -73,6 +84,10 @@ public class TileController extends ObjectsController implements ControllerMetho
 
     }
 
+    /**
+     * Methode zum rendern der Tiles. "Manuell" da tile kein Gameobject ist
+     * @param g Graphics Objekt
+     */
     @Override
     public void render(Graphics g) {
         for (Tile tile : tileList) {
@@ -100,6 +115,11 @@ public class TileController extends ObjectsController implements ControllerMetho
         return tileList;
     }
 
+    /**
+     * ZUm setzen der Hovered-Variable, wenn ein Tower gebaut wird
+     * @param mouseX
+     * @param mouseY
+     */
     public void mouseDragged(int mouseX, int mouseY) {
         if (playing.getDragingTower()) {
             for (Tile tile : tileList) {

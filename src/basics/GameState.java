@@ -11,7 +11,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameState implements Serializable { //diese klasse ist zum speichern des spielstandes nötig, ier werden die spielerwerte soiwe stadt-gebäude(in extra Klssen) abgespeichert
+/**
+ * Klasse zum speichern des spielstandes, hier werden die spielerwerte, spielereinstellungen soiwe stadt-gebäude(in extra Klssen) abgespeichert
+ */
+public class GameState implements Serializable {
     private Game game;
     public static Values playerValues;
     public static UserSettings userSettings;
@@ -28,7 +31,11 @@ public class GameState implements Serializable { //diese klasse ist zum speicher
         townBuildingsSave = new ArrayList<BuildingSaveState>();
     }
 
-    private void writeObject(ObjectOutputStream oos) throws IOException { //speichert spieler werte und schreib die Buildings in BuildingSaveState um
+    /**
+     * Methode zum Umschreiben und speichern der Stadt-Gebäude in eine seperate Klasse, wird durch saveGame() in Game gecalled
+     * @param oos ObjectOutputStream zum schreiben in die Datei
+     */
+    private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.writeObject(playerValues);
         oos.writeObject(userSettings);
         for(Building b : game.getTown().getBuildingsController().getBuildingsList()) {
@@ -37,6 +44,10 @@ public class GameState implements Serializable { //diese klasse ist zum speicher
         oos.writeObject(townBuildingsSave);
     }
 
+    /**
+     * Methode zum laden der Klassen aus der Datei, wird durch loadGame() in Game gecalled
+     * @param ois ObjectInputStream zum lesen aus der Datei
+     */
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException { //liest die spielerwerte und buildings aus der datei
         playerValues = (Values) ois.readObject();
         userSettings = (UserSettings) ois.readObject();
@@ -45,6 +56,8 @@ public class GameState implements Serializable { //diese klasse ist zum speicher
     }
 
 
+
+    //getter und setter
     public void setPlayerValues(Values playerValues) {
         this.playerValues = playerValues;
     }

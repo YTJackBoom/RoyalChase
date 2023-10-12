@@ -11,6 +11,9 @@ import uiElements.Dialog;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Klasse für die Dialoge im Tutorial
+ */
 public class DialogController {
     private ArrayList<Dialog> dialogs;
 
@@ -24,12 +27,12 @@ public class DialogController {
 
     }
 
+    /**
+     * Methode zum Initialiseren der Dialoge in der PLaying-Scene
+     */
     public void initPlayingDialogs() {
-        int frameWidth = Game.initGameWidth;
-        int frameHeight = Game.initGameHeight;
-        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Oben links als Referenzpunkt
 
-        // Define relative positions for the dialogs
         float[][] relativePositions = {
                 {0.2f, 0.5f},
                 {0.3f, 0.6f},
@@ -58,7 +61,7 @@ public class DialogController {
             float relativeX = relativePositions[i][0];
             float relativeY = relativePositions[i][1];
             int width = 200;
-            int height = 0; // Adjust height based on the message, done in Dialog's constructor
+            int height = 0; // Dialog größen werden automatisch berechnet(in Dialogs Constructor)
 
             UiCoordinate dialogCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY));
 
@@ -67,10 +70,11 @@ public class DialogController {
         dialogs.get(0).setVisible(true);
     }
 
+    /**
+     * Methode zum Initialiseren der Dialoge in der Town-Scene
+     */
     public void initTownDialogs() {
-        int frameWidth = Game.initGameWidth;
-        int frameHeight = Game.initGameHeight;
-        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
+        AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Oben links als Referenzpunkt
 
         // Define relative positions for the dialogs
         float[][] relativePositions = {
@@ -99,17 +103,16 @@ public class DialogController {
         dialogs.get(0).setVisible(true);
     }
 
-
-    public void addDialog(Dialog dialog) {
-        dialogs.add(dialog);
-    }
-
     public void render(Graphics g) {
         for (Dialog dialog : dialogs) {
             dialog.render(g);
         }
     }
 
+    /**
+     * Methode zum weiterklicken der Dialoge
+     * @param d Angeklickter Dialog
+     */
     public void clickedOk(Dialog d) {
         d.setVisible(false);
         int nextIndex = dialogs.indexOf(d) + 1;

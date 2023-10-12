@@ -16,6 +16,9 @@ import java.util.Iterator;
 
 import static basics.Game.ups;
 
+/**
+ * Controller Klasse für die Türme
+ */
 public class TowerController extends ObjectsController implements ControllerMethods{
     private ArrayList<Tower> towerEntityList;
     private Playing playing;
@@ -25,7 +28,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
     private Values playerValues;
     private ArrayList<Tower> addQueue, removeQueue, changeQueue;
 
-    private int towerSoldCounter; //Wenn turm kürzlich verkauft wurde, um nicht sofort einen weiteren verkaufen zu könnnen
+//    private int towerSoldCounter; //Wenn turm kürzlich verkauft wurde, um nicht sofort einen weiteren verkaufen zu könnnen
     public TowerController(Playing playing) {
         addQueue = new ArrayList<Tower>();
         removeQueue = new ArrayList<Tower>();
@@ -52,10 +55,19 @@ public class TowerController extends ObjectsController implements ControllerMeth
         }
         updateExplosions();
     }
+
+    /**
+     * Methode zum initialisieren des Tores auf der letzten Position des Gegner-Pfades
+     */
     public void initGate() {
         ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates = playing.getEnemyController().getPathFinder().getPath();
         towerEntityList.add(new Gate(this, pathAbsoluteCoordinates.get(pathAbsoluteCoordinates.size() - 1)));
     }
+
+    /**
+     * Methode zum überprüfen, ob ein Gegner im Range des Turmes ist, Bosse werden priorisiert
+     * @param tower
+     */
     public void checkTowerRange(Tower tower) {
         enemyList = playing.getEnemyController().getEnemyList();
         Enemy targetEnemy = null;
@@ -76,18 +88,20 @@ public class TowerController extends ObjectsController implements ControllerMeth
             }
         }
 
-// Set tower status and target based on found enemy
         if (targetEnemy != null) {
             tower.setStatus(true);
             tower.setTarget(targetEnemy);
-            // if (tower.getType() == 1) System.out.println("tower target set");
         } else if (!enemyList.contains(tower.getTarget()) || !tower.getRange().contains(tower.getTarget().getHitBox())) {
             tower.setStatus(false);
             tower.setTarget(null);
-            // if (tower.getType() == 1) System.out.println("towerTarget reset");
         }
 
     }
+
+    /**
+     * Methode zum überprüfen, ob ein Turm keine Lebenspunkte mehr hat und evtl sound abspielen
+     * @param tower
+     */
     public void checkTowerHealth(Tower tower) {
         if (tower.getHealth() <= 0) {
             SoundController.getInstance().playSoundEffect("deaths_5");
@@ -114,24 +128,14 @@ public class TowerController extends ObjectsController implements ControllerMeth
 
     public synchronized void renderTowers(Graphics g){
         for(Tower tower : towerEntityList) {
-            if (tower.isVisible()) {
-                int width = tower.getWidth();
-                int height = tower.getHeight();
-                int towerX = tower.getPos().getX() - width / 2;
-                int towerY = tower.getPos().getY() - height / 2;
-
-                if (tower.isActive()) {
-                    Image turretImage = tower.getActiveAnimator().getCurrentFrame();
-                    g.drawImage(turretImage, towerX, towerY, width, height, null);
-                    tower.getActiveAnimator().incrementFrame();
-                } else {
-                    Image turretImage = tower.getPassiveAnimator().getCurrentFrame();
-                    g.drawImage(turretImage, towerX, towerY, width, height, null);
-                    tower.getPassiveAnimator().incrementFrame();
-                }
-            }
+            tower.render(g);
         }
     }
+
+    /**
+     * Methode zum rendern der Level der Türme über dem Turm
+     * @param g
+     */
     public synchronized void renderTowerLevels(Graphics g) {
         for(Tower tower : towerEntityList) {
             if (tower.isVisible()) {
@@ -169,6 +173,10 @@ public class TowerController extends ObjectsController implements ControllerMeth
             }
         }
     }
+
+    /**
+     * Methode zum upgraden eines Turmes^, wenn der spielr genug resourcen hat
+     */
      public void upgradeTower() {
         Values upgradeCost = selectedTower.getWorth().getUpgradeCost();
         if(playerValues.canAfford(upgradeCost)) {
@@ -176,13 +184,14 @@ public class TowerController extends ObjectsController implements ControllerMeth
             selectedTower.getWorth().increase(upgradeCost);
 
             selectedTower.upgrade();
-//            System.out.println("d");
         } else {
             playing.setCantAfford(true);
-//            System.out.println("$");
         }
     }
 
+    /**
+     * Methode zum verkaufen eines Turmes, wenn nicht kürzlich einer verkauft wurde
+     */
     public void sellTower() {
         if(!playing.getRecentlySold()) {
             playerValues.increase(selectedTower.getWorth());
@@ -220,6 +229,12 @@ public class TowerController extends ObjectsController implements ControllerMeth
     public synchronized void addExplosion(Explosion explosion) {
         explosionsList.add(explosion);
     }
+
+    /**
+     * Methode um Türme entweder zu bauen, zu ersetzten oder nicht zu machen
+     * @param x
+     * @param y
+     */
     public void mouseReleased(int x, int y) {
         Tower t;
         if((t = towerOn(x,y))!=null) {
@@ -231,6 +246,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
 
             }
         }
+        mouseClicked(x,y);
     }
 
     public void replaceTower(Tower t) {
@@ -238,7 +254,6 @@ public class TowerController extends ObjectsController implements ControllerMeth
             if (placeTower(t.getPos())) {
                 playerValues.increase(t.getWorthByPercentage(Constants.OtherConstants.REPLACETOWERPERCENT));
                 removeQueue.add(t);
-//                towerEntityList.set(towerEntityList.indexOf(t), new Tower(this, t.getPos(), playing.getDraggedTower()));
                 playing.setSelectedTower(null);
             }
         }
@@ -250,13 +265,19 @@ public class TowerController extends ObjectsController implements ControllerMeth
             playerValues.decrease(cost);
             addQueue.add(new Tower(this, pos, playing.getDraggedTower(), true));
             playing.setSelectedTower(null);
-            System.out.println("Tower placed");
             return true;
         } else {
             playing.setCantAfford(true);
             return false;
         }
     }
+
+    /**
+     * Methode zum erhalten des Turmes an einer bestimmten position
+     * @param x x-Koordinate
+     * @param y y-Koordinate
+     * @return Turm an der Position
+     */
     public Tower towerOn(int x, int y) {
         for(Tower tower : towerEntityList) {
             if(tower.getBounds().contains(x, y)) {
@@ -265,6 +286,10 @@ public class TowerController extends ObjectsController implements ControllerMeth
         }
         return null;
     }
+
+    /**
+     * Methode zum verkaufen aller Türme (z.b. beim schaffen eines Levels) mit einem bestimmten prozentsatz
+     */
     public void sellAllTowers() {
         for(Tower tower : towerEntityList) {
             if(tower.getType() != ObjectValues.Towers.Foundation_T) {
@@ -273,6 +298,12 @@ public class TowerController extends ObjectsController implements ControllerMeth
         }
         towerEntityList.clear();
     }
+
+    /**
+     * Methode zum auswählen des Turmes, der angeklickt wurde
+     * @param x
+     * @param y
+     */
     public void mouseClicked(int x, int y) {
         for(Tower tower : towerEntityList) {
             if(tower.getType() != ObjectValues.Towers.Foundation_T) {

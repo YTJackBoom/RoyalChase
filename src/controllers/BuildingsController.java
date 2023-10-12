@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import static basics.Game.*;
 import static helpers.ObjectValues.Buildings.*;
 
+/**
+ * Controller Klasse für die Gebäude in der Stadt
+ */
 public class BuildingsController implements ControllerMethods{
 	private Town town;
 	private ArrayList<Building> buildingsList;
@@ -29,14 +32,18 @@ public class BuildingsController implements ControllerMethods{
 		buildingsList = new ArrayList<Building>();
 		playerValues = town.getGame().getPlayerValues();
 	}
-	public void initBuildings() { //places buildings in a grid like pattern
+
+	/**
+	 * Methode, um Erze und Haus-Plätze an vordefinierten Orten zu initialisieren
+	 */
+	public void initBuildings() {
 		int startX = 50;
 		int startY = 50;
 		int type = 0;
 		int buildingsPerLine =  3;
 		int buildingSize = 50;
 		int buildingSpacing = 200;
-		for (int i = 0; i < buildingsPerLine; i++) {
+		for (int i = 0; i < buildingsPerLine; i++) { //Haus-Plätze in einem Grid-Pattern
 			for (int j = 0; j < buildingsPerLine; j++) {
 				buildingsList.add(new Building(this,startX + (i * (buildingSize + buildingSpacing)), startY + (j * (buildingSize + buildingSpacing)), type,true));
 			}
@@ -63,13 +70,19 @@ public class BuildingsController implements ControllerMethods{
 
 	}
 
+	/**
+	 * Methode zum rendern der Gebäude
+	 * @param g Graphics Objekt
+	 */
 	@Override
 	public void render(Graphics g) {
 		for (Building building : buildingsList) {
-			g.drawImage(building.getActiveAnimator().getCurrentFrame(), building.getPos().getX(), building.getPos().getY(), null);
-			building.getActiveAnimator().incrementFrame();
+			building.render(g);
 		}
 	}
+	/**
+	 * Methode zum updaten der Gebäude
+	 */
 	@Override
 	public void update() {
 		if(!town.isPaused()) {
@@ -80,14 +93,18 @@ public class BuildingsController implements ControllerMethods{
 
 	}
 
-
+	/**
+	 * Mouse-Released Methode, um Gebäude zu platzieren
+	 * @param x-Coordinate der Maus
+	 * @param y-Coordinate der Maus
+	 */
 	public void mouseReleased(int x, int y) {
 		Building tempBuilding = new Building(this, x, y, town.getSelectedBuilding(),false);
 
 		for (int i = 0; i < buildingsList.size(); i++) {
 			Building building = buildingsList.get(i);
 			if (tempBuilding.getHitBox().collidesWith(building.getHitBox())) {
-				if (isValidOreType(building.getType())&&town.getSelectedBuilding() == MINER) {
+				if (isValidOreType(building.getType())&&town.getSelectedBuilding() == MINER) { //Differenzieruing zwichen Minen(auch Holz) und Häusern
 					handleMineBuildingPlacement(i);
 				} else if (building.getType() == PLACEHOLDER&&town.getSelectedBuilding() == HOUSE) {
 					handleHosueBuildingPlacement(i);
@@ -141,12 +158,20 @@ public class BuildingsController implements ControllerMethods{
 		return buildingsList;
 		}
 
+	/**
+	 * Methode zum updaten der Gebäude-Animator-Größen
+	 * @param width Bildschirmbreite
+	 * @param height Bildschirmhöhe
+	 */
 	public void notifyScreenResize(int width, int height) {
 		for (Building building : buildingsList) {
 			building.getActiveAnimator().notifyScreenResize(width, height);
 		}
 	}
 
+	/**
+	 * Methode um die Gebäude-Animatoren zu resetten, diese wird bei einem Resize auf original-Größe gecalled, verwebndet um starke Verzerrungen zu vermeiden
+	 */
 	public void flushImages() {
 		for (Building building : buildingsList) {
 			building.initAnimators();

@@ -2,7 +2,10 @@ package basics;
 
 import static basics.Game.ups;
 
-public class GameLogicUpdater implements Runnable { //der threat zum updaten der spiel logic
+/**
+ * Die Klasse des threats zum updaten der spiel logic
+ */
+public class GameLogicUpdater implements Runnable {
 	private Game game;
 
 	public GameLogicUpdater(Game game) {

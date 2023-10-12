@@ -16,12 +16,14 @@ import static basics.Game.ups;
 import static helpers.ObjectValues.Enemies.*;
 import static helpers.ObjectValues.Towers.Foundation_T;
 
-
+/**
+ * Controller Klasse für die Gegner
+ */
 public class EnemyController extends ObjectsController implements ControllerMethods {
 	private ArrayList<Enemy> enemyList,removeQue,addQue;
-	private ArrayList<Explosion> explosionsList;
+	private ArrayList<Explosion> explosionsList; //Explosionen welche Gegnern schaden
 
-	private ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates;//pathCoordinates
+	private ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates; //Liste mit den absoluten Koordinaten des Gegner-Pfades
 
 	private Playing playing;
 	private Values playerValues;
@@ -30,6 +32,9 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 	public EnemyController(Playing playing) {
 
 		this.playing = playing;
+		initvariables();
+	}
+	public void initvariables() {
 		pathFinder = new PathFinder(playing.getTileController());
 		pathAbsoluteCoordinates = pathFinder.getPath();
 		enemyList = new ArrayList<Enemy>();
@@ -40,10 +45,9 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 	}
 	public void update() {
 		workAddQueue();
-		if (!playing.isPaused()) {
+		if (!playing.isPaused()) { //Wenn das Spiel nicht pausiert ist, werden die Gegner und Animationen geupdatet
 			updateEnemies();
 			updateExplosions();
-
 		}
 		checkEnemyHealth();
 		workRemoveQueue();
@@ -57,7 +61,12 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 			}
 		}
 	}
-	public void checkEnemyRange(Enemy enemy) { //checkt ob ein turm in reichweite des gegners ist. check für gate in enemy
+
+	/**
+	 * Methode zum überprüfen, ob ein Turm in der Reichweite eines Gegners ist, check für das Tor(==Foundation_T) in Enemy
+	 * @param enemy Gegner, der überprüft werden soll
+	 */
+	public void checkEnemyRange(Enemy enemy) {
 		if (enemy.getEnemyAttackPattern() == EnemyAttackPattern.RANGED) {
 			ArrayList<Tower> towerList = playing.getTowerController().getTowerList();
 			for (Tower tower : towerList) {
@@ -77,6 +86,10 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 			}
 		}
 	}
+
+	/**
+	 * Methode zum überprüfen, ob ein Gegner keine Lebenspunkte mehr hat
+	 */
 	public void checkEnemyHealth() {
 		for (Enemy enemy : enemyList) {
 			if (enemy != null) {
@@ -90,6 +103,11 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 			}
 		}
 	}
+
+	/**
+	 * Methode, welche gecalled wird wenn ein Gegner mit Sacrifice typ das Tor erreciht
+	 * @param enemy
+	 */
 	public void enemySacrificeOnGate(Enemy enemy) {
 		playerValues.setHealth(playerValues.getHealth() - enemy.getDamageDealt());
 		removeQue.add(enemy);
@@ -98,6 +116,9 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 	public void enemyMeleeAttackOnGate(Enemy enemy) {
 		playerValues.setHealth(playerValues.getHealth() - enemy.getDamageDealt());
 	}
+	/**
+	 * Methode zum updaten der Explosionen
+	 */
 	public synchronized void updateExplosions() {
 		for(Explosion e : explosionsList) {
 			e.update(this);
@@ -136,20 +157,13 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		   renderHealthBars(g);
 	   }
 	   renderExplosions(g);
-
-//	   for (Enemy enemy :enemyList) {
-//		   enemy.getRange().render(g);
-//	   }
    }
 
 
    public synchronized void renderEnemies(Graphics g) {
 	   for (Enemy enemy : enemyList) {
-		   if (enemy != null && enemy.isVisible()) {
-			   int width = enemy.getWidth();
-			   int height = enemy.getHeight();
-			   g.drawImage(enemy.getActiveAnimator().getCurrentFrame(), enemy.getPos().getX() - width / 2, enemy.getPos().getY() - height, null);
-			   enemy.getActiveAnimator().incrementFrame();
+		   if (enemy != null) {
+			   enemy.render(g);
 		   }
 	   }
    }
@@ -176,7 +190,10 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 		enemy.damage(damage);
 		enemy.setStun(stun*ups);
    }
-	public void damageEnemiesInRadius(Circle explosion, double maxDamage, double maxStun, ArrayList<GameObject> damagedEnemies) {
+   /**
+	* Methode zum Schaden von Gegnern in einem Kreis, mit falloff je weiter der gegner vom Zentrum entfernt ist
+    */
+	public void damageEnemiesInRadius(Circle explosion, double maxDamage, double maxStun, ArrayList<GameObject> damagedEnemies) { //damaged Enemies wird aus Explosion mitgegeben, um jeden Gegner in der Explosion nur einmal zu schaden
 		for (Enemy enemy : enemyList) {
 			if (explosion.contains(enemy.getPos()) && (damagedEnemies.isEmpty() || !damagedEnemies.contains(enemy))) {
 				double distanceToCenter = explosion.getCenter().distanceTo(enemy.getPos());

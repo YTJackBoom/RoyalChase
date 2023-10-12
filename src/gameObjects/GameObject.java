@@ -13,6 +13,7 @@ public abstract class GameObject {
 	protected double health;
 	protected double damageDealt;
 	protected boolean isVisible = true;
+	protected boolean isActive = true;
 
 	protected HitBox hitBox;
 
@@ -32,7 +33,7 @@ public abstract class GameObject {
 
 
 
-	private void initAnimators(){
+	public void initAnimators(){
 		switch (gameObjectType) {
 			case ENEMY -> {
 				activeAnimator = AssetController.getInstance().getAnimator("enemyActive_"+type);
@@ -128,6 +129,21 @@ public abstract class GameObject {
 		if (passiveAnimator != null) passiveAnimator.setDirection(dir);
 		activeAnimator.setDirection(dir);
 		this.pos = pos;
+	}
+	public void render(Graphics g) {
+		if (isVisible) {
+			if(isActive){
+				int x = pos.getX()- activeAnimator.getWidth()/2;
+				int y = gameObjectType == GameObjectType.ENEMY ? pos.getY()-activeAnimator.getHeight() : pos.getY()-activeAnimator.getHeight()/2;
+				g.drawImage(activeAnimator.getCurrentFrame(), x, y, null);
+				activeAnimator.incrementFrame();
+			}else {
+				int x = pos.getX()- passiveAnimator.getWidth()/2;
+				int y = gameObjectType == GameObjectType.ENEMY ? pos.getY()-activeAnimator.getHeight() : pos.getY()-activeAnimator.getHeight()/2;
+				g.drawImage(passiveAnimator.getCurrentFrame(), x, y, null);
+				passiveAnimator.incrementFrame();
+			}
+		}
 	}
 
 	public HitBox getHitBox() {

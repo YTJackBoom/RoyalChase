@@ -5,6 +5,9 @@ import scenes.Playing;
 
 import java.awt.*;
 
+/**
+ * Interface für die Controller-Klassen
+ */
 public interface ControllerMethods {
 //    public Playing getPlaying();
     public void workAddQueue();

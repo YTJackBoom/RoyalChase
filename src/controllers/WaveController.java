@@ -12,12 +12,16 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static scenes.GameStates.LEVELCLEARED;
+
+/**
+ * Controller Klasse für die Waves
+ */
 public class WaveController implements ControllerMethods {
     private Playing playing;
     private EnemyController enemyController;
     private TextReader textReader;
-    private int currentWave, counter, counter2;
-    private int cooldown = 400;
+    private int currentWave, counter, counter2; //currentWAve == derzeitige Welle, counter == Counter zwichen dem Spawnen von Wellen, counter2 == Counter zwichen dem spawnen von Gegnern
+    private int cooldown = 400; //Colldown nach jeder Welle
     private ArrayList<Wave> waves;
     private boolean generateNewWave = false;
     private Values playerValues;
@@ -33,21 +37,25 @@ public class WaveController implements ControllerMethods {
     }
 
 
+    /**
+     * Methode um Wellen aus einer Textdatei zu initialisieren
+     */
     public void initWaves() {
         textReader = new TextReader(playerValues);
         int wavesNum = textReader.getWavesNum();
         waves = new ArrayList<Wave>();
         for(int i = 0; i < wavesNum; i++) {
             textReader.initArrayLists(i);
-//            System.out.println(waveFileAnalyser.getSpawnList().size() + " " + waveFileAnalyser.getDelayList().size());
             waves.add(new Wave(textReader.getSpawnList(),textReader.getDelayList()));
         }
 
     }
-    public void update() {
-//        System.out.println(waves.get(currentWave).getCurrentIndex() + " " + waves.get(currentWave).getSpawnList().size()+" "+waves.get(currentWave).getCurrentDelay()+" "+counter2 );
-        if (!playing.isPaused()) {
 
+    /**
+     * Methode zum updaten der WEllen und spawnen von Gegenern
+     */
+    public void update() {
+        if (!playing.isPaused()) {
             if (waves.get(currentWave).getCurrentIndex() == waves.get(currentWave).getSpawnList().size()) {
                 if (enemyController.getEnemyList().size() == 0) {
                     generateNewWave = true;
@@ -61,6 +69,10 @@ public class WaveController implements ControllerMethods {
             updateNewWave();
         }
     }
+
+    /**
+     * Methode zum updaten der neuen Welle und falls keine mehr verfügbar sind, beenden des Levels
+     */
     public void updateNewWave() {
         if (generateNewWave) {
             if (counter / cooldown == 1) {
@@ -90,6 +102,10 @@ public class WaveController implements ControllerMethods {
 
     }
 
+    /**
+     * Methode zum rendern des Cooldowns zur neuen Welle
+     * @param g Graphics Objekt
+     */
     public void render(Graphics g) {
         if(generateNewWave) {
             g.setColor(Color.RED);

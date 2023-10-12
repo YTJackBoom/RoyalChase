@@ -4,6 +4,10 @@ import uiElements.UiElement;
 
 import java.util.ArrayList;
 
+/**
+ * Ein Singelton-Kollektor, welcher alle Top-Level UiElemente speichert, um sie bei einem Screen-Resize zu benachrichtigen (Top-Level UiElemente sind UiElemente, welche direkt proportional zum Fenster platziert sind)
+ */
+
 public class UiElementCollector {
     private static UiElementCollector instance;
     private ArrayList<UiElement> topLevelUiElements;
@@ -28,6 +32,9 @@ public class UiElementCollector {
         topLevelUiElements.remove(uiElement);
     }
 
+    /**
+     * Methode zum Aktualisieren aller Top-Level UiElemente bei einem Screen-Resize, diese  aktualisieren dann ihren "Children"
+     */
     public void notifyScreenResize(int width, int height) {
         for (UiElement uiElement : topLevelUiElements) {
             uiElement.getUiCoordinate().getRelativePosition().setReferenceDimensions(width, height);

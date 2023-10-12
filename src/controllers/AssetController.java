@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Singelton Klasse zum laden und verwalten der Spiel-Assets
+ */
 public class AssetController {
     private static AssetController instance;
 
@@ -28,24 +31,24 @@ public class AssetController {
     }
 
     private void preloadAssets() {
-            // Preload enemy animators
+            // Lade der Gegner-Animationen
             for (int i = AssetLocation.Enemies.getLowestInt(); i <= AssetLocation.Enemies.getNumberOfIntDeclarations(); i++) {
                 animators.put("enemyActive_" + i, new Animator(AssetLocation.Enemies.getEnemyActiveGifPath(i)));
             }
-            // Preload tower animators
+            // Lade der Turm-Animationen
             for (int i = AssetLocation.Towers.getLowestInt(); i <= AssetLocation.Towers.getNumberOfIntDeclarations(); i++) {
                 animators.put("towerActive_" + i, new Animator(AssetLocation.Towers.getTowerActiveGifPath(i)));
                 animators.put("towerPassive_" + i, new Animator(AssetLocation.Towers.getTowerPassiveGifFile(i)));
             }
-            // Preload projectile animators
+            // Lade der Projektil-Animationen
             for (int i = AssetLocation.Projectiles.getLowestInt(); i <= AssetLocation.Projectiles.getNumberOfIntDeclarations(); i++) {
                 animators.put("projectile_" + i, new Animator(AssetLocation.Projectiles.getProjectileGifFile(i)));
             }
-            // Preload building animators
+            // Lade der Gebäude-Animationen
             for (int i = AssetLocation.Buildings.getLowestInt(); i <= AssetLocation.Buildings.getNumberOfIntDeclarations(); i++) {
                 animators.put("building_" + i, new Animator(AssetLocation.Buildings.getBuildingGifFile(i)));
             }
-            // Preload icons
+            // Lade der Icon-Bilder
             for (int i = AssetLocation.Icons.getLowestInt(); i <= AssetLocation.Icons.getNumberOfIntDeclarations(); i++) {
                 try {
                     icons.put("icon_" + i, ImageIO.read(AssetLocation.Icons.getIconImageFile(i)));
@@ -53,7 +56,7 @@ public class AssetController {
                     throw new RuntimeException(e);
                 }
             }
-            // PreLoad buttons
+            // Laden der Button-Bilder
             for (int i = AssetLocation.Buttons.getLowestInt(); i <= AssetLocation.Buttons.getNumberOfIntDeclarations(); i++) {
                 try {
                     icons.put("button_" + i, ImageIO.read(AssetLocation.Buttons.getButtonImageFile(i)));
@@ -62,9 +65,9 @@ public class AssetController {
                     throw new RuntimeException("Error loading button with index: " + i, e);
                 }
             }
-            // Preload sounds
+            // Laden der Sounds
             //
-            //Deaths
+            //Todes-Sounds
             for (int i = AssetLocation.Sounds.Deaths.getLowestInt(); i <= AssetLocation.Sounds.Deaths.getNumberOfIntDeclarations(); i++) {
                 try {
                     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.Deaths.getSoundFile(i));
@@ -73,7 +76,7 @@ public class AssetController {
                     throw new RuntimeException(e);
                 }
             }
-            //projectilesFired
+            //Prokjektile-Sounds
             for (int i = AssetLocation.Sounds.ProjectileFired.getLowestInt(); i <= AssetLocation.Sounds.ProjectileFired.getNumberOfIntDeclarations(); i++) {
                 try {
                     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.ProjectileFired.getSoundFile(i));
@@ -85,6 +88,11 @@ public class AssetController {
     }
 
 
+    /**
+     * Methode zum clonen der Animator-Objekte aus dem Array
+     * @param key Identifier des zu clonenden Animators
+     * @return Animator-Objekt
+     */
     public Animator getAnimator(String key) {
         Animator animator = animators.get(key);
         if (animator == null) {
@@ -93,6 +101,11 @@ public class AssetController {
         return animator.clone();
     }
 
+    /**
+     * Methode zum clonen der BufferedImage-Objekte aus dem Array (für Icons und Buttons)
+     * @param key Identifier des zu clonenden BufferedImages
+     * @return BufferedImage-Objekt
+     */
     public BufferedImage getIcon(String key) {
         BufferedImage icon = icons.get(key);
         if (icon == null) {
@@ -101,6 +114,11 @@ public class AssetController {
         return icon;
     }
 
+    /**
+     * Methode zum clonen der AudioInputStream-Objekte aus dem Array
+     * @param key Identifier des zu clonenden AudioInputStreams
+     * @return AudioInputStream-Objekt
+     */
     public AudioInputStream getSound(String key) {
         AudioInputStream sound = sounds.get(key);
         if (sound == null) {
@@ -108,6 +126,10 @@ public class AssetController {
         }
         return sound;
     }
+
+    /**
+     * Methode, um alle Sound-Keys zu bekommen, diese werden genutzt, um die Sounds im SoundController in den Arbeitsspeiher zu laden
+     */
     public Set<String> getSoundKeys() {
         return sounds.keySet();
     }

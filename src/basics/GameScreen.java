@@ -7,7 +7,9 @@ import playerinputs.MListener;
 import javax.swing.*;
 import java.awt.*;
 
-
+/**
+ * Die Klasse des JPanels auf dem das Spiel gerendert wird
+ */
 public class GameScreen extends JPanel {
 
 	private Game game;
@@ -15,21 +17,15 @@ public class GameScreen extends JPanel {
 		this.game = game;
 		setDoubleBuffered(true);
 		setOpaque(true);
-		setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-
-//		initMap(1);
-		setPanelSize();
-	}
-	public void setPanelSize() {
-		Dimension prefSize = new Dimension(Game.initGameWidth, Game.initGameHeight);
-//		setSize(prefSize);
-//		setBounds(fBOUNDS);
-		//setVisible(true);
+//		setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 	}
 
-	public void initInputs() { //Initialiesieren der Spieler Inputs auf den Gamescreen
+	/**
+	 * Die Methode zum Initialisieren der Spieler-inputs
+	 */
+	public void initInputs() {
 		MListener mListener = new MListener(game);
-		KListener kListener = new KListener(game);
+		KListener kListener = new KListener(game); //keyListener muss nicht auf den gamescreen geadded Werden, da InputMaps genutzt werden, welche direkt auf die ActionMap des RootPanes des JFrames geadded werden
 
 		addMouseListener(mListener);
 		addMouseMotionListener(mListener);

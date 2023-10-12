@@ -49,7 +49,9 @@ public class Game extends JFrame implements Serializable {
     private GameRenderUpdater renderUpdater;
     private Timer resizeEndTimer;
 
-
+    /**
+     * Konstruktor der Klasse Game, start des Spiels
+     */
     public Game() { //Initialisieren des Fensters
         initClasses();
 
@@ -60,8 +62,7 @@ public class Game extends JFrame implements Serializable {
         add(gameScreen, BorderLayout.CENTER);
 
 
-        setTitle("Bang Bang");
-        Insets insets = getInsets();
+        setTitle("Royal Chase");
         setMinimumSize(new Dimension(initGameWidth, initGameHeight));
 
         setContentPane(gameScreen);
@@ -73,22 +74,18 @@ public class Game extends JFrame implements Serializable {
     }
 
     public static void main(String[] args) {
-
-
-//            System.setOut(null);
-//            System.setErr(null);
-
-
         Game game = new Game();
         game.gameScreen.initInputs();
         game.start();
 
         }
-
-        private void initClasses() { //Initialisieren der Klassen
+        /**
+         * Initialisieren der Klassen
+         */
+   private void initClasses() {
             System.out.println("Gerade werden die Assets des Spiels geladen, bitte warten...");
-            AssetController.getInstance();
-            SoundController.getInstance();
+            AssetController.getInstance(); //Initialisieren der AssetController Klasse, welche die Bilder und Sounds des Spiels in den Arbeitsspeicher lädt
+            SoundController.getInstance(); //Initialisieren der SoundController Klasse, welche die Sounds des Spiels in den Arbeitsspeicher lädt
             System.out.println("Assets geladen");
 
             gameState = new GameState(this);
@@ -111,26 +108,29 @@ public class Game extends JFrame implements Serializable {
 
         }
 
+    /**
+     * Initialisieren der Klassen, welche Aktionen beim resizen des Fensters ausführen
+     */
     private void initClassesForResizes() {
             resizeEndTimer = new Timer(50, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) { //timer um sehr viele resizes zu verhindern
                     SwingUtilities.invokeLater(() -> {
 
-                        prevfHEIGHT = fHEIGHT;
+                        prevfHEIGHT = fHEIGHT; //speichern der alten werte
                         prevfWIDTH = fWIDTH;
 
-                        fWIDTH = getContentPane().getWidth();
+                        fWIDTH = getContentPane().getWidth(); //setzen der neuen werte
                         fHEIGHT = getContentPane().getHeight();
 
 
-                        gameScreen.setSize(new Dimension(fWIDTH, fHEIGHT));
+                        gameScreen.setSize(new Dimension(fWIDTH, fHEIGHT)); //explicites setzen der größe des gamescreens
                         gameScreen.revalidate();
                         gameScreen.repaint();
 
-                        UiElementCollector.getInstance().notifyScreenResize(fWIDTH,fHEIGHT);
-                        getPlaying().getTileController().extendTiles(fWIDTH, fHEIGHT);
-                        getTown().notifyScreenResize(fWIDTH,fHEIGHT);
+                        UiElementCollector.getInstance().notifyScreenResize(fWIDTH,fHEIGHT); //benachrichtigen der UiElemente über die neue größe
+                        getPlaying().getTileController().extendTiles(fWIDTH, fHEIGHT);  //erweitern des Spielfeldes auf die neue größe
+                        getTown().notifyScreenResize(fWIDTH,fHEIGHT); //benachrichtigen der Town über die neue größe
 
 
                     });
@@ -147,13 +147,17 @@ public class Game extends JFrame implements Serializable {
                 }
             });
     }
-        private void start() {//Initialisiert zwei threaths, einen für spiel-logic und einen für spiel-grafik(sowie einen timer zur ausgabe der fps und ups)
+
+    /**
+     * Initialisiert zwei threaths, einen für spiel-logic und einen für spiel-grafik(sowie einen timer zur ausgabe der fps und ups)
+     */
+        private void start() {
 
 
 
-            renderUpdater = new GameRenderUpdater(this);
-            Thread gameRederThread = new Thread(renderUpdater);
-            gameRederThread.start();
+            renderUpdater = new GameRenderUpdater(this);    //initialisieren der Klasse
+            Thread gameRederThread = new Thread(renderUpdater); //adden des Threats auf die Klasse
+            gameRederThread.start(); //starten des Threats
 
             GameLogicUpdater logicUpdater = new GameLogicUpdater(this);
             Thread gameLogicThread = new Thread(logicUpdater);
@@ -170,7 +174,10 @@ public class Game extends JFrame implements Serializable {
             statsTimer.start();
         }
 
-        protected void updateGame() { //zum updaten der game logic, town erhält soft-updates zum aktualisieren der produzierten resourcen
+    /**
+     * Methode zum Updaten der game logic, town erhält soft-updates zum aktualisieren der produzierten resourcen
+     */
+    protected void updateGame() {
             switch (GameStates.gameState) {
                 case MENU ->menu.update();
                 case PLAYING -> {playing.update();
@@ -184,12 +191,20 @@ public class Game extends JFrame implements Serializable {
             }
         }
 
-        public void togglePause() {
+    /**
+     * Methode zum Pausieren der game logic
+     */
+    public void togglePause() {
             isPaused = !isPaused;
             playing.togglePause();
             town.togglePause();
-        }
-        public void saveGame( String filePath) { //speicher den spielstand der ressourcen des spielers sowie der gebäude in der stadt,hierfür werden die klassen von java.io  benutzt
+    }
+
+    /**
+     * Methode zum Speichern des Spielstandes, speichert Resourcen des Spielers sowie die gebäude in der Stadt
+     * @param filePath Datei-Pfad zum Speichern
+     */
+    public void saveGame( String filePath) {
         try {
             FileOutputStream fileOut = new FileOutputStream(filePath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -202,7 +217,12 @@ public class Game extends JFrame implements Serializable {
             i.printStackTrace();
          }
         }
-    public void loadGame(String filePath) { //lädt den spielstand aus dem pfad und setzt die speielrwerte in den benötigten klassen neu
+
+    /**
+     * Methode zum Laden des Spielstandes, lädt Resourcen des Spielers sowie die gebäude in der Stadt und setzt die Werte der geladenen GameState-class in diversen Klassen
+     * @param filePath Datei-Pfad zum Laden
+     */
+    public void loadGame(String filePath) {
         GameState gameState = null;
         try {
             FileInputStream fileIn = new FileInputStream(filePath);
@@ -224,7 +244,11 @@ public class Game extends JFrame implements Serializable {
         }
 
     }
-    private void loadTownBuildings() { //schreibt die geladenen stadt gebäude in die town klasse
+
+    /**
+     * Methode, um die geladenen BuildingSaveState Klassen in die Building Klassen umzuwandeln und in der BuildingController-Klasse zu speichern
+     */
+    private void loadTownBuildings() {
            int i=0;
             BuildingsController buildingsController = town.getBuildingsController();
             for(BuildingSaveState b: gameState.getTownBuildingsSave()) {
@@ -234,44 +258,37 @@ public class Game extends JFrame implements Serializable {
             }
     }
 
-    public void resetAll() { //zum reseten beim "tod"
+    /**
+     * Methode zum Resetten des Spielstandes
+     */
+    public void resetAll() {
         playing.reset();
         levelSelect.reset();
         town.reset();
         getPlayerValues().reset();
     }
 
+    /**
+     * Methode, welche dürch das drücken von F11 ausgeführt wird, diese ermöglicht das Wechseln aus und in den Fullscreen-Modus. Diese Methode ruft auch indirekt die Methoden zum Resize des Fensters auf
+     */
     public void toggleFullscreen(){
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
-
-        // Get the screen's resolution
-        DisplayMode displayMode = defaultScreen.getDisplayMode();
-        int screenWidth = displayMode.getWidth();
-        int screenHeight = displayMode.getHeight();
-
         GameScreen gameScreen = getGameScreen();
-
-        if (isFullScreen()) {
-            // Switch back to decorated mode
-            dispose();
-            setUndecorated(false);
-            setVisible(true);
-            Insets insets = getInsets();
-            setSize(initGameWidth + insets.left + insets.right, initGameHeight + insets.top + insets.bottom);
-            // Center the frame if desired
-            setLocationRelativeTo(null);
-
+        if (isFullScreen()) { //Wechseln in Fenster-Modus
+            dispose();             // temporäres schließen des Fensters
+            setUndecorated(false); //Hinzufügen der Fensterleiste
+            Insets insets = getInsets(); //Größen der Fensterleiste
+            setSize(initGameWidth + insets.left + insets.right, initGameHeight + insets.top + insets.bottom); //Zurücksetzten der Größe auf die start-Werte
+            setLocationRelativeTo(null); //Zentrieren des Fensters
             gameScreen.setSize(new Dimension(initGameWidth, initGameHeight));
-
             gameScreen.revalidate();
+            setVisible(true);
+        } else { //WEchesln in Vollbild-Modus
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+            DisplayMode displayMode = defaultScreen.getDisplayMode();
+            int screenWidth = displayMode.getWidth();
+            int screenHeight = displayMode.getHeight();
 
-            // Explicitly set fWIDTH and fHEIGHT to initial dimensions
-//            fWIDTH = initGameWidth;
-//            fHEIGHT = initGameHeight;
-
-        } else {
-            // Switch to fullscreen mode
             dispose();
             setUndecorated(true);
             setVisible(true);
@@ -280,10 +297,7 @@ public class Game extends JFrame implements Serializable {
 
             gameScreen.setSize(new Dimension(screenWidth, screenHeight));
             gameScreen.revalidate();
-
-            getPlaying().getTileController().extendTiles(screenWidth, screenHeight);
         }
-        // ...
         isFullScreen = !isFullScreen;
     }
 

@@ -17,10 +17,12 @@ import static helpers.ObjectValues.Projectiles.BULLET;
 import static helpers.ObjectValues.Projectiles.ROCKET;
 import static helpers.math.GeneralMath.calculateAngle;
 
-
+/**
+ * Controller Klasse für die Projektile
+ */
 public class ProjectileController implements ControllerMethods {
     private Playing playing;
-    private ArrayList<Projectile> projectilesList, removeQueue , addQueue, enemyQueue;
+    private ArrayList<Projectile> projectilesList, removeQueue , addQueue;
 
 
 
@@ -28,7 +30,6 @@ public class ProjectileController implements ControllerMethods {
         projectilesList = new ArrayList<Projectile>();
         removeQueue  = new ArrayList<Projectile>();
         addQueue = new ArrayList<Projectile>();
-        enemyQueue = new ArrayList<Projectile>();
 
         this.playing = playing;
     }
@@ -45,42 +46,42 @@ public class ProjectileController implements ControllerMethods {
             }
         }
     }
+
+    /**
+     * Rendern eines projectiles, nihct standart, da Projectile zum Gegner gedreht werden müssen
+     * @param projectile
+     * @param g
+     */
     public synchronized void renderProjectile (Projectile projectile, Graphics g) {
         int width = projectile.getActiveAnimator().getWidth();
         int height = projectile.getActiveAnimator().getHeight();
         int projectileX = projectile.getPos().getX()-width/2;
         int projectileY = projectile.getPos().getY()-height/2;
 
-        // Retrieve the current image of the active animator
         Image pImage = projectile.getActiveAnimator().getCurrentFrame();
 
-        // Calculate the angle between the tower and its target
         double angle = calculateAngle(projectile.getPos(), projectile.getTarget().getPos());
 
-        // Create a new Graphics2D object
         Graphics2D g2d = (Graphics2D) g.create();
 
-        // Translate the graphics origin to the center of the tower
-        g2d.translate(projectileX + width / 2, projectileY + height / 2);
+        g2d.translate(projectileX + width / 2, projectileY + height / 2); //Mitellppunkt der Rotation als mitte des Prjectiles
 
-        // Rotate the graphics by the calculated angle
         g2d.rotate(angle);
 
-        // Draw the rotated turret image
         g2d.drawImage(pImage, -width / 2, -height / 2, null);
-
-        // Dispose of the Graphics2D object
-        g2d.dispose();
-
         projectile.getActiveAnimator().incrementFrame();
+
+        g2d.dispose();
     }
 
-
+/**
+ * Methode zum updaten der Projektile, hauptsächlich Kollisions-Checks
+ */
     public void update() {
-        if (projectilesList != null&&!playing.isPaused()) {  //checksCollsions, all targets only iterated in the methods themselfs, first check with original target,
+        if (projectilesList != null&&!playing.isPaused()) {
             for (Projectile projectile : projectilesList) {
                 GameObject target = projectile.getTarget();
-                if(playing.getEnemyController().contains(target)||playing.getTowerController().contains(target)||projectile.getType()==BULLET) { //BULLET is der einzige type, welcher sich unabhängig von seinem ziel beweegt
+                if(playing.getEnemyController().contains(target)||playing.getTowerController().contains(target)||projectile.getType()==BULLET) { //BULLET is der einzige type, welcher nicht entfernt werden soll, wenn sein ziel nicht mehr existier
                     projectile.update();
                     switch (projectile.getType()) {
                         case ROCKET -> checkRocketCollision(projectile,projectile.getTarget());
@@ -100,9 +101,13 @@ public class ProjectileController implements ControllerMethods {
         workAddQueue();
     }
 
-
+    /**
+     * Methode zum überprüfen, ob ein Standart-Projectile(bsp. Arrow, LightningBall) mit einem GameObject kollidiert
+     * @param projectile Projectile, welches überprüft werden soll
+     * @param target Das Ziel auf welches Das Projectil zufliegt
+     */
    public void checkCollision(Projectile projectile, GameObject target) { // Collisionscheck kugel u. gegner + löschen u damage
-       if (projectile.getHitBox().collidesWith(target.getHitBox())) {
+       if (projectile.getHitBox().collidesWith(target.getHitBox())) { //ers prüfen ob es hauptziel getroffen hat und dann erst auf alle anderen
            removeQueue.add(projectile);
 
            if (target instanceof Enemy) {
@@ -116,7 +121,7 @@ public class ProjectileController implements ControllerMethods {
                    if (projectile.getHitBox().collidesWith(enemy.getHitBox())) {
                        removeQueue.add(projectile);
                        playing.getEnemyController().damageEnemy(enemy, projectile.getDamage(), projectile.getStun());
-                       break;
+                       return;
                    }
                }
            } else if (target instanceof Tower) {
@@ -124,13 +129,19 @@ public class ProjectileController implements ControllerMethods {
                    if (projectile.getHitBox().collidesWith(tower.getHitBox())) {
                        removeQueue.add(projectile);
                        playing.getTowerController().damageTower(tower, projectile.getDamage(), projectile.getStun());
-                       break;
+                       return;
                    }
                }
            }
        }
 
    }
+
+    /**
+     * Methode zum überprüfen, ob ein Rocket-Projectile mit einem GameObject kollidiert
+     * @param projectile Projectile, welches überprüft werden soll
+     * @param target Das Ziel auf welches Das Projectil zufliegt
+     */
     public void checkRocketCollision(Projectile projectile, GameObject target) {
         if (projectile.getHitBox().collidesWith(target.getHitBox())) {
             if(target instanceof Enemy) {
@@ -139,8 +150,6 @@ public class ProjectileController implements ControllerMethods {
                 playing.getTowerController().addExplosion(new Explosion(projectile.getTarget().getPos(), Constants.ObjectConstants.EXPLOSIONLIFETIME, Constants.ObjectConstants.EXPLOSIONRADIUS, projectile.getDamage(), projectile.getStun()));
             }
             removeQueue.add(projectile);
-
-            System.out.println("hit");
         }else {
             if(target instanceof Enemy) {
                  for(Enemy enemy : playing.getEnemyController().getEnemyList()) {
@@ -163,10 +172,15 @@ public class ProjectileController implements ControllerMethods {
         }
     }
 
+    /**
+     * Methode zum überprüfen, ob ein Bullet-Projectile mit einem GameObject kollidiert und ob dieses den Bildschirm-Rand verlässt
+     * @param projectile
+     * @param target
+     */
     public void checkBulletCollision(Projectile projectile, GameObject target) {
-        if (projectile.getPos().getX()>fWIDTH||projectile.getPos().getY()>fHEIGHT) { //chekc ob projectile im spiel ist, nur für bullet da diese sich unnabhängig vom ziel bewegt
+        if (projectile.getPos().getX()>fWIDTH||projectile.getPos().getY()>fHEIGHT) { //check ob projectile im spiel ist, nur für bullet nötig da diese sich unnabhängig vom ziel bewegt
             removeQueue.add(projectile);
-            System.out.println("out of bounds");
+//            System.out.println("out of bounds");
         } else {
             if(target instanceof Enemy) {
                 for (Enemy enemy : playing.getEnemyController().getEnemyList()) {
@@ -185,6 +199,11 @@ public class ProjectileController implements ControllerMethods {
             }
         }
     }
+
+    /**
+     * Methode um Rocket explodieren zu lassen, falls diese kein Ziel mehr hat
+     * @param projectile Rocket-Projectile, welches explodieren soll
+     */
     public void rocketNoTarget(Projectile projectile) {
         GameObject target = projectile.getTarget();
         if(target instanceof Enemy) {
@@ -194,7 +213,7 @@ public class ProjectileController implements ControllerMethods {
             playing.getTowerController().addExplosion(new Explosion(projectile.getPos(), Constants.ObjectConstants.EXPLOSIONLIFETIME, Constants.ObjectConstants.EXPLOSIONRADIUS, projectile.getDamage(), projectile.getStun()));
             removeQueue.add(projectile);
         }
-        System.out.println("removed");
+//        System.out.println("removed");
 
     }
 
@@ -216,14 +235,6 @@ public class ProjectileController implements ControllerMethods {
         Projectile projectile = new Projectile(this, origin, target, type);
 
         addQueue.add(projectile);
-//        if (origin instanceof Tower) {
-//            towerQueue.add(projectile);
-//        } else if (origin instanceof Enemy) {
-//            enemyQueue.add(projectile);
-//        } else {
-//            // Handle error or other case, perhaps with a log message or exception
-//            System.out.println("Unknown origin type");
-//        }
     }
 
 
