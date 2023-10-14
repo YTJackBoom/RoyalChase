@@ -7,28 +7,29 @@ import java.awt.*;
 
 import static basics.Game.ups;
 
+/**
+ * Klasse für Gebäude in Town
+ */
 public class Building extends GameObject {
-	private int x,y;
 	private int counter;
 	private int type;
 	private BuildingsController buildingsController;
-	private Rectangle bounds;
 	private Values playerValues;
 	public Building(BuildingsController buildingsController, int x, int y, int type, boolean visibility ) {
 		super(new AbsoluteCoordinate(x, y),GameObjectType.BUILDING, type, visibility);
-		this.x = x;
-		this.y = y;
 		this.type = type;
 		this.buildingsController = buildingsController;
 		initVariables();
 	}
 
 	public void initVariables() {
-		bounds = new Rectangle(x,y,activeAnimator.getWidth(),activeAnimator.getHeight());
-
 		playerValues = buildingsController.getTown().getGame().getPlayerValues();
 	}
-	public void update() { //coal iro wood stone
+
+	/**
+	 * Updates für die Gebäude-Produktion
+	 */
+	public void update() {
 		if (counter >=ups) {
 			counter = 0;
 			playerValues.increase(ObjectValues.Buildings.getProduction(type));
@@ -45,8 +46,5 @@ public class Building extends GameObject {
 	//Getters and Setters
 	public int getType() {
 		return type;
-	}
-	public Rectangle getBounds() {
-		return bounds;
 	}
 }

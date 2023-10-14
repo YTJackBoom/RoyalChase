@@ -2,6 +2,9 @@ package helpers;
 
 import java.awt.*;
 
+/**
+ * Klasse für die Konstanten
+ */
 public class Constants {
 	public static class UIConstants {
 		public static final int CANTAFFORDTIMEONSCREEN = 5; //in seconds

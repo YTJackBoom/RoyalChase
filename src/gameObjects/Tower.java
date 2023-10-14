@@ -6,6 +6,9 @@ import helpers.*;
 
 import java.awt.*;
 
+/**
+ * Klasse für Türme
+ */
 public class Tower extends GameObject {
 protected int counter;
 	private Enemy target;
@@ -14,7 +17,7 @@ protected int counter;
 	private Rectangle bounds;
 	protected TowerController towerController;
 	private ProjectileController projectileController;
-	private Circle[] circles;
+	private Circle[] circles; //Kreise für die Range
 	private Values worth;
 
 	public Tower(TowerController towerController, AbsoluteCoordinate pos, int type, boolean visibility) {
@@ -30,7 +33,9 @@ protected int counter;
 
 	}
 
-
+	/**
+	 * Updates für die Türme, fürs Angriffen und Richtungs-Aktualisieren
+	 */
 	public void update() {
 		if (!towerController.getPlaying().isPaused()) {
 			updateDirection();
@@ -41,6 +46,10 @@ protected int counter;
 			fire();
 			}
 	}
+
+	/**
+	 * Methode zum Feuern der Türme
+	 */
 	public void fire() {
 		if (isLoaded && isFiring&&target != null) {
 			projectileController.spawnProjectile(this, target,type); // target mitgabe, um target zu damagen
@@ -48,6 +57,10 @@ protected int counter;
 			isLoaded = false;
 		}
 	}
+
+	/**
+	 * Methode zum Aktualisieren der Schuss-Richtung des Turms
+	 */
 	public void updateDirection() {
 		if(!(target==null&&!towerController.getPlaying().getEnemyController().contains(target))) {
 			AbsoluteCoordinate towerPos = this.getPos();
@@ -58,13 +71,10 @@ protected int counter;
 
 			Direction newDir;
 
-			// Calculate angle in radians
-			double angle = Math.atan2(deltaY, deltaX);
+			double angle = Math.atan2(deltaY, deltaX); // Winkel zwischen Tower und Ziel in Radians
 
-			// Convert angle to degrees for easier handling
 			double angleDeg = Math.toDegrees(angle);
 
-			// Determine direction based on angle
 			if (angleDeg >= -45 && angleDeg < 45) {
 				newDir = Direction.RIGHT;
 			} else if (angleDeg >= 45 && angleDeg < 135) {

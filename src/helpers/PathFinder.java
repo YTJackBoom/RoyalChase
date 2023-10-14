@@ -4,19 +4,20 @@ import controllers.TileController;
 import gameObjects.Tile;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
+/**
+ * Klasse zum Finden des Pfades durch die Tiles
+ */
 public class PathFinder {
     private TileController tileController;
     private Tile startTile;
     private Tile endTile;
+    private ArrayList<AbsoluteCoordinate> path;
 
     public PathFinder(TileController tileController) {
             this.tileController = tileController;
 
-            // Initialize the start and end tiles based on tiles with isStart and isEnd properties
-        for (Tile tile : tileController.getTileList()) {
+        for (Tile tile : tileController.getTileList()) { // Speichern der Start und End Tiles
             if (tile.isStart()) {
                 this.startTile = tile;
             }
@@ -24,61 +25,109 @@ public class PathFinder {
                 this.endTile = tile;
             }
         }
+        readPath();
     }
 
-    public ArrayList<AbsoluteCoordinate> getPath() {
-        ArrayList<AbsoluteCoordinate> fullPath = new ArrayList<>();
+    /**
+     * Methode um den Pfad durch die Tiles zu finden
+     * @return Pfad durch die Tiles
+     */
+    public void readPath() {
+        path = new ArrayList<>();
         int startX = startTile.getPos().getX();
-        int startY = startTile.getPos().getY() - 128 + 235;
+        int startY = startTile.getPos().getY();
         AbsoluteCoordinate currentCoord = new AbsoluteCoordinate(startX, startY);
-
-        // Calculate the sequence of tiles based on the path.
-        ArrayList<Tile> tileSequence = determineTileSequence();
-
-        for (Tile tile : tileSequence) {
-            List<AbsoluteCoordinate> pathThroughTile = tile.getGlobalPath(currentCoord);
-            fullPath.addAll(pathThroughTile);
-
-                if (pathThroughTile.size() > 0) {
-                    currentCoord = pathThroughTile.get(pathThroughTile.size() - 1);
-                }
-            }
-
-            return fullPath;
-        }
-
-    private ArrayList<Tile> determineTileSequence() {
-        ArrayList<Tile> sequence = new ArrayList<>();
-        HashSet<Tile> visited = new HashSet<>();
         Tile currentTile = startTile;
 
-        while (currentTile != null && !currentTile.equals(endTile) && !visited.contains(currentTile)) {
-            visited.add(currentTile);
-            sequence.add(currentTile);
+        while (currentTile != null && !currentTile.equals(endTile)) {
+            ArrayList<AbsoluteCoordinate> currentTilePath = currentTile.getGlobalPath(currentCoord);
+            path.addAll(currentTilePath);
 
-            List<Tile> neighbours = getNeighbours(currentTile);
-            Tile nextTile = null;
-            for (Tile neighbour : neighbours) {
-                if (neighbour.isPath() && !visited.contains(neighbour)) {
-                    nextTile = neighbour;
-                    break;
-                }
+            if (currentTilePath.size() > 0) {
+                currentCoord = currentTilePath.get(currentTilePath.size() - 1);
             }
-            currentTile = nextTile;
-        }
 
-        // Ensure the end tile is added to the sequence
-        if (endTile != null && !sequence.contains(endTile)) {
-            sequence.add(endTile);
+            currentTile = getNextTileFromCoord(currentTile, currentCoord);
         }
-
-        return sequence;
     }
 
+    /**
+     * Methode um das Nachbar-Tile zu finden
+     * @param currentTile
+     * @param coord
+     * @return
+     */
+    private Tile getNextTileFromCoord(Tile currentTile, AbsoluteCoordinate coord) {
+        for (Tile neighbour : getNeighbours(currentTile)) {
+            if (neighbour.isPath() && coordAndTileAreAdjected(coord,neighbour)) {
+                return neighbour;
+            }
+        }
+        return null;
+    }
+    public ArrayList<AbsoluteCoordinate> getPath() {
+       return path;
+    }
+
+    /**
+     * Methode, um zu prüfen, ob die erste Koordinate auf dem pfad des nächsten tiles der letzten des derzeitigen tiles anliegt.
+     * @param coord Letzte Koordinate des Vorherigen Tiles
+     * @param tile Nächstes Tile
+     * @return
+     */
+    private boolean coordAndTileAreAdjected(AbsoluteCoordinate coord, Tile tile) {
+        ArrayList<AbsoluteCoordinate> tilePath = tile.getGlobalPath(coord);
+        if (tilePath.isEmpty()) {
+            return false;
+        }
+
+        AbsoluteCoordinate firstCoordOfTilePath = tilePath.get(0);
+
+        int deltaX = Math.abs(coord.getX() - firstCoordOfTilePath.getX());
+        int deltaY = Math.abs(coord.getY() - firstCoordOfTilePath.getY());
+
+        return (deltaX <= 1 && deltaY <= 1);
+    }
+
+//    /**
+//     * Methode um die Liste der Tiles welche dem Pfad entsprechen zu finden
+//     */
+//    private ArrayList<Tile> determineTileSequence() {
+//        ArrayList<Tile> sequence = new ArrayList<>();
+//        HashSet<Tile> visited = new HashSet<>();
+//        Tile currentTile = startTile;
+//
+//        while (currentTile != null && !currentTile.equals(endTile) && !visited.contains(currentTile)) {
+//            visited.add(currentTile);
+//            sequence.add(currentTile);
+//
+//            List<Tile> neighbours = getNeighbours(currentTile);
+//            Tile nextTile = null;
+//            for (Tile neighbour : neighbours) {
+//                if (neighbour.isPath() && !visited.contains(neighbour)) {
+//                    nextTile = neighbour;
+//                    break;
+//                }
+//            }
+//            currentTile = nextTile;
+//        }
+//
+//        if (endTile != null && !sequence.contains(endTile)) {
+//            sequence.add(endTile);
+//        }
+//
+//        return sequence;
+//    }
+
+    /**
+     * Methode um die Nachbarn eines Tiles zu finden
+     * @param tile Tile von welchem die Nachbarn gefunden werden sollen
+     * @return Liste der Nachbarn
+     */
     private ArrayList<Tile> getNeighbours(Tile tile) {
         ArrayList<Tile> neighbours = new ArrayList<>();
 
-        int tileSize = 256;  // Adjust this value based on your actual tile size if different
+        int tileSize = 256;
         int[][] directions = {
                 {-tileSize, 0}, // Left
                 {tileSize, 0},  // Right

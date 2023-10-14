@@ -1,5 +1,8 @@
 package helpers;
 
+/**
+ *  Klasse für UI-Koordinaten (Die speicherung von Koordinaten von UI-Elementen als relative und absolute Koordinaten)
+ */
 public class UiCoordinate {
     protected AbsoluteCoordinate absolutePosition;
     protected RelativeCoordinate relativePosition;
@@ -26,8 +29,10 @@ public class UiCoordinate {
         return relativePosition;
     }
 
+    /**
+     * Methode um die absolute Koordinate durch die relative Koordinate bei einem Resize zu aktualisieren
+     */
     public void updateBasedOnFrame() {
-        // If there's a relative position set, use it to update the absolute position
         if (relativePosition != null) {
             absolutePosition = relativePosition.adjustAbsolute(absolutePosition);
         }

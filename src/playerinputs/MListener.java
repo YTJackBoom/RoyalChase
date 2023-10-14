@@ -6,6 +6,9 @@ import scenes.GameStates;
 import javax.swing.event.MouseInputListener;
 import java.awt.event.MouseEvent;
 
+/**
+ * Klasse um die Mausinputs zu verarbeiten
+ */
 public class MListener implements MouseInputListener {
     private Game game;
     private long lastReleaseTime = 0;
@@ -46,11 +49,11 @@ public class MListener implements MouseInputListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        long currentTime = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis(); //Cooldown nach Releases der Maus um versehentliches mehrfaches Klicken zu verhindern
         if (currentTime - lastReleaseTime < releaseCooldown) {
-            return;  // Ignore this mouse release because it's too soon after the last one
+            return;
         }
-        lastReleaseTime = currentTime;  // Update the last release time
+        lastReleaseTime = currentTime;
 
         switch (GameStates.gameState) {
             case MENU -> game.getMenu().mouseReleased(e);

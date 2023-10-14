@@ -5,6 +5,9 @@ import gameObjects.GameObject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Klasse für die Pixel-Perfect Hitboxen der Objekte
+ */
 public class HitBox {
 	private GameObject gameObject;
 
@@ -12,6 +15,10 @@ public class HitBox {
 		gameObject = obj;
 	}
 
+	/**
+	 * Methode um ein Rechteck zu bekommen, welches die Hitbox umschließt
+	 * @return Rechteck, welches die Hitbox umschließt
+	 */
 	public Rectangle getBoundingBox() {
 		Animator animator = gameObject.getActiveAnimator();
 		BufferedImage thisImage = animator.getCurrentFrame();
@@ -25,15 +32,24 @@ public class HitBox {
 		return getBoundingBox().intersects(otherRect);
 	}
 
+	/**
+	 * Methode zum Überprüfen, ob zwei Hitboxen sich schneiden, durch Pixel-Perfect detection
+	 * @param other Hitbox-Objekt
+	 */
 	public boolean collidesWith(HitBox other) {
 		if(!this.intersects(other.getBoundingBox())) {
-			return false; // Early exit if bounding boxes don't intersect.
+			return false; // Frühes checken, ob die Hitboxen überhaupt schneiden
 		}
 
 		Rectangle intersection = this.getBoundingBox().intersection(other.getBoundingBox());
 		return checkPixelCollision(other, intersection);
 	}
 
+	/**
+	 * Check auf Pixel-Ebene, nur in der Schnittmenge der beiden Bounding-Boxen
+	 * @param other Hitbox-Objekt
+	 * @param intersection Rechteck, welches die Potentielle Schnittmenge der beiden Hitboxen umschließt
+	 */
 	private boolean checkPixelCollision(HitBox other, Rectangle intersection) {
 		Animator animator = gameObject.getActiveAnimator();
 		BufferedImage thisImage = animator.getCurrentFrame();
@@ -52,13 +68,19 @@ public class HitBox {
 				int thisPixel = thisImage.getRGB(x - thisX, y - thisY);
 				int otherPixel = otherImage.getRGB(x - otherX, y - otherY);
 
-				if ((thisPixel & 0xFF000000) != 0x00 && (otherPixel & 0xFF000000) != 0x00) {
+				if ((thisPixel & 0xFF000000) != 0x00 && (otherPixel & 0xFF000000) != 0x00) { //Wenn beide Pixel nicht transparent sind
 					return true;
 				}
 			}
 		}
 		return false;
 	}
+
+	/**
+	 * Methode zum Überprüfen, ob ein Hitbox-Objekt einen Punkt beinhaltet, durch Pixel-Perfect detection
+	 * @param x x-Koordinate des Punktes
+	 * @param y y-Koordinate des Punktes
+	 */
 	public boolean contains(int x, int y) {
 		Animator animator = gameObject.getActiveAnimator();
 		BufferedImage thisImage = animator.getCurrentFrame();
@@ -66,13 +88,11 @@ public class HitBox {
 		int thisX = thisPos.getX() - animator.getWidth() / 2;
 		int thisY = thisPos.getY() - animator.getHeight() / 2;
 
-		Rectangle thisRect = new Rectangle(thisX, thisY, thisImage.getWidth(), thisImage.getHeight());
+		Rectangle boundingBox = getBoundingBox();
 
-		// Step 1: Check if (x, y) is inside the HitBox's rectangle
-		if (thisRect.contains(x, y)) {
-			// Step 2: Check pixel transparency
+		if (boundingBox.contains(x, y)) { // Früher check, ob der Punkt überhaupt in der Bounding-Box ist
 			int pixel = thisImage.getRGB(x - thisX, y - thisY);
-			if ((pixel & 0xFF000000) != 0x00) { // Checking if alpha is not 0 (transparent)
+			if ((pixel & 0xFF000000) != 0x00) { //wenn der pixel auf dem Punkt nicht transparent ist
 				return true;
 			}
 		}

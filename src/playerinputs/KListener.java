@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * Klasse um die Tastatureingaben zu verarbeiten
+ */
 public class KListener {
     private Game game;
 
@@ -17,6 +20,9 @@ public class KListener {
         setupKeyBindings();
     }
 
+    /**
+     * Methode um die Tastaturbindings zu setzen. InputMaps werden auf keystrokes gebunden, diese schließlich auf die ActionMap ges rootpanes des Spiels
+     */
     private void setupKeyBindings() {
         InputMap inputMap = game.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = game.getRootPane().getActionMap();

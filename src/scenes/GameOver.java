@@ -14,6 +14,9 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.util.ArrayList;
 
+/**
+ * Scene Klasse für das GameOver
+ */
 public class GameOver extends GameScenes implements SceneMethods{
     private Game game;
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
@@ -45,6 +48,7 @@ public class GameOver extends GameScenes implements SceneMethods{
         renderButtons(g);
 
     }
+
 
     public void renderBackground(Graphics g){
         BufferedImage image = new BufferedImage(game.getWidth(), game.getHeight(), BufferedImage.TYPE_INT_ARGB); //der hintergrund (= das Spielfeld) wird als buffered image aufgenommen
@@ -84,7 +88,6 @@ public class GameOver extends GameScenes implements SceneMethods{
                     GameStates.gameState = GameStates.LEVELSELECT;
                     game.getLevelSelect().setBackScene(GameStates.GAMEOVER);
                     game.resetAll();
-//                    System.out.println("Continue");
                 } else if (button.getText().equals("Main Menu")) {
                     GameStates.gameState = GameStates.MENU;
                 }

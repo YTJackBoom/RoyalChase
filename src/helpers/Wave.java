@@ -2,6 +2,9 @@ package helpers;
 
 import java.util.ArrayList;
 
+/**
+ * Klasse, in welcher der Inhalt einer Welle gespeichert wird
+ */
 public class Wave {
     private final ArrayList<Integer> spawnList;
     private final ArrayList<Integer> delayList;

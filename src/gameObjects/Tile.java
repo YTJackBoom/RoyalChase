@@ -10,11 +10,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Klasse für die Tiles in Playing
+ */
 public class Tile {
 
     private BufferedImage tileImage;
     private int tileType;
     protected boolean isPath,isBuildable,isSpawn, isGate;
+    private ArrayList<AbsoluteCoordinate> localPath = new ArrayList<AbsoluteCoordinate>();
     private AbsoluteCoordinate pos;
     private Rectangle bounds;
     private ImageAnalyser imageAnalyser;
@@ -38,23 +42,28 @@ public class Tile {
         this.isBuildable = isBuildable;
         this.tileType = tileType;
         try {
-            tileImage = ImageIO.read(AssetLocation.Tiles.getTileFile(tileType));
+            tileImage = ImageIO.read(AssetLocation.Tiles.getTileFile(tileType)); //Projektilbild werden nicht vorgeladen, da nur einmal benötigt
         } catch (IOException e) {
             throw new RuntimeException(e + " Tile " + tileType + " not found");
         }
         imageAnalyser = new ImageAnalyser(tileImage);
+//        readLocalPath();
 
     }
 
 
+    /**
+     * Methode zum lesen des GegnerPfades aus dem Tile
+     * @param globalCoord Globale Koordinate des Tiles
+     * @return Pfad des Tiles
+     */
     public ArrayList<AbsoluteCoordinate> getGlobalPath(AbsoluteCoordinate globalCoord) {
-        int halfWidth = tileImage.getWidth() / 2;  // assuming tileImage is accessible; adjust as needed
+        int halfWidth = tileImage.getWidth() / 2;
         int halfHeight = tileImage.getHeight() / 2;
 
         ArrayList<AbsoluteCoordinate> localPath = getLocalPath(globalCoord);
 
-        // Translate local path back to global coordinates
-        ArrayList<AbsoluteCoordinate> globalPath = new ArrayList<>();
+        ArrayList<AbsoluteCoordinate> globalPath = new ArrayList<>(); //übersetzten der lokalen Koordinaten in globale
         for (AbsoluteCoordinate coord : localPath) {
             int globalX = coord.getX() + getPos().getX() - halfWidth;
             int globalY = coord.getY() + getPos().getY() - halfHeight;
@@ -64,9 +73,26 @@ public class Tile {
         return globalPath;
     }
 
+    /**
+     * Methode zum extrahieren des GegnerPfades aus dem Tile
+     * @param globalCoord Globale Koordinate des Tiles
+     * @return Pfad des Tiles
+     */
     private ArrayList<AbsoluteCoordinate> getLocalPath(AbsoluteCoordinate globalCoord) {
         int localX = globalCoord.getX() - getPos().getX() + tileImage.getWidth() / 2;
         int localY = globalCoord.getY() - getPos().getY() + tileImage.getHeight() / 2;
+
+        if (localX < 0) { //falls die convertierte globale Koordinate nicht im Tile liegt, wird sie auf den Rand gesetzt
+            localX = 0;
+        } else if (localX >= tileImage.getWidth()) {
+            localX = tileImage.getWidth() - 1;
+        }
+
+        if (localY < 0) {
+            localY = 0;
+        } else if (localY >= tileImage.getHeight()) {
+            localY = tileImage.getHeight() - 1;
+        }
 
         return imageAnalyser.imgToPath(new AbsoluteCoordinate(localX, localY));
     }

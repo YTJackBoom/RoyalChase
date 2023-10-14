@@ -16,6 +16,9 @@ public class Zombie_Giant extends Enemy {
         super(enemyController, pos, ZOMBIE_GIANT, EnemyAttackPattern.RANGED, EnemyType.BOSS);
     }
 
+    /**
+     * Überschriebene AngriffMethode, bei Fernkämpfern nötig
+     */
     @Override
     public void fire() {
         if (isLoaded && isActive && target != null) {
@@ -23,7 +26,7 @@ public class Zombie_Giant extends Enemy {
             ArrayList<Tower> targetList = new ArrayList<>();
             int missileNum = 2;
 
-            // First loop: Prioritize towers where getType() == 0
+            // Priorisierung des Tors
             for (Tower t : enemyController.getPlaying().getTowerController().getTowerList()) {
                 if (t.getType() == 0 && range.contains(t.getHitBox()) && !targetList.contains(t)) {
                     targetList.add(t);
@@ -31,7 +34,7 @@ public class Zombie_Giant extends Enemy {
                 if (targetList.size() >= missileNum) break;
             }
 
-            // Second loop: Target the remaining towers if there's still space in targetList
+            // Restlichen Raketen für normale Türme
             if (targetList.size() < missileNum) {
                 for (Tower t : enemyController.getPlaying().getTowerController().getTowerList()) {
                     if (t.getType() != 0 && range.contains(t.getHitBox()) && !targetList.contains(t)) {
@@ -40,7 +43,7 @@ public class Zombie_Giant extends Enemy {
                     if (targetList.size() >= missileNum) break;
                 }
             }
-
+            // Spawnen der Raketen
             if (!targetList.isEmpty()) {
                 for (Tower t : targetList) {
                     enemyController.getPlaying().getProjectileController().spawnProjectile(this, t, ROCKET);

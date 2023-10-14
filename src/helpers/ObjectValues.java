@@ -4,6 +4,9 @@ import gameObjects.Tile;
 
 import java.lang.reflect.Field;
 
+/**
+ * Klasse zum Speichern der Werte der Objekte
+ */
 public class ObjectValues {
         public static class Enemies {
 
@@ -99,7 +102,7 @@ public class ObjectValues {
                     case WITCH -> 50;
                     case WIZARD -> 150;
                     case SKELETON_KING -> 100;
-                    case ZOMBIE_GIANT -> 500;
+                    case ZOMBIE_GIANT -> 5;
                     case WITCH_QUEEN -> 100;
                     case WIZARD_KING -> 100;
                     default -> throw new IllegalStateException("variables: getEnemyRange: Unexpected value: "+ enemyType);
@@ -114,61 +117,35 @@ public class ObjectValues {
         public static class Tiles {
             public static final int grass = 0;
             public static final int wood = 1;
-            public static final int path_buttom_to_topright_grass = 2;
-            public static final int path_buttom_to_topright_wood = 3;
-            public static final int path_buttomleft_to_topright_grass = 4;
-            public static final int path_buttomleft_to_topright_wood = 5;
-            public static final int path_left_to_right_grass = 6;
-            public static final int path_left_to_right_wood = 7;
-            public static final int path_top_to_right_grass = 8;
-            public static final int path_top_to_right_wood = 9;
             public static final int spawn_to_buttom_grass = 10;
             public static final int spawn_to_buttom_wood = 11;
             public static final int gate_to_buttom_grass = 12;
             public static final int gate_to_buttom_wood = 13;
-            public static final int path_buttom_to_right_grass = 14;
-            public static final int path_buttom_to_right_wood = 15;
-            public static final int path_topleft_to_buttom_grass = 16;
-            public static final int path_topleft_to_buttom_wood = 17;
-            public static final int path_buttomleft_to_top_grass = 18;
-            public static final int path_buttomleft_to_top_wood = 19;
-            public static final int path_buttomright_to_top_grass = 20;
-            public static final int path_buttomright_to_top_wood = 21;
-            public static final int path_topleft_to_buttomright_grass = 22;
-            public static final int path_topleft_to_buttomright_wood = 23;
-            public static final int path_left_to_top_grass = 24;
-            public static final int path_left_to_top_wood = 25;
+            public static final int spawn_to_top_grass = 26;
+            public static final int corner_topleft_grass = 32;
+            public static final int corner_topright_grass = 34;
+            public static final int corner_buttomleft_grass = 35;
+            public static final int corner_buttomright_grass = 33;
+            public static final int corner_topleft_wood = 42;
+            public static final int corner_topright_wood = 44;
+            public static final int corner_buttomleft_wood = 45;
+            public static final int corner_buttomright_wood = 43;
 
 
-            public static Tile getRawTile(int i) {
+
+
+            public static Tile getRawTile(int i) { //Pures Tile
                 return switch (i) {
                     case grass -> new Tile(0, false, true, false, false);
                     case wood -> new Tile(1, false, false, false, false);
-                    case path_buttom_to_topright_grass -> new Tile(2, true, false, false, false);
-                    case path_buttom_to_topright_wood -> new Tile(3, true, false, false, false);
-                    case path_buttomleft_to_topright_grass -> new Tile(4, true, false, false, false);
-                    case path_buttomleft_to_topright_wood -> new Tile(5, true, false, false, false);
-                    case path_left_to_right_grass -> new Tile(6, true, false, false, false);
-                    case path_left_to_right_wood -> new Tile(7, true, false, false, false);
-                    case path_top_to_right_grass -> new Tile(8, true, false, false, false);
-                    case path_top_to_right_wood -> new Tile(9, true, false, false, true);
                     case spawn_to_buttom_grass -> new Tile(10, true, false, true, false);
                     case spawn_to_buttom_wood -> new Tile(11, true, false, true, false);
                     case gate_to_buttom_grass -> new Tile(12, true, false, false, true);
                     case gate_to_buttom_wood -> new Tile(13, true, false, false, true);
-                    case path_buttom_to_right_grass -> new Tile(14, true, false, false, false);
-                    case path_buttom_to_right_wood -> new Tile(15, true, false, false, false);
-                    case path_topleft_to_buttom_grass -> new Tile(16, true, false, false, false);
-                    case path_topleft_to_buttom_wood -> new Tile(17, true, false, false, false);
-                    case path_buttomleft_to_top_grass -> new Tile(18, true, false, false, false);
-                    case path_buttomleft_to_top_wood -> new Tile(19, true, false, false, false);
-                    case path_buttomright_to_top_grass -> new Tile(20, true, false, false, false);
-                    case path_buttomright_to_top_wood -> new Tile(21, true, false, false, false);
-                    case path_topleft_to_buttomright_grass -> new Tile(22, true, false, false, false);
-                    case path_topleft_to_buttomright_wood -> new Tile(23, true, false, false, false);
-                    case path_left_to_top_grass -> new Tile(24, true, false, false, false);
-                    case path_left_to_top_wood -> new Tile(25, true, false, false, false);
-                    default -> throw new IllegalStateException("variables: getRawTile: Unexpected value:  " + i);
+                    case spawn_to_top_grass -> new Tile(26, true, false, true, false);
+                    case corner_topleft_grass, corner_buttomright_grass, corner_buttomleft_grass, corner_topright_grass -> new Tile(i, false, true, false, false);
+                    case corner_topleft_wood, corner_buttomright_wood, corner_buttomleft_wood, corner_topright_wood -> new Tile(i, false, false, false, false);
+                    default -> new Tile(i, true, false, false, false);
                 };
             }
         }
@@ -307,16 +284,16 @@ public class ObjectValues {
 
     public static String getFieldNameByValue(Class<?> cls, int value) {
         for (Field field : cls.getDeclaredFields()) {
-            if (field.getType() == int.class || field.getType() == Integer.class) { // Ensure field is of type int or Integer
+            if (field.getType() == int.class || field.getType() == Integer.class) {
                 try {
                     if (field.getInt(null) == value) {
                         return field.getName();
                     }
                 } catch (IllegalAccessException e) {
-                    // Handle this exception if necessary
+
                 }
             }
         }
-        return null; // or throw an exception if a matching field is not found
+        return null;
     }
 }

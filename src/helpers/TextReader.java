@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasse zum Lesen von Textdateien
+ */
 public class TextReader {
 
     private File file;
@@ -14,12 +17,18 @@ public class TextReader {
     private ArrayList<Integer> spawnList, delayList;
     private Values playerValues;
 
-    // Constructor using File object
+    /**
+     * Konstruktor für den TextReader
+     * @param file Datei
+     */
     public TextReader(File file) {
         this.file = file;
     }
 
-    // Constructor using Values object
+    /**
+     * Konstruktor für den WaveFileAnalyser
+     * @param playerValues Values-Objekt
+     */
     public TextReader(Values playerValues) {
         this.playerValues = playerValues;
         spawnList = new ArrayList<>();
@@ -27,6 +36,10 @@ public class TextReader {
         initWaveFileAnalyser(playerValues.getLevel());
     }
 
+    /**
+     * Methode um die Zeilen einer Textdatei zu lesen
+     * @return Zeilen der Textdatei
+     */
     public String[] readLines() throws IOException {
         List<String> linesList = new ArrayList<>();
 
@@ -40,6 +53,10 @@ public class TextReader {
         return linesList.toArray(new String[0]);
     }
 
+    /**
+     * Methode um die Map daten aus einer Textdatei zu lesen
+     * @return Mapdaten als 2D-Array
+     */
     public int[][] readTileData() throws IOException {
         List<int[]> dataList = new ArrayList<>();
 
@@ -68,7 +85,10 @@ public class TextReader {
         return dataArray;
     }
 
-
+    /**
+     * Initialisiert für WaveFile Analysen
+     * @param i Level
+     */
     public void initWaveFileAnalyser(int i) {
         try {
             reader = new BufferedReader(new FileReader(AssetLocation.Maps.getMapWaveFile(i)));
@@ -77,6 +97,10 @@ public class TextReader {
         }
     }
 
+    /**
+     * Methode um die Anzahl an Wellen zu bekommen
+     * @return Anzahl an Wellen
+     */
     public int getWavesNum() {
         int lineCount = 0;
         try {
@@ -89,6 +113,10 @@ public class TextReader {
         return lineCount;
     }
 
+    /**
+     * Methode um die Spawn- und Delay-Listen zu initialisieren
+     * @param lineNum Zeilennummer
+     */
     public void initArrayLists(int lineNum) {
         initWaveFileAnalyser(playerValues.getLevel());
         spawnList.clear();

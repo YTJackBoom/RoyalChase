@@ -5,6 +5,9 @@ import helpers.*;
 
 import java.awt.*;
 
+/**
+ * The superklasse für die meisten GameObjects
+ */
 public abstract class GameObject {
 	protected Animator activeAnimator,passiveAnimator;
 	protected GameObjectType gameObjectType;
@@ -12,11 +15,9 @@ public abstract class GameObject {
 	protected AbsoluteCoordinate pos;
 	protected double health;
 	protected double damageDealt;
-	protected boolean isVisible = true;
+	protected boolean isVisible;
 	protected boolean isActive = true;
-
 	protected HitBox hitBox;
-
 	protected double currentStun = 0;
 
 	public GameObject(AbsoluteCoordinate pos, GameObjectType oType, int type, boolean visibility) {
@@ -26,19 +27,19 @@ public abstract class GameObject {
 		this.pos = pos;
 		initAnimators();
 		hitBox = new HitBox(this);
-
-
 		health = getMaxHealth();
 	}
 
 
-
+	/**
+	 * Methode zum initialisieren der Animatoren, je nach GameObjectType türme haben eine passive und eine aktive Animation
+	 */
 	public void initAnimators(){
 		switch (gameObjectType) {
 			case ENEMY -> {
 				activeAnimator = AssetController.getInstance().getAnimator("enemyActive_"+type);
 			}
-			case TOWER -> {
+			case TOWER -> { //Türme werden hochskaliert
 				activeAnimator = AssetController.getInstance().getAnimator("towerActive_"+type);
 				activeAnimator.scaleImages(Constants.UIConstants.TOWERSCALEFACTOR,Constants.UIConstants.TOWERSCALEFACTOR);
 //				activeAnimator = new Animator(new File("res/images/towers/active/mage_t_active/normal.gif"));
@@ -54,6 +55,10 @@ public abstract class GameObject {
 		}
 	}
 
+	/**
+	 * Methode zum rendern der Healthbar des Objekts
+	 * @param g
+	 */
 	public void renderHealthBar(Graphics g) {
 		double maxWidth = 1.5 * getWidth();
 		double t = getMaxHealth();
@@ -65,10 +70,10 @@ public abstract class GameObject {
 			int hpbarx = (int) Math.round(pos.getX() - maxWidth / 2);
 			int yOffset = gameObjectType == GameObjectType.ENEMY ? 10+getHeight() : 10+getHeight() / 2;
 
-			g.setColor(Color.RED);
+			g.setColor(Color.RED); //Rot für verlorene HP
 			g.fillRect(hpbarx, pos.getY()-yOffset, (int) maxWidth, 5);
 
-			g.setColor(Color.GREEN);
+			g.setColor(Color.GREEN); //Grün für verbleibende HP
 			g.fillRect(hpbarx, pos.getY()-yOffset , displayedHealthWidth, 5);
 		}
 	}
@@ -92,15 +97,17 @@ public abstract class GameObject {
 		activeAnimator = null;
 		passiveAnimator = null;
 	}
-
 	public GameObjectType getObjectType() {
 		return gameObjectType;
 	}
-
 	public int getType() {
 		return type;
 	}
 
+	/**
+	 * Methode zum setzten der Gegner-Position, die auch die Bewegungsrichtung anpasst
+	 * @param pos neue Position
+	 */
 	public void setPos(AbsoluteCoordinate pos) {
 		if (gameObjectType == GameObjectType.BUILDING) {
 			this.pos = pos;
@@ -130,11 +137,16 @@ public abstract class GameObject {
 		activeAnimator.setDirection(dir);
 		this.pos = pos;
 	}
+
+	/**
+	 * Methode zum rendern des GameObjects
+	 * @param g Graphics
+	 */
 	public void render(Graphics g) {
 		if (isVisible) {
 			if(isActive){
 				int x = pos.getX()- activeAnimator.getWidth()/2;
-				int y = gameObjectType == GameObjectType.ENEMY ? pos.getY()-activeAnimator.getHeight() : pos.getY()-activeAnimator.getHeight()/2;
+				int y = gameObjectType == GameObjectType.ENEMY ? pos.getY()-activeAnimator.getHeight() : pos.getY()-activeAnimator.getHeight()/2; //Normale Objekte werden um ihren Mittelpunkt gerendert, Gegner von ihren unteren Rand nach oben
 				g.drawImage(activeAnimator.getCurrentFrame(), x, y, null);
 				activeAnimator.incrementFrame();
 			}else {

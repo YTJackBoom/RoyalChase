@@ -15,14 +15,22 @@ import static basics.Game.*;
 import static helpers.Direction.UP;
 import static helpers.math.ImageMath.resizeImage;
 
+/**
+ * Klasse zum Animieren von Gifs
+ */
 public class Animator implements Cloneable{
     private int currentImageIndex;
     private BufferedImage[] currentImageArray, imageArrayUp, imageArrayDown, imageArrayLeft, imageArrayRight;
     private File gifFileUp, gifFileDown, gifFileLeft, gifFileRight;
     private Direction direction;
-    private int updateCounter = 0; //to scale down the fps to accomaedate lower frames(4) of the gifs
+    private int updateCounter = 0; //um die bilder/sekunde auf 4 zu begrenzen
 
-    private String path; //just for potential errors
+    private String path; //um den pfad des gifs zu speichern, bei fehlermeldung
+
+    /**
+     * Konstruktor für einen Animator mit 4 Gifs (für Gegner, Türme)
+     * @param gifFilesPath Pfad zu den Gifs
+     */
     public Animator(String gifFilesPath) {
         path = gifFilesPath;
         direction = UP;
@@ -39,9 +47,13 @@ public class Animator implements Cloneable{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            // System.out.println(imageArray.length);
         }
     }
+
+    /**
+     * Konstruktor für einen Animator mit nur einem Gif (z.B. für Gebäude)
+     * @param gifFile Gif-Datei
+     */
     public Animator (File gifFile) {
         path = "nopath";
         direction = UP;
@@ -57,6 +69,11 @@ public class Animator implements Cloneable{
             }
         }
     }
+
+    /**
+     * Methode zum initialisieren der Gifs
+     * @param gifFilesPath Pfad zu den Gifs
+     */
     public void initGifs(String gifFilesPath) {
         gifFileUp = new File(gifFilesPath + "up.gif");
         gifFileDown = new File(gifFilesPath + "down.gif");
@@ -64,6 +81,12 @@ public class Animator implements Cloneable{
         gifFileRight = new File(gifFilesPath + "right.gif");
     }
 
+    /**
+     * Methode zum splitten der Gifs in einzelne Bilder
+     * @param tgifFile Gif-Datei
+     * @return Array mit den einzelnen Bildern
+     * @throws IOException Fehler beim Lesen der Datei
+     */
     public BufferedImage[] splitGifIntoFrames(File tgifFile) throws IOException {
         BufferedImage[] tempArray;
         ImageReader reader = null;
@@ -80,7 +103,6 @@ public class Animator implements Cloneable{
                 tempArray[i] = reader.read(i);
             }
         } catch (IOException | IllegalStateException e) {
-            // Append file name to the exception and re-throw
             throw new IOException("Error processing GIF file: " + tgifFile.getName()+ " in "+path, e);
         } finally {
             if (reader != null) {
@@ -92,10 +114,11 @@ public class Animator implements Cloneable{
         }
         return tempArray;
     }
-
-
+    /**
+     * Methode um den derzeitigen Frame in abhängigkeit der Richtung zu bekommen
+     * @return derzeitiger Frame
+     */
     public BufferedImage getCurrentFrame() {
-
         switch (direction) {
             case UP -> currentImageArray = imageArrayUp;
             case DOWN -> currentImageArray = imageArrayDown;
@@ -106,35 +129,47 @@ public class Animator implements Cloneable{
         return currentImageArray[currentImageIndex];
     }
 
+    /**
+     * Methode zum erhöhen des Frames
+     */
     public void incrementFrame() {
         updateCounter++;
-
         if (updateCounter >= Game.fps/currentImageArray.length) {
             if (currentImageIndex < currentImageArray.length - 1) {
                 currentImageIndex++;
             } else {
                 currentImageIndex = 0;
             }
-            updateCounter = 0; // reset the counter after switching to the next frame
+            updateCounter = 0;
         }
     }
+
+    /**
+     * Methode um die Bilder um einen Faktor zu skalieren
+     * @param widthScale Sklaierungsfaktor in x-Richtung
+     * @param heightScale Sklaierungsfaktor in y-Richtung
+     */
     public void scaleImages(double widthScale, double heightScale) {
         imageArrayUp = scaleImageArray(imageArrayUp, widthScale, heightScale);
         imageArrayDown = scaleImageArray(imageArrayDown, widthScale, heightScale);
         imageArrayLeft = scaleImageArray(imageArrayLeft, widthScale, heightScale);
         imageArrayRight = scaleImageArray(imageArrayRight, widthScale, heightScale);
-
-        // Update the currentImageArray to reflect the direction currently set
-        switch (direction) {
-            case UP -> currentImageArray = imageArrayUp;
-            case DOWN -> currentImageArray = imageArrayDown;
-            case LEFT -> currentImageArray = imageArrayLeft;
-            case RIGHT -> currentImageArray = imageArrayRight;
-            default -> throw new IllegalStateException("Unexpected direction value: " + direction);
-        }
+//        switch (direction) {
+//            case UP -> currentImageArray = imageArrayUp;
+//            case DOWN -> currentImageArray = imageArrayDown;
+//            case LEFT -> currentImageArray = imageArrayLeft;
+//            case RIGHT -> currentImageArray = imageArrayRight;
+//            default -> throw new IllegalStateException("Unexpected direction value: " + direction);
+//        }
     }
 
-
+    /**
+     * Innere Methode zum skalieren der einzelnen Bilder
+     * @param originalArray Array mit den Original-Bildern
+     * @param widthScale Skalierungsfaktor in x-Richtung
+     * @param heightScale Skalierungsfaktor in y-Richtung
+     * @return Array mit den skalierten Bildern
+     */
     private BufferedImage[] scaleImageArray(BufferedImage[] originalArray, double widthScale, double heightScale) {
         if (originalArray == null) return null;
 
@@ -148,16 +183,16 @@ public class Animator implements Cloneable{
         return scaledArray;
     }
 
+    /**
+     * Methode zum skalieren bei Änderung der Fenstergröße
+     * @param newWidth Bildschirmbreite
+     * @param newHeight Bildschirmhöhe
+     */
     public void notifyScreenResize(int newWidth, int newHeight) {
         double widthScale = (double) newWidth / prevfWIDTH;
         double heightScale = (double) newHeight / prevfHEIGHT;
         scaleImages(widthScale, heightScale);
     }
-
-
-
-
-
 
     public int getWidth(){
         if (currentImageIndex < currentImageArray.length && currentImageIndex >= 0) {

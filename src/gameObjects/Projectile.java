@@ -7,11 +7,11 @@ import helpers.*;
 
 import static helpers.ObjectValues.Projectiles.*;
 
-
+/**
+ * Klasse für alle Projektile
+ */
 public class Projectile extends GameObject{
-//	private Coordinate pos;
 	private int type;
-//	private Animator animator;
 	private GameObject target;
 	private GameObject origin;
 	private ProjectileController projectileController;
@@ -21,14 +21,17 @@ public class Projectile extends GameObject{
 
 	public Projectile(ProjectileController projectileController,GameObject origin, GameObject target, int type) {
 		super(new AbsoluteCoordinate(origin.getPos().getX(), origin.getPos().getY()), GameObjectType.PROJECTILE, type, true);
-		SoundController.getInstance().playSoundEffect("projectileFired_"+type);
+		SoundController.getInstance().playSoundEffect("projectileFired_"+type); //Soundeffekt für Projektil
 		this.type = type;
 		this.target = target;
 		this.projectileController = projectileController;
 		this.origin = origin;
-		towerAngleToTarget = math.GeneralMath.calculateAngle(target.getPos(),origin.getPos());
+		towerAngleToTarget = math.GeneralMath.calculateAngle(target.getPos(),origin.getPos()); //Winkel zwischen Tower und Ziel
 	}
 
+	/**
+	 * Updates für die Projektile, unter berücksichtigung des SpeedOffsets
+	 */
 	public void update() {
 		if(target != null) {
 			if(counter>= Constants.ObjectConstants.SPEEDOFFSET) {
@@ -38,13 +41,17 @@ public class Projectile extends GameObject{
 
 		}
 	}
-	public void move() { //berechnung der neuen position durch winkel  zwichen den punkten. vgl Quelle 1
-		switch (type) {
+
+	/**
+	 * Methode zum Bewegen der Projektile
+	 */
+	public void move() {
+		switch (type) { //Berechnung der neuen Position je nach Projektiltyp
 			case ARROW -> {
 				pos = math.ProjectileMath.calculateArrowPos(pos,target.getPos(),getSpeed());
 			}
 			case ROCKET -> {
-				numberForTrajectory += ObjectValues.Projectiles.getProjectileSpeed(ObjectValues.Projectiles.ROCKET);
+				numberForTrajectory += ObjectValues.Projectiles.getProjectileSpeed(ObjectValues.Projectiles.ROCKET); //Berechnung des Punktes auf der Flugbahn, mit dem Speed
 				pos = math.ProjectileMath.calculateRocketPos(pos, target.getPos(), numberForTrajectory, getSpeed());
 			}
 			case LIGHTNINGBALL -> {
@@ -61,6 +68,10 @@ public class Projectile extends GameObject{
 	public int getType() {return type;}
 
 
+	/**
+	 * Methode zum berechnen des Schadens, unter berücksichtigung des Towerlevels
+	 * @return Schaden
+	 */
 	public double getDamage() {
 		double dmg = 0;
 		if (origin instanceof Tower) {
@@ -83,11 +94,6 @@ public class Projectile extends GameObject{
 	}
 
 	public double getSpeed() {
-		//		int tLevel = origin.getLevel();
-//
-//		for(int i =1 ; i<tLevel;i++) {
-//			speed += speed*Constants.ObjectConstants.SPEEDUPGRADE;
-//		}
 		return ObjectValues.Projectiles.getProjectileSpeed(type);
 	}
 

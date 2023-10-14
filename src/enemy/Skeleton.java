@@ -15,6 +15,9 @@ public class Skeleton extends Enemy {
         super(enemyController, pos, SKELETON, EnemyAttackPattern.RANGED, EnemyType.NORMAL);
     }
 
+    /**
+     * Überschriebene AngriffMethode, bei Fernkämpfern nötig
+     */
     @Override
     public void fire() {
         if (isLoaded && isActive&&target != null) {

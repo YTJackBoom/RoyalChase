@@ -2,6 +2,9 @@ package helpers;
 
 import java.io.Serializable;
 
+/**
+ * Klasse für die Absolute Koordinate (Tatsächliche Koordinaten auf dem Bildschirm)
+ */
 public class AbsoluteCoordinate implements Serializable {
 	protected int x;
 	protected int y;

@@ -3,6 +3,9 @@ package helpers;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Klasse um verschiedene Resourcen zu speichern und verwalten. Zudem werden auch dinge wie Score, Level und Levelscleared gespeichert
+ */
 public class Values implements Serializable {
     protected double gold = 100;
     protected double health = 100;

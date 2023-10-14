@@ -2,6 +2,9 @@ package helpers;
 
 import java.io.Serializable;
 
+/**
+ * Serializable Klasse für die Speicherung der Gebäude
+ */
 public class BuildingSaveState implements Serializable {
     private AbsoluteCoordinate pos;
     private int type;

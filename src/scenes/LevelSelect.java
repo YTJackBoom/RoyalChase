@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+/**
+ * Scene Klasse für das LevelSelect (= Levelauswahl durch den Spieler)
+ */
 public class LevelSelect extends GameScenes implements SceneMethods{
     private Game game;
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
@@ -26,7 +29,9 @@ public class LevelSelect extends GameScenes implements SceneMethods{
 
     }
 
-
+    /**
+     * Initialisieren der Buttons
+     */
     public void initButtons() {
         int frameWidth = Game.initGameWidth;
         int frameHeight = Game.initGameHeight;
@@ -42,7 +47,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
 
         AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
 
-        for (int i = 0; i < buttonsAmount; i++) {
+        for (int i = 0; i < buttonsAmount; i++) { // Platziert die buttons zur Level-Auswahl in einem 3x3 Raster
             float x = buttonXStartPct + (i % buttonsPerLine) * buttonXOffsetPct;
             float y = buttonYStartPct + (i / buttonsPerLine) * buttonYOffsetPct;
 
@@ -81,16 +86,20 @@ public class LevelSelect extends GameScenes implements SceneMethods{
             button.render(g);
         }
     }
+
+    /**
+     * Zeichnet die Haken auf die Level, die der Spieler bereits geschafft hat
+     * @param g Graphics Objekt
+     */
     public void renderTicks(Graphics g) {
         for (MyButton button : buttons) {
             if (button.isChecked()) {
 
-                int x = (int) (button.getUiCoordinate().getX() + button.getWidth() / 2 - 10); // Adjust the tick position as needed
-                int y = (int) (button.getUiCoordinate().getY() + button.getHeight() / 2 - 10); // Adjust the tick position as needed
+                int x = (int) (button.getUiCoordinate().getX() + button.getWidth() / 2 - 10);
+                int y = (int) (button.getUiCoordinate().getY() + button.getHeight() / 2 - 10);
 
-                g.setColor(Color.GREEN); // Set the tick color
+                g.setColor(Color.GREEN);
 
-                // Draw a tick symbol (checkmark)
                 g.drawLine(x, y, x + 10, y + 10);
                 g.drawLine(x + 10, y + 10, x + 20, y - 10);
             }
@@ -104,7 +113,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {  //TODO: Make this wor
+    public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
 
@@ -145,16 +154,16 @@ public class LevelSelect extends GameScenes implements SceneMethods{
             if (button.contains(x, y)) {
                 if (button.getLevel() >= 0) {
                     if (button.isChecked()) {
-                        playerValues.setRewardmultiplyer(0);
+                        playerValues.setRewardmultiplyer(0); // Wenn der Spieler ein Level wiederholt, bekommt er keine Belohnung
                     } else {
                         playerValues.setRewardmultiplyer(1);
                     }
                     playerValues.setLevel(button.getLevel());
 
-                    System.out.println("Level " + button.getText());
+//                    System.out.println("Level " + button.getText());
                     game.getPlaying().reset();
                     GameStates.gameState = GameStates.PLAYING;
-                    if (button.getLevel() == 0) game.setPaused(true);
+                    if (button.getLevel() == 0) game.setPaused(true); // Beim Tutorial wird das Spiel (zunächst) pausiert
                 }else {
                     releasedOnTextButton(button);
                 }

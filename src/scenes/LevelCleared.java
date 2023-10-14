@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import static basics.Game.fHEIGHT;
 import static basics.Game.fps;
 
-
+/**
+ * Scene Klasse nach dem Erfolgreichen Beenden eines Levels
+ */
 public class LevelCleared  extends GameScenes implements SceneMethods {
     private Game game;
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
@@ -64,6 +66,11 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
             button.render(g);
         }
     }
+
+    /**
+     * Zeigt an, dass das Spiel erfolgreich gespeichert wurde, wenn dies der Fall ist
+     * @param g
+     */
     public void renderSuccesfullSave(Graphics g) {
             if (succesfullSave) {
                 g.setFont(Constants.UIConstants.SUCCESFULLSAVEFONT);
@@ -78,8 +85,6 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
 
                 g.drawString(text, x, y);
                 succesfullSaveCounter++;
-//			System.out.println("s ");
-//			System.out.print(fWIDTH+" "+fHEIGHT);
                 if (succesfullSaveCounter >= fps * Constants.UIConstants.CANTAFFORDTIMEONSCREEN) {
                     succesfullSave = false;
                     succesfullSaveCounter = 0;

@@ -2,6 +2,9 @@ package scenes;
 
 import basics.Game;
 
+/**
+ * Abstrakte Klasse für die Game-Szenen
+ */
 public class GameScenes {
     protected boolean dragingObject;
     protected int draggedObjectType;

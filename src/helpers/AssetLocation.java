@@ -5,21 +5,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Field;
 
-public class AssetLocation { //class to define different variables for thing
+/**
+ * Klasse zum Speichern der Asset-Pfade
+ */
+public class AssetLocation {
     public static class Enemies {
-
         private static final String ENEMY_BASE_PATH = "res/images/enemies/";
-
-
         public static String getEnemyActiveGifPath(int enemyType) {
             return ENEMY_BASE_PATH + ObjectValues.Enemies.getEnemyName(enemyType).toLowerCase() + "_e_active/";
         }
-
-
         public static int getNumberOfIntDeclarations() {
             return AssetLocation.getHighestInt(ObjectValues.Enemies.class);
         }
-
         public static int getLowestInt() {
             return AssetLocation.getLowestInt(ObjectValues.Enemies.class);
         }
@@ -97,7 +94,7 @@ public class AssetLocation { //class to define different variables for thing
             } catch (Exception e) {
                 System.out.println("Failed to get the gif file for buildingType: " + buildingType);
                 e.printStackTrace();
-                return null; // You can choose to return null or handle this differently based on your needs.
+                return null;
             }
         }
         public static int getNumberOfIntDeclarations() {
@@ -252,7 +249,7 @@ public class AssetLocation { //class to define different variables for thing
 
 
     public static int getHighestInt(Class < ? > clazz){
-        int highestNumber = Integer.MIN_VALUE;  // Initialize with a high value
+        int highestNumber = Integer.MIN_VALUE;
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -272,7 +269,7 @@ public class AssetLocation { //class to define different variables for thing
         return highestNumber;
     }
     public static int getLowestInt(Class < ? > clazz) {
-        int lowestNumber = Integer.MAX_VALUE;  // Initialize with a high value
+        int lowestNumber = Integer.MAX_VALUE;
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -293,16 +290,15 @@ public class AssetLocation { //class to define different variables for thing
     }
     public static String getFieldNameByValue(Class<?> cls, int value) {
         for (Field field : cls.getDeclaredFields()) {
-            if (field.getType() == int.class || field.getType() == Integer.class) { // Ensure field is of type int or Integer
+            if (field.getType() == int.class || field.getType() == Integer.class) {
                 try {
                     if (field.getInt(null) == value) {
                         return field.getName();
                     }
                 } catch (IllegalAccessException e) {
-                    // Handle this exception if necessary
                 }
             }
         }
-        return null; // or throw an exception if a matching field is not found
+        return null;
     }
 }

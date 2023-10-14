@@ -7,8 +7,12 @@ import helpers.*;
 
 import java.util.ArrayList;
 
+import static basics.Game.fps;
+
+/**
+ * Klasse für Gegner
+ */
 public class Enemy extends GameObject {
-	//	private Coordinate pos;
 	private double pathIndex;
 	private double speed;
 	private double reloadTime;
@@ -34,6 +38,10 @@ public class Enemy extends GameObject {
 		initVariables();
 	}
 
+	/**
+	 * Updates für den Gegner, fürs Bewegen und Angriff
+	 * @param pathAbsoluteCoordinates Pfad der Gegner
+	 */
 	public void update(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		if (!enemyController.getPlaying().isPaused()) {
 			if (getStun() <= 0) {
@@ -47,13 +55,17 @@ public class Enemy extends GameObject {
 				fire();
 
 			} else {
-				currentStun--;
+				currentStun--; //Stun reduzierung
 			}
 		}
 	}
 
-	public void move(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) { //um verschieden Arten von verhaltenn zu ermöglichen
-		switch (enemyAttackPattern) {
+	/**
+	 * Bewegungsmethode für Gegner
+	 * @param pathAbsoluteCoordinates Pfad der Gegner
+	 */
+	public void move(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
+		switch (enemyAttackPattern) { //Je nach Angriffsmuster wird eine andere Bewegungsmethode aufgerufen
 			case MELEE:
 				meleeMove(pathAbsoluteCoordinates);
 				break;
@@ -66,34 +78,39 @@ public class Enemy extends GameObject {
 		}
 	}
 
+	/**
+	 * Bewegungsmethode für Nahkämpfer
+	 * @param pathAbsoluteCoordinates Pfad der Gegner
+	 */
 	private void meleeMove(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		if (!isMeleeAttacking) {
-			double remainingPath = pathAbsoluteCoordinates.size() - 2 - getPathIndex(); // -2 to stop one step before the gate
-			if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathAbsoluteCoordinates.size() - 2) { // adjust to -2
+			double remainingPath = pathAbsoluteCoordinates.size() - 2 - getPathIndex(); // -2 um eine coord vor dem tor zu stoppen
+			if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathAbsoluteCoordinates.size() - 2) { //Kondition, dass der Gegner noch nicht am tor ist
 				double index = getPathIndex() + getSpeed();
-				index = Math.min(index, pathAbsoluteCoordinates.size() - 2); // adjust to -2
+				index = Math.min(index, pathAbsoluteCoordinates.size() - 2);
 				setPathIndex(index);
 				setPos(pathAbsoluteCoordinates.get((int) Math.round(index)));
 				range.setPos(pos);
 			} else {
-				// We are near the gate, start "attacking"
-				isMeleeAttacking = true;
+				isMeleeAttacking = true; //In der nähe des Tors, Angriff starten
 			}
 		} else {
-			// Simulate a simple "bounce" attack animation
 			bounceAttack(pathAbsoluteCoordinates);
 		}
 	}
 
+	/**
+	 * Eine simple Angriffs-Methode für Nahkämpfer, die den Gegner vor und zurück bewegt
+	 * @param pathAbsoluteCoordinates Pfad der Gegner
+	 */
 	private void bounceAttack(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		final double attackSpeed = ObjectValues.Enemies.getEnemyReloadTime(type);
-		double incrementPerTick = Constants.ObjectConstants.MELEEATTACKDISTANCE / (attackSpeed * 60);  // since we want to bounce back in the entire duration, divide by 2, i.e., half for forward and half for backward
+		double incrementPerTick = Constants.ObjectConstants.MELEEATTACKDISTANCE / (attackSpeed * fps);  //aufteilen der Gesamtstrecke in einzelne Schritte, von fps abhängig
 
-		double newIndex = isMovingForward ? getPathIndex() + incrementPerTick : getPathIndex() - incrementPerTick;
+		double newIndex = isMovingForward ? getPathIndex() + incrementPerTick : getPathIndex() - incrementPerTick; //Berechnung der neuen Position
 
-		// Ensure bounds with pathCoordinates
 		if (newIndex < 0) newIndex = 0;
-		if (newIndex > pathAbsoluteCoordinates.size() - 1) newIndex = pathAbsoluteCoordinates.size() - 1;
+		if (newIndex > pathAbsoluteCoordinates.size() - 1) newIndex = pathAbsoluteCoordinates.size() - 1; //Muss innerhalb des Pfades sein
 
 		setPathIndex(newIndex);
 		setPos(pathAbsoluteCoordinates.get((int) Math.round(newIndex)));
@@ -101,31 +118,37 @@ public class Enemy extends GameObject {
 
 		attackTickCounter++;
 
-		// If we've completed half the attack duration (i.e., moved forward completely),
-		// or exceeded pathCoordinates or are less than 0, change direction.
-		if (attackTickCounter >= attackSpeed * 60 || newIndex == pathAbsoluteCoordinates.size() - 1 || newIndex == 0) {
+
+		if (attackTickCounter >= attackSpeed * fps || newIndex == pathAbsoluteCoordinates.size() - 1 || newIndex == 0) { //Ein Angriff wurde "beendet"
 			if (isMovingForward) enemyController.enemyMeleeAttackOnGate(this);
 			isMovingForward = !isMovingForward;
-			attackTickCounter = 0;  // reset the counter for the backward movement
+			attackTickCounter = 0;
 		}
 	}
 
 
+	/**
+	 * Bewegungsmethode für Gegner, die sich selbst zerstören, wenn sie am tor sind
+	 * @param pathAbsoluteCoordinates Pfad der Gegner
+	 */
 	private void sacrificeMove(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		double remainingPath = pathAbsoluteCoordinates.size() - 1 - getPathIndex();
 		if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathAbsoluteCoordinates.size() - 1) {
 			double index = getPathIndex() + getSpeed();
 
-			// Ensure index stays within the bounds of pathCoordinates.
 			index = Math.min(index, pathAbsoluteCoordinates.size() - 1);
 
 			setPathIndex(index);
 			setPos(pathAbsoluteCoordinates.get((int) Math.round(index)));
-		} else { // Enemy has reached the gate, implement different behaviors.
+		} else {
 			enemyController.enemySacrificeOnGate(this);
 		}
 	}
 
+	/**
+	 * Bewegungsmethode für Fernkämpfer, sie bleiben stehen sobald das Tor in ihrer Range ist, andere Türme werden im "vorbeigehen" angegriffen
+	 * @param pathAbsoluteCoordinates Pfad der Gegner
+	 */
 	private void rangedMove(ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates) {
 		if (!getRange().contains(enemyController.getPlaying().getTowerController().getGate().getHitBox())) {
 
@@ -133,7 +156,6 @@ public class Enemy extends GameObject {
 			if (getSpeed() < remainingPath && Math.ceil(getPathIndex()) < pathAbsoluteCoordinates.size() - 1) {
 				double index = getPathIndex() + getSpeed();
 
-				// Ensure index stays within the bounds of pathCoordinates.
 				index = Math.min(index, pathAbsoluteCoordinates.size() - 1);
 
 				setPathIndex(index);
@@ -146,12 +168,7 @@ public class Enemy extends GameObject {
 				setStatus(true);
 		}
 	}
-
-
 	public void fire() {}
-
-
-
 	public void initVariables() {
 		speed = ObjectValues.Enemies.getEnemySpeed(type)*math.DifficultyMath.calculateEnemySpeedPercentChange();
 		range = new Circle(pos, ObjectValues.Enemies.getEnemyRange(type));

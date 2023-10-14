@@ -167,6 +167,8 @@ public class Playing extends GameScenes implements SceneMethods {
     }
 
     public void reset() {
+        tileController = new TileController(this);
+
         enemyController = new EnemyController(this);
         towerController = new TowerController(this);
         waveController = new WaveController(this);

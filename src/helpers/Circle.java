@@ -3,6 +3,9 @@ package helpers;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Klasse zum Erstellen und Verwalten von Kreisen
+ */
 public class Circle {
 	private int x,y;
 	private double radius;
@@ -20,41 +23,45 @@ public class Circle {
 	public void render(Graphics g) {
 		if (g instanceof Graphics2D) {
 			Graphics2D g2d = (Graphics2D) g;
-			g2d.setStroke(new BasicStroke(Constants.UIConstants.CIRCLESTHICKNESS)); // thickness is the desired line width, e.g., 3.0f
+			g2d.setStroke(new BasicStroke(Constants.UIConstants.CIRCLESTHICKNESS));
 			g2d.drawOval((int) Math.round(x - radius), (int) Math.round(y - radius), (int) Math.round(2 * radius), (int) Math.round(2 * radius));
 		}
-
-//		g.drawOval((int)Math.round(x - radius), (int)Math.round(y - radius), (int)Math.round(2 * radius), (int)Math.round(2 * radius));
 	}
 
+	/**
+	 * Methode zum Überprüfen, ob ein Hitbox-Objekt den Kreis schneidet, durch Pixel-Perfect detection
+	 * @param hitbox Hitbox-Objekt
+	 */
 	public boolean contains(HitBox hitbox) {
 		Rectangle hitBoxRect = hitbox.getBoundingBox();
 
 		if (!this.intersects(hitBoxRect)) {
-			return false; // Early exit if bounding box doesn't intersect with the circle
+			return false; // Früher check, ob das Rechteck überhaupt den Kreis schneidet
 		}
 
 		BufferedImage hitboxImage = hitbox.getGameObject().getActiveAnimator().getCurrentFrame();
-		for (int y = 0; y < hitboxImage.getHeight(); y++) {
+		for (int y = 0; y < hitboxImage.getHeight(); y++) { //Scannen alle Pixel des Hitbox-Bildes
 			for (int x = 0; x < hitboxImage.getWidth(); x++) {
 				int pixel = hitboxImage.getRGB(x, y);
-				if ((pixel & 0xFF000000) != 0x00) { // If the pixel is not transparent
+				if ((pixel & 0xFF000000) != 0x00) { //Nur wenn der Pixel nicht transparent ist
 					int globalX = x + hitBoxRect.x;
 					int globalY = y + hitBoxRect.y;
 					int dx = globalX - this.x;
 					int dy = globalY - this.y;
 					int distanceSquared = dx * dx + dy * dy;
 					if (distanceSquared <= radius * radius) {
-						return true; // Pixel is inside the circle
+						return true;
 					}
 				}
 			}
 		}
-		return false; // No pixel was found inside the circle
+		return false;
 	}
 
-
-
+	/**
+	 * Methode zum Überprüfen, ob ein Rechteck den Kreis schneidet
+	 * @param rect Rechteck
+	 */
 	private boolean intersects(Rectangle rect) {
 		int circleDistanceX = Math.abs(this.x - rect.x - rect.width / 2);
 		int circleDistanceY = Math.abs(this.y - rect.y - rect.height / 2);
