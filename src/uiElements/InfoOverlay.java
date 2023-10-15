@@ -195,6 +195,12 @@ public class InfoOverlay {
 
                 }
             }
+            if(towerPointer != null) {
+                if (towerPointer.getPos().getX() == tile.getPos().getX() && towerPointer.getPos().getY() == tile.getPos().getY()) {
+                    g.setColor(Color.BLUE);
+                    g.drawRect(tile.getPos().getX() - tile.getWidth() / 2, tile.getPos().getY() - tile.getHeight() / 2, tile.getWidth()-1, tile.getHeight()-1);
+                }
+            }
         }
     }
 

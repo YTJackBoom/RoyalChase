@@ -105,7 +105,7 @@ protected int counter;
 
 	}
 	public void initBounds() {
-			bounds = new Rectangle(pos.getX()-getWidth()/2,pos.getY()-getHeight()/2,getWidth(), getHeight());
+			bounds = new Rectangle(pos.getX()-128,pos.getY()-128,256, 256); //Die größen der Tiles -> einfachere Auswahl
 	}
 	public void initRange() {
 		int range = ObjectValues.Towers.getTowerRange(type);

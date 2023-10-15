@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static basics.Game.fHEIGHT;
+import static basics.Game.fWIDTH;
+
 /**
  * Controller Klasse für die Tiles in PLaying
  */
@@ -27,6 +30,7 @@ public class TileController extends ObjectsController implements ControllerMetho
         this.playing = playing;
         tileList = new ArrayList<Tile>();
         initTiles();
+        extendTiles(fWIDTH, fHEIGHT);
     }
 
     /**

@@ -121,7 +121,9 @@ public class ObjectValues {
             public static final int spawn_to_buttom_wood = 11;
             public static final int gate_to_buttom_grass = 12;
             public static final int gate_to_buttom_wood = 13;
+            public static final int gate_to_up_grass = 46;
             public static final int spawn_to_top_grass = 26;
+            public static final int spawn_to_top_wood = 51;
             public static final int corner_topleft_grass = 32;
             public static final int corner_topright_grass = 34;
             public static final int corner_buttomleft_grass = 35;
@@ -143,6 +145,8 @@ public class ObjectValues {
                     case gate_to_buttom_grass -> new Tile(12, true, false, false, true);
                     case gate_to_buttom_wood -> new Tile(13, true, false, false, true);
                     case spawn_to_top_grass -> new Tile(26, true, false, true, false);
+                    case spawn_to_top_wood -> new Tile(i, true, false, true, false);
+                    case gate_to_up_grass -> new Tile(i, true, false, false, true);
                     case corner_topleft_grass, corner_buttomright_grass, corner_buttomleft_grass, corner_topright_grass -> new Tile(i, false, true, false, false);
                     case corner_topleft_wood, corner_buttomright_wood, corner_buttomleft_wood, corner_topright_wood -> new Tile(i, false, false, false, false);
                     default -> new Tile(i, true, false, false, false);
