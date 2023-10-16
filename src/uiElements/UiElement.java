@@ -18,7 +18,7 @@ public abstract class UiElement {
 
     protected int type;
     protected UiElement parent;
-    private ArrayList<UiElement> children;
+    protected ArrayList<UiElement> children;
 
     protected BufferedImage primaryImage;
     protected UiCoordinate uiCoordinate;

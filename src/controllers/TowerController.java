@@ -71,31 +71,36 @@ public class TowerController extends ObjectsController implements ControllerMeth
     public void checkTowerRange(Tower tower) {
         enemyList = playing.getEnemyController().getEnemyList();
         Enemy targetEnemy = null;
+        double highestPathIndex = -1;
 
+        // First priority: Active enemies
         for (Enemy enemy : enemyList) {
-            if (enemy.getEnemyType() == EnemyType.BOSS && tower.getRange().contains(enemy.getHitBox()) && tower.getTarget() == null) {
+            if (tower.getRange().contains(enemy.getHitBox()) && enemy.isActive()) {
                 targetEnemy = enemy;
                 break;
             }
         }
 
+        // If no active enemy is found, look for the enemy with the highest getPathIndex()
         if (targetEnemy == null) {
             for (Enemy enemy : enemyList) {
-                if (tower.getRange().contains(enemy.getHitBox()) && tower.getTarget() == null) {
+                if (tower.getRange().contains(enemy.getHitBox()) && enemy.getPathIndex() > highestPathIndex) {
+                    highestPathIndex = enemy.getPathIndex();
                     targetEnemy = enemy;
-                    break;
                 }
             }
         }
 
-        if (targetEnemy != null) {
-            tower.setStatus(true);
-            tower.setTarget(targetEnemy);
-        } else if (!enemyList.contains(tower.getTarget()) || !tower.getRange().contains(tower.getTarget().getHitBox())) {
-            tower.setStatus(false);
-            tower.setTarget(null);
+        // If a target is found or the current target is out of range/not in the enemy list, refresh the target
+        if (targetEnemy != null || (!enemyList.contains(tower.getTarget()) || !tower.getRange().contains(tower.getTarget().getHitBox()))) {
+            if (targetEnemy != null) {
+                tower.setStatus(true);
+                tower.setTarget(targetEnemy);
+            } else {
+                tower.setStatus(false);
+                tower.setTarget(null);
+            }
         }
-
     }
 
     /**
@@ -175,10 +180,10 @@ public class TowerController extends ObjectsController implements ControllerMeth
     }
 
     /**
-     * Methode zum upgraden eines Turmes^, wenn der spielr genug resourcen hat
+     * Methode zum upgraden eines Turmes, wenn der spielr genug resourcen hat
      */
      public void upgradeTower() {
-        Values upgradeCost = selectedTower.getWorth().getUpgradeCost();
+        Values upgradeCost = selectedTower.getWorth().getUpgradeCost(selectedTower.getLevel());
         if(playerValues.canAfford(upgradeCost)) {
             playerValues.decrease(upgradeCost);
             selectedTower.getWorth().increase(upgradeCost);

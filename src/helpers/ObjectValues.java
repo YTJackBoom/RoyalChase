@@ -13,7 +13,7 @@ public class ObjectValues {
             public static final int SLIME = 0;
             public static final int SKELETON = 1;
             public static final int GOBLIN = 2;
-            public static final int WITCH = 3;
+            public static final int GOLEM = 3;
             public static final int WIZARD = 4;
             public static final int SKELETON_KING = 5;
             public static final int ZOMBIE_GIANT = 6;
@@ -26,7 +26,7 @@ public class ObjectValues {
                     case SLIME -> 5;
                     case SKELETON -> 5;
                     case GOBLIN -> 50;
-                    case WITCH -> 10;
+                    case GOLEM -> 10;
                     case WIZARD -> 10;
                     case SKELETON_KING -> 100;
                     case ZOMBIE_GIANT -> 100;
@@ -42,7 +42,7 @@ public class ObjectValues {
                     case SLIME -> 50;
                     case SKELETON -> 100;
                     case GOBLIN -> 100;
-                    case WITCH -> 100;
+                    case GOLEM -> 100;
                     case WIZARD -> 75;
                     case SKELETON_KING -> 100;
                     case ZOMBIE_GIANT -> 500;
@@ -56,7 +56,7 @@ public class ObjectValues {
                     case SLIME -> 0.5;
                     case SKELETON -> 1;
                     case GOBLIN -> 2;
-                    case WITCH -> 5;
+                    case GOLEM -> 5;
                     case WIZARD -> 1;
                     case SKELETON_KING -> 5;
                     case ZOMBIE_GIANT -> 0.5;
@@ -71,7 +71,7 @@ public class ObjectValues {
                     case SLIME -> 100;
                     case SKELETON -> 2.5;
                     case GOBLIN -> 5;
-                    case WITCH -> 5;
+                    case GOLEM -> 5;
                     case WIZARD -> 7.5;
                     case SKELETON_KING -> 5;
                     case ZOMBIE_GIANT -> 20;
@@ -85,7 +85,7 @@ public class ObjectValues {
                     case SLIME -> 0;
                     case SKELETON -> 100;
                     case GOBLIN -> 5;
-                    case WITCH -> 400;
+                    case GOLEM -> 400;
                     case WIZARD -> 400;
                     case SKELETON_KING -> 800;
                     case ZOMBIE_GIANT -> 1000;
@@ -99,7 +99,7 @@ public class ObjectValues {
                     case SLIME -> 0;
                     case SKELETON -> 75;
                     case GOBLIN -> 1;
-                    case WITCH -> 50;
+                    case GOLEM -> 50;
                     case WIZARD -> 150;
                     case SKELETON_KING -> 100;
                     case ZOMBIE_GIANT -> 5;

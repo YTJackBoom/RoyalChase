@@ -42,7 +42,7 @@ public class Constants {
 		public static final double EXPLOSIONBORDERDAMAGEPERCET = 0.75;
 
 		public static final int TOWERMAXLEVEL = 10;
-		public static final double UPGRADEMULTIPLYER = 0.5;
+		public static final double BASEUPGRADEMULTIPLIER = 0.5;
 
 		public static final double DMGUPGRADE = 0.15;
 		public static final double SPEEDUPGRADE = 0.15;
@@ -52,6 +52,7 @@ public class Constants {
 
         public static final double MELEEATTACKDISTANCE = 15;
         public static final double HEALTHUPGRADE = 1.25;
+
     }
 	public static class OtherConstants {
 		public static final String SAVEGAMELOCATION ="res/savegame";

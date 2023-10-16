@@ -176,6 +176,13 @@ public class Enemy extends GameObject {
 		damageDealt = ObjectValues.Enemies.getEnemyDamage(type)*math.DifficultyMath.calculateEnemyDamagePercentChange();
 		goldReward = ObjectValues.Enemies.getEnemyReward(type)*math.DifficultyMath.calculateEnemyRewardPercentChange();
 	}
+	@Override
+	public void setStun(double stun) {
+		if (enemyType == EnemyType.BOSS) {
+			stun = 0;
+		}
+		currentStun = stun;
+	}
 
 	public double getPathIndex() {
 		return pathIndex;

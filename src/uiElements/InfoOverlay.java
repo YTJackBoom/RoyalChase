@@ -132,8 +132,8 @@ public class InfoOverlay {
         if (!hoveredButton.isVisible()) return;
 
         FontMetrics fm = g.getFontMetrics();
-        int x = hoveredButton.uiCoordinate.getX() - hoveredButton.width / 2;
-        int y = hoveredButton.uiCoordinate.getY() + fm.getHeight() / 2;
+//        int x = hoveredButton.uiCoordinate.getX() - hoveredButton.width / 2;
+//        int y = hoveredButton.uiCoordinate.getY() + fm.getHeight() / 2;
 
         Values costValues = null;
 
@@ -142,7 +142,7 @@ public class InfoOverlay {
             costValues = hoveredButton.isTowerButton() ? ObjectValues.Towers.getCost(type) : ObjectValues.Buildings.getCost(type);
         } else if (buttonText != null && towerPointer != null) {
             if ("Upgrade".equals(buttonText)) {
-                costValues = towerPointer.getWorth().getUpgradeCost();
+                costValues = towerPointer.getWorth().getUpgradeCost(towerPointer.getLevel());
                 g.setFont(Constants.UIConstants.TOWERCOSTFONT);
             } else if (isSellText) {
                 costValues = towerPointer.getWorth();
@@ -154,32 +154,35 @@ public class InfoOverlay {
         double[] costs = {costValues.getWorkers(), costValues.getGold(), costValues.getMana(), costValues.getIron(), costValues.getWood(), costValues.getStone()};
         double[] playerResources = {playerValues.getWorkers(), playerValues.getGold(), playerValues.getMana(), playerValues.getIron(), playerValues.getWood(), playerValues.getStone()};
 
+        int imagePadding = 5;  // gap between image and number
+        int textHeight = (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D();
+
+        BufferedImage sampleImg = AssetController.getInstance().getIcon("icon_5");
+        int imgHeight = sampleImg.getHeight();
+
+        // Calculate the total height of all icons including spacing.
+        int totalHeight = costs.length * (imgHeight/2 + imagePadding);
+
+        // Adjust the y-coordinate by half of the total height.
+        int adjustedY = hoveredButton.uiCoordinate.getY() - (totalHeight / 2);
+
         for (int i = 0; i < costs.length; i++) {
-                BufferedImage img = AssetController.getInstance().getIcon("icon_"+(i + 5));
-                int imagePadding = 5;  // gap between image and number
+            BufferedImage img = AssetController.getInstance().getIcon("icon_" + (i + 5));
+            int x = hoveredButton.uiCoordinate.getX() - hoveredButton.width / 2;
+            int y = adjustedY + i * (imgHeight/2 + imagePadding*2);
 
-                int textHeight = (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D();
-                int imgHeight = img.getHeight();
+            g.drawImage(img, x, y, null);
 
-                // Calculate the y-position of the top of the text and image block for center alignment.
-                int blockHeight = textHeight + imgHeight + imagePadding;
-                int blockY = y + i * textHeight + (textHeight - blockHeight) / 2;
-
-                // Draw the image.
-                g.drawImage(img, x, blockY, null);
-
-                if (costs[i] <= playerResources[i] || isSellText) {
-                    g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
-                } else {
-                    g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
-                }
-
-                String costString = String.valueOf((int) costs[i]);
-                // Draw the text. The y position is adjusted to align it to the center of the image.
-                g.drawString(costString, x + img.getWidth() + imagePadding, blockY + imgHeight + (textHeight - imgHeight) / 2);
-
+            if (costs[i] <= playerResources[i] || isSellText) {
+                g.setColor(Constants.UIConstants.TOWERCANAFFORDCOLOR);
+            } else {
+                g.setColor(Constants.UIConstants.TOWERCANTAFFORDCOLOR);
             }
+
+            String costString = String.valueOf((int) costs[i]);
+            g.drawString(costString, x + img.getWidth() + imagePadding, y + imgHeight + (textHeight - imgHeight) / 2);
         }
+    }
     public void renderTileBoundaries(Graphics g) {
         for (Tile tile : playing.getTileController().getTileList()) {
             if (tile.isHovered()) {

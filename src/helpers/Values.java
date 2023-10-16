@@ -56,9 +56,20 @@ public class Values implements Serializable {
         workers -= v.workers;
     }
 
-    public Values getUpgradeCost() {
-        return new Values(0,gold+gold*Constants.ObjectConstants.UPGRADEMULTIPLYER,mana+mana*Constants.ObjectConstants.UPGRADEMULTIPLYER,iron+iron* Constants.ObjectConstants.UPGRADEMULTIPLYER,wood+wood* Constants.ObjectConstants.UPGRADEMULTIPLYER,stone+stone* Constants.ObjectConstants.UPGRADEMULTIPLYER);
+    public Values getUpgradeCost(int towerLevel) {
+        double percent = 1.0 * towerLevel / Constants.ObjectConstants.TOWERMAXLEVEL;
+
+        return new Values(0,
+                500,
+                mana * percent,
+                iron * percent,
+                wood * percent,
+                stone * percent);
     }
+
+
+
+
 
 
 

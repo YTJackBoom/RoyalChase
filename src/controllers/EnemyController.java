@@ -142,7 +142,7 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 			case SLIME -> addQue.add(new Slime(this, pathAbsoluteCoordinates.get(0)));
 			case SKELETON -> addQue.add(new Skeleton(this, pathAbsoluteCoordinates.get(0)));
 			case GOBLIN -> addQue.add(new Goblin(this, pathAbsoluteCoordinates.get(0)));
-			case WITCH -> addQue.add(new Witch(this, pathAbsoluteCoordinates.get(0)));
+			case GOLEM -> addQue.add(new Witch(this, pathAbsoluteCoordinates.get(0)));
 			case WIZARD -> addQue.add(new Wizard(this, pathAbsoluteCoordinates.get(0)));
 			case SKELETON_KING -> addQue.add(new Skeleton_King(this, pathAbsoluteCoordinates.get(0)));
 			case ZOMBIE_GIANT -> addQue.add(new Zombie_Giant(this, pathAbsoluteCoordinates.get(0)));

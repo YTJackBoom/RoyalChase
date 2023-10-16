@@ -20,6 +20,7 @@ public class HitBox {
 	 * @return Rechteck, welches die Hitbox umschließt
 	 */
 	public Rectangle getBoundingBox() {
+		if (gameObject.getActiveAnimator() == null) return new Rectangle(0, 0, 0, 0);
 		Animator animator = gameObject.getActiveAnimator();
 		BufferedImage thisImage = animator.getCurrentFrame();
 		AbsoluteCoordinate thisPos = gameObject.getPos();

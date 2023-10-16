@@ -33,6 +33,7 @@ public class Circle {
 	 * @param hitbox Hitbox-Objekt
 	 */
 	public boolean contains(HitBox hitbox) {
+		if (hitbox.getGameObject().getActiveAnimator() == null) return false;
 		Rectangle hitBoxRect = hitbox.getBoundingBox();
 
 		if (!this.intersects(hitBoxRect)) {
