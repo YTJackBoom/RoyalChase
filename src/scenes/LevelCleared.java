@@ -91,6 +91,10 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
                 }
             }
     }
+    public void clearedCall() {
+        game.getLevelSelect().setBackScene(GameStates.LEVELCLEARED);
+        game.getPlaying().getTowerController().sellAllTowers();
+    }
 
     private void resetButtons(){
         for(MyButton button: buttons){
@@ -140,15 +144,14 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
 
                     if (button.getText().equals("Continue")) {
                         GameStates.gameState = GameStates.LEVELSELECT;
-                        game.getLevelSelect().setBackScene(GameStates.LEVELCLEARED);
-                        game.getPlaying().getTowerController().sellAllTowers();
                         System.out.println("Continue");
+                        succesfullSave = false;
                     } else if (button.getText().equals("Save")) {
-                        game.saveGame(Constants.OtherConstants.SAVEGAMELOCATION);
+                        game.saveGame("RoyalChaseSaveFile");
                         succesfullSave = true;
                     } else if (button.getText().equals("Main Menu")) {
                         GameStates.gameState = GameStates.MENU;
-                        game.getPlaying().getTowerController().sellAllTowers();
+                        succesfullSave = false;
 
                     }
                 }

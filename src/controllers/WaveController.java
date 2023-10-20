@@ -91,6 +91,7 @@ public class WaveController implements ControllerMethods {
 
                 generateNewWave = false;
                 GameStates.gameState = LEVELCLEARED;
+                playing.getGame().getLevelCleared().clearedCall();
 
             }
         }

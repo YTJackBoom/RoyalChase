@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.*;
+import java.net.URISyntaxException;
 
 public class Game extends JFrame implements Serializable {
 
@@ -74,6 +75,7 @@ public class Game extends JFrame implements Serializable {
     }
 
     public static void main(String[] args) {
+
         Game game = new Game();
         game.gameScreen.initInputs();
         game.start();
@@ -202,30 +204,38 @@ public class Game extends JFrame implements Serializable {
 
     /**
      * Methode zum Speichern des Spielstandes, speichert Resourcen des Spielers sowie die gebäude in der Stadt
-     * @param filePath Datei-Pfad zum Speichern
+     *
      */
-    public void saveGame( String filePath) {
+    public void saveGame(String fileName) {
         try {
-            FileOutputStream fileOut = new FileOutputStream(filePath);
+            String jarPath = new File(Game.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+            String savePath = jarPath + File.separator + fileName;
+
+            FileOutputStream fileOut = new FileOutputStream(savePath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(gameState);
             System.out.println(gameState.getUserSettings().getDifficulty());
             out.close();
             fileOut.close();
-            System.out.println("Game saved");
-         } catch (IOException i) {
+            System.out.println("Game saved to " + savePath);
+        } catch (IOException i) {
             i.printStackTrace();
-         }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
+    }
+
 
     /**
      * Methode zum Laden des Spielstandes, lädt Resourcen des Spielers sowie die gebäude in der Stadt und setzt die Werte der geladenen GameState-class in diversen Klassen
-     * @param filePath Datei-Pfad zum Laden
      */
-    public void loadGame(String filePath) {
+    public void loadGame(String fileName) {
         GameState gameState = null;
         try {
-            FileInputStream fileIn = new FileInputStream(filePath);
+            String jarPath = new File(Game.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+            String loadPath = jarPath + File.separator + fileName;
+
+            FileInputStream fileIn = new FileInputStream(loadPath);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             gameState = (GameState) in.readObject();
             in.close();
@@ -241,9 +251,11 @@ public class Game extends JFrame implements Serializable {
         } catch (ClassNotFoundException c) {
             System.out.println("GameState class not found");
             c.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
-
     }
+
 
     /**
      * Methode, um die geladenen BuildingSaveState Klassen in die Building Klassen umzuwandeln und in der BuildingController-Klasse zu speichern

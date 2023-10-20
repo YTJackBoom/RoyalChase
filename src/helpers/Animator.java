@@ -10,6 +10,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static basics.Game.*;
 import static helpers.Direction.UP;
@@ -21,7 +22,7 @@ import static helpers.math.ImageMath.resizeImage;
 public class Animator implements Cloneable{
     private int currentImageIndex;
     private BufferedImage[] currentImageArray, imageArrayUp, imageArrayDown, imageArrayLeft, imageArrayRight;
-    private File gifFileUp, gifFileDown, gifFileLeft, gifFileRight;
+    private InputStream gifFileUp, gifFileDown, gifFileLeft, gifFileRight;
     private Direction direction;
     private int updateCounter = 0; //um die bilder/sekunde auf 4 zu begrenzen
 
@@ -54,7 +55,7 @@ public class Animator implements Cloneable{
      * Konstruktor für einen Animator mit nur einem Gif (z.B. für Gebäude)
      * @param gifFile Gif-Datei
      */
-    public Animator (File gifFile) {
+    public Animator (InputStream gifFile) {
         path = "nopath";
         direction = UP;
         currentImageIndex = 0;
@@ -75,24 +76,24 @@ public class Animator implements Cloneable{
      * @param gifFilesPath Pfad zu den Gifs
      */
     public void initGifs(String gifFilesPath) {
-        gifFileUp = new File(gifFilesPath + "up.gif");
-        gifFileDown = new File(gifFilesPath + "down.gif");
-        gifFileLeft = new File(gifFilesPath + "left.gif");
-        gifFileRight = new File(gifFilesPath + "right.gif");
+        gifFileUp = AssetLocation.class.getResourceAsStream(gifFilesPath + "up.gif");
+        gifFileDown = AssetLocation.class.getResourceAsStream(gifFilesPath + "down.gif");
+        gifFileLeft = AssetLocation.class.getResourceAsStream(gifFilesPath + "left.gif");
+        gifFileRight = AssetLocation.class.getResourceAsStream(gifFilesPath + "right.gif");
     }
 
     /**
      * Methode zum splitten der Gifs in einzelne Bilder
-     * @param tgifFile Gif-Datei
+     * @param gifInputStream der Inputstream des Gifs
      * @return Array mit den einzelnen Bildern
      * @throws IOException Fehler beim Lesen der Datei
      */
-    public BufferedImage[] splitGifIntoFrames(File tgifFile) throws IOException {
+    public BufferedImage[] splitGifIntoFrames(InputStream gifInputStream) throws IOException {
         BufferedImage[] tempArray;
         ImageReader reader = null;
-        ImageInputStream input = null;
+
         try {
-            input = ImageIO.createImageInputStream(tgifFile);
+            ImageInputStream input = ImageIO.createImageInputStream(gifInputStream);
             reader = ImageIO.getImageReadersByFormatName("gif").next();
             reader.setInput(input);
 
@@ -103,15 +104,13 @@ public class Animator implements Cloneable{
                 tempArray[i] = reader.read(i);
             }
         } catch (IOException | IllegalStateException e) {
-            throw new IOException("Error processing GIF file: " + tgifFile.getName()+ " in "+path, e);
+            throw new IOException("Error processing GIF stream", e);
         } finally {
             if (reader != null) {
                 reader.dispose();
             }
-            if (input != null) {
-                input.close();
-            }
         }
+
         return tempArray;
     }
     /**

@@ -8,6 +8,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -124,8 +126,18 @@ public class AssetController {
         if (sound == null) {
             throw new IllegalArgumentException("No Sound found for key: " + key);
         }
-        return sound;
+        try {
+            // Get all bytes from the original AudioInputStream
+            byte[] audioBytes = sound.readAllBytes();
+            // Create a new ByteArrayInputStream for the bytes and wrap it in a BufferedInputStream
+            ByteArrayInputStream byteArrayStream = new ByteArrayInputStream(audioBytes);
+            return new AudioInputStream(byteArrayStream, sound.getFormat(), audioBytes.length / sound.getFormat().getFrameSize());
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error buffering the sound", e);
+        }
     }
+
 
     /**
      * Methode, um alle Sound-Keys zu bekommen, diese werden genutzt, um die Sounds im SoundController in den Arbeitsspeiher zu laden

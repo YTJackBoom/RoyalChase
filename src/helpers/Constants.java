@@ -51,7 +51,7 @@ public class Constants {
 
 
         public static final double MELEEATTACKDISTANCE = 15;
-        public static final double HEALTHUPGRADE = 1.25;
+        public static final double HEALTHUPGRADE = 1.5;
 
     }
 	public static class OtherConstants {

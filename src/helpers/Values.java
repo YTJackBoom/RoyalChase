@@ -49,6 +49,7 @@ public class Values implements Serializable {
     }
 
     public void decrease(Values v){
+        gold -= v.gold;
         mana -= v.mana;
         iron -= v.iron;
         wood -= v.wood;

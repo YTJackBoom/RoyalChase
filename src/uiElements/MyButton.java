@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static helpers.AssetLocation.Buttons.*;
 
@@ -48,10 +49,10 @@ public class MyButton extends UiElement {
 
 
 	private void initButtonTooltip() {
-		File tooltipText = AssetLocation.Buttons.getTooltipTextFile(type);
-		if (tooltipText == null || !tooltipText.exists() || parent == null) return;
+		InputStream tooltipStream = AssetLocation.Buttons.getTooltipTextFile(type);
+		if (tooltipStream == null || parent == null) return;
 
-		TextReader textReader = new TextReader(tooltipText);
+		TextReader textReader = new TextReader(tooltipStream);
 		String[] texts;
 		try {
 			texts = textReader.readLines();

@@ -1,9 +1,6 @@
 package helpers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +9,7 @@ import java.util.List;
  */
 public class TextReader {
 
-    private File file;
+    private InputStream file;
     private BufferedReader reader;
     private ArrayList<Integer> spawnList, delayList;
     private Values playerValues;
@@ -21,7 +18,7 @@ public class TextReader {
      * Konstruktor für den TextReader
      * @param file Datei
      */
-    public TextReader(File file) {
+    public TextReader(InputStream file) {
         this.file = file;
     }
 
@@ -43,7 +40,7 @@ public class TextReader {
     public String[] readLines() throws IOException {
         List<String> linesList = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 linesList.add(line);
@@ -53,6 +50,7 @@ public class TextReader {
         return linesList.toArray(new String[0]);
     }
 
+
     /**
      * Methode um die Map daten aus einer Textdatei zu lesen
      * @return Mapdaten als 2D-Array
@@ -60,7 +58,7 @@ public class TextReader {
     public int[][] readTileData() throws IOException {
         List<int[]> dataList = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] split = line.split(",");
@@ -90,11 +88,7 @@ public class TextReader {
      * @param i Level
      */
     public void initWaveFileAnalyser(int i) {
-        try {
-            reader = new BufferedReader(new FileReader(AssetLocation.Maps.getMapWaveFile(i)));
-        } catch (IOException e) {
-            System.out.println("WaveFileAnalyser can't read " + i);
-        }
+        reader = new BufferedReader(new InputStreamReader(AssetLocation.Maps.getMapWaveFile(i)));
     }
 
     /**

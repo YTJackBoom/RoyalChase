@@ -17,8 +17,7 @@ public class ObjectValues {
             public static final int WIZARD = 4;
             public static final int SKELETON_KING = 5;
             public static final int ZOMBIE_GIANT = 6;
-            public static final int WITCH_QUEEN = 7;
-            public static final int WIZARD_KING = 8;
+            public static final int THE_EYE = 7;
 
 
             public static int getEnemyReward(int enemyType) {
@@ -30,8 +29,7 @@ public class ObjectValues {
                     case WIZARD -> 10;
                     case SKELETON_KING -> 100;
                     case ZOMBIE_GIANT -> 100;
-                    case WITCH_QUEEN -> 100;
-                    case WIZARD_KING -> 100;
+                    case THE_EYE -> 100;
                     default -> 0;
                 };
             }
@@ -46,8 +44,7 @@ public class ObjectValues {
                     case WIZARD -> 75;
                     case SKELETON_KING -> 100;
                     case ZOMBIE_GIANT -> 500;
-                    case WITCH_QUEEN -> 100;
-                    case WIZARD_KING -> 100;
+                    case THE_EYE -> 100;
                     default -> throw new IllegalStateException("variables: getEnemyHealth: Unexpected value:  " + enemyType);
                 };
             }
@@ -60,8 +57,7 @@ public class ObjectValues {
                     case WIZARD -> 1;
                     case SKELETON_KING -> 5;
                     case ZOMBIE_GIANT -> 0.5;
-                    case WITCH_QUEEN -> 5;
-                    case WIZARD_KING -> 5;
+                    case THE_EYE -> 5;
                     default -> throw new IllegalStateException("variables: getEnemySpeed: Unexpected value:  " + enemyType);
                 };
             }
@@ -75,8 +71,7 @@ public class ObjectValues {
                     case WIZARD -> 7.5;
                     case SKELETON_KING -> 5;
                     case ZOMBIE_GIANT -> 20;
-                    case WITCH_QUEEN -> 5;
-                    case WIZARD_KING -> 5;
+                    case THE_EYE -> 5;
                     default -> throw new IllegalStateException("variables: getEnemyDamage: Unexpected value:  " + enemyType);
                 };
             }
@@ -89,22 +84,20 @@ public class ObjectValues {
                     case WIZARD -> 400;
                     case SKELETON_KING -> 800;
                     case ZOMBIE_GIANT -> 1000;
-                    case WITCH_QUEEN -> 1600;
-                    case WIZARD_KING -> 1600;
+                    case THE_EYE -> 1600;
                     default -> throw new IllegalStateException("variables: getEnemyRelaodTime: Unexpected value: "+ enemyType);
                 };
             }
             public static double getEnemyRange(int enemyType) {
                 return switch (enemyType) {
                     case SLIME -> 0;
-                    case SKELETON -> 75;
+                    case SKELETON -> 150;
                     case GOBLIN -> 1;
                     case GOLEM -> 50;
                     case WIZARD -> 150;
                     case SKELETON_KING -> 100;
                     case ZOMBIE_GIANT -> 5;
-                    case WITCH_QUEEN -> 100;
-                    case WIZARD_KING -> 100;
+                    case THE_EYE -> 100;
                     default -> throw new IllegalStateException("variables: getEnemyRange: Unexpected value: "+ enemyType);
                 };
             }

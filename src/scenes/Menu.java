@@ -176,7 +176,7 @@ public class Menu extends GameScenes implements SceneMethods {
                     GameStates.gameState = GameStates.LEVELSELECT;
                     game.getLevelSelect().setBackScene(GameStates.MENU);
                 } else if (button.getText().equals("Load Game")) {
-                    game.loadGame(Constants.OtherConstants.SAVEGAMELOCATION);
+                    game.loadGame("RoyalChaseSaveFile");
                 } else if (button.getText().equals("Exit")) {
                     System.exit(0);
                 }

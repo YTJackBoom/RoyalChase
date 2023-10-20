@@ -34,7 +34,6 @@ public class Enemy extends GameObject {
 		this.enemyController = enemyController;
 		this.enemyType = enemyType;
 		pathIndex = 1;
-		isActive = true;
 		initVariables();
 	}
 
