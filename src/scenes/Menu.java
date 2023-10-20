@@ -14,8 +14,6 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.util.ArrayList;
 
-import static basics.GameState.playerValues;
-
 public class Menu extends GameScenes implements SceneMethods {
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
     private ArrayList<Slider> sliders = new ArrayList<Slider>();
@@ -48,16 +46,21 @@ public class Menu extends GameScenes implements SceneMethods {
         float relativeX = 100.0f / frameWidth;
         float relativeY1 = 100.0f / frameHeight;
         float relativeY2 = 200.0f / frameHeight;
+        float relativeY3 = 300.0f / frameHeight;
 
         AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
 
         // First Slider
         UiCoordinate slider1Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY1));
-        sliders.add(new Slider(slider1Coordinate, sliderWidth, sliderHeight, 0, 5, userSettings.getDifficulty()));
+        sliders.add(new Slider(slider1Coordinate, sliderWidth, sliderHeight, 0, 5, userSettings.getDifficulty(),"Difficulty"));
 
         // Second Slider
         UiCoordinate slider2Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY2));
-        sliders.add(new Slider(slider2Coordinate, sliderWidth, sliderHeight, 0, 100, userSettings.getVolume()));
+        sliders.add(new Slider(slider2Coordinate, sliderWidth, sliderHeight, 0, 100, userSettings.getEffectVolume(),"SoundEffects"));
+
+        // Third Slider
+        UiCoordinate slider3Coordinate = new UiCoordinate(new RelativeCoordinate(referencePoint,relativeX,relativeY3));
+        sliders.add(new Slider(slider3Coordinate,sliderWidth,sliderHeight,0,100,userSettings.getBackGroundVolume(),"BackGroundMusic"));
     }
 
 
@@ -122,9 +125,12 @@ public class Menu extends GameScenes implements SceneMethods {
     private void grabSlidersInfos() {
         game.getGameState().getUserSettings().setDifficulty(sliders.get(0).getValue());
 //        System.out.println(sliders.get(0).getValue());
-        game.getGameState().getUserSettings().setVolume(sliders.get(1).getValue());
-        SoundController.getInstance().setBackgroundVolume(sliders.get(1).getValue()/100f);
+        game.getGameState().getUserSettings().setEffectVolume(sliders.get(1).getValue());
         SoundController.getInstance().setSoundEffectVolume(sliders.get(1).getValue()/100f);
+
+        game.getGameState().getUserSettings().setBackGroundVolume(sliders.get(2).getValue());
+        SoundController.getInstance().setBackgroundVolume(sliders.get(2).getValue()/100f);
+
     }
 
     @Override

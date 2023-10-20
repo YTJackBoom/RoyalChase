@@ -82,7 +82,7 @@ public abstract class UiElement {
     public void updatePosOnResize() {
         uiCoordinate.updateBasedOnFrame();
         for (UiElement uiElement : children) {
-            uiElement.updatePosOnResize();
+            if(uiElement != null) uiElement.updatePosOnResize();
         }
     }
 

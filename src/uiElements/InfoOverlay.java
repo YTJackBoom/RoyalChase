@@ -189,7 +189,7 @@ public class InfoOverlay {
                 int tileWidth = tile.getWidth();
                 int tileHeight = tile.getHeight();
                 if (playing.getTowerController().towerOn(tile.getPos().getX(), tile.getPos().getY()) == null) {
-                    g.setColor(Color.ORANGE);
+                    g.setColor(Color.GREEN);
                     g.drawRect(tile.getPos().getX() - tileWidth / 2, tile.getPos().getY() - tileHeight / 2, tileWidth - 1, tileHeight - 1);
                 } else {
                     g.setColor(Color.RED);
@@ -201,7 +201,7 @@ public class InfoOverlay {
             if(towerPointer != null) {
                 if (towerPointer.getPos().getX() == tile.getPos().getX() && towerPointer.getPos().getY() == tile.getPos().getY()) {
                     g.setColor(Color.BLUE);
-                    g.drawRect(tile.getPos().getX() - tile.getWidth() / 2, tile.getPos().getY() - tile.getHeight() / 2, tile.getWidth()-1, tile.getHeight()-1);
+                    g.drawRect(tile.getPos().getX() - tile.getWidth() / 2+1, tile.getPos().getY() - tile.getHeight() / 2+1, tile.getWidth()-2, tile.getHeight()-2);
                 }
             }
         }

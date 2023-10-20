@@ -6,22 +6,30 @@ import java.io.Serializable;
  */
 public class UserSettings implements Serializable {
     protected int DIFFICULTY = 1;
-    protected int VOLUME = 100;
+    protected int EFFECTVOLUME = 30;
+    protected int BACKGROUNDVOLUME = 30;
+
 
     public void setDifficulty(int difficulty) {
         DIFFICULTY = difficulty;
     }
 
-    public void setVolume(int volume) {
-        VOLUME = volume;
+    public void setEffectVolume(int volume) {
+        EFFECTVOLUME = volume;
     }
 
     public int getDifficulty() {
         return DIFFICULTY;
     }
 
-    public int getVolume() {
-        return VOLUME;
+    public int getEffectVolume() {
+        return EFFECTVOLUME;
+    }
+    public int getBackGroundVolume() {
+        return BACKGROUNDVOLUME;
+    }
+    public void setBackGroundVolume(int volume) {
+        BACKGROUNDVOLUME = volume;
     }
 
 

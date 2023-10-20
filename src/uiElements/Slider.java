@@ -1,8 +1,13 @@
 package uiElements;
 
+import helpers.AbsoluteCoordinate;
+import helpers.RelativeCoordinate;
 import helpers.UiCoordinate;
 
 import java.awt.*;
+
+import static basics.Game.fHEIGHT;
+import static basics.Game.fWIDTH;
 
 public class Slider extends UiElement {
     private int minValue;
@@ -12,17 +17,43 @@ public class Slider extends UiElement {
     private float relativeKnobWidth = 0.05f;  // Assuming 5% of slider's width
     private boolean isDragging;
     private float snapSize;
+    private Tooltip tooltip;
 
-    public Slider(UiCoordinate uiCoordinate, int width, int height, int minValue, int maxValue, int startValue) {
+    public Slider(UiCoordinate uiCoordinate, int width, int height, int minValue, int maxValue, int startValue,String type) {
         super(uiCoordinate, width, height, UIObjectType.DIALOG, 0, true);
+        initTooltip(type);
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.currentValue = startValue;
 
         // Calculate the number of snap points
         this.snapSize = 1.0f / (maxValue - minValue);
-
+        
         updateKnob();
+    }
+
+    private void initTooltip(String type) {
+        switch (type) {
+            case "Difficulty" -> tooltip =new Tooltip(
+                    new String[]{"Hier kannst du die Schwierigkeit einstellen, je höher desto schwerer"},
+                    new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(),0,-0.5f,width,height))
+            );
+            case "SoundEffects" -> tooltip =new Tooltip(
+                    new String[]{"Hier kannst du die Lautstärke der SoundEffekte einstellen"},
+                    new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(),0,-0.5f,width,height))
+            );
+            case "BackGroundMusic" -> tooltip =new Tooltip(
+                    new String[]{"Hier kannst du die Lautstärke der HintergrundMusik einstellen"},
+                    new UiCoordinate(new RelativeCoordinate(uiCoordinate.getAbsolutePosition(),0,-0.5f,width,height))
+            );
+            default -> {
+                System.out.println("Tried to initialize non existent Sliders Tooltip with type: "+type);
+                return;
+            }
+        }
+        tooltip.setVisible(true);
+        addChild(tooltip);
+
     }
 
     private void updateKnob() {
@@ -42,7 +73,7 @@ public class Slider extends UiElement {
         g.fillRect(knob.x, knob.y, knob.width, knob.height);
 
         // Draw the current value on the knob
-        String valueStr = Integer.toString(currentValue)+"%";
+        String valueStr = String.valueOf(currentValue);
         FontMetrics fm = g.getFontMetrics();
         int stringWidth = fm.stringWidth(valueStr);
         int stringHeight = fm.getAscent();
@@ -52,6 +83,8 @@ public class Slider extends UiElement {
 
         g.setColor(Color.WHITE); // Choose a color that contrasts with the knob color
         g.drawString(valueStr, textX, textY);
+
+        super.render(g);
     }
     @Override
     public void updatePosOnResize() {
