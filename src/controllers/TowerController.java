@@ -110,6 +110,10 @@ public class TowerController extends ObjectsController implements ControllerMeth
     public void checkTowerHealth(Tower tower) {
         if (tower.getHealth() <= 0) {
             SoundController.getInstance().playSoundEffect("deaths_5");
+            if(selectedTower.equals(tower)) {
+                selectedTower = null;
+                playing.setSelectedTower(null);
+            }
             removeQueue.add(tower);
         }
     }
@@ -301,6 +305,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
                 playerValues.increase(tower.getWorthByPercentage(Constants.OtherConstants.SELLALLTOWERSPERCENT));
             }
         }
+        playing.setSelectedTower(null);
         towerEntityList.clear();
     }
 

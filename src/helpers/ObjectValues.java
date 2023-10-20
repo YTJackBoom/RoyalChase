@@ -71,7 +71,7 @@ public class ObjectValues {
                     case WIZARD -> 7.5;
                     case SKELETON_KING -> 5;
                     case ZOMBIE_GIANT -> 20;
-                    case THE_EYE -> 5;
+                    case THE_EYE -> Integer.MAX_VALUE;
                     default -> throw new IllegalStateException("variables: getEnemyDamage: Unexpected value:  " + enemyType);
                 };
             }
@@ -96,8 +96,8 @@ public class ObjectValues {
                     case GOLEM -> 50;
                     case WIZARD -> 150;
                     case SKELETON_KING -> 100;
-                    case ZOMBIE_GIANT -> 5;
-                    case THE_EYE -> 100;
+                    case ZOMBIE_GIANT -> 50;
+                    case THE_EYE -> 1000;
                     default -> throw new IllegalStateException("variables: getEnemyRange: Unexpected value: "+ enemyType);
                 };
             }
