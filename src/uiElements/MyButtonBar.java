@@ -98,7 +98,7 @@ public class MyButtonBar extends UiElement {
 		int menuY = uiCoordinate.getY();
 
 		int startX = (int) (menuX + 0.05 * width);
-		int startY = (int) (uiCoordinate.getY() + 0.05 * height);
+		int startY = (int) (uiCoordinate.getY() + 0.15 * height);
 		int xOffset = 25;
 		int buttonWidth = 100;
 		int buttonHeight = 80;

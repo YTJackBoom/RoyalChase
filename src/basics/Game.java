@@ -14,10 +14,7 @@ import uiElements.InfoOverlay;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.io.*;
 import java.net.URISyntaxException;
 
@@ -36,11 +33,11 @@ public class Game extends JFrame implements Serializable {
     private volatile int currentUPS = 0;
     private int currentFPS = 0;
     private boolean isPaused = false;
+    public static boolean ISDEVMODE = false;
     // Classes
     private GameScreen gameScreen;
     private Menu menu;
     private Playing playing;
-    private Settings settings;
     private GameOver gameOver;
     private LevelCleared levelCleared;
     private LevelSelect levelSelect;
@@ -49,11 +46,24 @@ public class Game extends JFrame implements Serializable {
     private GameState gameState;
     private GameRenderUpdater renderUpdater;
     private Timer resizeEndTimer;
+    private static Logger logger;
+
 
     /**
      * Konstruktor der Klasse Game, start des Spiels
      */
     public Game() { //Initialisieren des Fensters
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (logger != null) {
+                    logger.close(); // Close the logger when JFrame is closing
+                }
+                System.exit(0);
+            }
+        });
+
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         initClasses();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -68,19 +78,21 @@ public class Game extends JFrame implements Serializable {
 
         setContentPane(gameScreen);
         pack();
-
-//        SoundController.getInstance().playBackgroundMusic(0);
-
         setVisible(true);
     }
 
     public static void main(String[] args) {
+        try {
+            logger = new Logger("RoyalChase-Log.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         Game game = new Game();
         game.gameScreen.initInputs();
         game.start();
 
-        }
+    }
         /**
          * Initialisieren der Klassen
          */
@@ -98,7 +110,6 @@ public class Game extends JFrame implements Serializable {
             gameScreen = new GameScreen(this);
             menu = new Menu(this);
             playing = new Playing(this);
-            settings = new Settings(this);
             gameOver = new GameOver(this);
             levelCleared = new LevelCleared(this);
             levelSelect = new LevelSelect(this);
@@ -106,9 +117,7 @@ public class Game extends JFrame implements Serializable {
 
             initClassesForResizes();
 
-
-
-        }
+                    }
 
     /**
      * Initialisieren der Klassen, welche Aktionen beim resizen des Fensters ausführen
@@ -168,7 +177,7 @@ public class Game extends JFrame implements Serializable {
 
             Timer statsTimer = new Timer(1000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Current UPS: " + currentUPS + ", Current FPS: " + currentFPS);
+                    if(ISDEVMODE) System.out.println("Current UPS: " + currentUPS + ", Current FPS: " + currentFPS);
                     currentUPS = 0; // Reset UPS count
                     currentFPS = 0; // Reset FPS count
                 }
@@ -184,11 +193,10 @@ public class Game extends JFrame implements Serializable {
                 case MENU ->menu.update();
                 case PLAYING -> {playing.update();
                                  town.softUpdate();}
-                case SETTINGS -> settings.update();
                 case GAMEOVER -> gameOver.update();
                 case LEVELCLEARED -> levelCleared.update();
                 case LEVELSELECT -> levelSelect.update();
-                case TOWN -> town.update();
+                case TOWN -> town.updateInfoOverlay();
 
             }
         }
@@ -288,12 +296,13 @@ public class Game extends JFrame implements Serializable {
         if (isFullScreen()) { //Wechseln in Fenster-Modus
             dispose();             // temporäres schließen des Fensters
             setUndecorated(false); //Hinzufügen der Fensterleiste
-            Insets insets = getInsets(); //Größen der Fensterleiste
+            setVisible(true);
+            gameScreen.setSize(new Dimension(initGameWidth, initGameHeight));
+
+            Insets insets = getInsets();
             setSize(initGameWidth + insets.left + insets.right, initGameHeight + insets.top + insets.bottom); //Zurücksetzten der Größe auf die start-Werte
             setLocationRelativeTo(null); //Zentrieren des Fensters
-            gameScreen.setSize(new Dimension(initGameWidth, initGameHeight));
             gameScreen.revalidate();
-            setVisible(true);
         } else { //WEchesln in Vollbild-Modus
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
@@ -305,9 +314,10 @@ public class Game extends JFrame implements Serializable {
             setUndecorated(true);
             setVisible(true);
             setSize(new Dimension(screenWidth, screenHeight));
+            Insets insets = getInsets();
             setLocation(0, 0);
 
-            gameScreen.setSize(new Dimension(screenWidth, screenHeight));
+            gameScreen.setSize(new Dimension(screenWidth-insets.left-insets.right, screenHeight-insets.top-insets.bottom));
             gameScreen.revalidate();
         }
         isFullScreen = !isFullScreen;
@@ -333,9 +343,6 @@ public class Game extends JFrame implements Serializable {
         return playing;
         }
 
-        public Settings getSettings() {
-            return settings;
-        }
         public GameOver getGameOver() {
             return gameOver;
         }
@@ -378,6 +385,10 @@ public class Game extends JFrame implements Serializable {
 
         public GameRenderUpdater getRenderUpdater() {
             return renderUpdater;
+    }
+    public void toggleDevMode() {
+        ISDEVMODE = !ISDEVMODE;
+        playing.getTowerController().getGate().setVisible(ISDEVMODE);
     }
 
 }

@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+import static basics.Game.ISDEVMODE;
+
 /**
  * Klasse um die Tastatureingaben zu verarbeiten
  */
@@ -35,31 +37,13 @@ public class KListener {
                 game.togglePause();
             }
         });
-        // VK_A binding
-        inputMap.put(KeyStroke.getKeyStroke("released A"), "menuAction");
-        actionMap.put("menuAction", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GameStates.gameState = GameStates.MENU;
-            }
-        });
-
-        // VK_S binding
-        inputMap.put(KeyStroke.getKeyStroke("released S"), "playingAction");
-        actionMap.put("playingAction", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GameStates.gameState = GameStates.PLAYING;
-            }
-        });
-
         // VK_D binding
-        inputMap.put(KeyStroke.getKeyStroke("released D"), "settingsAction");
-        actionMap.put("settingsAction", new AbstractAction() {
+        inputMap.put(KeyStroke.getKeyStroke("released D"), "devModeToggle");
+        actionMap.put("devModeToggle", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameStates.gameState = GameStates.SETTINGS;
-                game.resetAll();
+                game.toggleDevMode();
+                System.err.println("DevMode is "+ISDEVMODE);
             }
         });
 

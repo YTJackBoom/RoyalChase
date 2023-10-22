@@ -12,6 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static basics.Game.ISDEVMODE;
 import static basics.Game.ups;
 import static helpers.ObjectValues.Enemies.*;
 import static helpers.ObjectValues.Towers.Foundation_T;
@@ -163,7 +164,7 @@ public class EnemyController extends ObjectsController implements ControllerMeth
 	   for (Enemy enemy : enemyList) {
 		   if (enemy != null) {
 			   enemy.render(g);
-			   enemy.getRange().render(g);
+			   if(ISDEVMODE) enemy.getRange().render(g);
 		   }
 	   }
    }

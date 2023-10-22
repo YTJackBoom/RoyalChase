@@ -7,15 +7,15 @@ import java.util.ArrayList;
  * Klasse um verschiedene Resourcen zu speichern und verwalten. Zudem werden auch dinge wie Score, Level und Levelscleared gespeichert
  */
 public class Values implements Serializable {
-    protected double gold = 100;
+    protected double gold = 500;
     protected double health = 100;
     protected int score = 0;
     protected int level = 1;
-    protected double mana = 100;
-    protected double iron = 100;
-    protected double wood = 100;
-    protected double stone = 100;
-    protected double workers = 1;
+    protected double mana = 200;
+    protected double iron = 200;
+    protected double wood = 200;
+    protected double stone = 200;
+    protected double workers = 5;
     protected ArrayList<Integer> levelscleared = new ArrayList<Integer>();
     protected double rewardmultiplyer = 1;
 

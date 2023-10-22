@@ -107,7 +107,6 @@ public class Town extends GameScenes implements SceneMethods {
 
         if (game.getPlayerValues().getLevel() == 0) dialogController.render(g);
 
-
     }
 
     public void renderCantAfford(Graphics g) {
@@ -150,9 +149,9 @@ public class Town extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        int x =e.getX();
-        int y =e.getY();
-            buttonBar.mouseMoved(x,y);
+        mouseX =e.getX();
+        mouseY =e.getY();
+        buttonBar.mouseMoved(mouseX,mouseY);
 
     }
 

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import static basics.Game.*;
 import static helpers.AssetLocation.Buttons.COLLAPSE_U_B;
 import static helpers.AssetLocation.Buttons.EXTEND_U_B;
+import static playerinputs.MListener.MOUSEX;
+import static playerinputs.MListener.MOUSEY;
 import static scenes.GameStates.GAMEOVER;
 import static scenes.GameStates.gameState;
 
@@ -34,7 +36,6 @@ public class Playing extends GameScenes implements SceneMethods {
 
     private InfoOverlay infoOverlay;
     private Values playerValues;
-    private int mouseX, mouseY;
     private boolean cantAfford, recentlySold, recentlySoldRender;
     private int cantAffordCounter, recentlySoldCounter;
     private boolean isPaused = false;
@@ -84,6 +85,13 @@ public class Playing extends GameScenes implements SceneMethods {
         if (playerValues.getLevel() == 0) dialogController.render(g);
 
 //        infoOverlay.render(g);
+    }
+    /**
+     * Methode welche aufgerufen wird, wenn der hintergrund aus playing in anderen Fenstern aufgerufen werden soll
+     */
+    public void softRender(Graphics g) {
+        tileController.render(g);
+        towerController.render(g);
     }
     @Override
     public void update(){
@@ -135,8 +143,8 @@ public class Playing extends GameScenes implements SceneMethods {
 
         buttonBarRight = new MyButtonBar(this, uiCoordinateRight, widthr, heightr, UIPos.PLAYINGRIGHT);
         buttonBarDown = new MyButtonBar(this, uiCoordinateDown, widthd, heightd, UIPos.PLAYINGDOWN);
-        buttonBarRight.setVisible(true);
-        buttonBarDown.setVisible(true);
+        buttonBarRight.setVisible(false);
+        buttonBarDown.setVisible(false);
 
         initButtonBarControls();
     }
@@ -179,7 +187,7 @@ public class Playing extends GameScenes implements SceneMethods {
 
         BufferedImage draggedImage = AssetController.getInstance().getIcon("button_" + draggedObjectType);
 
-        g.drawImage(draggedImage, mouseX-draggedImage.getWidth()/2 , mouseY-draggedImage.getHeight()/2, null);
+        g.drawImage(draggedImage, MOUSEX-draggedImage.getWidth()/2 , MOUSEY-draggedImage.getHeight()/2, null);
     }
     public void renderCantAfford(Graphics g) {
         if (cantAfford) {
@@ -237,19 +245,14 @@ public class Playing extends GameScenes implements SceneMethods {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-
         if(e.getButton() ==1) {
-            infoOverlay.mouseClicked(x,y);
-
-            if (buttonBarRight.contains(x, y)) {
-                buttonBarRight.mouseClicked(x, y);
+            if (buttonBarRight.contains(MOUSEX, MOUSEY)) {
+                buttonBarRight.mouseClicked(MOUSEX, MOUSEY);
             }
-            if (buttonBarDown.contains(x, y)) {
-                buttonBarDown.mouseClicked(x, y);
+            if (buttonBarDown.contains(MOUSEX, MOUSEY)) {
+                buttonBarDown.mouseClicked(MOUSEX, MOUSEY);
             }
-            towerController.mouseClicked(x, y);
+            towerController.mouseClicked(MOUSEX, MOUSEY);
         } else if (e.getButton() ==3) {
             selectedTower =null;
         }
@@ -257,27 +260,19 @@ public class Playing extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-//        if(buttonBarRight.getBounds().contains(x,y)) {
-        buttonBarRight.mouseMoved(x, y);
-//        }
-        buttonBarDown.mouseMoved(x, y);
+        buttonBarRight.mouseMoved(MOUSEX, MOUSEY);
+        buttonBarDown.mouseMoved(MOUSEX, MOUSEY);
 
 
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
         if(e.getButton()==1) {
-            infoOverlay.mousePressed(mouseX,mouseY);
-
-            if (buttonBarRight.contains(mouseX, mouseY)) {
-                buttonBarRight.mousePressed(mouseX, mouseY);
-            } else if (buttonBarDown.contains(mouseX, mouseY)) {
-                buttonBarDown.mousePressed(mouseX, mouseY);
+            if (buttonBarRight.contains(MOUSEX, MOUSEY)) {
+                buttonBarRight.mousePressed(MOUSEX, MOUSEY);
+            } else if (buttonBarDown.contains(MOUSEX, MOUSEY)) {
+                buttonBarDown.mousePressed(MOUSEX, MOUSEY);
             }
         } else if (e.getButton()==3) {
             selectedTower =null;
@@ -286,18 +281,16 @@ public class Playing extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
         if (e.getButton() == 1) {
-            if (playerValues.getLevel() == 0) dialogController.mouseReleased(x, y);
-            tileController.mouseReleased(x, y);
-            if (buttonBarDown.contains(x, y)) buttonBarDown.mouseReleased(x, y);
-            if (buttonBarRight.contains(x, y)) buttonBarRight.mouseReleased(x, y);
+            if (playerValues.getLevel() == 0) dialogController.mouseReleased(MOUSEX, MOUSEY);
+            tileController.mouseReleased(MOUSEX, MOUSEY);
+            if (buttonBarDown.contains(MOUSEX, MOUSEY)) buttonBarDown.mouseReleased(MOUSEX, MOUSEY);
+            if (buttonBarRight.contains(MOUSEX, MOUSEY)) buttonBarRight.mouseReleased(MOUSEX, MOUSEY);
             if (dragingObject) {
-                towerController.mouseReleased(x, y);
+                towerController.mouseReleased(MOUSEX, MOUSEY);
                 dragingObject = false;
             }
-            checkButtonBarControls(x, y);
+            checkButtonBarControls(MOUSEX, MOUSEY);
         }
     }
 
@@ -319,10 +312,7 @@ public class Playing extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
-        infoOverlay.mouseDragged(mouseX, mouseY);
-        tileController.mouseDragged(mouseX, mouseY);
+        tileController.mouseDragged(MOUSEX, MOUSEY);
     }
 
     public void resetBools() {
@@ -404,4 +394,6 @@ public class Playing extends GameScenes implements SceneMethods {
     public void setRecentlySoldRender(boolean b) {
         recentlySoldRender = b;
     }
+
+
 }

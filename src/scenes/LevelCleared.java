@@ -38,7 +38,7 @@ public class LevelCleared  extends GameScenes implements SceneMethods {
 
     @Override
     public void render(Graphics g) {
-        game.getPlaying().render(g);
+        game.getPlaying().softRender(g);
         renderLevelClearedText(g);
         renderLevelClearedButtons(g);
         renderSuccesfullSave(g);

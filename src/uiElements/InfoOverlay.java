@@ -15,8 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static basics.Game.fWIDTH;
+import static basics.Game.*;
 import static helpers.AssetLocation.Icons.*;
+import static playerinputs.MListener.MOUSEX;
+import static playerinputs.MListener.MOUSEY;
 
 public class InfoOverlay {
     private Game game;
@@ -24,7 +26,6 @@ public class InfoOverlay {
     private Town town;
     private Tower towerPointer;
     private int draggedTowerType;
-    private int mouseY,mouseX;
     private MyButton hoveredButton;
     private Values playerValues;
     private ArrayList<BufferedImage> iconImages;
@@ -48,6 +49,7 @@ public class InfoOverlay {
         renderTowerRanges(g);
         renderTowerCosts(g);
         renderTileBoundaries(g);
+        renderDevModeInfos(g);
 
 
     }
@@ -114,7 +116,7 @@ public class InfoOverlay {
 //			Circle [] circles = new Circle[Constants.UIConstants.NUMBEROFRANGECIRCLES];
 
             for (int i = 0; i < Constants.UIConstants.NUMBEROFRANGECIRCLES; i++) {
-                Circle c = new Circle(new AbsoluteCoordinate(mouseX, mouseY), range - Constants.UIConstants.NUMBEROFRANGECIRCLES + i);
+                Circle c = new Circle(new AbsoluteCoordinate(MOUSEX, MOUSEY), range - Constants.UIConstants.NUMBEROFRANGECIRCLES + i);
                 c.render(g);
             }
         }
@@ -206,6 +208,15 @@ public class InfoOverlay {
             }
         }
     }
+    public void renderDevModeInfos(Graphics g){
+        if(ISDEVMODE) {
+            g.setColor(Color.orange);
+            g.drawString("x: "+MOUSEX +"y: "+MOUSEY+ " fWidth: "+fWIDTH+" Fheight: "+fHEIGHT+ "panel: wi: "+game.getGameScreen().getWidth()+"hei: "+ game.getGameScreen().getHeight(),MOUSEX,MOUSEY);
+            ArrayList<AbsoluteCoordinate> path = playing.getEnemyController().getPathFinder().getPath();
+            AbsoluteCoordinate pos = path.get(path.size()-1);
+            g.drawRect(pos.getX()-5, pos.getY()-5, 10,10);
+        }
+    }
 
     public void setTowerPointer(Tower t) {
         towerPointer = t;
@@ -214,19 +225,6 @@ public class InfoOverlay {
     public void setDraggedTowerType(int t) {
         draggedTowerType = t;
     }
-    public void mouseDragged(int x, int y) {
-        mouseX = x;
-        mouseY = y;
-    }
-    public void mousePressed(int x,int y) {
-        mouseX = x;
-        mouseY = y;
-    }
-    public void mouseClicked(int x,int y) {
-        mouseX = x;
-        mouseY = y;
-    }
-
     public void setHoveredButton(MyButton hoveredButton) {
         this.hoveredButton = hoveredButton;
     }

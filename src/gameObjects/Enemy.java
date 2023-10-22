@@ -8,6 +8,7 @@ import helpers.*;
 import java.util.ArrayList;
 
 import static basics.Game.fps;
+import static basics.Game.ups;
 
 /**
  * Klasse für Gegner
@@ -171,7 +172,7 @@ public class Enemy extends GameObject {
 	public void initVariables() {
 		speed = ObjectValues.Enemies.getEnemySpeed(type)*math.DifficultyMath.calculateEnemySpeedPercentChange();
 		range = new Circle(pos, ObjectValues.Enemies.getEnemyRange(type));
-		reloadTime = ObjectValues.Enemies.getEnemyReloadTime(type)*math.DifficultyMath.calculateEnemyReloadTimePercentChange();
+		reloadTime = (ObjectValues.Enemies.getEnemyReloadTime(type)*math.DifficultyMath.calculateEnemyReloadTimePercentChange())*ups;
 		damageDealt = ObjectValues.Enemies.getEnemyDamage(type)*math.DifficultyMath.calculateEnemyDamagePercentChange();
 		goldReward = ObjectValues.Enemies.getEnemyReward(type)*math.DifficultyMath.calculateEnemyRewardPercentChange();
 	}

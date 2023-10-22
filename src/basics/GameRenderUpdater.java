@@ -36,7 +36,6 @@ public class GameRenderUpdater implements Runnable{
                 game.getPlaying().render(g);
                 game.getInfoOverlay().render(g);
             }
-            case SETTINGS -> game.getSettings().render(g);
             case GAMEOVER -> {
                 game.getGameOver().render(g);
                 game.getInfoOverlay().render(g);

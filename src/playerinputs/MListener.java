@@ -13,16 +13,19 @@ public class MListener implements MouseInputListener {
     private Game game;
     private long lastReleaseTime = 0;
     private final long releaseCooldown = 500;
+    public static int MOUSEX;
+    public static int MOUSEY;
     public MListener(Game game) {
         this.game = game;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        MOUSEX = e.getX();
+        MOUSEY = e.getY();
             switch (GameStates.gameState) {
                 case MENU -> game.getMenu().mouseClicked(e);
                 case PLAYING -> game.getPlaying().mouseClicked(e);
-                case SETTINGS -> game.getSettings().mouseClicked(e);
                 case GAMEOVER -> game.getGameOver().mouseClicked(e);
                 case LEVELCLEARED -> game.getLevelCleared().mouseClicked(e);
                 case LEVELSELECT -> game.getLevelSelect().mouseClicked(e);
@@ -34,10 +37,11 @@ public class MListener implements MouseInputListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        MOUSEX = e.getX();
+        MOUSEY = e.getY();
             switch (GameStates.gameState) {
                 case MENU -> game.getMenu().mousePressed(e);
                 case PLAYING -> game.getPlaying().mousePressed(e);
-                case SETTINGS -> game.getSettings().mousePressed(e);
                 case GAMEOVER -> game.getGameOver().mousePressed(e);
                 case LEVELCLEARED -> game.getLevelCleared().mousePressed(e);
                 case LEVELSELECT -> game.getLevelSelect().mousePressed(e);
@@ -55,10 +59,11 @@ public class MListener implements MouseInputListener {
         }
         lastReleaseTime = currentTime;
 
+        MOUSEX = e.getX();
+        MOUSEY = e.getY();
         switch (GameStates.gameState) {
             case MENU -> game.getMenu().mouseReleased(e);
             case PLAYING -> game.getPlaying().mouseReleased(e);
-            case SETTINGS -> game.getSettings().mouseReleased(e);
             case GAMEOVER -> game.getGameOver().mouseReleased(e);
             case LEVELCLEARED -> game.getLevelCleared().mouseReleased(e);
             case LEVELSELECT -> game.getLevelSelect().mouseReleased(e);
@@ -80,10 +85,11 @@ public class MListener implements MouseInputListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        MOUSEY = e.getY();
+        MOUSEX = e.getX();
         switch (GameStates.gameState) {
             case MENU -> game.getMenu().mouseDragged(e);
             case PLAYING -> game.getPlaying().mouseDragged(e);
-            case SETTINGS -> game.getSettings().mouseDragged(e);
             case GAMEOVER -> game.getGameOver().mouseDragged(e);
             case LEVELCLEARED -> game.getLevelCleared().mouseDragged(e);
             case LEVELSELECT -> game.getLevelSelect().mouseDragged(e);
@@ -95,10 +101,11 @@ public class MListener implements MouseInputListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        MOUSEX = e.getX();
+        MOUSEY = e.getY();
         switch (GameStates.gameState) {
             case MENU -> game.getMenu().mouseMoved(e);
             case PLAYING -> game.getPlaying().mouseMoved(e);
-            case SETTINGS -> game.getSettings().mouseMoved(e);
             case GAMEOVER -> game.getGameOver().mouseMoved(e);
             case LEVELCLEARED -> game.getLevelCleared().mouseMoved(e);
             case LEVELSELECT -> game.getLevelSelect().mouseMoved(e);

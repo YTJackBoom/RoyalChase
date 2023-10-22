@@ -38,11 +38,11 @@ public class ObjectValues {
             public static int getEnemyHealth(int enemyType) {
                 return switch (enemyType) {
                     case SLIME -> 50;
-                    case SKELETON -> 100;
+                    case SKELETON -> 75;
                     case GOBLIN -> 100;
-                    case GOLEM -> 100;
+                    case GOLEM -> 500;
                     case WIZARD -> 75;
-                    case SKELETON_KING -> 100;
+                    case SKELETON_KING -> 200;
                     case ZOMBIE_GIANT -> 500;
                     case THE_EYE -> 100;
                     default -> throw new IllegalStateException("variables: getEnemyHealth: Unexpected value:  " + enemyType);
@@ -53,38 +53,38 @@ public class ObjectValues {
                     case SLIME -> 0.5;
                     case SKELETON -> 1;
                     case GOBLIN -> 2;
-                    case GOLEM -> 5;
+                    case GOLEM -> 0.25;
                     case WIZARD -> 1;
-                    case SKELETON_KING -> 5;
+                    case SKELETON_KING -> 1.5;
                     case ZOMBIE_GIANT -> 0.5;
-                    case THE_EYE -> 5;
+                    case THE_EYE -> 1;
                     default -> throw new IllegalStateException("variables: getEnemySpeed: Unexpected value:  " + enemyType);
                 };
             }
 
             public static double getEnemyDamage(int enemyType) {
                 return switch (enemyType) {
-                    case SLIME -> 100;
+                    case SLIME -> 50;
                     case SKELETON -> 2.5;
                     case GOBLIN -> 5;
-                    case GOLEM -> 5;
+                    case GOLEM -> 2.5;
                     case WIZARD -> 7.5;
-                    case SKELETON_KING -> 5;
+                    case SKELETON_KING -> 15;
                     case ZOMBIE_GIANT -> 20;
                     case THE_EYE -> Integer.MAX_VALUE;
                     default -> throw new IllegalStateException("variables: getEnemyDamage: Unexpected value:  " + enemyType);
                 };
             }
-            public static double getEnemyReloadTime(int enemyType) { //Entweder nachlade(range) oder angriffgeschwindigkeit(melee) beider in sekunden/angriff
+            public static double getEnemyReloadTime(int enemyType) { //Entweder nachlade(range) oder angriffgeschwindigkeit(melee) in sek/angriff
                 return switch (enemyType) {
                     case SLIME -> 0;
-                    case SKELETON -> 100;
-                    case GOBLIN -> 5;
-                    case GOLEM -> 400;
-                    case WIZARD -> 400;
-                    case SKELETON_KING -> 800;
-                    case ZOMBIE_GIANT -> 1000;
-                    case THE_EYE -> 1600;
+                    case SKELETON -> 4;
+                    case GOBLIN -> 2.5;
+                    case GOLEM -> 7;
+                    case WIZARD -> 7;
+                    case SKELETON_KING -> 5;
+                    case ZOMBIE_GIANT -> 8;
+                    case THE_EYE -> 10;
                     default -> throw new IllegalStateException("variables: getEnemyRelaodTime: Unexpected value: "+ enemyType);
                 };
             }
@@ -92,11 +92,11 @@ public class ObjectValues {
                 return switch (enemyType) {
                     case SLIME -> 0;
                     case SKELETON -> 150;
-                    case GOBLIN -> 1;
-                    case GOLEM -> 50;
+                    case GOBLIN -> 0;
+                    case GOLEM -> 0;
                     case WIZARD -> 150;
-                    case SKELETON_KING -> 100;
-                    case ZOMBIE_GIANT -> 50;
+                    case SKELETON_KING -> 0;
+                    case ZOMBIE_GIANT -> 400;
                     case THE_EYE -> 1000;
                     default -> throw new IllegalStateException("variables: getEnemyRange: Unexpected value: "+ enemyType);
                 };
@@ -158,9 +158,9 @@ public class ObjectValues {
             public static double getTowerDamage(int towerType) {
                 return switch (towerType) {
                     case Foundation_T -> 0;
-                    case ARROW_T -> 5;
-                    case MAGE_T -> 70;
-                    case ROCKET_T -> 50;
+                    case ARROW_T -> 10;
+                    case MAGE_T -> 65;
+                    case ROCKET_T -> 55;
                     case SNIP_T -> 110;
                     default -> throw new IllegalStateException("variables: getTowerDamage: Unexpected value:  " + towerType);
                 };
@@ -169,7 +169,7 @@ public class ObjectValues {
                 return switch (towerType) {
                     case Foundation_T -> 0;
                     case ARROW_T -> 500;
-                    case MAGE_T -> 350;
+                    case MAGE_T -> 400;
                     case ROCKET_T -> 500;
                     case SNIP_T -> 1000;
                     default -> throw new IllegalStateException("variables: getRange: Unexpected value:  " + towerType);
@@ -178,7 +178,7 @@ public class ObjectValues {
             public static int getTowerReloadTime(int towerType) {
                 return switch (towerType) {
                     case Foundation_T -> 0;
-                    case ARROW_T -> 100;
+                    case ARROW_T -> 50;
                     case MAGE_T -> 250;
                     case ROCKET_T -> 2000;
                     case SNIP_T -> 3000;
@@ -189,10 +189,10 @@ public class ObjectValues {
             public static Values getCost(int towerType) {
                 return switch (towerType) {
                     case Foundation_T -> new Values(0,0,0,0,0,0);
-                    case ARROW_T -> new Values(1,0,0,5,30,20);
-                    case MAGE_T -> new Values(1,0,10,0,20,30);
-                    case ROCKET_T -> new Values(2,0,0,50,20,40);
-                    case SNIP_T -> new Values(2,0,0,100,30,30);
+                    case ARROW_T -> new Values(1,50,15,20,70,50);
+                    case MAGE_T -> new Values(2,70,100,5,25,30);
+                    case ROCKET_T -> new Values(3,90,0,100,25,40);
+                    case SNIP_T -> new Values(3,90,0,150,30,45);
                     default -> new Values(999,999,999,999,999,999);
                 };
             }
@@ -200,9 +200,9 @@ public class ObjectValues {
                 return switch (towerType) {
                     case Foundation_T -> 9999;
                     case ARROW_T -> 100;
-                    case MAGE_T -> 100;
-                    case ROCKET_T -> 100;
-                    case SNIP_T -> 100;
+                    case MAGE_T -> 75;
+                    case ROCKET_T -> 120;
+                    case SNIP_T -> 35;
                     default -> 0;
                 };
             }
@@ -230,7 +230,7 @@ public class ObjectValues {
                 return switch (projectileType) {
                     case ARROW -> 0;
                     case ROCKET -> 5;
-                    case LIGHTNINGBALL -> 10;
+                    case LIGHTNINGBALL -> 1.5;
                     case BULLET -> 0;
                     default -> throw new IllegalStateException("variables: getProjectileDamage: Unexpected value:  " + projectileType);
                 };
@@ -265,9 +265,9 @@ public class ObjectValues {
             }
             public static Values getCost(int buildingType) {
                 return switch (buildingType) {
-                    case MINER -> new Values(1,0,0,0,0,0);
-                    case WOOD_MINER -> new Values(1,0,0,0,0,0);
-                    case HOUSE -> new Values(2,10,10,10,10,10);
+                    case MINER -> new Values(1,100,0,75,25,0);
+                    case WOOD_MINER -> new Values(2,100,0,150,50,50);
+                    case HOUSE -> new Values(2,100,100,100,100,100);
                     default -> new Values(999,999,999,999,999,999);
                 };
 

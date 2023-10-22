@@ -1,6 +1,7 @@
 package helpers;
 
 import controllers.TileController;
+import controllers.TowerController;
 import gameObjects.Tile;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class PathFinder {
         AbsoluteCoordinate currentCoord = new AbsoluteCoordinate(startX, startY);
         Tile currentTile = startTile;
 
-        while (currentTile != null && !currentTile.equals(endTile)) {
+        while (currentTile != null) {
             ArrayList<AbsoluteCoordinate> currentTilePath = currentTile.getGlobalPath(currentCoord);
             path.addAll(currentTilePath);
 
@@ -47,9 +48,15 @@ public class PathFinder {
                 currentCoord = currentTilePath.get(currentTilePath.size() - 1);
             }
 
+            // If the currentTile equals the endTile, stop the loop after processing the current tile
+            if (currentTile.equals(endTile)) {
+                break;
+            }
+
             currentTile = getNextTileFromCoord(currentTile, currentCoord);
         }
     }
+
 
     /**
      * Methode um das Nachbar-Tile zu finden
@@ -152,4 +159,7 @@ public class PathFinder {
         return neighbours;
     }
 
+    public Tile getEndTile() {
+        return endTile;
+    }
 }

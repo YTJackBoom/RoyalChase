@@ -75,7 +75,7 @@ public class AssetController {
                     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.Deaths.getSoundFile(i));
                     sounds.put("deaths_" + i, audioInputStream);
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(e + " On "+AssetLocation.getFieldNameByValue(AssetLocation.Sounds.Deaths.class,i));
                 }
             }
             //Prokjektile-Sounds
@@ -84,7 +84,15 @@ public class AssetController {
                     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.ProjectileFired.getSoundFile(i));
                     sounds.put("projectileFired_" + i, audioInputStream);
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(e+ " On "+AssetLocation.getFieldNameByValue(AssetLocation.Sounds.ProjectileFired.class,i));
+                }
+            }
+            for(int i = AssetLocation.Sounds.OtherSounds.getLowestInt(); i <= AssetLocation.Sounds.OtherSounds.getNumberOfIntDeclarations(); i++) {
+                try {
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(AssetLocation.Sounds.OtherSounds.getSoundFile(i));
+                    sounds.put("otherSounds_" + i, audioInputStream);
+                } catch (Exception e) {
+                    throw new RuntimeException(e+ " On "+AssetLocation.getFieldNameByValue(AssetLocation.Sounds.OtherSounds.class,i));
                 }
             }
     }

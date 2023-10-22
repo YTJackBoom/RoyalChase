@@ -60,8 +60,9 @@ public class TowerController extends ObjectsController implements ControllerMeth
      * Methode zum initialisieren des Tores auf der letzten Position des Gegner-Pfades
      */
     public void initGate() {
-        ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates = playing.getEnemyController().getPathFinder().getPath();
-        towerEntityList.add(new Gate(this, pathAbsoluteCoordinates.get(pathAbsoluteCoordinates.size() - 1)));
+        AbsoluteCoordinate pos = playing.getEnemyController().getPathFinder().getEndTile().getPos();
+//        ArrayList<AbsoluteCoordinate> pathAbsoluteCoordinates = playing.getEnemyController().getPathFinder().getPath();
+        towerEntityList.add(new Gate(this, pos));
     }
 
     /**
@@ -109,8 +110,8 @@ public class TowerController extends ObjectsController implements ControllerMeth
      */
     public void checkTowerHealth(Tower tower) {
         if (tower.getHealth() <= 0) {
-            SoundController.getInstance().playSoundEffect("deaths_5");
-            if(selectedTower.equals(tower)) {
+            SoundController.getInstance().playSoundEffect("deaths_8");
+            if(selectedTower == null ||selectedTower.equals(tower)) {
                 selectedTower = null;
                 playing.setSelectedTower(null);
             }
@@ -263,7 +264,6 @@ public class TowerController extends ObjectsController implements ControllerMeth
             if (placeTower(t.getPos())) {
                 playerValues.increase(t.getWorthByPercentage(Constants.OtherConstants.REPLACETOWERPERCENT));
                 removeQueue.add(t);
-                playing.setSelectedTower(null);
             }
         }
     }
@@ -274,6 +274,7 @@ public class TowerController extends ObjectsController implements ControllerMeth
             playerValues.decrease(cost);
             addQueue.add(new Tower(this, pos, playing.getDraggedTower(), true));
             playing.setSelectedTower(null);
+            SoundController.getInstance().playSoundEffect("otherSounds_2");
             return true;
         } else {
             playing.setCantAfford(true);

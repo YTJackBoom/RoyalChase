@@ -53,7 +53,7 @@ public class GameOver extends GameScenes implements SceneMethods{
     public void renderBackground(Graphics g){
         BufferedImage image = new BufferedImage(game.getWidth(), game.getHeight(), BufferedImage.TYPE_INT_ARGB); //der hintergrund (= das Spielfeld) wird als buffered image aufgenommen
         Graphics2D g2d = image.createGraphics();
-        game.getPlaying().render(g2d);
+        game.getPlaying().softRender(g2d);
         g2d.dispose();
 
         float[] matrix = {                                                                                       //und geblurred + als hintergrund gezeichnet

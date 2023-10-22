@@ -14,6 +14,9 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.util.ArrayList;
 
+import static playerinputs.MListener.MOUSEX;
+import static playerinputs.MListener.MOUSEY;
+
 public class Menu extends GameScenes implements SceneMethods {
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
     private ArrayList<Slider> sliders = new ArrayList<Slider>();
@@ -90,7 +93,7 @@ public class Menu extends GameScenes implements SceneMethods {
     public void renderBackground(Graphics g) {
         BufferedImage image = new BufferedImage(game.getWidth(), game.getHeight(), BufferedImage.TYPE_INT_ARGB); //der hintergrund (= das Spielfeld) wird als buffered image aufgenommen
         Graphics2D g2d = image.createGraphics();
-        game.getPlaying().render(g2d);
+        game.getPlaying().softRender(g2d);
         g2d.dispose();
 
         float[] matrix = {                                                                                       //und geblurred + als hintergrund gezeichnet
@@ -124,7 +127,6 @@ public class Menu extends GameScenes implements SceneMethods {
 
     private void grabSlidersInfos() {
         game.getGameState().getUserSettings().setDifficulty(sliders.get(0).getValue());
-//        System.out.println(sliders.get(0).getValue());
         game.getGameState().getUserSettings().setEffectVolume(sliders.get(1).getValue());
         SoundController.getInstance().setSoundEffectVolume(sliders.get(1).getValue()/100f);
 
@@ -135,17 +137,13 @@ public class Menu extends GameScenes implements SceneMethods {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
 
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
         for(MyButton button: buttons){
-            if (button.contains(x, y)) {
+            if (button.contains(MOUSEX, MOUSEY)) {
                 button.setHovered(true);
             } else {
                 button.setHovered(false);

@@ -177,7 +177,7 @@ public class AssetLocation {
                 case WORKERS -> AssetLocation.class.getResourceAsStream(ICONS_BASE_PATH + "infooverlay/worker_icon.png");
                 case BOSSBAR -> AssetLocation.class.getResourceAsStream(ICONS_BASE_PATH + "infooverlay/boss_bar.png");
                 case BUTTONBAR_RIGHT -> AssetLocation.class.getResourceAsStream(ICONS_BASE_PATH + "ui/buttonbar_right.png");
-                case BUTTONBAR_DOWN -> AssetLocation.class.getResourceAsStream(ICONS_BASE_PATH + "ui/buttonbar_right.png");
+                case BUTTONBAR_DOWN -> AssetLocation.class.getResourceAsStream(ICONS_BASE_PATH + "ui/buttonbar_down.png");
                 default -> throw new IllegalStateException("IconType does not exist");
             };
         }
@@ -187,14 +187,18 @@ public class AssetLocation {
         public static int getLowestInt(){return AssetLocation.getLowestInt(Icons.class);}
     }
     public static class Sounds {
+
         public static class Deaths {
             private static final String DEATHS_BASE_PATH = "/sounds/deaths/";
             public static final int SLIME_DIED = 0;
             public static final int SKELETON_DIED = 1;
             public static final int GOBLIN_DIED = 2;
-            public static final int WITCH_DIED = 3;
+            public static final int GOLEM_DIED = 3;
             public static final int WIZARD_DIED = 4;
-            public static final int TOWER_DIED = 5 ;
+            public static final int SKELETON_KING_DIED = 5;
+            public static final int ZOMBIE_GIANT_DIED = 6;
+            public static final int THE_EYE_DIED = 7;
+            public static final int TOWER_DIED = 8 ;
 
             public static InputStream getSoundFile(int DeathType) {
                 return new BufferedInputStream(AssetLocation.class.getResourceAsStream(DEATHS_BASE_PATH + getFieldNameByValue(AssetLocation.Sounds.Deaths.class, DeathType).toLowerCase() + ".wav"));
@@ -220,6 +224,21 @@ public class AssetLocation {
                 return AssetLocation.getHighestInt(ProjectileFired.class);
             }
             public static int getLowestInt(){return AssetLocation.getLowestInt(ProjectileFired.class);}
+        }
+        public static class OtherSounds {
+            private static final String OTHERSOUNDS_BASE_PATH = "/sounds/otherSounds/";
+            public static final int BACKGROUND_MUSIC = 1;
+            public static final int BUILDING_BUILT = 2;
+
+            public static InputStream getSoundFile(int type) {
+                return new BufferedInputStream(AssetLocation.class.getResourceAsStream(OTHERSOUNDS_BASE_PATH + getFieldNameByValue(AssetLocation.Sounds.OtherSounds.class, type).toLowerCase() + ".wav"));
+            }
+
+            public static int getNumberOfIntDeclarations() {
+                return AssetLocation.getHighestInt(OtherSounds.class);
+            }
+            public static int getLowestInt(){return AssetLocation.getLowestInt(OtherSounds.class);}
+
         }
 
     }
