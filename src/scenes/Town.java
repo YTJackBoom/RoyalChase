@@ -70,6 +70,7 @@ public class Town extends GameScenes implements SceneMethods {
         UiCoordinate uiCoordinateRight = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeXr, relativeYr));
 
         buttonBar = new MyButtonBar(this, uiCoordinateRight, widthr, heightr, UIPos.TOWNRIGHT);
+        buttonBar.setVisible(false);
 
         initButtonBarControls();
     }
@@ -79,15 +80,16 @@ public class Town extends GameScenes implements SceneMethods {
         int buttonWidth = 50; // Example width of the button; adjust as needed.
 
         // For the button's relative positioning
-        float relativeX = 0f; // At the left edge of the buttonBarRight
-        float relativeY = 50f - (0.5f * buttonHeight / buttonBar.getHeight()); // Vertically centered as a percentage
+        float relativeX = -((float) buttonWidth / buttonBar.getWidth()); // to the left of buttonBarRight by the width of the button
+        float relativeY = 0.5f - (0.5f * buttonHeight / buttonBar.getHeight()); // Vertically centered as a percentage
 
         AbsoluteCoordinate referencePoint = buttonBar.getUiCoordinate().getAbsolutePosition();
 
-        UiCoordinate sharedUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBar.getWidth(), buttonBar.getHeight()));
+        UiCoordinate extendUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, 0.5f, relativeY, buttonBar.getWidth(), buttonBar.getHeight()));
+        UiCoordinate collapseUiCoordinate = new UiCoordinate(new RelativeCoordinate(referencePoint, relativeX, relativeY, buttonBar.getWidth(), buttonBar.getHeight()));
 
-        buttonBarControls.add(new MyButton(EXTEND_U_B, sharedUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBar));
-        buttonBarControls.add(new MyButton(COLLAPSE_U_B, sharedUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBar));
+        buttonBarControls.add(new MyButton(EXTEND_U_B, extendUiCoordinate, buttonWidth, buttonHeight, true, false, buttonBar));
+        buttonBarControls.add(new MyButton(COLLAPSE_U_B, collapseUiCoordinate, buttonWidth, buttonHeight, false, false, buttonBar));
         buttonBar.addChild(buttonBarControls.get(0));
         buttonBar.addChild(buttonBarControls.get(1));
     }
@@ -106,6 +108,11 @@ public class Town extends GameScenes implements SceneMethods {
         renderCantAfford(g);
 
         if (game.getPlayerValues().getLevel() == 0) dialogController.render(g);
+
+    }
+    public void softRender(Graphics2D g) {
+        g.drawImage(townImage, 0, 0, null);
+        buildingsController.render(g);
 
     }
 
@@ -204,6 +211,7 @@ public class Town extends GameScenes implements SceneMethods {
         } else {
             townImage = AssetLocation.Town.getBackgroundImage();
             buildingsController.flushImages();
+            buildingsController.notifyBuildingPosUpdate(width,height);
         }
     }
     public void resizeBackGround(int width, int height) {

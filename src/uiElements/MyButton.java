@@ -20,18 +20,21 @@ public class MyButton extends UiElement {
 	private BufferedImage ButtonImage;
 	private Tooltip tooltip;
 	private boolean hasOutline = true;
-
+	private Color color;
+	private Boolean hasBody = true;
 	public MyButton(String text, UiCoordinate uiCoordinate, int width, int height, boolean visibility) {
 		super(uiCoordinate, width, height, UIObjectType.BUTTON, 0, visibility);
 		isVisible = visibility;
 		this.text = text;
 		isTextButton = true;
+		color = Color.BLACK;
 	}
 
 	public MyButton(int ButtonType, UiCoordinate uiCoordinate, int width, int height, boolean visibility, boolean hasOutline, UiElement parent) {
 		super(uiCoordinate, width, height, UIObjectType.BUTTON, ButtonType, visibility, parent);
 		initButtonTooltip();
 		this.hasOutline = hasOutline;
+		color = Color.BLACK;
 	}
 
 	public MyButton(int level, UiCoordinate uiCoordinate, int width, int height, boolean visibility) {
@@ -44,6 +47,7 @@ public class MyButton extends UiElement {
 		} else {
 			text = "Level " + level;
 		}
+		color = Color.BLACK;
 	}
 
 
@@ -97,6 +101,7 @@ public class MyButton extends UiElement {
 	}
 
 	private void renderButtonBody(Graphics g) {
+		if(!hasBody) return;
 		if(mouseHover) {
 			g.setColor(Color.GRAY);
 		} else {
@@ -107,7 +112,7 @@ public class MyButton extends UiElement {
 
 	private void renderButtonBox(Graphics g) {
 		if (!hasOutline) return;
-		g.setColor(Color.BLACK);
+		g.setColor(color);
 		g.drawRect(uiCoordinate.getX(), uiCoordinate.getY(), width, height);
 		if(mousePressed) {
 			g.drawRect(uiCoordinate.getX() + 1, uiCoordinate.getY() + 1, width - 2, height - 2);
@@ -115,7 +120,7 @@ public class MyButton extends UiElement {
 		}
 	}
 	private void renderButtonText(Graphics g) {
-		g.setColor(Color.BLACK);
+		g.setColor(color);
 		int width2 = g.getFontMetrics().stringWidth(text);
 		int height2 = g.getFontMetrics().getHeight();
 
@@ -167,5 +172,14 @@ public class MyButton extends UiElement {
 	public void setVisible(boolean visible) {
 		isVisible = visible;
 	}
+	public void setColor (Color color) {
+		this.color = color;
+	}
+	public void setHasOutline(Boolean b) {
+		hasOutline = b;
+	}
 
+	public void setHasBody(boolean b) {
+		hasBody = b;
+	}
 }

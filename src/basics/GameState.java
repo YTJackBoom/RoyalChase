@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class GameState implements Serializable {
     private Game game;
-    public static Values playerValues;
+    private static Values playerValues;
     public static UserSettings userSettings;
     private ArrayList<BuildingSaveState> townBuildingsSave;
 

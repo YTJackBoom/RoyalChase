@@ -31,18 +31,21 @@ public class Dialog extends UiElement {
         int buttonHeight = 30;
 
         // Relative positioning
-        float relativeX = 0.5f - (float) buttonWidth / (2 * width); // Centered horizontally
-        float relativeY = 1.0f - (float) (buttonHeight + 10) / height; // 10px margin from the bottom
+        float relativeX = 0.5f - (float) buttonWidth / (2 * super.width); // Centered horizontally
+        float relativeY = 1.0f - (float) (buttonHeight + 10) / super.height; // 10px margin from the bottom
 
-        AbsoluteCoordinate dialogTopLeft = uiCoordinate.getAbsolutePosition();
-        UiCoordinate okButtonCoordinate = new UiCoordinate(new RelativeCoordinate(dialogTopLeft, relativeX, relativeY, width, height));
+        AbsoluteCoordinate referecePoint = uiCoordinate.getAbsolutePosition();
+        UiCoordinate okButtonCoordinate = new UiCoordinate(new RelativeCoordinate(referecePoint, relativeX, relativeY, super.width, super.height));
 
         this.okButton = new MyButton("OK", okButtonCoordinate, buttonWidth, buttonHeight, true);
+        okButton.setColor(Color.LIGHT_GRAY);
+        okButton.setHasBody(false);
         addChild(okButton);
     }
 
 
     public void render(Graphics g) {
+        g.setColor(Color.DARK_GRAY);
         if (!isVisible) return;
         g.drawRect(uiCoordinate.getX(), uiCoordinate.getY(), width, height);
         drawStringWithinBounds(g);

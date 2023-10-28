@@ -9,6 +9,10 @@ import uiElements.MyButton;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.ArrayList;
 
 /**
@@ -17,13 +21,11 @@ import java.util.ArrayList;
 public class LevelSelect extends GameScenes implements SceneMethods{
     private Game game;
     private ArrayList<MyButton> buttons = new ArrayList<MyButton>();
-    private Values playerValues;
     private GameStates backScene;
 
     public LevelSelect(Game game) {
         super(game);
         this.game = game;
-        playerValues = game.getPlayerValues();
 
         initButtons();
 
@@ -40,10 +42,13 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         int buttonsPerLine = 3;
         int buttonWidth = 150;
         int buttonHeight = 150;
-        float buttonXStartPct = 300.0f / frameWidth;
-        float buttonYStartPct = 200.0f / frameHeight;
         float buttonXOffsetPct = 200.0f / frameWidth;
         float buttonYOffsetPct = 200.0f / frameHeight;
+
+        // Adjusted starting points based on the middle button's position
+        float buttonXStartPct = 0.5f - (buttonWidth/2) / (float) frameWidth - buttonXOffsetPct;
+        float buttonYStartPct = 0.5f - (buttonHeight/2) / (float) frameHeight - buttonYOffsetPct;
+
 
         AbsoluteCoordinate referencePoint = new AbsoluteCoordinate(0, 0); // Top-left corner as reference
 
@@ -76,9 +81,22 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     }
 
 
-    public void renderBackground(Graphics g){
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0,game.getWidth(),game.getHeight());
+    public void renderBackground(Graphics g) {
+        BufferedImage image = new BufferedImage(game.getWidth(), game.getHeight(), BufferedImage.TYPE_INT_ARGB); //der hintergrund (= das Spielfeld) wird als buffered image aufgenommen
+        Graphics2D g2d = image.createGraphics();
+        game.getTown().softRender(g2d);
+        g2d.dispose();
+
+        float[] matrix = {                                                                                       //und geblurred + als hintergrund gezeichnet
+                1/9f, 1/9f, 1/9f,
+                1/9f, 1/9f, 1/9f,
+                1/9f, 1/9f, 1/9f,
+        };
+        BufferedImageOp op = new ConvolveOp(new Kernel(3, 3, matrix), ConvolveOp.EDGE_NO_OP, null);
+        BufferedImage blurredImage = op.filter(image, null);
+
+        g.drawImage(blurredImage, 0, 0, null);
+
     }
 
     public void renderButtons(Graphics g){
@@ -108,7 +126,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
     @Override
     public void update() {
         for (MyButton button : buttons) {
-            button.setChecked(playerValues.getLevelscleared().contains(button.getLevel()));
+            button.setChecked(game.getPlayerValues().getLevelscleared().contains(button.getLevel()));
         }
     }
 
@@ -154,16 +172,19 @@ public class LevelSelect extends GameScenes implements SceneMethods{
             if (button.contains(x, y)) {
                 if (button.getLevel() >= 0) {
                     if (button.isChecked()) {
-                        playerValues.setRewardmultiplyer(0); // Wenn der Spieler ein Level wiederholt, bekommt er keine Belohnung
+                        game.getPlayerValues().setRewardmultiplyer(0); // Wenn der Spieler ein Level wiederholt, bekommt er keine Belohnung
                     } else {
-                        playerValues.setRewardmultiplyer(1);
+                        game.getPlayerValues().setRewardmultiplyer(1);
                     }
-                    playerValues.setLevel(button.getLevel());
+                    game.getPlayerValues().setLevel(button.getLevel());
 
 //                    System.out.println("Level " + button.getText());
                     game.getPlaying().reset();
                     GameStates.gameState = GameStates.PLAYING;
-                    if (button.getLevel() == 0) game.setPaused(true); // Beim Tutorial wird das Spiel (zunächst) pausiert
+                    if (button.getLevel() == 0){
+                        game.setPaused(true); // Beim Tutorial wird das Spiel (zunächst) pausiert+
+                        game.getPlaying().initDialogController();
+                    }
                 }else {
                     releasedOnTextButton(button);
                 }
@@ -200,9 +221,7 @@ public class LevelSelect extends GameScenes implements SceneMethods{
         }
     }
 
-    public void setPlayerValues(Values playerValues) {
-        this.playerValues = playerValues;
-    }
+
 
     public void setBackScene(GameStates gameStates) {
         this.backScene = gameStates;

@@ -60,7 +60,7 @@ public class BuildingsController implements ControllerMethods{
 		}
 	}
 	private void initMines() {
-		int startX = 1425;
+		int startX = 1390;
 		int startY = 225;
 		int buildingsPerLine;
 		int numberOfLines = 5; // for the cone pattern
@@ -145,11 +145,11 @@ public class BuildingsController implements ControllerMethods{
 			for (Building building : buildingsList) {
 				building.update();
 			}
+			if (counterForBackGroundProduction >= ups) {
+				playerValues.increase(new Values(0, 0.5, 0.5, 0.5, 0.5, 0.5));
+				counterForBackGroundProduction = 0;
+			} else counterForBackGroundProduction++;
 		}
-		if(counterForBackGroundProduction >= ups) {
-			playerValues.increase(new Values(0,0.5,0.5,0.5,0.5,0.5));
-			counterForBackGroundProduction =0;
-		}else counterForBackGroundProduction++;
 
 	}
 
@@ -230,6 +230,17 @@ public class BuildingsController implements ControllerMethods{
 	public void notifyScreenResize(int width, int height) {
 		for (Building building : buildingsList) {
 			building.getActiveAnimator().notifyScreenResize(width, height);
+		}
+		notifyBuildingPosUpdate(width,height);
+	}
+
+	public void notifyBuildingPosUpdate(int width, int height) {
+		double xChange = (double) width / prevfWIDTH;
+		double yChange = (double) height / prevfHEIGHT;
+		for (Building building : buildingsList) {
+			AbsoluteCoordinate pos = building.getPos();
+			pos.setX((int) Math.round(pos.getX()*xChange));
+			pos.setY((int) Math.round(pos.getY()*yChange));
 		}
 	}
 

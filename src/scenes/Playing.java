@@ -35,7 +35,6 @@ public class Playing extends GameScenes implements SceneMethods {
     private BossBar bossBar;
 
     private InfoOverlay infoOverlay;
-    private Values playerValues;
     private boolean cantAfford, recentlySold, recentlySoldRender;
     private int cantAffordCounter, recentlySoldCounter;
     private boolean isPaused = false;
@@ -47,7 +46,6 @@ public class Playing extends GameScenes implements SceneMethods {
     public Playing(Game game) {
         super(game);
         this.game = game;
-        playerValues = game.getPlayerValues();
         this.infoOverlay = game.getInfoOverlay();
         tileController = new TileController(this);
 
@@ -82,7 +80,7 @@ public class Playing extends GameScenes implements SceneMethods {
             button.render(g);
         }
         if (dragingObject) renderDraggedButton(g);
-        if (playerValues.getLevel() == 0) dialogController.render(g);
+        if (game.getPlayerValues().getLevel() == 0) dialogController.render(g);
 
 //        infoOverlay.render(g);
     }
@@ -219,7 +217,7 @@ public class Playing extends GameScenes implements SceneMethods {
         }
     }
     public void checkHealth() {
-        if (playerValues.getHealth() <= 0) {
+        if (game.getPlayerValues().getHealth() <= 0) {
             gameState = GAMEOVER;
 //            game.resetAll();
 //            playerValues.reset();
@@ -282,7 +280,7 @@ public class Playing extends GameScenes implements SceneMethods {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == 1) {
-            if (playerValues.getLevel() == 0) dialogController.mouseReleased(MOUSEX, MOUSEY);
+            if (game.getPlayerValues().getLevel() == 0) dialogController.mouseReleased(MOUSEX, MOUSEY);
             tileController.mouseReleased(MOUSEX, MOUSEY);
             if (buttonBarDown.contains(MOUSEX, MOUSEY)) buttonBarDown.mouseReleased(MOUSEX, MOUSEY);
             if (buttonBarRight.contains(MOUSEX, MOUSEY)) buttonBarRight.mouseReleased(MOUSEX, MOUSEY);

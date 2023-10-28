@@ -5,6 +5,7 @@ import controllers.AssetController;
 import gameObjects.Tile;
 import gameObjects.Tower;
 import helpers.*;
+import scenes.GameStates;
 import scenes.Playing;
 import scenes.Town;
 
@@ -19,6 +20,7 @@ import static basics.Game.*;
 import static helpers.AssetLocation.Icons.*;
 import static playerinputs.MListener.MOUSEX;
 import static playerinputs.MListener.MOUSEY;
+import static scenes.GameStates.gameState;
 
 public class InfoOverlay {
     private Game game;
@@ -27,11 +29,9 @@ public class InfoOverlay {
     private Tower towerPointer;
     private int draggedTowerType;
     private MyButton hoveredButton;
-    private Values playerValues;
     private ArrayList<BufferedImage> iconImages;
     public InfoOverlay(Game game) {
         this.game = game;
-        playerValues = game.getPlayerValues();
 //        this.playing = game.getPlaying();
         initVariables();
     }
@@ -61,7 +61,9 @@ public class InfoOverlay {
         int totalIcons = 10; // This includes the 9 original icons and the pause/play icon
         int spacing = fWIDTH / totalIcons;
 
-        g.setColor(Color.BLACK);
+        if (gameState == GameStates.TOWN) {
+            g.setColor(Color.WHITE);
+        }else g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         FontMetrics fm = g.getFontMetrics();
         int textHeight = fm.getAscent() - fm.getDescent();
@@ -70,13 +72,13 @@ public class InfoOverlay {
         int[] values = {
                 game.getPlaying().getWaveController().getRemainingWaves(),
                 game.getPlaying().getWaveController().getCurrentWaveNotSpawnedEnemies() + game.getPlaying().getEnemyController().getEnemyList().size(),
-                (int) playerValues.getHealth(),
-                (int) playerValues.getWorkers(),
-                (int) playerValues.getGold(),
-                (int) playerValues.getMana(),
-                (int) playerValues.getIron(),
-                (int) playerValues.getWood(),
-                (int) playerValues.getStone()
+                (int) game.getPlayerValues().getHealth(),
+                (int) game.getPlayerValues().getWorkers(),
+                (int) game.getPlayerValues().getGold(),
+                (int) game.getPlayerValues().getMana(),
+                (int) game.getPlayerValues().getIron(),
+                (int) game.getPlayerValues().getWood(),
+                (int) game.getPlayerValues().getStone()
         };
 
         BufferedImage img;
@@ -154,7 +156,7 @@ public class InfoOverlay {
         if (costValues == null) return;
 
         double[] costs = {costValues.getWorkers(), costValues.getGold(), costValues.getMana(), costValues.getIron(), costValues.getWood(), costValues.getStone()};
-        double[] playerResources = {playerValues.getWorkers(), playerValues.getGold(), playerValues.getMana(), playerValues.getIron(), playerValues.getWood(), playerValues.getStone()};
+        double[] playerResources = {game.getPlayerValues().getWorkers(), game.getPlayerValues().getGold(), game.getPlayerValues().getMana(), game.getPlayerValues().getIron(), game.getPlayerValues().getWood(), game.getPlayerValues().getStone()};
 
         int imagePadding = 5;  // gap between image and number
         int textHeight = (int) Constants.UIConstants.TOWERCOSTFONT.getSize2D();
@@ -228,7 +230,5 @@ public class InfoOverlay {
     public void setHoveredButton(MyButton hoveredButton) {
         this.hoveredButton = hoveredButton;
     }
-    public void setPlayerValues(Values playerValues) {
-        this.playerValues = playerValues;
-    }
+
 }

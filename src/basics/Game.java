@@ -250,10 +250,9 @@ public class Game extends JFrame implements Serializable {
             fileIn.close();
             this.gameState = gameState;
             loadTownBuildings();
-            levelSelect.setPlayerValues(getPlayerValues());
-            infoOverlay.setPlayerValues(getPlayerValues());
             menu.initSliders();
             System.out.println(gameState.getUserSettings().getDifficulty());
+            System.err.println("Loaded Save");
         } catch (IOException i) {
             i.printStackTrace();
         } catch (ClassNotFoundException c) {
